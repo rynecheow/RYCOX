@@ -1,102 +1,102 @@
-import java.io.*;
+import java.io.Serializable;
 
 
 @SuppressWarnings("serial")
-public class TVProgramme implements Serializable{
+public class TVProgramme implements Serializable {
 
-	private String progCode;                    //initialise variables
-	private String progTitle;
-	private String desc;
-	private String contentOrigin;
-	private String creationDate;
-	private String prgStatus = "Active";
-	private String viewerStatus;
-	private String type;
-	private String notes;
+    private String progCode;                    //initialise variables
+    private String progTitle;
+    private String desc;
+    private String contentOrigin;
+    private String creationDate;
+    private String prgStatus = "Active";
+    private String viewerStatus;
+    private String type;
+    private String notes;
 
 
-	public TVProgramme(String progCode, String progTitle, String desc, String contentOrigin, String creationDate, String prgStatus, String viewerStatus, String type, String notes){ //constructor
-		this.progCode = progCode;
-		this.progTitle = progTitle;
-		this.desc = desc;
-		this.contentOrigin = contentOrigin;
-		this.creationDate = creationDate;
-		this.prgStatus = prgStatus;
-		this.viewerStatus = viewerStatus;
-		this.type = type;
-		this.notes = notes;
-	}
+    public TVProgramme(String progCode, String progTitle, String desc, String contentOrigin, String creationDate, String prgStatus, String viewerStatus, String type, String notes) { //constructor
+        this.progCode = progCode;
+        this.progTitle = progTitle;
+        this.desc = desc;
+        this.contentOrigin = contentOrigin;
+        this.creationDate = creationDate;
+        this.prgStatus = prgStatus;
+        this.viewerStatus = viewerStatus;
+        this.type = type;
+        this.notes = notes;
+    }
 
-//accessors
-	public String getProgCode(){//to return programme's code
-		return progCode;
-	}
+    //accessors
+    public String getProgCode() {//to return programme's code
+        return progCode;
+    }
 
-	public String getProgTitle(){ //to return programme's title
-		return progTitle;
-	}
-   
-	public String getDesc(){ //to return the description of the programme
-		return desc;
-	}
-   
-	public String getContentOrigin(){ //to return programme's content come from which country
-		return contentOrigin;
-	}
+    public String getProgTitle() { //to return programme's title
+        return progTitle;
+    }
 
-	public String getCreationDate(){ //to return the creation date of a programme
-		return creationDate;
-	}
+    public String getDesc() { //to return the description of the programme
+        return desc;
+    }
 
-	public String getPrgStatus(){ //to return the programme's status
-		return prgStatus;
-	}
+    public String getContentOrigin() { //to return programme's content come from which country
+        return contentOrigin;
+    }
 
-	public String getViewerStatus(){ //to return the programme's viewer status
-		return viewerStatus;
-	}
+    public String getCreationDate() { //to return the creation date of a programme
+        return creationDate;
+    }
 
-	public String getType(){ //to return the programme's type
-   
-		return type;
-	}
+    public String getPrgStatus() { //to return the programme's status
+        return prgStatus;
+    }
 
-	public String getNotes(){ //to return the programme's notes
-		return notes;
-	}
+    public String getViewerStatus() { //to return the programme's viewer status
+        return viewerStatus;
+    }
 
-	public void printList(){  //to print out all the information of a TV programme
-		System.out.println(" Programme Code: "+progCode+"\n Programme Title: "+progTitle+"\n Description: "+desc+"\n Content Origin: "+contentOrigin+"\n Creation Date: "+creationDate+"\n Status: "+prgStatus+"\n Viewer Status: "+viewerStatus+"\n Type: "+type+"\n Notes: "+notes);
-	}
+    public String getType() { //to return the programme's type
 
-//mutators
-	public void setProgCode(String progCode){ //to change programme's code
-		this.progCode = progCode;
-	}
+        return type;
+    }
 
-	public void setProgTitle(String progTitle){ //to change programme's title
-		this.progTitle = progTitle;
-	}
+    public String getNotes() { //to return the programme's notes
+        return notes;
+    }
 
-	public void setDesc(String desc){ //to change programme's description
-		this.desc = desc;
-	}
+    public void printList() {  //to print out all the information of a TV programme
+        System.out.println(" Programme Code: " + progCode + "\n Programme Title: " + progTitle + "\n Description: " + desc + "\n Content Origin: " + contentOrigin + "\n Creation Date: " + creationDate + "\n Status: " + prgStatus + "\n Viewer Status: " + viewerStatus + "\n Type: " + type + "\n Notes: " + notes);
+    }
 
-	public void setPrgStatus(String prgStatus){  //to change programme's status
-		this.prgStatus = prgStatus;
-	}
-   
-	public void setViewerStatus(String viewerStatus){ //to change programme's viewer status
-		this.viewerStatus = viewerStatus;
-	}
+    //mutators
+    public void setProgCode(String progCode) { //to change programme's code
+        this.progCode = progCode;
+    }
 
-	public void setType(String type){ //to change programme's type
-		this.type = type;
-	}
+    public void setProgTitle(String progTitle) { //to change programme's title
+        this.progTitle = progTitle;
+    }
 
-	public void setNotes(String notes){//to change programme's notes
-		this.notes = notes;
-	}
+    public void setDesc(String desc) { //to change programme's description
+        this.desc = desc;
+    }
+
+    public void setPrgStatus(String prgStatus) {  //to change programme's status
+        this.prgStatus = prgStatus;
+    }
+
+    public void setViewerStatus(String viewerStatus) { //to change programme's viewer status
+        this.viewerStatus = viewerStatus;
+    }
+
+    public void setType(String type) { //to change programme's type
+        this.type = type;
+    }
+
+    public void setNotes(String notes) {//to change programme's notes
+        this.notes = notes;
+    }
 }
 
 
