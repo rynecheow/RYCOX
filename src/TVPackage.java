@@ -75,7 +75,14 @@ class TVPackage implements Serializable {
         this.pkgStatus = pkgStatus;
     }
 
-    public void printPkg() {
+    public void setTerminationDate(String terminationDate) {  //to set termination date
+        this.terminationDate = terminationDate;
+    }
 
+    public void printPkg() {
+        System.out.println(" Package Code: " + pkgCode + "\n Package Name: " + pkgName + "\n Start Date: " +
+                startDate + "\n Termination Date: " + terminationDate + "\n Charge Price: RM" +
+                chargePrice + "\n Charge Type: " + chargeType + "\n Status: "
+                + pkgStatus);
     }
 }

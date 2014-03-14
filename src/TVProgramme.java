@@ -97,6 +97,10 @@ public class TVProgramme implements Serializable {
     public void setNotes(String notes) {//to change programme's notes
         this.notes = notes;
     }
+
+    public void setContentOrigin(String contentOrigin) {
+        this.contentOrigin = contentOrigin;
+    }
 }
 
 
