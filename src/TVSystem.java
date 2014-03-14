@@ -1866,53 +1866,53 @@ class TVSystem {
                         break;
 
                     case 3:
-                        for (u = 0; u < userList.size(); u++) {
-                            if (userList.get(u) instanceof FrontdeskStaffs) {
-                                p.println("Only Admin Can Access.\n");
+                        //	for (u=0; u<userList.size(); u++){
+                        if (userList.get(u) instanceof FrontdeskStaffs) {
+                            p.println("Only Admin has the accessibility to use this hidden function.\n");
 
-                                log = new LogFile(lgTime, username, "has not Terminated any user[USER TYPE DO NOT HAVE ACCESSIBILITY].");
-                                logList.addLast(log);
-                                break;
-                            } else if (userList.get(u) instanceof Administrators) {
+                            log = new LogFile(lgTime, username, "has not Terminated any user[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+                            logList.addLast(log);
+                            break;
+                        } else if (userList.get(u) instanceof Administrators) {
+                            do {
+                                val = false;
                                 do {
-                                    val = false;
-                                    do {
-                                        p.println("Please Enter the Smart Card Number: ");
-                                        smartCardNo = input.nextLine();
+                                    p.println("Please Enter the Smart Card Number: ");
+                                    smartCardNo = input.nextLine();
 
-                                        if (smartCardNo.matches(ScNo_IDregex)) {
-                                            val = true;
-                                        } else {
-                                            val = false;
-                                            p.println("Incorrect Smart Card format.\n");
-                                        }
-                                    } while (val == false);
-                                    val = false;
-
-                                    for (i = 0; i < servList.size(); i++) {
-                                        if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
-                                            val = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (val == true) {
-                                        if (servList.get(i).getServStatus().equalsIgnoreCase("terminated")) {
-                                            p.println("The Smart Card was terminated before.\n");
-                                        } else {
-                                            servList.get(i).setServStatus("terminated");
-                                            p.println("The Smart Card has been terminated successful.\n");
-
-                                            log = new LogFile(lgTime, username, "has terminated the Smart Card " + smartCardNo);
-                                            logList.addLast(log);
-                                        }
-                                    } else if (val == false) {
-                                        p.println("Invalid Smart Card Enter.\n");
+                                    if (smartCardNo.matches(ScNo_IDregex)) {
+                                        val = true;
+                                    } else {
+                                        val = false;
+                                        p.println("Incorrect Smart Card format.\n");
                                     }
                                 } while (val == false);
-                                break;
-                            }
+                                val = false;
+
+                                for (i = 0; i < servList.size(); i++) {
+                                    if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
+                                        val = true;
+                                        break;
+                                    }
+                                }
+
+                                if (val == true) {
+                                    if (servList.get(i).getServStatus().equalsIgnoreCase("terminated")) {
+                                        p.println("The Smart Card was terminated before.\n");
+                                    } else {
+                                        servList.get(i).setServStatus("terminated");
+                                        p.println("The Smart Card has been terminated successful.\n");
+
+                                        log = new LogFile(lgTime, username, "has terminated the Smart Card " + smartCardNo);
+                                        logList.addLast(log);
+                                    }
+                                } else if (val == false) {
+                                    p.println("Invalid Smart Card Entered.\n");
+                                }
+                            } while (val == false);
+                            break;
                         }
+                        //	}
 
                         break;
 
@@ -1985,7 +1985,7 @@ class TVSystem {
                 menu3_opt_1 = Integer.parseInt(menu3_opt);
 
                 boolean repeat = false;
-                int subsNo = 1;
+                int subsNo = 0;
 
                 switch (menu3_opt_1) {
                     case 1:
@@ -2025,12 +2025,12 @@ class TVSystem {
                                     clientID = servList.get(i).getClientID();
 
                                     for (j = 0; j < servList.size(); j++) {
-                                        if (clientID.equalsIgnoreCase(servList.get(i).getClientID())) {
+                                        if (clientID.equalsIgnoreCase(servList.get(j).getClientID())) {
                                             subsNo++;
                                         }
                                     }
                                 } else if (val == false) {
-                                    p.println("Invalid Smart Card enter, Please Enter again.\n");
+                                    p.println("Invalid Smart Card Entered, Please Enter again.\n");
                                 }
                             }
                         } while (val == false);
@@ -3598,14 +3598,10 @@ class TVSystem {
                                                 break;
                                             }
                                         }
-                                    } else {
-                                        p.println("No package subscribed.");
                                     }
                                 }
                             }
                         }
-                    } else {
-                        p.println("No services available.");
                     }
                 }
                 p.println("--------------------------------------------------------------------");
