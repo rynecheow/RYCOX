@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class EditProgrammeDialog extends JDialog {
+class EditProgrammeDialog extends JDialog {
     private JLabel label1, label2, label3, label4, label5, label6, label7;
     private JLabel error1, error2, error3, error4, error5, error6;
     private JTextField textfield1, textfield2, textfield3, textfield4;
@@ -44,13 +44,9 @@ public class EditProgrammeDialog extends JDialog {
         color = new Color(23, 28, 30);
         color1 = new Color(244, 219, 234);
 
-
         Container container = getContentPane();
         container.setBackground(color);
         textfield1.setEditable(false);
-        for (int loop = 0; loop < RYCOXv2.prgList.size(); loop++) {
-
-        }
         SpringLayout spring = new SpringLayout();
         Border textBorder = textfield1.getBorder();
         textarea1.setBorder(textBorder);
@@ -78,107 +74,117 @@ public class EditProgrammeDialog extends JDialog {
         label5.setForeground(color1);
         label6.setForeground(color1);
         label7.setForeground(color1);
-        //		button1.addActionListener(new ActionListener(){
-        //
-        //			public void actionPerformed(ActionEvent e){
-        //				boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
-        //				if((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))){
-        //					error1.setVisible(true);
-        //					flag1 = false;
-        //				}else {
-        //					flag1 = true;
-        //				error1.setVisible(false);
-        //				for(int count = 0; count < RYCOXv2.prgList.size(); count++){
-        //					if(){
-        //						RYCOXv2.prgList.get(count).setProgTitle(textfield2.getText());
-        //						break;
-        //					}
-        //				}
-        //				}
-        //
-        //				if((textarea1.getText().trim() == null) || (textarea1.getText().trim().equalsIgnoreCase(""))){
-        //					error2.setVisible(true);
-        //					flag2 = false;
-        //				}else {
-        //					flag2 = true;
-        //				error2.setVisible(false);
-        //				for(int count = 0; count < RYCOXv2.prgList.size(); count++){
-        //					if(){
-        //						RYCOXv2.prgList.get(count).setDesc(textarea1.getText());
-        //						break;
-        //					}
-        //				}
-        //				}
-        //
-        //				if((textfield3.getText().trim() == null) || (textfield3.getText().trim().equalsIgnoreCase(""))){
-        //					error3.setVisible(true);
-        //					flag3 = false;
-        //				}else {
-        //					flag3 = true;
-        //				error3.setVisible(false);
-        //				for(int count = 0; count < RYCOXv2.prgList.size(); count++){
-        //					if(){
-        //						RYCOXv2.prgList.get(count).setContentOrigin(textfield3.getText());
-        //						break;
-        //					}
-        //				}
-        //
-        //				}
-        //
-        //				if((combobox1.getSelectedItem()).equals("<-----Please Choose a viewer status----->")){
-        //					error4.setVisible(true);
-        //					flag4 = false;
-        //				}else {
-        //					flag4 = true;
-        //				error4.setVisible(false);
-        //
-        //
-        //						for(int count2 = 0; count2 < RYCOXv2.prgList.size(); count2++){
-        //							if(){
-        //								RYCOXv2.prgList.get(count2).setViewerStatus(combobox1.getSelectedItem().toString());
-        //								break;
-        //							}
-        //						}
-        //
-        //				}
-        //
-        //				if((combobox2.getSelectedItem()).equals("<----Please Choose a programme type---->")){
-        //					error5.setVisible(true);
-        //					flag5 = false;
-        //				}else {
-        //					flag5 = true;
-        //				error5.setVisible(false);
-        //
-        //						for(int count3 = 0; count3 < RYCOXv2.prgList.size(); count3++){
-        //							if(){
-        //								RYCOXv2.prgList.get(count3).setType(combobox2.getSelectedItem().toString());
-        //								break;
-        //							}
-        //						}
-        //
-        //
-        //				}
-        //
-        //				if((textfield4.getText().trim() == null) || (textfield4.getText().trim().equalsIgnoreCase(""))){
-        //					error6.setVisible(true);
-        //					flag6 = false;
-        //				}else {
-        //					flag6 = true;
-        //				error6.setVisible(false);
-        //
-        //				}
-        //				if((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true) && (flag5 == true) && (flag6 == true)){
-        //
-        //					JOptionPane.showMessageDialog(null, "You have successfully edited the details of a TV Programme which is "+textfield1.getText()+" !", textfield1.getText()+" edited", JOptionPane.PLAIN_MESSAGE);
-        //					LogFile log = new LogFile(RYCOXv2.user,"has edited a TV Programme '"+textfield1.getText()+"'.");
-        //					RYCOXv2.logList.add(log);
-        //					dispose();
-        //
-        //				}
-        //
-        //			}
-        //
-        //		});
+
+        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+            if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                textfield1.setText(RYCOXv2.prgList.get(i).getProgCode());
+                textfield2.setText(RYCOXv2.prgList.get(i).getProgTitle());
+                textarea1.setText(RYCOXv2.prgList.get(i).getDesc());
+                textfield3.setText(RYCOXv2.prgList.get(i).getContentOrigin());
+                combobox1.setSelectedItem((String) (RYCOXv2.prgList.get(i).getViewerStatus()));
+                combobox2.setSelectedItem((String) (RYCOXv2.prgList.get(i).getType()));
+                textfield4.setText(RYCOXv2.prgList.get(i).getNotes());
+                break;
+            }
+        }
+        button1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
+                if ((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))) {
+                    error1.setVisible(true);
+                    flag1 = false;
+                } else {
+                    flag1 = true;
+                    error1.setVisible(false);
+
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setProgTitle(textfield2.getText());
+                            break;
+                        }
+                    }
+                }
+
+                if ((textarea1.getText().trim() == null) || (textarea1.getText().trim().equalsIgnoreCase(""))) {
+                    error2.setVisible(true);
+                    flag2 = false;
+                } else {
+                    flag2 = true;
+                    error2.setVisible(false);
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setDesc(textarea1.getText());
+                            break;
+                        }
+                    }
+                }
+
+                if ((textfield3.getText().trim() == null) || (textfield3.getText().trim().equalsIgnoreCase(""))) {
+                    error3.setVisible(true);
+                    flag3 = false;
+                } else {
+                    flag3 = true;
+                    error3.setVisible(false);
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setContentOrigin(textfield3.getText());
+                            break;
+                        }
+                    }
+                }
+
+                if ((combobox1.getSelectedItem()).equals("<-----Please Choose a viewer status----->")) {
+                    error4.setVisible(true);
+                    flag4 = false;
+                } else {
+                    flag4 = true;
+                    error4.setVisible(false);
+
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setViewerStatus(combobox1.getSelectedItem().toString());
+                            break;
+                        }
+                    }
+                }
+
+                if ((combobox2.getSelectedItem()).equals("<----Please Choose a programme type---->")) {
+                    error5.setVisible(true);
+                    flag5 = false;
+                } else {
+                    flag5 = true;
+                    error5.setVisible(false);
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setType(combobox2.getSelectedItem().toString());
+                            break;
+                        }
+                    }
+                }
+
+                if ((textfield4.getText().trim() == null) || (textfield4.getText().trim().equalsIgnoreCase(""))) {
+                    error6.setVisible(true);
+                    flag6 = false;
+                } else {
+                    flag6 = true;
+                    error6.setVisible(false);
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setNotes(textfield4.getText());
+                            break;
+                        }
+                    }
+
+                }
+                if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true) && (flag5 == true) && (flag6 == true)) {
+
+                    JOptionPane.showMessageDialog(null, "You have successfully edited the details of a TV Programme which is " + textfield1.getText() + " !", textfield1.getText() + " edited", JOptionPane.PLAIN_MESSAGE);
+                    LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Programme '" + textfield1.getText() + "'.");
+                    RYCOXv2.logList.add(log);
+                    dispose();
+                }
+            }
+        });
 
         button2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -258,7 +264,7 @@ public class EditProgrammeDialog extends JDialog {
         spring.putConstraint(SpringLayout.WEST, button2, 200, SpringLayout.EAST, label1);
         spring.putConstraint(SpringLayout.NORTH, button2, 42, SpringLayout.SOUTH, textfield4);
 
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(620, 600);
         setLocation(400, 60);
         setVisible(true);

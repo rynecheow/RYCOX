@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class EditClientDialog extends JDialog {
+class EditClientDialog extends JDialog {
 
     // Variables declaration
     private JPanel BGPanel;

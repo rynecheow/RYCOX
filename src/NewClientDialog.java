@@ -8,7 +8,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 @SuppressWarnings("serial")
-public class NewClientDialog extends JDialog {
+class NewClientDialog extends JDialog {
 
     // Variables declaration
     private JPanel BGPanel;
@@ -42,6 +42,7 @@ public class NewClientDialog extends JDialog {
     private WarningLabel warningMsgID, warningMsgName, warningMsgAge, warningMsgAddr, warningMsgEmail, warningMsgIC, warningMsgFormat;
     private Font defont = new Font("LucidaSansRegular", Font.PLAIN, 12);
     private String type;
+    private WarningLabel warningMsgIDEx;
     // End of variables declaration
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -87,6 +88,7 @@ public class NewClientDialog extends JDialog {
         clAppearedNameLabel.setForeground(fColor);
         clAppearedName = new JTextField("");
 
+
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         BGPanel.setLayout(null);
 
@@ -97,6 +99,7 @@ public class NewClientDialog extends JDialog {
         warningMsgEmail = new WarningLabel("E-mail cannot be empty.");
         warningMsgIC = new WarningLabel("IC cannot be empty.");
         warningMsgFormat = new WarningLabel("Wrong ID format.");
+        warningMsgIDEx = new WarningLabel("Existed ID.");
 
         clTypeCombo.setFont(defont);
         clTypeCombo.setModel(new DefaultComboBoxModel(new String[]{"Individual", "Government", "Private Organisation", "NGO"}));
@@ -163,6 +166,8 @@ public class NewClientDialog extends JDialog {
         warningMsgID.setBounds(10, 15, 150, 25);
         BGPanel.add(warningMsgID);
         warningMsgFormat.setBounds(10, 15, 150, 25);
+        warningMsgIDEx.setBounds(10, 15, 150, 25);
+        BGPanel.add(warningMsgIDEx);
         BGPanel.add(warningMsgFormat);
         clIDLabel.setBounds(10, 43, 62, 25);
 
@@ -301,6 +306,8 @@ public class NewClientDialog extends JDialog {
         boolean checkEmptyAGE = false;
         boolean checkEmptyEM = false;
         boolean checkWrongFormat = false;
+        boolean existed = false;
+        String appendedID = "";
 
         type = (String) clTypeCombo.getSelectedItem();
         if (type.equals("Individual")) {
@@ -327,14 +334,38 @@ public class NewClientDialog extends JDialog {
                             checkEmptyID = true;
                             warningMsgID.setVisible(true);
                             warningMsgFormat.setVisible(false);
+                            warningMsgIDEx.setVisible(false);
                         } else {
                             warningMsgID.setVisible(false);
                             if (temp[2].matches("[0-9]{6}")) {
                                 checkWrongFormat = false;
                                 warningMsgFormat.setVisible(false);
+                                warningMsgIDEx.setVisible(false);
+                                if (((String) clTypeCombo.getSelectedItem()).equals("Individual")) {
+                                    appendedID = "I" + temp[2];
+                                } else if (((String) clTypeCombo.getSelectedItem()).equals("Government")) {
+                                    appendedID = "G" + temp[2];
+                                } else if (((String) clTypeCombo.getSelectedItem()).equals("NGO")) {
+                                    appendedID = "N" + temp[2];
+                                } else if (((String) clTypeCombo.getSelectedItem()).equals("Private Organisation")) {
+                                    appendedID = "P" + temp[2];
+                                }
+                                System.out.println(appendedID);
+                                for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
+                                    if (appendedID.equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                        warningMsgIDEx.setVisible(true);
+                                        existed = true;
+                                        break;
+                                    } else {
+                                        warningMsgIDEx.setVisible(false);
+                                        existed = false;
+                                        break;
+                                    }
+                                }
                             } else {
                                 checkWrongFormat = true;
                                 warningMsgFormat.setVisible(true);
+                                warningMsgIDEx.setVisible(false);
                             }
                         }
                     case 3:
@@ -425,7 +456,7 @@ public class NewClientDialog extends JDialog {
                 }
                 break;
             }
-            if (checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyADD == false && checkEmptyEM == false && checkWrongFormat == false) {
+            if (existed == false && checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyADD == false && checkEmptyEM == false && checkWrongFormat == false) {
                 clientCreation();
                 dispose();
             }
@@ -475,6 +506,7 @@ public class NewClientDialog extends JDialog {
         RYCOXv2.logList.add(RYCOXv2.log);
         //viewer
         ClientPanel.updateAddTable();
+        JOptionPane.showMessageDialog(BGPanel, "Successfully added client '" + clID + "'!", "RYCOX System", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private class WarningLabel extends JLabel {

@@ -4,7 +4,7 @@ import java.util.Date;
 
 
 @SuppressWarnings("serial")
-public class TVProgramme implements Serializable {
+class TVProgramme implements Serializable {
 
     private String progCode;                    //initialise variables
     private String progTitle;

@@ -35,7 +35,7 @@ public class MainUI extends JFrame implements ActionListener {
         menubar.add(editMenu);
         menubar.add(viewMenu);
         menubar.add(helpMenu);
-        saveMI = new JMenuItem("Save...");
+        saveMI = new JMenuItem("Save All...");
         exitMI = new JMenuItem("Exit...");
         aboutMI = new JMenuItem("About..");
         viewLogMI = new JMenuItem("View Log...");
@@ -74,7 +74,7 @@ public class MainUI extends JFrame implements ActionListener {
         add(tabbedPane);
 
         setVisible(true);
-        setResizable(false);
+        //setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

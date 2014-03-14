@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
-public class PackagePanel extends JPanel {
+class PackagePanel extends JPanel {
 
     private static JTable pkgTable;
     private JButton pkgAddButton;

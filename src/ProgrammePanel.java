@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -14,7 +13,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
 @SuppressWarnings("serial")
-public class ProgrammePanel extends JPanel {
+class ProgrammePanel extends JPanel {
 
     private static JTable prgTable;
     private JButton prgAddButton;
@@ -32,6 +31,8 @@ public class ProgrammePanel extends JPanel {
     private JMenuItem editPrgMI, deletePrgMI, addToPkgMI;
     private String[][] prgData;
     private static AbstractTableModel prgModel;
+    static String[] progtemp;
+    private int rowno;
 
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -108,6 +109,7 @@ public class ProgrammePanel extends JPanel {
         prgData = new String[RYCOXv2.prgList.size()][5];
         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
             for (int j = 0; j <= 5; j++) {
+
                 switch (j) {
                     case 0:
                         prgData[i][j] = RYCOXv2.prgList.get(i).getProgCode();
@@ -159,6 +161,7 @@ public class ProgrammePanel extends JPanel {
         prgTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(prgTable);
 
+
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -188,10 +191,15 @@ public class ProgrammePanel extends JPanel {
                 } else if (SwingUtilities.isLeftMouseButton(e)) {
                     ListSelectionModel model = prgTable.getSelectionModel();
                     model.setSelectionInterval(prgTable.rowAtPoint(e.getPoint()), prgTable.rowAtPoint(e.getPoint()));
+                    rowno = prgTable.rowAtPoint(e.getPoint());
+                    progtemp = new String[5];
+                    for (int j = 0; j < 5; j++) {
+                        progtemp[j] = (String) prgTable.getValueAt(rowno, j);
+                    }
                 }
             }
         }
-        ); //table right click
+        ); //table click
 
         editPrgMI = new JMenuItem("Edit Programme...");
         deletePrgMI = new JMenuItem("Terminate Programme...");
@@ -204,9 +212,11 @@ public class ProgrammePanel extends JPanel {
 
 
         prgAddButton.addActionListener(new ActionListener() {
+
             @SuppressWarnings("unused")
             public void actionPerformed(ActionEvent e) {
                 NewProgrammeDialog npd = new NewProgrammeDialog((JFrame) popupMenu.getParent());
+                updateProgrammeTable();
             }
         });
 
@@ -222,6 +232,10 @@ public class ProgrammePanel extends JPanel {
                     }
                     prg_oostream.flush();
                     prg_oostream.close();
+                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[PROGRAMME]");
+                    RYCOXv2.logList.add(RYCOXv2.log);
+                    RYCOXv2.printLog();
+                    JOptionPane.showMessageDialog(null, "You have successfully saved the changes of TV Programmes !", "Save successfully", JOptionPane.PLAIN_MESSAGE);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -229,32 +243,102 @@ public class ProgrammePanel extends JPanel {
         });
 
         editPrgButton.addActionListener(new ActionListener() {
+
             @SuppressWarnings("unused")
             public void actionPerformed(ActionEvent e) {
                 EditProgrammeDialog epd = new EditProgrammeDialog((JFrame) popupMenu.getParent());
+                updateProgrammeTable();
             }
         });
 
 
         prgDeleteButton.addActionListener(new ActionListener() {
-            @SuppressWarnings("unused")
+
             public void actionPerformed(ActionEvent e) {
-                TerminateProgramme tp = new TerminateProgramme((JFrame) popupMenu.getParent());
+
+                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
+                if (choice == JOptionPane.YES_OPTION) {
+                    for (int counts = 0; counts < RYCOXv2.prgList.size(); counts++) {
+                        if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(counts).getProgCode())) {
+                            if (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("Active")) {
+
+                                RYCOXv2.prgList.remove(counts);
+                                JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
+                                LogFile log = new LogFile(RYCOXv2.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
+                                RYCOXv2.logList.add(log);
+                                break;
+
+                            }
+
+                        }
+                    }
+
+                } else {
+                }
+
+                updateProgrammeTable();
             }
         });
 
     }//end constructor
 
 
-    static void updateProgrammeTable() {
-        int size = RYCOXv2.prgList.size();
-        int n = size - 1;
-        String[] a = {RYCOXv2.prgList.get(n).getProgCode(), RYCOXv2.prgList.get(n).getProgTitle(), RYCOXv2.prgList.get(n).getContentOrigin(),
-                RYCOXv2.prgList.get(n).getViewerStatus(), RYCOXv2.prgList.get(n).getType()};
-        ((DefaultTableModel) prgModel).addRow(a);
-        prgTable.tableChanged(new TableModelEvent(prgModel));
+    public void updateProgrammeTable() {
+        prgData = new String[RYCOXv2.prgList.size()][5];
+        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+            for (int j = 0; j <= 5; j++) {
+                switch (j) {
+                    case 0:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgCode();
+                        break;
+                    case 1:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgTitle();
+                        break;
+                    case 2:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getContentOrigin();
+                        break;
+                    case 3:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getViewerStatus();
+                        break;
+                    case 4:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getType();
+                        break;
+                }
+            }
+        }
+
+        prgModel = new DefaultTableModel(
+                prgData,
+                new String[]{
+                        "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type"
+                }
+        ) {
+
+            @SuppressWarnings("rawtypes")
+            Class[] types = new Class[]{
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+            };
+
+            boolean[] canEdit = new boolean[]{
+                    false, false, false, false, false
+            };
+
+            @SuppressWarnings({"unchecked", "rawtypes"})
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
         prgTable.setModel(prgModel);
-        prgTable.repaint();
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(prgModel);
+        prgTable.setRowSorter(sorter);
+        prgTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        prgTable.setName("");
+        prgTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        scrollPane.setViewportView(prgTable);
     }
 
 

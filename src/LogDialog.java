@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class LogDialog extends JDialog {
+class LogDialog extends JDialog {
 
     // Variables declaration
     private JButton closeW;

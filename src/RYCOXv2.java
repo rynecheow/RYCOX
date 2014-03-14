@@ -161,7 +161,6 @@ class RYCOXv2 extends JFrame {
                 }
             }
         } catch (Exception e) {
-            // If Nimbus is not available, you can set the GUI to another look and feel.
         }
 
         userList = new LinkedList<Users>();
@@ -175,7 +174,7 @@ class RYCOXv2 extends JFrame {
         log = new LogFile("", "");
         userList.add(new Administrators("admin", "nimda"));
         userList.add(new FrontdeskStaffs("staff", "123abc"));
-        //userList.add(new FrontdeskStaffs("", ""));
+        userList.add(new FrontdeskStaffs("", ""));
         clientList.add(new IndividualClient("Izhar Husin", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "ACTIVE", "Izhar@gmail.com"));
         clientList.add(new IndividualClient("Rimi Azizi", 21, "901010-05-2828", "10, Jalan Taylor's", "I000002", "ACTIVE", "Rimi@gmail.com"));
         clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "INACTIVE", "doe@gov.my"));

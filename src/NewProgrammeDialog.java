@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 
 @SuppressWarnings("serial")
-public class NewProgrammeDialog extends JDialog {
+class NewProgrammeDialog extends JDialog {
     private JLabel label1, label2, label3, label4, label5, label6, label7;
     private JLabel error1, error2, error3, error4, error5, error6, error7, error8, error9;
     private JTextField textfield1, textfield2, textfield3, textfield4;
@@ -184,7 +184,6 @@ public class NewProgrammeDialog extends JDialog {
                     LogFile log = new LogFile(RYCOXv2.user, "has created a new TV Programme '" + a + "'.");
                     RYCOXv2.logList.add(log);
                     dispose();
-                    ProgrammePanel.updateProgrammeTable();
                 }
             }
         });

@@ -14,25 +14,27 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
 @SuppressWarnings("serial")
-public class ClientPanel extends JPanel {
+class ClientPanel extends JPanel {
 
     private static JTable clTable;
     @SuppressWarnings("rawtypes")
     private JComboBox clTypeCombo;
-    private JButton cldeleteButton;
-    private JButton editclButton;
+    private ToolbarButton cldeleteButton;
+    private ToolbarButton editclButton;
     private JScrollPane scrollPane;
-    private JButton newclButton;
-    private JButton saveButton;
-    private JButton redoButton;
+    private ToolbarButton newclButton;
+    private ToolbarButton saveButton;
+    private ToolbarButton redoButton;
     private JPanel toolbar;
-    private JButton undoButton;
-    private JButton recoverButton;
-    private JButton viewButton;
+    private ToolbarButton undoButton;
+    private ToolbarButton recoverButton;
+    private ToolbarButton viewButton;
+    private ToolbarButton deactButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
     private JMenuItem editclMI, deleteclMI, addservMI;
+    private ToolbarButton clActivateButton;
     private static String[][] clData;
     private static AbstractTableModel model;
     static String[] editionData;
@@ -43,22 +45,16 @@ public class ClientPanel extends JPanel {
     public ClientPanel() {
         toolbar = new JPanel();
         clTypeCombo = new JComboBox();
-        newclButton = new JButton("", new ImageIcon(getClass().getResource("newbutton.png")));
-        newclButton.setBackground(bColor);
-        editclButton = new JButton("", new ImageIcon(getClass().getResource("editbutton.png")));
-        editclButton.setBackground(bColor);
-        redoButton = new JButton("", new ImageIcon(getClass().getResource("redobutton.png")));
-        redoButton.setBackground(bColor);
-        saveButton = new JButton("", new ImageIcon(getClass().getResource("savebutton.png")));
-        saveButton.setBackground(bColor);
-        viewButton = new JButton("", new ImageIcon(getClass().getResource("viewbutton.png")));
-        viewButton.setBackground(bColor);
-        undoButton = new JButton("", new ImageIcon(getClass().getResource("undobutton.png")));
-        undoButton.setBackground(bColor);
-        cldeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
-        cldeleteButton.setBackground(bColor);
-        recoverButton = new JButton("", new ImageIcon(getClass().getResource("recoverbutton.png")));
-        recoverButton.setBackground(bColor);
+        newclButton = new ToolbarButton("", new ImageIcon(getClass().getResource("newbutton.png")));
+        editclButton = new ToolbarButton("", new ImageIcon(getClass().getResource("editbutton.png")));
+        redoButton = new ToolbarButton("", new ImageIcon(getClass().getResource("redobutton.png")));
+        saveButton = new ToolbarButton("", new ImageIcon(getClass().getResource("savebutton.png")));
+        viewButton = new ToolbarButton("", new ImageIcon(getClass().getResource("viewbutton.png")));
+        undoButton = new ToolbarButton("", new ImageIcon(getClass().getResource("undobutton.png")));
+        cldeleteButton = new ToolbarButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
+        recoverButton = new ToolbarButton("", new ImageIcon(getClass().getResource("recoverbutton.png")));
+        clActivateButton = new ToolbarButton("", new ImageIcon(getClass().getResource("activatebutton.png")));
+        deactButton = new ToolbarButton("", new ImageIcon(getClass().getResource("deactivatebutton.png")));
         scrollPane = new JScrollPane();
         clTable = new JTable();
         clTable.getTableHeader().setReorderingAllowed(false);
@@ -96,6 +92,10 @@ public class ClientPanel extends JPanel {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
+                                .addComponent(clActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
+                                .addComponent(deactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(undoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
@@ -114,6 +114,8 @@ public class ClientPanel extends JPanel {
                                         .addComponent(newclButton)
                                         .addComponent(saveButton)
                                         .addComponent(editclButton)
+                                        .addComponent(clActivateButton)
+                                        .addComponent(deactButton)
                                         .addComponent(viewButton)
                                         .addComponent(redoButton)
                                         .addComponent(undoButton)
@@ -242,6 +244,8 @@ public class ClientPanel extends JPanel {
         editclButton.addActionListener(dialoghandler);
         cldeleteButton.addActionListener(dialoghandler);
         viewButton.addActionListener(dialoghandler);
+        recoverButton.addActionListener(dialoghandler);
+        clActivateButton.addActionListener(dialoghandler);
         editclMI = new JMenuItem("Edit Client...");
         deleteclMI = new JMenuItem("Terminate Client...");
         addservMI = new JMenuItem("Add Service...");
@@ -298,10 +302,25 @@ public class ClientPanel extends JPanel {
                     RYCOXv2.clientList.get(editing).setAccountStatus("Terminated");
                 }
             } else if (e.getSource() == recoverButton) {
+                String jop = JOptionPane.showInputDialog(null, "Please input the client ID that you wish to recover:", "RYCOX System-Recover Client", JOptionPane.QUESTION_MESSAGE);
+                if (jop.matches("[IiGgNnpP][0-9]{6}")) {
+                    for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
+                        if (jop.equalsIgnoreCase(RYCOXv2.clientList.get(i).getClientID())) {
+                            if (RYCOXv2.clientList.get(i).terminationStatus() == true) {
+                                RYCOXv2.clientList.get(i).setAccountStatus("Active");
+                            } else
+                                JOptionPane.showMessageDialog(null, "The account specified is not terminated!", "RYCOX System- Termination Error", JOptionPane.WARNING_MESSAGE);
+                        } else
+                            JOptionPane.showMessageDialog(null, "The account specified do not exist!", "RYCOX System- Termination Error", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else
+                    JOptionPane.showMessageDialog(null, "Wrong ID format!", "RYCOX System- Termination Error", JOptionPane.WARNING_MESSAGE);
 
             } else if (e.getSource() == viewButton) {
                 ViewClientDialog vcd = new ViewClientDialog((JFrame) popupMenu.getParent());
                 vcd.setVisible(true);
+            } else if (e.getSource() == clActivateButton) {
+
             }
         }
     }
@@ -364,5 +383,13 @@ public class ClientPanel extends JPanel {
         clTable.setModel(model);
         clTable.revalidate();
         clTable.repaint();
+    }
+
+    private class ToolbarButton extends JButton {
+        public ToolbarButton(String string, ImageIcon imageIcon) {
+            super(string, imageIcon);
+            this.setBackground(bColor);
+        }
+
     }
 }
