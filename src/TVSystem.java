@@ -1,4 +1,7 @@
 import java.io.*;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -18,7 +21,28 @@ class TVSystem {
     String smartCardNo;
     String decoderNo;
     String menu3_opt = "";
+    /*extra*/
+    String pckCode = "", pckCode2 = "", pckCode3 = "", packageCode = "";
+    String progCode = "", progCode2 = "", progCode3 = "", progCode4 = "", progCode5 = "", progCode6 = "", programmeCode = "";
+    //String username = "";
+    //String password = "";
+    String pckName = "", pkgName2 = "";
+    String chargeType = "", chargeType2 = "";
+    String contentOrigin = "", contentOrigin2 = "";
+    String strtDate, termDate, crtDate;
+    String programmeTitle = "", programmeTitle2 = "";
+    String desc = "", desc2 = "";
+    String viewerStatus = "", viewerStatus2 = "";
+    String notes = "", notes2 = "";
+    String progType = "", progType2 = "";
+    String choice1 = "Yes";
 
+    int option = 0, option2 = 0, option3 = 0;
+    int /*i = 0,*/ j = 0, k = 0;
+    int selection = 0, selection2 = 0;
+    double chargePrice = 0.0, chargePrice2 = 0.0;
+    boolean flag = true, flag2 = true, flag3 = true, flag4 = true, flag5 = true, flag6 = true;
+    boolean check = true, check1, check2, check3, check4, check5;
 
     LinkedList<Users> userList = new LinkedList<Users>();
     LinkedList<ClientAccount> clientList = new LinkedList<ClientAccount>();
@@ -31,7 +55,7 @@ class TVSystem {
     LogFile log = new LogFile("", "");
     //List<Integer> t=new LinkedList<Integer>();
     File client_file = new File("cl_data.dat");
-    boolean existFile = client_file.exists();
+    boolean exist_cl_data = client_file.exists();
 
     @SuppressWarnings("unchecked")
     public TVSystem() {
@@ -60,7 +84,7 @@ class TVSystem {
         prgList.add(new TVProgramme("F001", "My Boss My Hero", "Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002", "Active", "18SG", "Comedy", ""));
 
 
-        if (!existFile) {    //if client's file do not exist
+        if (!exist_cl_data) {    //if client's file do not exist
             //cl_data.dat file
             try {
                 FileOutputStream client_fostream = new FileOutputStream("cl_data.dat");
@@ -378,10 +402,10 @@ class TVSystem {
                         manageSubscription();
                         break;
                     case 7:
-                        //managePackage();
+                        managePackage();
                         break;
                     case 8:
-                        //manageProgramme();
+                        manageProgramme();
                         break;
                     case 9:
                         manageUsers();
@@ -1521,7 +1545,1051 @@ class TVSystem {
 
     /*--------------------------------------------------------------------------METHOD SEVEN - MANAGE PACKAGES----------------------------------------------------------------------------------------*/
     public void managePackage() {
+        do {
+            try {
+                check1 = true;
+                p.println("===========================================");
+                p.println("Manage Packages item");
+                p.println("===========================================");
+                p.println("1. Create a new TV Package");
+                p.println("2. Edit a TV Package");
+                p.println("3. Terminate a TV Package");
+                p.println("4. Check a TV Package");
+                p.print("Please enter the option number: ");
+                option2 = input.nextInt();
 
+                switch (option2) {
+                    case 1:
+                        p.println();
+                        p.println("1. Create a new TV Package: ");
+                        p.println("Please key in the following details for the new package below: ");
+                        input.nextLine();
+
+                        do {
+                            do {
+                                p.print("a) Package Code: ");
+                                pckCode = input.nextLine();
+                                p.println();
+
+                                if (pckCode.length() == 0) {
+                                    p.println("Blank input occured, please enter a package code.");
+                                    p.println();
+                                }
+                            } while (pckCode.length() == 0);
+
+                            for (i = 0; i < pkgList.size(); i++) {
+                                if (pckCode.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
+                                    p.println("Sorry, the package code that you entered is already existed.");
+                                    p.println("Please try another one. ");
+                                    check = false;
+                                    break;
+                                } else
+                                    check = true;
+                            }
+                        } while (check == false);
+
+                        do {
+                            p.print("b) Package Name: ");
+                            pckName = input.nextLine();
+                            p.println();
+                            if (pckName.length() == 0) {
+                                p.println("Blank input occured, please enter a package name.");
+                                p.println();
+                            }
+                        } while (pckName.length() == 0);
+
+                        do {
+                            try {
+                                check2 = true;
+                                p.print("c) Charge Price: RM");
+                                chargePrice = input.nextDouble();
+                                p.println();
+                            } catch (InputMismatchException ime) {
+                                p.println();
+                                p.println("Invalid input, please try again");
+                                input.next();
+                                check2 = false;
+                            }
+                        } while (check2 == false);
+
+                        input.nextLine();
+                        do {
+                            do {
+
+                                p.println("d) Charge Type: ");
+                                p.println("1)Monthly");
+                                p.println("2)Quarterly");
+                                p.println("3)Annually");
+                                p.print("Please enter a type (Monthly/Quarterly/Annually) to the package: ");
+
+                                chargeType = input.nextLine();
+
+
+                                if (chargeType.length() == 0) {
+                                    p.println("Blank input occured, please enter a charge type.");
+                                    p.println();
+                                }
+                            } while (chargeType.length() == 0);
+
+                            if ((!(chargeType.equalsIgnoreCase("Monthly"))) && (!(chargeType.equalsIgnoreCase("Quarterly"))) && (!(chargeType.equalsIgnoreCase("Annually")))) {
+
+                                p.println("Sorry, the type that you entered is invalid, please enter it again.");
+                                p.println();
+                            }
+                        }
+                        while ((!(chargeType.equalsIgnoreCase("Monthly"))) && (!(chargeType.equalsIgnoreCase("Quarterly"))) && (!(chargeType.equalsIgnoreCase("Annually"))));
+
+                        p.println();
+
+                        Date startDate = new Date();
+                        strtDate = DateFormat.getInstance().format(startDate);
+                        pkgList.add(new TVPackage(pckCode, pckName, strtDate, chargePrice, chargeType, "Active"));
+
+                        p.println("e) TV Programme: ");
+                        do {
+                            do {
+                                do {
+
+                                    p.print("Please enter TV Programme Code that you would like to add: ");
+                                    progCode = input.nextLine();
+
+                                    if (progCode.length() == 0) {
+                                        p.println("Blank input occured, please enter a package name. TV Package must contain at least one TV Programme.");
+                                        p.println();
+                                    }
+                                } while (progCode.length() == 0);
+
+                                for (k = 0; k < pckgingList.size(); k++) {
+                                    if (pckCode.equalsIgnoreCase(pckgingList.get(k).getPkgCode())) {
+                                        if (progCode.equalsIgnoreCase(pckgingList.get(k).getProgCode())) {
+
+                                            p.println("Sorry, the programme code that you entered is already existed in this package.");
+                                            p.println("Please try another one.");
+                                            p.println();
+                                            check = false;
+                                            break;
+                                        } else
+                                            check = true;
+                                    }
+                                }
+
+                            } while (check == false);
+
+
+                            for (i = 0; i < prgList.size(); i++) {
+                                if (progCode.equalsIgnoreCase(prgList.get(i).getProgCode())) {
+                                    if ((prgList.get(i).getPrgStatus()).equalsIgnoreCase("Inactive")) {
+
+                                        flag = false;
+                                        break;
+                                    }
+
+                                    pckgingList.add(new Packaging(pckCode, progCode));
+                                    p.println("You have successfully added a new TV Programme into the package.");
+
+                                    do {
+                                        do {
+                                            p.println();
+                                            p.println("Would you like to add another TV Programme into this package?");
+                                            p.print("Enter 'Yes' to add more programme, enter 'No' to refuse adding any programme: ");
+                                            choice1 = input.nextLine();
+
+                                            if (choice1.length() == 0) {
+                                                p.println("Blank input occured, please enter a choice.");
+                                                p.println();
+                                            }
+                                        } while (choice1.length() == 0);
+
+
+                                        if ((!(choice1.equalsIgnoreCase("Yes"))) && (!(choice1.equalsIgnoreCase("No")))) {
+                                            p.println("Invalid choice, please reenter again");
+                                            p.println();
+                                        }
+                                    }
+                                    while ((!(choice1.equalsIgnoreCase("Yes"))) && (!(choice1.equalsIgnoreCase("No"))));
+
+                                    flag = true;
+                                    break;
+                                } else {
+                                    flag = false;
+                                }
+                            }
+
+                            if (flag == false) {
+                                p.println("Sorry, the TV Programme's code that you entered doesn't exist or had been terminated. Please reenter it.");
+                                p.println();
+                            }
+
+                        } while ((!(choice1.equalsIgnoreCase("No"))) || (flag == false));
+
+                        p.println("You have successfully created a new package '" + pckCode + "'.");
+                        p.println();
+
+                        logList.addLast(new LogFile(username, "has created a TV Package item of ID '" + pckCode + "'."));
+
+                        break;
+
+                    case 2:
+                        p.println();
+                        input.nextLine();
+
+                        do {
+                            p.println("2. Edit a TV Package: ");
+                            p.print("Please enter a package code that you want to edit: ");
+
+                            pckCode2 = input.nextLine();
+
+                            if (pckCode2.length() == 0) {
+                                p.println("Blank input occured, please enter a package code.");
+                                p.println();
+                            }
+                        } while (pckCode2.length() == 0);
+
+                        for (i = 0; i < pkgList.size(); i++) {
+                            if (pckCode2.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
+                                if ((pkgList.get(i).getPkgStatus()).equalsIgnoreCase("Inactive")) {
+
+                                    flag = false;
+                                    break;
+                                }
+                                pkgList.get(i).printPkg();
+                                p.println(" TV Programme Code: ");
+                                for (j = 0; j < pckgingList.size(); j++) {
+                                    if (pckCode2.equalsIgnoreCase(pckgingList.get(j).getPkgCode())) {
+                                        p.print("'" + pckgingList.get(j).getProgCode() + "'\n");
+                                    }
+                                }
+
+                                flag = true;
+                                break;
+                            } else
+                                flag = false;
+                        }
+
+                        if (flag == false) {
+                            p.println("Sorry, the package code that you entered doesn't exist or the package had already been terminated.");
+                            p.println();
+                        } else if (flag == true) {
+                            do {
+                                try {
+                                    check3 = true;
+                                    p.println("-----------------------------------------------------");
+                                    p.println("Function");
+                                    p.println("-----------------------------------------------------");
+                                    p.println(" 1)Package Name \n 2)Charge Price \n 3)Charge Type \n 4)TV Programme \n 5)Stop Edit");
+                                    p.print("Please enter the selection number of contain that you would like to edit with: ");
+                                    selection = input.nextInt();
+
+                                    switch (selection) {
+                                        case 1:
+                                            input.nextLine();
+                                            do {
+                                                p.print("Please enter a package name that you would like to change for: ");
+                                                pkgName2 = input.nextLine();
+                                                p.println();
+
+                                                if (pkgName2.length() == 0) {
+                                                    p.println("Blank input occured, please enter a package name.");
+                                                    p.println();
+                                                }
+                                            } while (pkgName2.length() == 0);
+
+                                            pkgList.get(i).setPkgName(pkgName2);
+                                            p.println("You have changed the package name for package '" + pckCode2 + "'!");
+                                            p.println();
+                                            logList.addLast(new LogFile(username, "has changed a package name for package '" + pckCode2 + "'."));
+
+                                            break;
+
+                                        case 2:
+                                            do {
+                                                try {
+                                                    check4 = true;
+                                                    p.print("Please enter a charge price that you would like to change for: RM");
+                                                    chargePrice2 = input.nextDouble();
+                                                    p.println();
+                                                } catch (InputMismatchException ime) {
+
+                                                    p.println();
+                                                    p.println("Invalid input, please try again");
+                                                    input.next();
+                                                    check4 = false;
+                                                }
+                                            } while (check4 == false);
+
+                                            pkgList.get(i).setChargePrice(chargePrice2);
+                                            p.println("You have changed the charge price for package '" + pckCode2 + "'!");
+                                            p.println();
+                                            logList.addLast(new LogFile(username, "has changed a charge price for package '" + pckCode2 + "'."));
+
+                                            break;
+
+                                        case 3:
+                                            input.nextLine();
+                                            do {
+                                                do {
+
+                                                    p.println("Charge Type: ");
+                                                    p.println("1)Monthly");
+                                                    p.println("2)Quarterly");
+                                                    p.println("3)Annually");
+                                                    p.print("Please enter a type (Monthly/Quarterly/Annually) to the package: ");
+                                                    chargeType2 = input.nextLine();
+
+                                                    if (chargeType2.length() == 0) {
+                                                        p.println("Blank input occured, please enter a charge type.");
+                                                        p.println();
+                                                    }
+                                                } while (chargeType2.length() == 0);
+
+                                                if ((!(chargeType2.equalsIgnoreCase("Monthly"))) && (!(chargeType2.equalsIgnoreCase("Quarterly"))) && (!(chargeType2.equalsIgnoreCase("Annually")))) {
+                                                    p.println("Sorry, the type that you entered is invalid, please enter it again.");
+                                                    p.println();
+                                                }
+
+                                            }
+                                            while ((!(chargeType2.equalsIgnoreCase("Monthly"))) && (!(chargeType2.equalsIgnoreCase("Quarterly"))) && (!(chargeType2.equalsIgnoreCase("Annually"))));
+
+                                            p.println();
+
+                                            pkgList.get(i).setChargeType(chargeType2);
+                                            p.println("You have changed the charge type for package '" + pckCode2 + "'!");
+                                            p.println();
+                                            logList.addLast(new LogFile(username, "has changed a charge type for package '" + pckCode2 + "'."));
+
+                                            break;
+
+                                        case 4:
+                                            do {
+                                                try {
+
+                                                    check5 = true;
+                                                    p.println("1) Add a TV Programme to package " + pckCode2);
+                                                    p.println("2) Delete a TV Programme from package " + pckCode2);
+                                                    p.print("Please enter the selection number (1/2): ");
+                                                    selection2 = input.nextInt();
+
+                                                    if (selection2 == 1) {
+                                                        p.println();
+                                                        input.nextLine();
+                                                        do {
+                                                            do {
+
+                                                                p.print("Please enter a TV Programme code which you would like to add into the package: ");
+                                                                progCode2 = input.nextLine();
+                                                                if (progCode2.length() == 0) {
+                                                                    p.println("Blank input occured, please enter a programme code.");
+                                                                    p.println();
+                                                                }
+                                                            } while (progCode2.length() == 0);
+
+                                                            for (k = 0; k < pckgingList.size(); k++) {
+                                                                if (pckCode2.equalsIgnoreCase(pckgingList.get(k).getPkgCode())) {
+
+                                                                    if (progCode2.equalsIgnoreCase(pckgingList.get(k).getProgCode())) {
+
+                                                                        p.println("Sorry, the programme code that you entered is already existed in this package.");
+                                                                        p.println("Please try another one.");
+                                                                        p.println();
+                                                                        check = false;
+                                                                        break;
+                                                                    } else
+                                                                        check = true;
+                                                                }
+                                                            }
+                                                        } while (check == false);
+
+
+                                                        for (i = 0; i < prgList.size(); i++) {
+                                                            if (progCode2.equalsIgnoreCase(prgList.get(i).getProgCode())) {
+                                                                if ((prgList.get(i).getPrgStatus()).equalsIgnoreCase("Inactive")) {
+                                                                    p.println("Sorry, the programme had already been terminated.");
+                                                                    break;
+                                                                }
+
+                                                                pckgingList.add(new Packaging(pckCode2, progCode2));
+                                                                p.println("You have successfully added a tv programme into package '" + pckCode2 + "'!");
+                                                                p.println();
+                                                                logList.addLast(new LogFile(username, "has added a tv programme into package '" + pckCode2 + "'."));
+                                                                flag2 = true;
+                                                                break;
+                                                            } else
+                                                                flag2 = false;
+                                                        }
+                                                        if (flag2 == false) {
+                                                            p.println("Sorry, the programme code you entered doesn't exist or had been terminated.");
+                                                            p.println();
+                                                        }
+                                                    } else if (selection2 == 2) {
+                                                        p.println();
+                                                        input.nextLine();
+                                                        do {
+                                                            p.print("Please enter a TV Programme code which you would like to delete from the package: ");
+                                                            progCode3 = input.nextLine();
+
+                                                            if (progCode3.length() == 0) {
+                                                                p.println("Blank input occured, please enter a programme code.");
+                                                                p.println();
+                                                            }
+
+                                                        } while (progCode3.length() == 0);
+
+                                                        int count = 0;
+                                                        for (k = 0; k < pckgingList.size(); k++) {
+                                                            if (pckCode2.equalsIgnoreCase(pckgingList.get(k).getPkgCode())) {
+                                                                count += 1;
+                                                            }
+                                                        }
+
+                                                        if (count == 1) {
+                                                            flag6 = false;
+                                                        } else
+                                                            flag6 = true;
+
+                                                        if (flag6 == true) {
+                                                            for (j = 0; j < pckgingList.size(); j++) {
+                                                                if (progCode3.equalsIgnoreCase(pckgingList.get(j).getProgCode())) {
+                                                                    if (pckCode2.equalsIgnoreCase(pckgingList.get(j).getPkgCode())) {
+                                                                        pckgingList.remove(j);
+                                                                        p.println("You have successfully removed a tv programme from package '" + pckCode2 + "'!");
+                                                                        logList.addLast(new LogFile(username, "has removed a tv programme from package '" + pckCode2 + "'."));
+                                                                        p.println();
+                                                                        flag3 = true;
+                                                                        break;
+                                                                    } else
+                                                                        flag3 = false;
+                                                                } else
+                                                                    flag3 = false;
+                                                            }
+                                                        }
+                                                        if (flag3 == false) {
+                                                            p.println("Sorry, the programme code you entered is not inside the package.");
+                                                            p.println();
+                                                        } else if (flag6 == false) {
+                                                            p.println("Sorry you cannot delete programme inside this package as there is only one TV Programme contain in package '" + pckCode2 + "'. You cannot delete it.");
+                                                            p.println();
+                                                        }
+
+                                                    } else {
+                                                        p.println("Sorry, the number you entered is invalid. Please reenter it.");
+                                                        p.println();
+                                                    }
+                                                } catch (InputMismatchException ime) {
+
+                                                    p.println();
+                                                    p.println("Invalid input, please try again");
+                                                    input.next();
+                                                    check5 = false;
+                                                }
+                                            } while ((selection2 < 1) || (selection2 > 2) || (check5 == false));
+
+                                            break;
+
+                                        case 5:
+                                            check3 = false;
+                                            break;
+
+                                        default:
+                                            check3 = false;
+                                            p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                                            break;
+                                    }
+                                } catch (InputMismatchException ime) {
+                                    p.println();
+                                    p.println("Invalid input, please try again");
+                                    input.next();
+                                    check3 = false;
+                                }
+                            } while (check3 == false);
+                        }
+                        break;
+
+                    case 3:
+                        p.println();
+                        input.nextLine();
+                        do {
+                            p.println("3. Terminate a TV Package: ");
+                            p.print("Please enter a package code that you want to terminate: ");
+                            pckCode3 = input.nextLine();
+                            if (pckCode3.length() == 0) {
+                                p.println("Blank input occured, please enter a package code.");
+                                p.println();
+                            }
+                        } while (pckCode3.length() == 0);
+
+                        for (i = 0; i < pkgList.size(); i++) {
+                            if (pckCode3.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
+                                if (pkgList.get(i).getPkgStatus().equalsIgnoreCase("Inactive")) {
+                                    flag4 = false;
+                                    break;
+                                } else {
+                                    Date terminationDate = new Date();
+                                    termDate = DateFormat.getInstance().format(terminationDate);
+
+                                    pkgList.get(i).setTerminationDate(termDate);
+                                    pkgList.get(i).setStatus("Inactive");
+                                    p.println("You have successfully terminated package '" + pckCode3 + "'!");
+                                    logList.addLast(new LogFile(username, "has terminated a package which is '" + pckCode3 + "'."));
+                                    p.println();
+                                    flag4 = true;
+                                    break;
+                                }
+                            } else
+                                flag4 = false;
+                        }
+                        if (flag4 == false)
+                            p.println("Sorry, the package code that you entered doesn't exist or had been terminated.");
+                        break;
+
+                    case 4:
+                        p.println();
+                        input.nextLine();
+                        do {
+                            p.println("4. Check a TV Package: ");
+                            p.print("Please enter a package code that you want to check with: ");
+                            packageCode = input.nextLine();
+
+                            if (packageCode.length() == 0) {
+                                p.println("Blank input occured, please enter a package code.");
+                                p.println();
+                            }
+                        } while (packageCode.length() == 0);
+
+                        for (i = 0; i < pkgList.size(); i++) {
+                            if (packageCode.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
+                                pkgList.get(i).printPkg();
+                                p.println(" TV Programme Code: ");
+
+                                for (j = 0; j < pckgingList.size(); j++) {
+                                    if (packageCode.equalsIgnoreCase(pckgingList.get(j).getPkgCode())) {
+
+                                        p.print("'" + pckgingList.get(j).getProgCode() + "'\n");
+
+                                        logList.addLast(new LogFile(username, "has displayed the details of package'" + packageCode + "' ."));
+                                        p.println();
+                                    }
+                                }
+                                flag5 = true;
+                                break;
+                            } else
+                                flag5 = false;
+                        }
+
+                        if (flag5 == false)
+                            p.println("Sorry, the programme code that you entered doesn't exist.");
+
+                        p.println();
+
+                        break;
+
+                    case 5:
+                        showMenu();
+                        break;
+
+                    default:
+                        check = false;
+                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                        break;
+                }
+            } catch (InputMismatchException ime) {
+
+                p.println();
+                p.println("Invalid input, please try again");
+                input.next();
+                check1 = false;
+            }
+        } while (check1 == false);
+    }
+
+    /*--------------------------------------------------------------------------METHOD EIGHT - MANAGE PROGRAMMES----------------------------------------------------------------------------------------*/
+    public void manageProgramme() {
+        do {
+            try {
+                check1 = true;
+
+                p.println("===========================================");
+                p.println("Manage TV Programmes item");
+                p.println("===========================================");
+                p.println("1. Create a new TV Programme");
+                p.println("2. Edit a TV Programme");
+                p.println("3. Terminate a TV Programme");
+                p.println("4. Check a TV Programme");
+                p.println("5. Back to main menu");
+                p.print("Please enter the option number: ");
+                option3 = input.nextInt();
+
+                switch (option3) {
+                    case 1:
+                        p.println();
+                        p.println("1. Create a new TV Programme: ");
+                        p.println("Please key in the following details for the new programme below: ");
+
+                        input.nextLine();
+                        do {
+
+                            do {
+
+                                p.print("a) Programme Code: ");
+                                programmeCode = input.nextLine();
+                                p.println();
+
+                                if (programmeCode.length() == 0) {
+                                    p.println("Blank input occured, please enter a programme code.");
+                                    p.println();
+                                }
+
+                            } while (programmeCode.length() == 0);
+
+
+                            for (i = 0; i < prgList.size(); i++) {
+                                if (programmeCode.equalsIgnoreCase(prgList.get(i).getProgCode())) {
+
+                                    p.println("Sorry, the package code that you entered is already existed.");
+                                    p.println("Please try another one: ");
+                                    p.println();
+                                    check = false;
+                                    break;
+                                } else
+                                    check = true;
+                            }
+
+                        } while (check == false);
+
+                        do {
+                            p.print("b) Programme Title: ");
+
+                            programmeTitle = input.nextLine();
+                            p.println();
+
+                            if (programmeTitle.length() == 0) {
+                                p.println("Blank input occured, please enter a programme title.");
+                                p.println();
+                            }
+                        } while (programmeTitle.length() == 0);
+
+                        do {
+
+                            p.print("c) Description: ");
+
+                            desc = input.nextLine();
+                            p.println();
+
+                            if (desc.length() == 0) {
+                                p.println("Blank input occured, please enter a description.");
+                                p.println();
+                            }
+                        } while (desc.length() == 0);
+
+                        do {
+
+                            p.print("d) Content Origin: ");
+
+                            contentOrigin = input.nextLine();
+                            p.println();
+
+                            if (contentOrigin.length() == 0) {
+                                p.println("Blank input occured, please enter a content origin.");
+                                p.println();
+                            }
+                        } while (contentOrigin.length() == 0);
+
+                        Date creationDate = new Date();
+                        crtDate = DateFormat.getInstance().format(creationDate);
+
+                        do {
+
+                            do {
+
+                                p.println("e) Viewer Status: ");
+                                p.println("1) U (For general viewing without age limit)");
+                                p.println("2) PG13 (Parents guidance needed for audience under the age of 13)");
+                                p.println("3) 18 (For 18 and above only)");
+                                p.print("Enter (U/PG13/18) to set to the viewer status: ");
+
+                                viewerStatus = input.nextLine();
+
+                                if (viewerStatus.length() == 0) {
+                                    p.println("Blank input occured, please enter a viewer status.");
+                                    p.println();
+                                }
+
+                            } while (viewerStatus.length() == 0);
+
+                            if ((!(viewerStatus.equalsIgnoreCase("U"))) && (!(viewerStatus.equalsIgnoreCase("PG13"))) && (!(viewerStatus.equalsIgnoreCase("18")))) {
+                                p.println("\nSorry, the viewer status that you entered is invalid, please reenter it.");
+                            }
+                            p.println();
+                        }
+                        while ((!(viewerStatus.equalsIgnoreCase("U"))) && (!(viewerStatus.equalsIgnoreCase("PG13"))) && (!(viewerStatus.equalsIgnoreCase("18"))));
+
+                        do {
+                            do {
+
+                                p.println("f) Type: ");
+                                p.println("1) Movie");
+                                p.println("2) Series");
+                                p.println("3) Comedy");
+                                p.println("4) Concert");
+                                p.print("Enter (Movie/Series/Comedy/Concert) to set to the programme's type: ");
+
+                                progType = input.nextLine();
+
+                                if (progType.length() == 0) {
+                                    p.println("Blank input occured, please enter a programme type.");
+                                    p.println();
+                                }
+                            } while (progType.length() == 0);
+
+                            if ((!(progType.equalsIgnoreCase("Movie"))) && (!(progType.equalsIgnoreCase("Series"))) &&
+                                    (!(progType.equalsIgnoreCase("Comedy"))) && (!(progType.equalsIgnoreCase("Concert")))) {
+                                p.println();
+                                p.println("Sorry, the type that you entered is invalid, please reenter it.");
+                            }
+                            p.println();
+                        } while ((!(progType.equalsIgnoreCase("Movie"))) && (!(progType.equalsIgnoreCase("Series"))) &&
+                                (!(progType.equalsIgnoreCase("Comedy"))) && (!(progType.equalsIgnoreCase("Concert"))));
+
+                        do {
+                            p.print("g) Notes: ");
+                            notes = input.nextLine();
+                            p.println();
+                            if (notes.length() == 0) {
+                                p.println("Blank input occured, please enter a notes.");
+                                p.println();
+                            }
+                        } while (notes.length() == 0);
+
+                        prgList.add(new TVProgramme(programmeCode, programmeTitle, desc, contentOrigin, crtDate, "Active", viewerStatus, progType, notes));
+
+                        p.println("You have successfully created a new TV Programme which is '" + programmeCode + "'.");
+                        logList.addLast(new LogFile(username, "has created a new TV Programme which is '" + programmeCode + "'."));
+                        p.println();
+
+                        break;
+
+                    case 2:
+                        p.println();
+                        input.nextLine();
+
+                        do {
+                            p.println("2. Edit a TV Programme: ");
+                            p.print("Please enter a programme code that you want to edit: ");
+                            progCode4 = input.nextLine();
+
+                            if (progCode4.length() == 0) {
+                                p.println("Blank input occured, please enter a programme code.");
+                                p.println();
+                            }
+
+                        } while (progCode4.length() == 0);
+
+                        for (i = 0; i < prgList.size(); i++) {
+                            if (progCode4.equalsIgnoreCase(prgList.get(i).getProgCode())) {
+                                if ((prgList.get(i).getPrgStatus()).equalsIgnoreCase("Inactive")) {
+                                    flag = false;
+                                    break;
+                                }
+                                prgList.get(i).printList();
+                                p.println();
+
+                                flag = true;
+                                break;
+                            } else
+                                flag = false;
+                        }
+
+                        if (flag == false) {
+                            p.println("Sorry, the package code that you entered doesn't exist or had been terminated.");
+                        } else if (flag == true) {
+                            do {
+                                try {
+                                    check2 = true;
+                                    p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+                                    p.println("UNITV RYCOX CUSTOMER MANAGEMENT MODULE(CMM)");
+                                    p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+                                    p.println("1. Programme Title");
+                                    p.println("2. Description");
+                                    p.println("3. Content Origin");
+                                    p.println("4. Viewer Status");
+                                    p.println("5. Type");
+                                    p.println("6. Notes");
+                                    p.println("7. Stop Edit");
+                                    p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+                                    p.print("Please enter the selection number of contain that you would like to edit with: ");
+                                    selection = input.nextInt();
+
+                                    switch (selection) {
+                                        case 1:
+                                            input.nextLine();
+                                            do {
+                                                p.print("Please enter a programme title that you would like to change for: ");
+
+                                                programmeTitle2 = input.nextLine();
+                                                p.println();
+
+                                                if (programmeTitle2.length() == 0) {
+                                                    p.println("Blank input occured, please enter a programme title.");
+                                                    p.println();
+                                                }
+                                            } while (programmeTitle2.length() == 0);
+
+                                            prgList.get(i).setProgTitle(programmeTitle2);
+                                            p.println("You have changed the programme title for programme '" + progCode4 + "'!");
+                                            logList.addLast(new LogFile(username, "has changed a programme title for programme '" + progCode4 + "'."));
+                                            p.println();
+
+                                            break;
+
+                                        case 2:
+                                            input.nextLine();
+                                            do {
+                                                p.print("Please type some description that you would like to change for: ");
+
+                                                desc2 = input.nextLine();
+                                                p.println();
+
+                                                if (desc2.length() == 0) {
+                                                    p.println("Blank input occured, please enter a description.");
+                                                    p.println();
+                                                }
+                                            } while (desc2.length() == 0);
+
+                                            prgList.get(i).setDesc(desc2);
+                                            p.println("You have changed the description for programme '" + progCode4 + "'!");
+                                            logList.addLast(new LogFile(username, "has changed a description for programme '" + progCode4 + "'."));
+                                            p.println();
+
+                                            break;
+
+                                        case 3:
+                                            input.nextLine();
+                                            do {
+                                                p.print("Please enter a content origin that you would like to change for: ");
+                                                contentOrigin2 = input.nextLine();
+                                                p.println();
+
+                                                if (contentOrigin2.length() == 0) {
+                                                    p.println("Blank input occured, please enter a content origin.");
+                                                    p.println();
+                                                }
+                                            } while (contentOrigin2.length() == 0);
+
+                                            prgList.get(i).setContentOrigin(contentOrigin2);
+                                            p.println("You have changed the content origin for programme '" + progCode4 + "'!");
+                                            logList.addLast(new LogFile(username, "has changed a content origin for programme '" + progCode4 + "'."));
+                                            p.println();
+
+                                            break;
+
+                                        case 4:
+                                            input.nextLine();
+                                            do {
+                                                do {
+                                                    p.println("1) U (For general viewing without age limit)");
+                                                    p.println("2) PG13 (Parents guidance needed for audience under the age of 13)");
+                                                    p.println("3) 18 (For 18 and above only)");
+                                                    p.print("Enter (U/PG13/18) to change the viewer status: ");
+                                                    viewerStatus2 = input.nextLine();
+
+                                                    if (viewerStatus2.length() == 0) {
+                                                        p.println("Blank input occured, please enter a viewer status.");
+                                                        p.println();
+                                                    }
+                                                } while (viewerStatus2.length() == 0);
+
+                                                if ((viewerStatus2.equalsIgnoreCase("U")) || (viewerStatus2.equalsIgnoreCase("PG13")) || (viewerStatus2.equalsIgnoreCase("18"))) {
+                                                    p.println("You have changed the viewer status for programme '" + progCode4 + "'!");
+                                                    logList.addLast(new LogFile(username, "has changed a viewer status for programme '" + progCode4 + "'."));
+                                                    p.println();
+                                                    prgList.get(i).setViewerStatus(viewerStatus2);
+                                                } else {
+                                                    p.println("Sorry, the viewer status that you entered is invalid, please reenter it.");
+                                                    p.println();
+                                                }
+                                            }
+                                            while ((!(viewerStatus2.equalsIgnoreCase("U"))) && (!(viewerStatus2.equalsIgnoreCase("PG13"))) && (!(viewerStatus2.equalsIgnoreCase("18"))));
+
+                                            break;
+
+                                        case 5:
+                                            input.nextLine();
+                                            do {
+                                                do {
+
+                                                    p.println("1) Movie");
+                                                    p.println("2) Series");
+                                                    p.println("3) Comedy");
+                                                    p.println("4) Concert");
+                                                    p.print("Enter (Movie/Series/Comedy/Concert) to set to the programme's type: ");
+                                                    progType2 = input.nextLine();
+
+                                                    if (progType2.length() == 0) {
+                                                        p.println("Blank input occured, please enter a programme type.");
+                                                        p.println();
+                                                    }
+
+
+                                                } while (progType2.length() == 0);
+
+                                                if ((progType2.equalsIgnoreCase("Movie")) || (progType2.equalsIgnoreCase("Series")) ||
+                                                        (progType2.equalsIgnoreCase("Comedy")) || (progType2.equalsIgnoreCase("Concert"))) {
+
+                                                    p.println("You have changed the type of programme '" + progCode4 + "'!");
+                                                    logList.addLast(new LogFile(username, "has changed a programme type for programme '" + progCode4 + "'."));
+                                                    p.println();
+                                                    prgList.get(i).setType(progType2);
+                                                } else {
+                                                    p.println("Sorry, the type that you entered is invalid, please reenter it.");
+                                                    p.println();
+                                                }
+                                            }
+                                            while ((!(progType2.equalsIgnoreCase("Movie"))) && (!(progType2.equalsIgnoreCase("Series"))) &&
+                                                    (!(progType2.equalsIgnoreCase("Comedy"))) && (!(progType2.equalsIgnoreCase("Concert"))));
+
+                                            break;
+
+                                        case 6:
+                                            input.nextLine();
+                                            do {
+                                                p.print("Please enter some notes that you would like to change for: ");
+                                                notes2 = input.nextLine();
+                                                p.println();
+
+                                                if (notes2.length() == 0) {
+                                                    p.println("Blank input occured, please enter a notes.");
+                                                    p.println();
+                                                }
+                                            } while (notes2.length() == 0);
+
+                                            prgList.get(i).setNotes(notes2);
+                                            p.println("You have changed the notes for programme '" + progCode4 + "'!");
+                                            logList.addLast(new LogFile(username, "has changed the notes for programme '" + progCode4 + "'."));
+                                            p.println();
+
+                                            break;
+
+                                        case 7:
+                                            check2 = false;
+                                            break;
+
+                                        default:
+                                            p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                                            break;
+                                    }
+                                } catch (InputMismatchException ime) {
+                                    p.println();
+                                    p.println("Invalid input, please try again");
+                                    input.next();
+                                    check2 = false;
+                                }
+                            } while (check2 == false);
+
+                        }
+
+                        break;
+
+                    case 3:
+                        p.println();
+                        input.nextLine();
+
+                        do {
+                            p.println("3. Terminate a TV Programme: ");
+                            p.print("Please enter a programme code that you want to terminate: ");
+
+                            progCode5 = input.nextLine();
+                            if (progCode5.length() == 0) {
+                                p.println("Blank input occured, please enter a programme code.");
+                                p.println();
+                            }
+
+                        } while (progCode5.length() == 0);
+
+
+                        for (i = 0; i < prgList.size(); i++) {
+                            if (progCode5.equalsIgnoreCase(prgList.get(i).getProgCode())) {
+                                if ((prgList.get(i).getPrgStatus()).equalsIgnoreCase("Inactive")) {
+                                    flag4 = false;
+                                    break;
+                                }
+                                prgList.get(i).setPrgStatus("Inactive");
+
+                                for (j = 0; j < pckgingList.size(); j++) {
+                                    if (progCode5.equalsIgnoreCase(pckgingList.get(j).getProgCode())) {
+                                        String a = pckgingList.get(j).getPkgCode();
+
+                                        for (k = 0; k < pkgList.size(); k++) {
+                                            if (a.equalsIgnoreCase(pkgList.get(k).getPkgCode())) {
+                                                pkgList.get(k).setStatus("Inactive");
+                                                break;
+                                            }
+                                        }
+
+                                    }
+
+                                }
+
+                                p.println("You have successfully terminated a TV Programme '" + progCode5 + "'!");
+                                logList.addLast(new LogFile(username, "has terminate a TV Programme '" + progCode5 + "'."));
+                                p.println();
+                                flag4 = true;
+                                break;
+                            } else
+                                flag4 = false;
+                        }
+
+                        if (flag4 == false) {
+                            p.println("Sorry, the programme code that you entered doesn't exist or had already been terminated.");
+                            p.println();
+                        }
+
+                        break;
+
+                    case 4:
+                        p.println();
+                        input.nextLine();
+                        do {
+
+                            p.println("4. Check a TV Programme: ");
+                            p.print("Please enter a programme code that you want to check with: ");
+                            progCode6 = input.nextLine();
+
+                            if (progCode6.length() == 0) {
+                                p.println("Blank input occured, please enter a programme code.");
+                                p.println();
+                            }
+                        } while (progCode6.length() == 0);
+
+                        for (i = 0; i < prgList.size(); i++) {
+                            if (progCode6.equalsIgnoreCase(prgList.get(i).getProgCode())) {
+                                prgList.get(i).printList();
+                                p.println();
+                                logList.addLast(new LogFile(username, "has displayed the details for programme '" + progCode6 + "'."));
+                                flag5 = true;
+                                break;
+                            } else
+                                flag5 = false;
+                        }
+                        if (flag5 == false)
+                            p.println("Sorry, the programme code that you entered doesn't exist.");
+                        p.println();
+
+                        break;
+
+                    case 5:
+                        showMenu();
+                        break;
+
+                    default:
+                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                        break;
+                }
+            } catch (InputMismatchException ime) {
+                p.println();
+                p.println("Invalid input, please try again");
+                input.next();
+                check1 = false;
+            }
+        } while (check1 == false);
     }
 
     /*--------------------------------------------------------------------------METHOD NINE - MANAGE USERS----------------------------------------------------------------------------------------*/
