@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.Date;
 
 
 @SuppressWarnings("serial")
@@ -14,12 +16,24 @@ public class TVProgramme implements Serializable {
     private String type;
     private String notes;
 
+    public TVProgramme(String progCode, String progTitle, String desc, String contentOrigin, String prgStatus, String viewerStatus, String type, String notes) { //constructor
+        this.progCode = progCode;
+        this.progTitle = progTitle;
+        this.desc = desc;
+        this.contentOrigin = contentOrigin;
+        this.creationDate = DateFormat.getInstance().format(new Date());
+        this.prgStatus = prgStatus;
+        this.viewerStatus = viewerStatus;
+        this.type = type;
+        this.notes = notes;
+    }
+
     public TVProgramme(String progCode, String progTitle, String desc, String contentOrigin, String creationDate, String prgStatus, String viewerStatus, String type, String notes) { //constructor
         this.progCode = progCode;
         this.progTitle = progTitle;
         this.desc = desc;
         this.contentOrigin = contentOrigin;
-        this.creationDate = creationDate;
+        this.creationDate = DateFormat.getInstance().format(new Date());
         this.prgStatus = prgStatus;
         this.viewerStatus = viewerStatus;
         this.type = type;

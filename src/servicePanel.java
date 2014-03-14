@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
-public class servicePanel extends JPanel {
+public class ServicePanel extends JPanel {
 
     private JTable servTable;
     private JButton servDeleteButton;
@@ -25,7 +25,7 @@ public class servicePanel extends JPanel {
     private String[][] servData;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public servicePanel() {
+    public ServicePanel() {
         toolbar = new JPanel();
         editServButton = new JButton("", new ImageIcon(getClass().getResource("editbutton.png")));
         editServButton.setBackground(bColor);

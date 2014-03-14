@@ -28,12 +28,16 @@ public class ClientPanel extends JPanel {
     private JPanel toolbar;
     private JButton undoButton;
     private JButton recoverButton;
+    private JButton viewButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
     private JMenuItem editclMI, deleteclMI, addservMI;
-    private String[][] clData;
+    private static String[][] clData;
     private static AbstractTableModel model;
+    static String[] editionData;
+    static int row;
+    static int editing;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public ClientPanel() {
@@ -47,7 +51,8 @@ public class ClientPanel extends JPanel {
         redoButton.setBackground(bColor);
         saveButton = new JButton("", new ImageIcon(getClass().getResource("savebutton.png")));
         saveButton.setBackground(bColor);
-
+        viewButton = new JButton("", new ImageIcon(getClass().getResource("viewbutton.png")));
+        viewButton.setBackground(bColor);
         undoButton = new JButton("", new ImageIcon(getClass().getResource("undobutton.png")));
         undoButton.setBackground(bColor);
         cldeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
@@ -85,6 +90,8 @@ public class ClientPanel extends JPanel {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(editclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
+                                .addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(cldeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
@@ -107,6 +114,7 @@ public class ClientPanel extends JPanel {
                                         .addComponent(newclButton)
                                         .addComponent(saveButton)
                                         .addComponent(editclButton)
+                                        .addComponent(viewButton)
                                         .addComponent(redoButton)
                                         .addComponent(undoButton)
                                         .addComponent(recoverButton)
@@ -117,24 +125,34 @@ public class ClientPanel extends JPanel {
         );
 
         clTable.setBackground(new Color(227, 226, 226));
-        clTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
-        clData = new String[RYCOXv2.clientList.size()][4];
+        clTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12));
+        int nonTermCount = 0;
         for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
-            for (int j = 0; j <= 4; j++) {
-                switch (j) {
-                    case 0:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getClientID();
-                        break;
-                    case 1:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getName();
-                        break;
-                    case 2:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getBillingAddress();
-                        break;
-                    case 3:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getAccountStatus();
-                        break;
+            if (RYCOXv2.clientList.get(i).terminationStatus() == false) {
+                nonTermCount++;
+            }
+        }
+        clData = new String[nonTermCount][4];
+        int next = 0;
+        for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
+            if (RYCOXv2.clientList.get(i).terminationStatus() == false) {
+                for (int j = 0; j <= 4; j++) {
+                    switch (j) {
+                        case 0:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getClientID();
+                            break;
+                        case 1:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getName();
+                            break;
+                        case 2:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getBillingAddress();
+                            break;
+                        case 3:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getAccountStatus();
+                            break;
+                    }
                 }
+                next++;
             }
         }
 
@@ -188,21 +206,42 @@ public class ClientPanel extends JPanel {
         );
 
         clTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isRightMouseButton(e)) {
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     int rowNumber = clTable.rowAtPoint(e.getPoint());
                     // Get the ListSelectionModel of the JTable
-                    ListSelectionModel model = clTable.getSelectionModel();
-                    model.setSelectionInterval(rowNumber, rowNumber);
+                    ListSelectionModel lsm = clTable.getSelectionModel();
+                    lsm.setSelectionInterval(rowNumber, rowNumber);
+                    row = clTable.getSelectedRow();
+                    System.out.println(row);
+                    String ID = (String) clTable.getValueAt(row, 0);
+
+                    for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
+                        if (ID.equalsIgnoreCase(RYCOXv2.clientList.get(i).getClientID())) {
+                            editing = i;
+                            if (ID.matches("[Ii][0-9]{6}")) {
+                                editionData = new String[]{RYCOXv2.clientList.get(i).getClientID(), RYCOXv2.clientList.get(i).getName(), RYCOXv2.clientList.get(i).getAccountStatus(), RYCOXv2.clientList.get(i).getBillingAddress(), RYCOXv2.clientList.get(i).getEmail(), Integer.toString(((IndividualClient) RYCOXv2.clientList.get(i)).getAge()), ((IndividualClient) RYCOXv2.clientList.get(i)).getIC()};
+                                //ID, NAME, ACCOUNTSTATUS, BILLING ADDRESS, EMAIL, AGE,IC
+                            } else {
+                                editionData = new String[]{RYCOXv2.clientList.get(i).getClientID(), RYCOXv2.clientList.get(i).getName(), RYCOXv2.clientList.get(i).getAccountStatus(), RYCOXv2.clientList.get(i).getBillingAddress(), RYCOXv2.clientList.get(i).getEmail(), "N/A", "N/A"};
+                                //ID, NAME, ACCOUNTSTATUS, BILLING ADDRESS, EMAIL,N/A,N/A
+                            }
+                        }
+                    }
+
+                } else if (SwingUtilities.isRightMouseButton(e)) {
 
                 }
             }
         }
         ); //table right click
+
         DialogHandler dialoghandler = new DialogHandler();
         newclButton.addActionListener(dialoghandler);
         saveButton.addActionListener(dialoghandler);
         editclButton.addActionListener(dialoghandler);
+        cldeleteButton.addActionListener(dialoghandler);
+        viewButton.addActionListener(dialoghandler);
         editclMI = new JMenuItem("Edit Client...");
         deleteclMI = new JMenuItem("Terminate Client...");
         addservMI = new JMenuItem("Add Service...");
@@ -222,12 +261,9 @@ public class ClientPanel extends JPanel {
         clTable.tableChanged(new TableModelEvent(model));
         clTable.setModel(model);
         clTable.repaint();
-        int[] b = clTable.getSelectedRows();
-        for (int i = 0; i < b.length; i++) {
-            System.out.println(b[i]);
-        }
     }
 
+    /*--- START DIALOG HANDLER*/
     private class DialogHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newclButton) {
@@ -256,10 +292,77 @@ public class ClientPanel extends JPanel {
                 EditClientDialog ecd = new EditClientDialog((JFrame) popupMenu.getParent());
                 ecd.setVisible(true);
             } else if (e.getSource() == cldeleteButton) {
-
+                int closeCf = JOptionPane.showConfirmDialog(null, "Terminate client " + editionData[0] + "?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                if (closeCf == JOptionPane.YES_OPTION) {
+                    ((DefaultTableModel) model).removeRow(row);
+                    RYCOXv2.clientList.get(editing).setAccountStatus("Terminated");
+                }
             } else if (e.getSource() == recoverButton) {
 
+            } else if (e.getSource() == viewButton) {
+                ViewClientDialog vcd = new ViewClientDialog((JFrame) popupMenu.getParent());
+                vcd.setVisible(true);
             }
         }
+    }
+    /*---END DIALOG HANDLER*/
+
+    public static void updateEditTable() {
+        int nonTermCount = 0;
+        for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
+            if (RYCOXv2.clientList.get(i).terminationStatus() == false) {
+                nonTermCount++;
+            }
+        }
+        clData = new String[nonTermCount][4];
+        int next = 0;
+        for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
+            if (RYCOXv2.clientList.get(i).terminationStatus() == false) {
+                for (int j = 0; j <= 4; j++) {
+                    switch (j) {
+                        case 0:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getClientID();
+                            break;
+                        case 1:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getName();
+                            break;
+                        case 2:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getBillingAddress();
+                            break;
+                        case 3:
+                            clData[next][j] = RYCOXv2.clientList.get(i).getAccountStatus();
+                            break;
+                    }
+                }
+                next++;
+            }
+        }
+        model = new DefaultTableModel(
+                clData,
+                new String[]{
+                        "Client ID", "Name", "Address", "Account Status"
+                }) {
+
+            @SuppressWarnings("rawtypes")
+            Class[] types = new Class[]{
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            boolean[] canEdit = new boolean[]{
+                    false, false, false, false
+            };
+
+            @SuppressWarnings({"unchecked", "rawtypes"})
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+        clTable.setModel(model);
+        clTable.revalidate();
+        clTable.repaint();
     }
 }

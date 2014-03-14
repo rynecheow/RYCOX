@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
 @SuppressWarnings("serial")
-public class mainUI extends JFrame implements ActionListener {
+public class MainUI extends JFrame implements ActionListener {
 
     private JTabbedPane tabbedPane;
     private JPanel homePanel, clientPanel, servPanel, subsPanel, pkgPanel, prgPanel;
@@ -19,7 +19,7 @@ public class mainUI extends JFrame implements ActionListener {
     private int i;
 
 
-    public mainUI() {
+    public MainUI() {
         getContentPane().setBackground(mainbgColor);
         setTitle("RYCOX System - Customer Management Module");
         setSize(1600, 900);
@@ -100,7 +100,7 @@ public class mainUI extends JFrame implements ActionListener {
 
 
     private void servTab() {
-        servPanel = new servicePanel();
+        servPanel = new ServicePanel();
     }
 
     private void subsTab() {
@@ -112,7 +112,7 @@ public class mainUI extends JFrame implements ActionListener {
     }
 
     private void pkgTab() {
-        pkgPanel = new JPanel();
+        pkgPanel = new PackagePanel();
     }
 
 

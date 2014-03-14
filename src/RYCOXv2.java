@@ -141,9 +141,7 @@ class RYCOXv2 extends JFrame {
     public void mainUI() {
         setTitle("RYCOX System - Customer Management Module");
         dispose();
-        //setSize(1600,900);
-        //setLocationRelativeTo(null);
-        new mainUI();
+        new MainUI();
     }
 
 	/*----------------------------------------------------------------------------- MAIN METHOD -------------------------------------------------------------------*/

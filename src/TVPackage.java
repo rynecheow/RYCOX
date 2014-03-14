@@ -1,4 +1,7 @@
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.Date;
+
 
 @SuppressWarnings("serial")
 class TVPackage implements Serializable {
@@ -10,10 +13,19 @@ class TVPackage implements Serializable {
     private String chargeType;
     private String pkgStatus = "Active";
 
+    public TVPackage(String pkgCode, String pkgName, double chargePrice, String chargeType, String pkgStatus) { //constructor{
+        this.pkgCode = pkgCode;
+        this.pkgName = pkgName;
+        this.startDate = DateFormat.getInstance().format(new Date());
+        this.chargePrice = chargePrice;
+        this.chargeType = chargeType;
+        this.pkgStatus = pkgStatus;
+    }
+
     public TVPackage(String pkgCode, String pkgName, String startDate, double chargePrice, String chargeType, String pkgStatus) { //constructor{
         this.pkgCode = pkgCode;
         this.pkgName = pkgName;
-        this.startDate = startDate;
+        this.startDate = DateFormat.getInstance().format(new Date());
         this.chargePrice = chargePrice;
         this.chargeType = chargeType;
         this.pkgStatus = pkgStatus;
