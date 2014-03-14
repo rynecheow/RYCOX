@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 class TVSystem {
@@ -29,11 +28,9 @@ class TVSystem {
     LinkedList<TVProgramme> prgList = new LinkedList<TVProgramme>();
     LinkedList<LogFile> logList = new LinkedList<LogFile>();
     LogFile log = new LogFile("", "");
-    List<Integer> t = new LinkedList<Integer>();
+    //List<Integer> t=new LinkedList<Integer>();
     File client_file = new File("cl_data.dat");
     boolean existFile = client_file.exists();
-    StringBuffer contents = new StringBuffer();
-    BufferedReader reader = null;
 
     @SuppressWarnings("unchecked")
     public TVSystem() {
@@ -58,6 +55,9 @@ class TVSystem {
         subsList.add(new Subscription("S000004", 1, "P04"));
         pkgList.add(new TVPackage("P01", "Variety", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
         pkgList.add(new TVPackage("P02", "Fun", "18/04/2012", 350.00, "Yearly", "ACTIVE"));
+        pckgingList.add(new Packaging("P01", "F001"));
+        prgList.add(new TVProgramme("F001", "My Boss My Hero", "Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002", "Active", "18SG", "Comedy", ""));
+
 
         if (!existFile) {    //if client's file do not exist
             //cl_data.dat file
@@ -324,11 +324,11 @@ class TVSystem {
 
                     default:
 
-                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                         break;
                 }
             } else {
-                p.println("ERROR! Please select the function in the menu list only!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
         } while ((menu1_opt_1 != 2) && (login == false));
     } //login method
@@ -383,7 +383,7 @@ class TVSystem {
                         //manageProgramme();
                         break;
                     case 9:
-                        //manageUsers();
+                        manageUsers();
                         break;
                     case 10:
                         //reportGener();
@@ -426,13 +426,18 @@ class TVSystem {
         p.println("----------------------");
 
         do {
-            p.print("Enter the client's type(Individual,Gov,NGO,Private): ");
+            p.print("Enter the client's type(Individual,Gov,NGO,Private): \n\n");
+            p.println("Enter INDIVIDUAL to display all clients from the 'Individual' category.\n");
+            p.println("Enter GOV to display all clients from the 'Government' category.\n");
+            p.println("Enter NGO to display all clients from the 'NGO' category.\n");
+            p.println("Enter PRIVATE to display all clients from the 'Private Organisation' category..\n");
+            p.println("-----------------------------------------------------");
             type = input.nextLine();
 
             if (type.length() > 0) {
                 val1_o2 = true;
             } else {
-                p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
 
             boolean val_idv = false;
@@ -471,7 +476,7 @@ class TVSystem {
             //Individual
             if (type.equalsIgnoreCase("Individual")) {
                 if (val_idv) {
-                    p.println("\n\nRegistered Individual Client(s) is/are:");
+                    p.println("\n\nRegistered client(s) from the 'Individual' category is/are:");
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof IndividualClient) {
@@ -479,22 +484,19 @@ class TVSystem {
                         }
                     }
 
-                    log = new LogFile(username, "has displayed the clients in Individual type.");
+                    log = new LogFile(username, "has displayed the clients in Individual category.");
                     logList.addLast(log);
 
                     val2_o2 = true;
                 } else {
-                    p.println("There is no client register for Individual type yet.");
+                    p.println("There is no client registered under the Individual category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in Individual type[NO CLIENTS].");
+                    log = new LogFile(username, "has not displayed the clients in Individual category [NO CLIENTS].");
                     logList.addLast(log);
                 }
-            }
-
-            //Government
-            else if (type.equalsIgnoreCase("Gov")) {
+            } else if (type.equalsIgnoreCase("Gov")) {//Government
                 if (val_gov) {
-                    p.println("Registered Government Client(s) is/are:");
+                    p.println("Registered client(s) from the 'Government' category is/are:");
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof GovClient) {
@@ -502,22 +504,19 @@ class TVSystem {
                         }
                     }
 
-                    log = new LogFile(username, "has displayed the clients in Government type.");
+                    log = new LogFile(username, "has displayed the clients in Government category.");
                     logList.addLast(log);
 
                     val2_o2 = true;
                 } else {
-                    p.println("There is no client register for Government type yet.");
+                    p.println("There is no client registered under the Government category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in Government type[NO CLIENTS].");
+                    log = new LogFile(username, "has not displayed the clients in Government category [NO CLIENTS].");
                     logList.addLast(log);
                 }
-            }
-
-            //NGO
-            else if (type.equalsIgnoreCase("NGO")) {
+            } else if (type.equalsIgnoreCase("NGO")) {//NGO
                 if (val_ngo) {
-                    p.println("Registered NGO Client(s) is/are:");
+                    p.println("Registered client(s) from the 'NGO' category is/are:");
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof NGOClient) {
@@ -532,9 +531,9 @@ class TVSystem {
 
                 } else {
 
-                    p.println("There is no client register for NGO type yet.");
+                    p.println("There is no client registered under the NGO category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in NGO type[NO CLIENTS].");
+                    log = new LogFile(username, "has not displayed the clients in NGO category[NO CLIENTS].");
                     logList.addLast(log);
                 }
             }
@@ -542,7 +541,7 @@ class TVSystem {
             //Private Organisation
             else if (type.equalsIgnoreCase("Private")) {
                 if (val_prv) {
-                    p.println("Registered Private Organisation Client(s) is/are:");
+                    p.println("Registered client(s) from the 'Private Organisation' category is/are:");
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof PrvClient) {
@@ -550,14 +549,14 @@ class TVSystem {
                         }
                     }
 
-                    log = new LogFile(username, "has displayed the clients in Private Organisation type.");
+                    log = new LogFile(username, "has displayed the clients in Private Organisation category.");
                     logList.addLast(log);
 
                     val2_o2 = true;
                 } else {
-                    p.println("There is no client register for Private Organisation type yet.");
+                    p.println("There is no client registered under the Private Organisation category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in Private Organisation type[NO CLIENTS].");
+                    log = new LogFile(username, "has not displayed the clients in Private Organisation category [NO CLIENTS].");
                     logList.addLast(log);
                 }
             } //end else if
@@ -565,7 +564,7 @@ class TVSystem {
             else {
                 p.println("Error! Client type does not exist!");
 
-                log = new LogFile(username, "has not displayed the clients in type[TYPE DOES NOT EXIST].");
+                log = new LogFile(username, "has not displayed the any client.[TYPE DOES NOT EXIST].");
                 logList.addLast(log);
             } //end else
 
@@ -591,14 +590,15 @@ class TVSystem {
             if (valID_f3.length() > 0) {
                 val1_f3 = true;
             } else {
-                p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
         } while (val1_f3 == false);
 
         for (i = 0; i < clientList.size(); i++) {
+            p.println("Client details");
             if (valID_f3.equalsIgnoreCase(clientList.get(i).getClientID())) {
                 clientList.get(i).printClient();
-                System.out.println("Service details");
+                p.println("\nService details");
 
                 //Display services
                 int a = 0, b = 0, c = 0;
@@ -646,14 +646,19 @@ class TVSystem {
         boolean val1_f4 = false;  //check emptiness and valid string
         boolean val2_f4 = false;
 
-        log = new LogFile(username, "has chosen the 'Manage Client's Profile-Add/Edit/Terminate' function.");
+        log = new LogFile(username, "has chosen the 'Manage Client's Profile' function.");
         logList.addLast(log);
 
-        p.println("\nManage Client's Profile-Add/Edit/Terminate");
-        p.println("------------------------------------------");
+        p.println("\nManage Client's Profile");
+        p.println("-----------------------------------------------------");
+
 
         do {
-            p.print("Please select a function(Add/Edit/Terminate): ");
+            p.println("Please select a function(Add/ Edit/ Terminate): \n");
+            p.println("Enter ADD to add a new client.\n");
+            p.println("Enter EDIT to edit an existing client.\n");
+            p.println("Enter TERMINATE to terminate an existing client.\n");
+            p.println("-----------------------------------------------------");
             ch1_f4 = input.nextLine();
 
             ch1_f4 = ch1_f4.toLowerCase();
@@ -661,17 +666,17 @@ class TVSystem {
             if ((ch1_f4.length() > 0) && ((ch1_f4.equalsIgnoreCase("add") || ch1_f4.equalsIgnoreCase("edit")) || (ch1_f4.equalsIgnoreCase("terminate")))) {
                 val1_f4 = true;
             } else {
-                p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
         } while (val1_f4 == false);
 
         switch (ch1_f4) {
             case "add":        //Add a new client's profile
-                log = new LogFile(username, "has chosen to add a new client.");
+                log = new LogFile(username, "has chosen to add a new client profile.");
                 logList.addLast(log);
 
                 do {
-                    p.print("Please enter client's type(Individual,Gov,NGO,Private):\n ");
+                    p.print("Please enter client's type (Individual,Gov,NGO,Private):\n ");
                     String type = input.nextLine();
                     p.println();
 
@@ -798,7 +803,7 @@ class TVSystem {
 
                             break;
                         default:
-                            p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                             break;
                     }
                 } while (val2_f4 == false);
@@ -926,7 +931,7 @@ class TVSystem {
                     if (valID_f4.length() > 0) {
                         val2_f4 = true;
                     } else {
-                        p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                     }
                 } while (val2_f4 == false);
 
@@ -1078,7 +1083,7 @@ class TVSystem {
                                                 case 1:
                                                     check = false;
 
-                                                    System.out.println("Please enter the new address.");
+                                                    p.println("Please enter the new address.");
                                                     address = input.nextLine();
 
                                                     servList.get(i).setAddress(address);
@@ -1174,12 +1179,12 @@ class TVSystem {
 
                                                 default:
                                                     check = false;
-                                                    p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                                                    p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                                                     break;
                                             }
                                         } else {
                                             check = false;
-                                            p.println("ERROR! Please select the function in the menu list only!\n");
+                                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                                         }
                                     } while ((menu3_opt_1 != 5) || (check == false));
                                     break;
@@ -1231,12 +1236,12 @@ class TVSystem {
 
                     default:
                         check = false;
-                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                         break;
                 }
             } else {
                 check = false;
-                p.println("ERROR! Please select the function in the menu list only!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
         } while ((menu3_opt_1 != 4) || (check == false));
     } // end manage service
@@ -1477,12 +1482,12 @@ class TVSystem {
 
                                     default:
                                         check = false;
-                                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                                         break;
                                 }
                             } else {
                                 check = false;
-                                p.println("ERROR! Please select the function in the menu list only!\n");
+                                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                             }
                         } while ((menu3_opt_1 != 3) || (check == false));
 
@@ -1494,12 +1499,12 @@ class TVSystem {
 
                     default:
                         check = false;
-                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                         break;
                 }
             } else {
                 check = false;
-                p.println("ERROR! Please select the function in the menu list only!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
         } while ((menu3_opt_1 != 3) || (check == false));
         ;
@@ -1511,9 +1516,10 @@ class TVSystem {
     }
 
     /*--------------------------------------------------------------------------METHOD NINE - MANAGE USERS----------------------------------------------------------------------------------------*/
+    @SuppressWarnings("unused")
     public void manageUsers() {
         String choice_f9, type_f9, un_f9, oldpw_f9, newpw_1_f9, newpw_2_f9;
-        boolean val1_f9 = false, val2_f9 = false, val3_f9 = false, val4_f9 = false;
+        boolean val1_f9 = false, val2_f9 = false, val3_f9 = false;
 
         log = new LogFile(username, "has chosen the 'Manage User-Add/Change Password/Terminate' function.");
         logList.addLast(log);
@@ -1529,7 +1535,7 @@ class TVSystem {
             if ((choice_f9.length() > 0) && ((choice_f9.equalsIgnoreCase("add") || choice_f9.equalsIgnoreCase("changepassword")) || (choice_f9.equalsIgnoreCase("terminate")))) {
                 val1_f9 = true;
             } else {
-                p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
         } while (val1_f9 == false);
 
@@ -1636,7 +1642,7 @@ class TVSystem {
                             break;
                         }
                     } else {
-                        p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                     }
                 } while (val3_f9 == false);
                 break;
@@ -1653,7 +1659,7 @@ class TVSystem {
                         if (un_f9.length() > 0) {
                             val2_f9 = true;
                         } else {
-                            p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                         }
                     } while (val2_f9 == false);
 
@@ -1687,7 +1693,7 @@ class TVSystem {
                 }
                 break;
             default:
-                p.println("ERROR! WRONG INPUT! PLEASE TRY AGAIN!\n");
+                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                 break;
         } //end switch
     } //end manage users

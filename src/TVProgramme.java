@@ -14,7 +14,6 @@ public class TVProgramme implements Serializable {
     private String type;
     private String notes;
 
-
     public TVProgramme(String progCode, String progTitle, String desc, String contentOrigin, String creationDate, String prgStatus, String viewerStatus, String type, String notes) { //constructor
         this.progCode = progCode;
         this.progTitle = progTitle;
@@ -102,5 +101,3 @@ public class TVProgramme implements Serializable {
         this.contentOrigin = contentOrigin;
     }
 }
-
-

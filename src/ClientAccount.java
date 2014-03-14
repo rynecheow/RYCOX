@@ -6,6 +6,7 @@ abstract class ClientAccount implements Serializable {
     protected String billingAddress;
     protected String clientID;
     protected String creationDate;
+    protected String terminationDate = "N/A";
     protected String accStatus = "INACTIVE";
 
     public ClientAccount(String name, String billingAddress, String clientID, String creationDate, String accStatus) {
@@ -36,6 +37,10 @@ abstract class ClientAccount implements Serializable {
         return accStatus;
     }
 
+    public String getTerminationDate() {
+        return terminationDate;
+    }
+
     public void setName(String s) {
         this.name = s;
     }
@@ -46,6 +51,10 @@ abstract class ClientAccount implements Serializable {
 
     public void setAccountStatus(String as) {
         this.accStatus = as;
+    }
+
+    public void setTerminationDate(String terminationDate) {
+        this.terminationDate = terminationDate;
     }
 
     public boolean terminationStatus() {
@@ -60,6 +69,10 @@ abstract class ClientAccount implements Serializable {
         System.out.println("Client Address:\t" + getBillingAddress());
         System.out.println("Client ID:\t" + getClientID());
         System.out.println("Creation Date:\t" + getCreationDate());
+
+        if (terminationStatus() == true)
+            System.out.println("Termination Date:\t" + getTerminationDate());
+
         System.out.println("Account Status:\t" + getAccountStatus());
         System.out.println("");
     }
