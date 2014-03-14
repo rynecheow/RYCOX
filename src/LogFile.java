@@ -7,7 +7,7 @@ class LogFile {
     private String action;
 
     public LogFile(String user, String action) {
-        this.date = DateFormat.getInstance().format(new Date());
+        this.date = "[" + DateFormat.getInstance().format(new Date()) + "]";
         this.user = user;
         this.action = action;
     }

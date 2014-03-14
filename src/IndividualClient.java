@@ -3,8 +3,8 @@ class IndividualClient extends ClientAccount {
     private int age;
     private String ic;
 
-    public IndividualClient(String name, int age, String ic, String address, String clientID, String accStatus) {
-        super(name, address, clientID, accStatus);
+    public IndividualClient(String name, int age, String ic, String address, String clientID, String accStatus, String email) {
+        super(name, address, clientID, accStatus, email);
         this.age = age;
         this.ic = ic;
     }

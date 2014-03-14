@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.TableModelEvent;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -23,7 +24,6 @@ public class ClientPanel extends JPanel {
     private JScrollPane scrollPane;
     private JButton newclButton;
     private JButton saveButton;
-    private JButton logoutButton;
     private JButton redoButton;
     private JPanel toolbar;
     private JButton undoButton;
@@ -33,8 +33,7 @@ public class ClientPanel extends JPanel {
     private JPopupMenu popupMenu;
     private JMenuItem editclMI, deleteclMI, addservMI;
     private String[][] clData;
-    private static DefaultTableModel model;
-    private int a = RYCOXv2.clientList.size();
+    private static AbstractTableModel model;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public ClientPanel() {
@@ -48,10 +47,9 @@ public class ClientPanel extends JPanel {
         redoButton.setBackground(bColor);
         saveButton = new JButton("", new ImageIcon(getClass().getResource("savebutton.png")));
         saveButton.setBackground(bColor);
+
         undoButton = new JButton("", new ImageIcon(getClass().getResource("undobutton.png")));
         undoButton.setBackground(bColor);
-        logoutButton = new JButton("", new ImageIcon(getClass().getResource("logout-button.png")));
-        logoutButton.setBackground(bColor);
         cldeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
         cldeleteButton.setBackground(bColor);
         recoverButton = new JButton("", new ImageIcon(getClass().getResource("recoverbutton.png")));
@@ -97,8 +95,6 @@ public class ClientPanel extends JPanel {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                                .addComponent(logoutButton, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                                 .addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
@@ -115,7 +111,6 @@ public class ClientPanel extends JPanel {
                                         .addComponent(undoButton)
                                         .addComponent(recoverButton)
                                         .addComponent(loginInfo)
-                                        .addComponent(logoutButton)
                                         .addComponent(cldeleteButton))
 
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -206,6 +201,8 @@ public class ClientPanel extends JPanel {
         ); //table right click
         DialogHandler dialoghandler = new DialogHandler();
         newclButton.addActionListener(dialoghandler);
+        saveButton.addActionListener(dialoghandler);
+        editclButton.addActionListener(dialoghandler);
         editclMI = new JMenuItem("Edit Client...");
         deleteclMI = new JMenuItem("Terminate Client...");
         addservMI = new JMenuItem("Add Service...");
@@ -214,16 +211,21 @@ public class ClientPanel extends JPanel {
         popupMenu.add(editclMI);
         popupMenu.add(deleteclMI);
         popupMenu.add(addservMI);
+
     }//end constructor
 
     static void updateAddTable() {
         int size = RYCOXv2.clientList.size();
         int n = size - 1;
         String[] a = {RYCOXv2.clientList.get(n).getClientID(), RYCOXv2.clientList.get(n).getName(), RYCOXv2.clientList.get(n).getBillingAddress(), RYCOXv2.clientList.get(n).getAccountStatus()};
-        model.addRow(a);
+        ((DefaultTableModel) model).addRow(a);
         clTable.tableChanged(new TableModelEvent(model));
         clTable.setModel(model);
         clTable.repaint();
+        int[] b = clTable.getSelectedRows();
+        for (int i = 0; i < b.length; i++) {
+            System.out.println(b[i]);
+        }
     }
 
     private class DialogHandler implements ActionListener {
@@ -240,8 +242,13 @@ public class ClientPanel extends JPanel {
                             client_oostream.writeObject(RYCOXv2.clientList);
                         }
                     }
+
                     client_oostream.flush();
                     client_oostream.close();
+                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[CLIENT]");
+                    RYCOXv2.logList.add(RYCOXv2.log);
+                    RYCOXv2.printLog();
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -255,5 +262,4 @@ public class ClientPanel extends JPanel {
             }
         }
     }
-
 }

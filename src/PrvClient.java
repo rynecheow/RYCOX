@@ -1,8 +1,8 @@
 @SuppressWarnings("serial")
 class PrvClient extends ClientAccount {
 
-    public PrvClient(String name, String address, String clientID, String accStatus) {
-        super(name, address, clientID, accStatus);
+    public PrvClient(String name, String address, String clientID, String accStatus, String email) {
+        super(name, address, clientID, accStatus, email);
     }
 
     public void printClient() {

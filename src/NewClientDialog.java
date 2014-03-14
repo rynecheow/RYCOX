@@ -1,7 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 @SuppressWarnings("serial")
 public class NewClientDialog extends JDialog {
@@ -23,16 +27,16 @@ public class NewClientDialog extends JDialog {
         BGPanel.setBackground(new Color(203, 229, 223));
         clTypeCombo = new JComboBox();
         clTypeLabel = new JLabel();
-        clLNameInput = new JTextField();
+        clLNameInput = new JTextField("");
         clLNameLabel = new JLabel();
-        clFNameInput = new JTextField();
-        clIDInput = new JTextField();
+        clFNameInput = new JTextField("");
+        clIDInput = new JTextField("");
         clIDLabel = new JLabel();
         clFNameLabel = new JLabel();
         clAgeLabel = new JLabel();
         clAgeCombo = new JComboBox();
         clICLabel = new JLabel();
-        clICInput = new JTextField();
+        clICInput = new JTextField("");
         clAddLabel = new JLabel();
         jScrollPane1 = new JScrollPane();
         clAddInput = new JTextArea();
@@ -41,9 +45,9 @@ public class NewClientDialog extends JDialog {
         DialogSeparator = new JSeparator();
         clIDFormat = new JLabel();
         clEmailLabel = new JLabel();
-        clEmailInput = new JTextField();
+        clEmailInput = new JTextField("");
         clAppearedNameLabel = new JLabel();
-        clAppearedName = new JTextField();
+        clAppearedName = new JTextField("");
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         BGPanel.setLayout(null);
@@ -52,6 +56,38 @@ public class NewClientDialog extends JDialog {
         clTypeCombo.setModel(new DefaultComboBoxModel(new String[]{"Individual", "Government", "Private Organisation", "NGO"}));
         BGPanel.add(clTypeCombo);
         clTypeCombo.setBounds(440, 14, 150, 25);
+        clTypeCombo.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent ie) {
+                if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("Individual")) {
+                    clAgeCombo.setEnabled(true);
+                    clAgeCombo.setSelectedItem("18");
+                    clICInput.setEditable(true);
+                    clICInput.setEnabled(true);
+                    clIDFormat.setText("I");
+                } else if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("Government")) {
+                    clAgeCombo.setSelectedItem("--");
+                    clAgeCombo.setEnabled(false);
+                    clICInput.setText("");
+                    clICInput.setEditable(false);
+                    clICInput.setEnabled(false);
+                    clIDFormat.setText("G");
+                } else if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("NGO")) {
+                    clAgeCombo.setSelectedItem("--");
+                    clAgeCombo.setEnabled(false);
+                    clICInput.setText("");
+                    clICInput.setEditable(false);
+                    clICInput.setEnabled(false);
+                    clIDFormat.setText("N");
+                } else if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("Private Organisation")) {
+                    clAgeCombo.setSelectedItem("--");
+                    clAgeCombo.setEnabled(false);
+                    clICInput.setText("");
+                    clICInput.setEditable(false);
+                    clICInput.setEnabled(false);
+                    clIDFormat.setText("P");
+                }
+            }
+        });
 
         clTypeLabel.setFont(defont);
         clTypeLabel.setText("Type of Client:");
@@ -73,16 +109,32 @@ public class NewClientDialog extends JDialog {
 
         clIDInput.setFont(defont);
         BGPanel.add(clIDInput);
-        clIDInput.setBounds(90, 43, 62, 25);
+        clIDInput.setBounds(96, 43, 62, 25);
         clIDLabel.setFont(defont);
         clIDLabel.setText("Client ID   :");
         BGPanel.add(clIDLabel);
         clIDLabel.setBounds(10, 43, 62, 25);
 
+
         clFNameLabel.setFont(defont);
         clFNameLabel.setText("First Name:");
         BGPanel.add(clFNameLabel);
         clFNameLabel.setBounds(10, 75, 100, 25);
+        clFNameInput.addCaretListener(new CaretListener() {
+            public void caretUpdate(CaretEvent e) {
+                if (clFNameInput.getText().trim() != "" && clFNameInput.getText().trim() != null && clLNameInput.getText().trim() != "" && clLNameInput.getText().trim() != null)
+                    clAppearedName.setText(clFNameInput.getText().trim() + " " + clLNameInput.getText().trim());
+                repaint();
+            }
+        });
+
+        clLNameInput.addCaretListener(new CaretListener() {
+            public void caretUpdate(CaretEvent e) {
+                if (clFNameInput.getText().trim() != "" && clFNameInput.getText().trim() != null && clLNameInput.getText().trim() != "" && clLNameInput.getText().trim() != null)
+                    clAppearedName.setText(clFNameInput.getText().trim() + " " + clLNameInput.getText().trim());
+                repaint();
+            }
+        });
 
         clAgeLabel.setFont(defont);
         clAgeLabel.setText("Age        :");
@@ -90,7 +142,7 @@ public class NewClientDialog extends JDialog {
         clAgeLabel.setBounds(10, 175, 58, 25);
 
         clAgeCombo.setFont(defont);
-        clAgeCombo.setModel(new DefaultComboBoxModel(new String[]{"18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80"}));
+        clAgeCombo.setModel(new DefaultComboBoxModel(new String[]{"--", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80"}));
         BGPanel.add(clAgeCombo);
         clAgeCombo.setBounds(86, 175, 50, 25);
 
@@ -138,7 +190,7 @@ public class NewClientDialog extends JDialog {
         clIDFormat.setFont(defont);
         clIDFormat.setText("I");
         BGPanel.add(clIDFormat);
-        clIDFormat.setBounds(82, 43, 4, 25);
+        clIDFormat.setBounds(82, 43, 10, 25);
 
         clEmailLabel.setFont(defont);
         clEmailLabel.setText("E-mail Address :");
@@ -176,22 +228,69 @@ public class NewClientDialog extends JDialog {
         pack();
     } //end constructor
 
+    @SuppressWarnings("unused")
     private void submitbuttonActionPerformed(ActionEvent evt) {
         // check empty
         boolean checkEmpty = false;
         String type = (String) clTypeCombo.getSelectedItem();
         if (type.equals("Individual")) {
-            if (clLNameInput.getText().trim().length() == 0 || clFNameInput.getText().trim().length() == 0 || clIDInput.getText().trim().length() == 0 || clICInput.getText().trim().length() == 0 || clAddInput.getText().trim().length() == 0) {
-                checkEmpty = true;
-            } else
-                checkEmpty = false;
-            clientCreation();
+            String[] temp = {clFNameInput.getText().trim(), clLNameInput.getText().trim(), clIDInput.getText().trim(), clICInput.getText().trim(), clAddInput.getText().trim(), ((String) clAgeCombo.getSelectedItem())};
+            for (int i = 0; i < temp.length; i++) {
+                switch (i) {
+                    case 0:
+                        if (temp[0].length() == 0 || temp[0] == null) {
+                            checkEmpty = true;
+                            JOptionPane.showMessageDialog(BGPanel, "First name cannot be empty.", "Empty field", JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                    case 1:
+                        if (temp[1].length() == 0 || temp[1] == null) {
+                            checkEmpty = true;
+                            JOptionPane.showMessageDialog(BGPanel, "Last name cannot be empty.", "Empty field", JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                    case 2:
+                        if (temp[2].length() == 0 || temp[2] == null) {
+                            checkEmpty = true;
+                            JOptionPane.showMessageDialog(BGPanel, "Client ID cannot be empty.", "Empty field", JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                    case 3:
+                        if (temp[3].length() == 0 || temp[3] == null) {
+                            checkEmpty = true;
+                            JOptionPane.showMessageDialog(BGPanel, "IC cannot be empty.", "Empty field", JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                    case 4:
+                        if (temp[4].length() == 0 || temp[4] == null) {
+                            checkEmpty = true;
+                            JOptionPane.showMessageDialog(BGPanel, "Address cannot be empty.", "Empty field", JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+                    case 5:
+                        if (temp[5].equals("--")) {
+                            checkEmpty = true;
+                            JOptionPane.showMessageDialog(BGPanel, "Please select a valid age.", "Invalid age ", JOptionPane.WARNING_MESSAGE);
+                            break;
+                        }
+
+                }
+                break;
+            }
+            if (checkEmpty == false) {
+                if (temp[2].matches("[0-9]{6}")) {
+                    clientCreation();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(BGPanel, "Wrong Client ID format.", "Wrong format", JOptionPane.WARNING_MESSAGE);
+                }
+            }
         }
-        dispose();
+
     }
 
     private void cancelbuttonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+        dispose();
     }
 
     // Variables declaration - do not modify
@@ -224,27 +323,42 @@ public class NewClientDialog extends JDialog {
     // End of variables declaration
 
     private void clientCreation() {
-        String name = clLNameInput.getText().trim() + " " + clFNameInput.getText().trim();
+        String name = clFNameInput.getText().trim() + " " + clLNameInput.getText().trim();
         String ageStr = ((String) clAgeCombo.getSelectedItem()).trim();
         int age = Integer.parseInt(ageStr);
         String address = clAddInput.getText().trim();
         String ic = clICInput.getText().trim();
         String clID;
+        String type;
         if (((String) clTypeCombo.getSelectedItem()).equals("Individual")) {
             clID = "I" + clIDInput.getText().trim();
+            type = "Ind";
         } else if (((String) clTypeCombo.getSelectedItem()).equals("Government")) {
             clID = "G" + clIDInput.getText().trim();
+            type = "Gov";
         } else if (((String) clTypeCombo.getSelectedItem()).equals("Private Organisation")) {
             clID = "P" + clIDInput.getText().trim();
+            type = "Prv";
         } else {
             clID = "N" + clIDInput.getText().trim();
+            type = "NGO";
         }
         String accStatus = "ACTIVE";
+        String email = clEmailInput.getText().trim();
+
         //model
-        RYCOXv2.clientList.add(new IndividualClient(name, age, ic, address, clID, accStatus));
-        System.out.println(RYCOXv2.clientList.get(6).getName() + "\t" + RYCOXv2.clientList.size());
-        LogFile log = new LogFile(RYCOXv2.user, "has created a new client's account of ID '" + clID + "'.");
-        RYCOXv2.logList.add(log);
+        if (type.equalsIgnoreCase("Ind")) {
+            RYCOXv2.clientList.add(new IndividualClient(name, age, ic, address, clID, accStatus, email));
+        } else if (type.equalsIgnoreCase("Gov")) {
+            RYCOXv2.clientList.add(new GovClient(name, address, clID, accStatus, email));
+        } else if (type.equalsIgnoreCase("prv")) {
+            RYCOXv2.clientList.add(new GovClient(name, address, clID, accStatus, email));
+        } else if (type.equalsIgnoreCase("ngo")) {
+            RYCOXv2.clientList.add(new GovClient(name, address, clID, accStatus, email));
+        }
+
+        RYCOXv2.log = new LogFile(RYCOXv2.user, " has created a new client's account of ID '" + clID + "'.");
+        RYCOXv2.logList.add(RYCOXv2.log);
         //viewer
         ClientPanel.updateAddTable();
     }

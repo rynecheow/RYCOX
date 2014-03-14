@@ -10,13 +10,15 @@ abstract class ClientAccount implements Serializable {
     protected String creationDate;
     protected String terminationDate = "N/A";
     protected String accStatus = "INACTIVE";
+    protected String email;
 
-    public ClientAccount(String name, String billingAddress, String clientID, String accStatus) {
+    public ClientAccount(String name, String billingAddress, String clientID, String accStatus, String email) {
         this.name = name;
         this.billingAddress = billingAddress;
         this.clientID = clientID;
         this.creationDate = DateFormat.getInstance().format(new Date());
         this.accStatus = accStatus;
+        this.email = email;
     }
 
     public String getName() {
@@ -64,6 +66,14 @@ abstract class ClientAccount implements Serializable {
             return true;
         else
             return false;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String e) {
+        email = e;
     }
 
     abstract void printClient();

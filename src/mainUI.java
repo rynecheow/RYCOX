@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
@@ -13,8 +15,9 @@ public class mainUI extends JFrame implements ActionListener {
     private Color mainbgColor = new Color(23, 28, 30);
     private JMenuBar menubar;
     private JMenu fileMenu, editMenu, viewMenu, helpMenu;
-    private JMenuItem saveMI, exitMI, aboutMI;
+    private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI;
     private int i;
+
 
     public mainUI() {
         getContentPane().setBackground(mainbgColor);
@@ -32,12 +35,18 @@ public class mainUI extends JFrame implements ActionListener {
         menubar.add(editMenu);
         menubar.add(viewMenu);
         menubar.add(helpMenu);
-        saveMI = new JMenuItem("Save");
-        exitMI = new JMenuItem("Exit");
-        aboutMI = new JMenuItem("About");
+        saveMI = new JMenuItem("Save...");
+        exitMI = new JMenuItem("Exit...");
+        aboutMI = new JMenuItem("About..");
+        viewLogMI = new JMenuItem("View Log...");
+        logoutMI = new JMenuItem("Log out '" + RYCOXv2.user + "'...");
         fileMenu.add(saveMI);
         fileMenu.add(exitMI);
+        fileMenu.add(logoutMI);
         helpMenu.add(aboutMI);
+        viewMenu.add(viewLogMI);
+        viewLogMI.addActionListener(this);
+        logoutMI.addActionListener(this);
         setJMenuBar(menubar);
 
         saveMI.addActionListener(this);
@@ -67,13 +76,26 @@ public class mainUI extends JFrame implements ActionListener {
         setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent winEvt) {
+                int closeCf = JOptionPane.showConfirmDialog(null, "Exit without saving?", "Confirm exit", JOptionPane.YES_NO_OPTION);
+                if (closeCf == JOptionPane.YES_OPTION) {
+                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
+                    RYCOXv2.logList.add(RYCOXv2.log);
+                    RYCOXv2.printLog();
+                    System.exit(0);
+                }
+            }
+
+        });
 
     }
 
     private void clientTab() {
         clientPanel = new ClientPanel();
+
     }
 
 
@@ -197,12 +219,27 @@ public class mainUI extends JFrame implements ActionListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[CLIENT]");
+            RYCOXv2.logList.add(RYCOXv2.log);
+            RYCOXv2.printLog();
         } else if (e.getSource() == exitMI) { //end if
             int closeCf = JOptionPane.showConfirmDialog(null, "Exit without saving?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
             if (closeCf == JOptionPane.YES_OPTION) {
                 System.exit(0);
+                RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
+                RYCOXv2.logList.add(RYCOXv2.log);
+                RYCOXv2.printLog();
             }
+        } else if (e.getSource() == viewLogMI) {
+            LogDialog ld = new LogDialog(this);
+            ld.setVisible(true);
+        } else if (e.getSource() == logoutMI) {
+            RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
+            RYCOXv2.logList.add(RYCOXv2.log);
+            RYCOXv2.printLog();
+            dispose();
+            new RYCOXv2();
+            RYCOXv2.initialise();
         }
-
     }
 }

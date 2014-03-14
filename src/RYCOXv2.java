@@ -140,29 +140,21 @@ class RYCOXv2 extends JFrame {
     /*------------------------------------------------------------------------ MAIN USER INTERFACE ----------------------------------------------------------------*/
     public void mainUI() {
         setTitle("RYCOX System - Customer Management Module");
-        setVisible(false);
+        dispose();
         //setSize(1600,900);
         //setLocationRelativeTo(null);
-        mainUI main = new mainUI();
-        main.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent winEvt) {
-                int closeCf = JOptionPane.showConfirmDialog(null, "Exit without saving?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
-                if (closeCf == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                } else {
-
-                }
-            }
-
-        });
+        new mainUI();
     }
 
 	/*----------------------------------------------------------------------------- MAIN METHOD -------------------------------------------------------------------*/
 
-    @SuppressWarnings("unchecked")
     public static void main(String[] rycox) {
         new RYCOXv2();
-        //inu.setSize(1600,900);
+        initialise();
+    }
+
+    @SuppressWarnings("unchecked")
+    static void initialise() {
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -186,12 +178,12 @@ class RYCOXv2 extends JFrame {
         userList.add(new Administrators("admin", "nimda"));
         userList.add(new FrontdeskStaffs("staff", "123abc"));
         //userList.add(new FrontdeskStaffs("", ""));
-        clientList.add(new IndividualClient("Izhar", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "ACTIVE"));
-        clientList.add(new IndividualClient("Rimi Azizi", 21, "901010-05-2828", "10, Jalan Taylor's", "I000002", "ACTIVE"));
-        clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "INACTIVE"));
-        clientList.add(new NGOClient("NGO", "56, Taylor's Street", "N000001", "ACTIVE"));
-        clientList.add(new PrvClient("Private Organisation", "88, Sohai's Street", "P000001", "ACTIVE"));
-        clientList.add(new PrvClient("Private Org2", "80, TROLLOLOL's Street", "P000002", "ACTIVE"));
+        clientList.add(new IndividualClient("Izhar Husin", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "ACTIVE", "Izhar@gmail.com"));
+        clientList.add(new IndividualClient("Rimi Azizi", 21, "901010-05-2828", "10, Jalan Taylor's", "I000002", "ACTIVE", "Rimi@gmail.com"));
+        clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "INACTIVE", "doe@gov.my"));
+        clientList.add(new NGOClient("WWE KL Branch", "56, Taylor's Street", "N000001", "ACTIVE", "WWE@gmail.com"));
+        clientList.add(new PrvClient("Chanel", "88, Sohai's Street", "P000001", "ACTIVE", "chanel@gmail.com"));
+        clientList.add(new PrvClient("Loreal", "80, TROLLOLOL's Street", "P000002", "ACTIVE", "loreal@gmail.com"));
         servList.add(new Service("S000001", "I000001", "D999999", "5, Jalan Sungai Beranang"));
         servList.add(new Service("S000002", "I000001", "D999998", "Lot 1-3 Starhill"));
         servList.add(new Service("S000007", "I000002", "D999993", "Jalan Ara 2"));
@@ -491,6 +483,7 @@ class RYCOXv2 extends JFrame {
 
     /*---------------------------------------------------------------------------- HANDLER CLASSES -----------------------------------------------------------------*/
     private class UserLoginhandler implements ActionListener {
+        @SuppressWarnings({"deprecation", "unused"})
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == ulsubmit) {
                 //handle user login logic
@@ -549,6 +542,22 @@ class RYCOXv2 extends JFrame {
                     System.exit(0);
                 }
             }
+        }
+    }
+
+    static void printLog() {
+        try {
+            PrintWriter pw_log2 = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+
+            for (int i = 0; i < logList.size(); i++) {
+                if (RYCOXv2.logList.get(i) != null) {
+                    pw_log2.print(logList.get(i).getDate() + "\t");
+                    pw_log2.print((logList.get(i)).getUser() + " ");
+                    pw_log2.println((logList.get(i)).getAction());
+                }
+            }
+            pw_log2.close();
+        } catch (Exception ex) {
         }
     }
 }
