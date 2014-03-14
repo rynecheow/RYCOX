@@ -1,21 +1,19 @@
 import java.io.Serializable;
 
-
 @SuppressWarnings("serial")
 class TVPackage implements Serializable {
     private String pkgCode;                    //initialise variables
     private String pkgName;
     private String startDate;
-    private String terminationDate;
+    private String terminationDate = "N/A";
     private double chargePrice;
     private String chargeType;
     private String pkgStatus = "Active";
 
-    public TVPackage(String pkgCode, String pkgName, String startDate, String terminationDate, double chargePrice, String chargeType, String pkgStatus) { //constructor{
+    public TVPackage(String pkgCode, String pkgName, String startDate, double chargePrice, String chargeType, String pkgStatus) { //constructor{
         this.pkgCode = pkgCode;
         this.pkgName = pkgName;
         this.startDate = startDate;
-        this.terminationDate = "N/A";
         this.chargePrice = chargePrice;
         this.chargeType = chargeType;
         this.pkgStatus = pkgStatus;
@@ -75,5 +73,9 @@ class TVPackage implements Serializable {
 
     public void setStatus(String pkgStatus) {  //to change package's status
         this.pkgStatus = pkgStatus;
+    }
+
+    public void printPkg() {
+
     }
 }

@@ -32,7 +32,7 @@ abstract class ClientAccount implements Serializable {
         return creationDate;
     }
 
-    public String getAccStatus() {
+    public String getAccountStatus() {
         return accStatus;
     }
 
@@ -44,7 +44,7 @@ abstract class ClientAccount implements Serializable {
         this.billingAddress = b;
     }
 
-    public void changeAccStatus(String as) {
+    public void setAccountStatus(String as) {
         this.accStatus = as;
     }
 
@@ -60,7 +60,7 @@ abstract class ClientAccount implements Serializable {
         System.out.println("Client Address:\t" + getBillingAddress());
         System.out.println("Client ID:\t" + getClientID());
         System.out.println("Creation Date:\t" + getCreationDate());
-        System.out.println("Account Status:\t" + getAccStatus());
+        System.out.println("Account Status:\t" + getAccountStatus());
         System.out.println("");
     }
 }

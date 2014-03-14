@@ -38,7 +38,7 @@ class IndividualClient extends ClientAccount implements Serializable {
         System.out.println("Client Address:\t" + getBillingAddress());
         System.out.println("Client ID:\t" + getClientID());
         System.out.println("Creation Date:\t" + getCreationDate());
-        System.out.println("Account Status:\t" + getAccStatus());
+        System.out.println("Account Status:\t" + getAccountStatus());
         System.out.println();
     }
 }

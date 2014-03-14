@@ -87,15 +87,15 @@ class Service implements Serializable {
         this.terminationDate = terminationDate;
     }
 
-    public void printService() {
-        System.out.println("Client ID: " + clientID);
+    public void printServ() {
         System.out.println("Smart Card Number: " + smartCardNo);
         System.out.println("Decoder Number: " + decoderNo);
+        System.out.println("Address: " + address);
         System.out.println("Status: " + servStatus);
         System.out.println("Registration Date: " + registrationDate);
         System.out.println("Termination Date: " + terminationDate);
         System.out.println("Current Outstanding Balance: " + currOstBal);
         System.out.println("Previous Bill Amount: " + prevBillAmount);
-        System.out.println("Address: " + address);
+
     }
 }
