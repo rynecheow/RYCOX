@@ -16,6 +16,14 @@ class Subscription implements Serializable {
     public void printSubs() {
         System.out.println("Subscibe Number: " + subsNo);
         System.out.println("Smart Card Number: " + smartCardNo);
+        System.out.println();
+    }
+
+    public void printSecSubs() {
+        System.out.println("Subscibe Number: " + subsNo);
+        System.out.println("Smart Card Number: " + smartCardNo);
+        System.out.println("Package Code: " + pkgCode);
+        System.out.println();
     }
 
     public String getSmartCardNo() {
@@ -40,6 +48,7 @@ class Subscription implements Serializable {
 
     public void setPkgCode(String pkgCode) {
         this.pkgCode = pkgCode;
+
     }
 }
 

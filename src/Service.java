@@ -103,6 +103,7 @@ class Service implements Serializable {
     }
 
     public void printServ() {
+        System.out.println("Client ID: " + clientID);
         System.out.println("Smart Card Number: " + smartCardNo);
         System.out.println("Decoder Number: " + decoderNo);
         System.out.println("Address: " + address);
@@ -114,5 +115,6 @@ class Service implements Serializable {
 
         System.out.println("Current Outstanding Balance: " + currOstBal);
         System.out.println("Previous Bill Amount: " + prevBillAmount);
+        System.out.println();
     }
 }

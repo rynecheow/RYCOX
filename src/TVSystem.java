@@ -12,7 +12,7 @@ class TVSystem {
     String password = "";
     String menu1_opt = "";
     String menu2_opt = "";
-    int i = 0, f = 0, u = 0, menu1_opt_1 = 0, menu2_opt_1 = 0, menu3_opt_1 = 0;
+    int i = 0, f = 0, u = 0, menu1_opt_1 = 0, menu3_opt_1 = 0;
     boolean login = false;
     PrintStream p = System.out;
     boolean val = false;
@@ -429,29 +429,28 @@ class TVSystem {
             menu2_opt = input.nextLine();
 
             if ((menu2_opt.matches("^[1-9]{1}$")) || (menu2_opt.matches("^[1][0-2]$"))) {
-                menu2_opt_1 = Integer.parseInt(menu2_opt);
 
 
-                switch (menu2_opt_1) {
-                    case 1:
+                switch (menu2_opt) {
+                    case "1":
                         displayClients();
                         break;
-                    case 2:
+                    case "2":
                         displayClientsByType();
                         break;
-                    case 3:
+                    case "3":
                         displayCLDetails();
                         break;
-                    case 4:
+                    case "4":
                         manageClients();
                         break;
-                    case 5:
+                    case "5":
                         manageService();
                         break;
-                    case 6:
+                    case "6":
                         manageSubscription();
                         break;
-                    case 7:
+                    case "7":
                         if ((userList.get(u)) instanceof FrontdeskStaffs) {
                             String lgTime = "[" + DateFormat.getInstance().format(new Date()) + "]\t";
 
@@ -463,7 +462,7 @@ class TVSystem {
                             managePackage();
                             break;
                         }
-                    case 8:
+                    case "8":
                         if ((userList.get(u)) instanceof FrontdeskStaffs) {
                             String lgTime = "[" + DateFormat.getInstance().format(new Date()) + "]\t";
 
@@ -475,17 +474,17 @@ class TVSystem {
                             manageProgramme();
                             break;
                         }
-                    case 9:
+                    case "9":
                         manageUsers();
                         break;
-                    case 10:
+                    case "10":
                         reportGen();
                         break;
-                    case 11:
+                    case "11":
                         logout();
                         break;
-                    case 12:
-                        //secretFunction();
+                    case "12":
+                        printLists();
                         break;
                 }
             } else
@@ -898,13 +897,11 @@ class TVSystem {
                                                 check = false;
                                                 break;
                                             } else {
-
                                                 y = s;
                                                 check = true;
                                             }
                                         }
                                         val = true;
-                                        break;
                                     } else {
                                         p.println("Invalid ID format.");
                                         val = false;
@@ -991,9 +988,10 @@ class TVSystem {
                                                 p.println("Sorry, the ID has been taken. Please enter an unused ID.");
                                                 check = false;
                                                 break;
-                                            } else
+                                            } else {
                                                 y = s;
-                                            check = true;
+                                                check = true;
+                                            }
                                         }
                                         val = true;
                                     } else {
@@ -1086,9 +1084,10 @@ class TVSystem {
                                                 p.println("Sorry, the ID has been taken. Please enter an unused ID.");
                                                 check = false;
                                                 break;
-                                            } else
+                                            } else {
                                                 y = s;
-                                            check = true;
+                                                check = true;
+                                            }
                                         }
                                         val = true;
                                     } else {
@@ -1185,9 +1184,10 @@ class TVSystem {
                                                 p.println("Sorry, the ID has been taken. Please enter an unused ID.");
                                                 check = false;
                                                 break;
-                                            } else
+                                            } else {
                                                 y = s;
-                                            check = true;
+                                                check = true;
+                                            }
                                         }
                                     } else {
                                         p.println("Invalid ID format.");
@@ -1595,7 +1595,7 @@ class TVSystem {
                         do {
                             do {
                                 p.println("Please Enter the Client ID");
-                                clientID = input.nextLine();
+                                String clientID = input.nextLine();
 
                                 if (clientID.matches(Cl_IDregex)) {
                                     val = true;
@@ -1624,7 +1624,7 @@ class TVSystem {
                             do {
                                 val = true;
                                 do {
-                                    p.println("Please Enter the Smart Card Number: ");
+                                    p.println("Please Enter the Smart Card Number: [S######] ");
                                     smartCardNo = input.nextLine();
 
                                     if (smartCardNo.matches(ScNo_IDregex)) {
@@ -1646,7 +1646,7 @@ class TVSystem {
                             do {
                                 val = true;
                                 do {
-                                    p.println("Please Enter the Decoder Number: ");
+                                    p.println("Please Enter the Decoder Number: [D######]");
                                     decoderNo = input.nextLine();
 
                                     if (decoderNo.matches(decNo_IDregex)) {
@@ -1668,7 +1668,7 @@ class TVSystem {
                             p.println("Please Enter the Address: ");
                             String address = input.nextLine();
 
-                            servList.add(new Service(smartCardNo, decoderNo, clientID, address));
+                            servList.add(new Service(smartCardNo, clientID, decoderNo, address));
 
                             for (int i = 0; i < servList.size(); i++) {
                                 if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
@@ -2025,7 +2025,7 @@ class TVSystem {
                                     clientID = servList.get(i).getClientID();
 
                                     for (j = 0; j < servList.size(); j++) {
-                                        if (clientID == servList.get(i).getClientID()) {
+                                        if (clientID.equalsIgnoreCase(servList.get(i).getClientID())) {
                                             subsNo++;
                                         }
                                     }
@@ -3557,13 +3557,17 @@ class TVSystem {
             p.println("---------------");
 
             int a = 0, b = 0, c = 0, z = 0;
-            String d = "", e = "";
+            String d = "", e = "", f = "";
             for (i = 0; i < clientList.size(); i++) {
                 clientList.get(i).printClient();
+                f = clientList.get(i).getClientID();
                 //Display services
-                p.println("\nService details: ");
+
                 for (z = 0; z < servList.size(); z++) {
-                    if ((clientList.get(i).getClientID()).equalsIgnoreCase(servList.get(z).getClientID())) {
+                    if (z == 0)
+                        p.println("\nService details: ");
+
+                    if (f.equalsIgnoreCase(servList.get(z).getClientID())) {
                         servList.get(z).printServ();
                         p.println();
 
@@ -3573,31 +3577,35 @@ class TVSystem {
                                 subsList.get(a).printSubs();
                                 p.println();
                                 d = subsList.get(a).getPkgCode();
-                                break;
+
+                                //Display packages
+
+                                for (b = 0; b < pkgList.size(); b++) {
+                                    if (b == 0) {
+                                        p.println("Subscribed Package(s):");
+                                    }
+                                    if (d.equalsIgnoreCase(pkgList.get(b).getPkgCode())) {
+                                        pkgList.get(b).printPkg();
+                                        p.println();
+                                        e = pkgList.get(b).getPkgCode();
+
+                                        //Display packaging
+                                        p.println("This package consist of ");
+                                        for (c = 0; c < pckgingList.size(); c++) {
+                                            if (e.equalsIgnoreCase(pckgingList.get(c).getPkgCode())) {
+                                                pckgingList.get(c).printPckging();
+                                                p.println("-----------------------------------");
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        p.println("No package subscribed.");
+                                    }
+                                }
                             }
                         }
-
-                        //Display packages
-                        p.println("Subscribed Package(s):");
-                        for (b = 0; b < pkgList.size(); b++) {
-                            if (d.equalsIgnoreCase(pkgList.get(b).getPkgCode())) {
-                                pkgList.get(b).printPkg();
-                                p.println();
-                                e = pkgList.get(b).getPkgCode();
-                                break;
-
-                            }
-                        }
-
-                        //Display packaging
-                        p.println("This package consist of ");
-                        for (c = 0; c < pckgingList.size(); c++) {
-                            if (e.equalsIgnoreCase(pckgingList.get(c).getPkgCode())) {
-                                pckgingList.get(c).printPckging();
-                                p.println("-----------------------------------");
-                                break;
-                            }
-                        }
+                    } else {
+                        p.println("No services available.");
                     }
                 }
                 p.println("--------------------------------------------------------------------");
@@ -3611,8 +3619,8 @@ class TVSystem {
             }
         }
     }
+	/*--------------------------------------------------------------------------SECTION ELEVEN - LOGOUT----------------------------------------------------------------------------------------*/
 
-    /*--------------------------------------------------------------------------SECTION ELEVEN - LOGOUT----------------------------------------------------------------------------------------*/
     public void logout() {
         Date logTime = new Date();
         String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
@@ -3706,6 +3714,35 @@ class TVSystem {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //saving added data pckging_data.dat
+        try {
+            FileOutputStream pckging_fostream = new FileOutputStream("pckging_data.dat");
+            ObjectOutputStream pckging_oostream = new ObjectOutputStream(pckging_fostream);
+            for (i = 0; i < pckgingList.size(); i++) {
+                if (pckgingList.get(i) != null) {
+                    pckging_oostream.writeObject(pckgingList);
+                }
+            }
+            pckging_oostream.flush();
+            pckging_oostream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //saving added data prg_data.dat
+        try {
+            FileOutputStream prg_fostream = new FileOutputStream("prg_data.dat");
+            ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream);
+            for (i = 0; i < prgList.size(); i++) {
+                if (prgList.get(i) != null) {
+                    prg_oostream.writeObject(prgList);
+                }
+            }
+            prg_oostream.flush();
+            prg_oostream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //saving added data user_data.dat
         try {
             FileOutputStream user_fostream = new FileOutputStream("user_data.dat");
@@ -3720,11 +3757,117 @@ class TVSystem {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         //end of file handling
         //logList.clear();
-        menu2_opt_1 = 0;
     } //end logout
+
+    /*--------------------------------------------------------------------------SECTION TWELVE - DISPLAY LIST----------------------------------------------------------------------------------------*/
+    public void printLists() {
+        String lgTime = "[" + DateFormat.getInstance().format(new Date()) + "]\t";
+        log = new LogFile(lgTime, username, "has chosen the hidden function to print out all data in LinkedList.");
+        logList.addLast(log);
+
+        if (userList.get(u) instanceof Administrators) {
+            p.println("\nData List");
+            p.println("----------");
+
+            //Users
+            p.println("USERS LIST\n");
+
+            for (i = 0; i < userList.size(); i++) {
+                userList.get(i).printUser();
+            }
+
+            log = new LogFile(lgTime, username, "has printed out data in 'userList'.");
+            logList.addLast(log);
+
+            p.println("--------------------------------------------------------------------");
+
+            //Clients
+            p.println("CLIENTS LIST\n");
+            for (i = 0; i < clientList.size(); i++) {
+                clientList.get(i).printClient();
+            }
+
+            log = new LogFile(lgTime, username, "has printed out data in 'clientList'.");
+            logList.addLast(log);
+
+            p.println("--------------------------------------------------------------------");
+
+            //Services
+            p.println("SERVICE LIST\n");
+
+            for (i = 0; i < servList.size(); i++) {
+                servList.get(i).printServ();
+            }
+
+            log = new LogFile(lgTime, username, "has printed out data in 'servList'.");
+            logList.addLast(log);
+
+            p.println("--------------------------------------------------------------------");
+
+            //Subscriptions
+            p.println("SUBSCRIPTION LIST\n");
+
+            for (i = 0; i < subsList.size(); i++) {
+                subsList.get(i).printSecSubs();
+            }
+            log = new LogFile(lgTime, username, "has printed out data in 'subsList'.");
+            logList.addLast(log);
+
+            p.println("--------------------------------------------------------------------");
+
+            //Package
+            p.println("PACKAGE LIST\n");
+
+            for (i = 0; i < pkgList.size(); i++) {
+                pkgList.get(i).printPkg();
+            }
+            log = new LogFile(lgTime, username, "has printed out data in 'pkgList'.");
+            logList.addLast(log);
+
+            p.println("--------------------------------------------------------------------");
+
+            //Packaging
+            p.println("PACKAGING LIST\n");
+
+            for (i = 0; i < pckgingList.size(); i++) {
+                pckgingList.get(i).printSecPckging();
+            }
+            log = new LogFile(lgTime, username, "has printed out data in 'pckgingList'.");
+            logList.addLast(log);
+
+            p.println("--------------------------------------------------------------------");
+
+            //Programme
+            p.println("PACKAGE LIST\n");
+
+            for (i = 0; i < prgList.size(); i++) {
+                prgList.get(i).printList();
+            }
+            log = new LogFile(lgTime, username, "has printed out data in 'prgList'.");
+            logList.addLast(log);
+
+            p.println("--------------------------------------------------------------------");
+
+
+            //Logs
+            p.println("LOGS LIST\n");
+
+            for (i = 0; i < logList.size(); i++) {
+                logList.get(i).showLog();
+            }
+            log = new LogFile(lgTime, username, "has printed out data in 'logList'.");
+            logList.addLast(log);
+
+            log = new LogFile(lgTime, username, "has printed out all data in LinkedList.");
+            logList.addLast(log);
+        } else {
+            p.println("\nOnly Admin has the accessibility to use this hidden function.");
+            log = new LogFile(lgTime, username, "has not printed out all data in LinkedList[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+            logList.addLast(log);
+        }
+    }
 }
 
 /**************************************************************************

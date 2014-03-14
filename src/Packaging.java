@@ -22,6 +22,12 @@ class Packaging implements Serializable {
 
     public void printPckging() {
         System.out.println(getProgCode());
+        System.out.println();
+    }
+
+    public void printSecPckging() {
+        System.out.println(getProgCode() + " is linked to " + getPkgCode());
+        System.out.println();
     }
 }
 
