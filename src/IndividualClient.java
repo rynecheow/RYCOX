@@ -1,7 +1,5 @@
-import java.io.Serializable;
-
 @SuppressWarnings("serial")
-class IndividualClient extends ClientAccount implements Serializable {
+class IndividualClient extends ClientAccount {
     private int age;
     private String ic;
 
