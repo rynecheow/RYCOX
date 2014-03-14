@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -8,7 +9,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 class ViewClientDialog extends JDialog {
 
-    // Variables declaration
+    // Variables declaration 
     private JPanel BGPanel;
     private JSeparator DialogSeparator;
     private JButton cancelbutton;
@@ -122,9 +123,12 @@ class ViewClientDialog extends JDialog {
         clNameLabel.setBounds(10, 75, 50, 25);
 
         clNameInput.addCaretListener(new CaretListener() {
+
+            @Override
             public void caretUpdate(CaretEvent e) {
-                if (clNameInput.getText().trim() != "" && clNameInput.getText().trim() != null)
+                if (!"".equals(clNameInput.getText().trim()) && clNameInput.getText().trim() != null) {
                     clAppearedName.setText(clNameInput.getText().trim());
+                }
                 repaint();
             }
         });
@@ -175,6 +179,8 @@ class ViewClientDialog extends JDialog {
 
         cancelbutton.setText("Close Window");
         cancelbutton.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 cancelbuttonActionPerformed(evt);
             }
@@ -213,19 +219,15 @@ class ViewClientDialog extends JDialog {
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE));
 
         pack();
+        ClientPanel.defaultButtonSet();
     }//end constructor
 
     private void cancelbuttonActionPerformed(ActionEvent evt) {
         dispose();
     }
-
 }

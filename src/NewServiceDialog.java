@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class NewServiceDialog extends JDialog {
     private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, leftLabel, rightLabel;
     private JTextField idInput, scInput, dcInput;
@@ -17,10 +17,8 @@ class NewServiceDialog extends JDialog {
     private static JScrollPane leftListScroll;
     private static JScrollPane rightListScroll;
     private JSeparator separator, separator2;
-    @SuppressWarnings("rawtypes")
     private JComboBox statusBox;
     private String[] status = {"Active", "Inactive", "Barred"};
-    @SuppressWarnings("unused")
     private String smartCard, decoder, clientID, address, actualStatus;
     private Color fColor = new Color(255, 255, 255);
     private LinkedList<String> leftPkgList;
@@ -33,7 +31,6 @@ class NewServiceDialog extends JDialog {
     private int subsNo;
     private JWarnLabel scFormatWarn, scEmptyWarn, scSameWarn, dcFormatWarn, dcEmptyWarn, dcSameWarn, addWarn, subsPkgWarn;
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public NewServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
         idLabel = new JLabel("Client ID: ");
@@ -187,6 +184,7 @@ class NewServiceDialog extends JDialog {
         addBut.addActionListener(handler);
         rmvBut.addActionListener(handler);
         setSize(1000, 480);
+        ServicePanel.defaultButtonSet();
     }
 
     public class ButtonHandler implements ActionListener {
@@ -296,7 +294,6 @@ class NewServiceDialog extends JDialog {
         ServicePanel.addServ();
     }
 
-    @SuppressWarnings("unchecked")
     public void pkgAdd() {
         int leftIndex = leftList.getSelectedIndex();
         String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));

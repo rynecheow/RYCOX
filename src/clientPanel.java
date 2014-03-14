@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.TableModelEvent;
@@ -13,27 +14,26 @@ import java.io.ObjectOutputStream;
 /**
  * @author RYNE
  */
-
 @SuppressWarnings("serial")
 class ClientPanel extends JPanel {
 
     private static JTable clTable;
     @SuppressWarnings("rawtypes")
-    // Variables declaration
+    // Variables declaration 
     private JComboBox clTypeCombo;
-    private ToolbarButton cldeleteButton;
-    private ToolbarButton editclButton;
+    private static ToolbarButton cldeleteButton;
+    private static ToolbarButton editclButton;
     private JScrollPane scrollPane;
     private ToolbarButton newclButton;
     private ToolbarButton saveButton;
     private JPanel toolbar;
-    private ToolbarButton recoverButton;
-    private ToolbarButton viewButton;
-    private ToolbarButton deactButton;
+    private static ToolbarButton recoverButton;
+    private static ToolbarButton viewButton;
+    private static ToolbarButton deactButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JMenuItem editclMI, deleteclMI, addservMI, activateMI, viewMI, deactivateMI;
-    private ToolbarButton clActivateButton;
+    private static ToolbarButton clActivateButton;
     private static String[][] clData;
     private static AbstractTableModel model;
     static String[] editionData;
@@ -68,12 +68,7 @@ class ClientPanel extends JPanel {
         loginInfo.setForeground(Color.WHITE);
         loginInfo.setFont(new Font("LucidaSansRegular", Font.PLAIN, 14));
 
-        editclButton.setEnabled(false);
-        viewButton.setEnabled(false);
-        cldeleteButton.setEnabled(false);
-        recoverButton.setEnabled(false);
-        clActivateButton.setEnabled(false);
-        deactButton.setEnabled(false);
+        defaultButtonSet();
 
         clTypeCombo.setModel(new DefaultComboBoxModel(new String[]{"All", "Individual", "Government", "Private Organisation", "NGO"}));
 
@@ -87,48 +82,9 @@ class ClientPanel extends JPanel {
         GroupLayout toolbarLayout = new GroupLayout(toolbar);
         toolbar.setLayout(toolbarLayout);
         toolbarLayout.setHorizontalGroup(
-                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(newclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(editclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(cldeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(clActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(deactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                                .addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
+                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup().addContainerGap().addComponent(newclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(editclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(cldeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(clActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(deactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED, 109, Short.MAX_VALUE).addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addContainerGap()));
         toolbarLayout.setVerticalGroup(
-                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(toolbarLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(newclButton)
-                                        .addComponent(saveButton)
-                                        .addComponent(editclButton)
-                                        .addComponent(clActivateButton)
-                                        .addComponent(deactButton)
-                                        .addComponent(viewButton)
-                                        .addComponent(recoverButton)
-                                        .addComponent(loginInfo)
-                                        .addComponent(cldeleteButton))
-
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(toolbarLayout.createSequentialGroup().addContainerGap().addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(newclButton).addComponent(saveButton).addComponent(editclButton).addComponent(clActivateButton).addComponent(deactButton).addComponent(viewButton).addComponent(recoverButton).addComponent(loginInfo).addComponent(cldeleteButton)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
         clTable.setBackground(new Color(227, 226, 226));
         clTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12));
@@ -165,15 +121,16 @@ class ClientPanel extends JPanel {
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-
             boolean[] canEdit = new boolean[]{
                     false, false, false, false
             };
 
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
 
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
@@ -189,24 +146,14 @@ class ClientPanel extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(toolbar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(toolbar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE).addContainerGap()));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE).addContainerGap()));
 
         /////////*-------------------------- MOUSE LISTENER --------------------------*////////
         clTable.addMouseListener(new MouseAdapter() {
+
+            @Override
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     int rowNumber = clTable.rowAtPoint(e.getPoint());
@@ -224,6 +171,7 @@ class ClientPanel extends JPanel {
                 }
             }
 
+            @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     int rowNumber = clTable.rowAtPoint(e.getPoint());
@@ -246,9 +194,10 @@ class ClientPanel extends JPanel {
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
-        }
-        ); //table click rows
-        /*-------------------------- MOUSE LISTENER --------------------------*/
+        }); //table click rows
+        /*
+	 * -------------------------- MOUSE LISTENER --------------------------
+	 */
 
         //////////*-------------------------- DIALOG LISTENER --------------------------*//////////
         DialogHandler dialoghandler = new DialogHandler();
@@ -260,7 +209,9 @@ class ClientPanel extends JPanel {
         recoverButton.addActionListener(dialoghandler);
         clActivateButton.addActionListener(dialoghandler);
         deactButton.addActionListener(dialoghandler);
-		/*-------------------------- DIALOG LISTENER --------------------------*/
+	/*
+	 * -------------------------- DIALOG LISTENER --------------------------
+	 */
 
         /////////*------------------------------POP UP MENU-------------------------*//////////
         viewMI = new JMenuItem("View Client...");
@@ -282,14 +233,16 @@ class ClientPanel extends JPanel {
         popupMenu.add(activateMI);
         popupMenu.add(deactivateMI);
         popupMenu.add(addservMI);
-		/*-----------------------------------------------------------------------*/
+	/*
+	 * -----------------------------------------------------------------------
+	 */
         ChangeView aListener = new ChangeView();
         clTypeCombo.addItemListener(aListener);
     }//end constructor
 
     /**
-     * This method is called from the dialog when user finish doing
-     * input and new data is to be updated.
+     * This method is called from the dialog when user finish doing input and
+     * new data is to be updated.
      */
     static void updateAddTable() {
         int n = RYCOXv2.clientList.size() - 1;
@@ -299,15 +252,17 @@ class ClientPanel extends JPanel {
         clTable.setModel(model);
         clTable.repaint();
     }
-	/*--- START DIALOG HANDLER*/
-
+    /*
+     * --- START DIALOG HANDLER
+     */
 
     /**
-     * @author ANDRE
-     *         This class is to handle all the pressed buttons and returns a dialog if necessary.
-     *         Other actions are handled independently
+     * @author ANDRE This class is to handle all the pressed buttons and returns
+     *         a dialog if necessary. Other actions are handled independently
      */
     private class DialogHandler implements ActionListener {
+
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newclButton) {
                 NewClientDialog ncd = new NewClientDialog((JFrame) popupMenu.getParent());
@@ -315,38 +270,37 @@ class ClientPanel extends JPanel {
             } else if (e.getSource() == saveButton) {
                 try {
                     FileOutputStream client_fostream = new FileOutputStream("cl_data.rycox");
-                    ObjectOutputStream client_oostream = new ObjectOutputStream(client_fostream);
-                    for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
-                        if (RYCOXv2.clientList.get(i) != null) {
-                            client_oostream.writeObject(RYCOXv2.clientList);
+                    try (ObjectOutputStream client_oostream = new ObjectOutputStream(client_fostream)) {
+                        for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
+                            if (RYCOXv2.clientList.get(i) != null) {
+                                client_oostream.writeObject(RYCOXv2.clientList);
+                            }
                         }
-                    }
 
-                    client_oostream.flush();
-                    client_oostream.close();
+                        client_oostream.flush();
+                    }
                     RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[CLIENT]");
                     RYCOXv2.logList.add(RYCOXv2.log);
                     RYCOXv2.printLog();
 
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
                 try {
                     FileOutputStream FOS = new FileOutputStream("serv_data.rycox");
-                    ObjectOutputStream OOS = new ObjectOutputStream(FOS);
-                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-                        if (RYCOXv2.servList.get(i) != null) {
-                            OOS.writeObject(RYCOXv2.servList);
+                    try (ObjectOutputStream OOS = new ObjectOutputStream(FOS)) {
+                        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+                            if (RYCOXv2.servList.get(i) != null) {
+                                OOS.writeObject(RYCOXv2.servList);
+                            }
                         }
+                        OOS.flush();
                     }
-                    OOS.flush();
-                    OOS.close();
                     RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[SERVICE]");
                     RYCOXv2.logList.add(RYCOXv2.log);
                     RYCOXv2.printLog();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
+
             } else if (e.getSource() == editclButton || e.getSource() == editclMI) {
                 EditClientDialog ecd = new EditClientDialog((JFrame) popupMenu.getParent());
                 ecd.setVisible(true);
@@ -425,17 +379,21 @@ class ClientPanel extends JPanel {
             }
         }
     }
-	/*---END DIALOG HANDLER*/
+    /*
+     * ---END DIALOG HANDLER
+     */
 
-	/*--START ITEM HANDLER*/
+    /*
+     * --START ITEM HANDLER
+     */
 
     /**
-     * @author ANDRE
-     *         This class is created to handle the filtering of the JComboBox
-     *         with the view of the JTable.
+     * @author ANDRE This class is created to handle the filtering of the
+     *         JComboBox with the view of the JTable.
      */
     private class ChangeView implements ItemListener {
 
+        @Override
         public void itemStateChanged(ItemEvent e) {
             if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("All")) {
                 sorter.setRowFilter(RowFilter.regexFilter("[IiGgNnPp][0-9]{6}"));
@@ -455,11 +413,12 @@ class ClientPanel extends JPanel {
             }
         }
     }
-	/*--END ITEM HANDLER*/
+    /*
+     * --END ITEM HANDLER
+     */
 
     /**
-     * This method is to update the
-     * JTable in the view after editing.
+     * This method is to update the JTable in the view after editing.
      */
     public static void updateEditTable() {
         int count = RYCOXv2.clientList.size();
@@ -496,16 +455,17 @@ class ClientPanel extends JPanel {
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-
             boolean[] canEdit = new boolean[]{
                     false, false, false, false
             };
 
             @SuppressWarnings({"unchecked", "rawtypes"})
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
 
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
@@ -517,9 +477,9 @@ class ClientPanel extends JPanel {
     }
 
     /**
-     * This method is called when a row is selected. The corresponding
-     * data will be stored in an array and declared static to allow access
-     * within the same package.
+     * This method is called when a row is selected. The corresponding data will
+     * be stored in an array and declared static to allow access within the same
+     * package.
      */
     private void storeData() {
         row = clTable.getSelectedRow();
@@ -571,13 +531,23 @@ class ClientPanel extends JPanel {
     }
 
     /**
-     * This class is called by JButtons that appears above the toolbar.
-     * It takes in the parameter of a string, with an ImageIcon.
+     * This class is called by JButtons that appears above the toolbar. It takes
+     * in the parameter of a string, with an ImageIcon.
      */
     private class ToolbarButton extends JButton {
+
         public ToolbarButton(String string, ImageIcon imageIcon) {
             super("", imageIcon);
             this.setBackground(bColor);
         }
+    }
+
+    static void defaultButtonSet() {
+        editclButton.setEnabled(false);
+        viewButton.setEnabled(false);
+        cldeleteButton.setEnabled(false);
+        recoverButton.setEnabled(false);
+        clActivateButton.setEnabled(false);
+        deactButton.setEnabled(false);
     }
 }

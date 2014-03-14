@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
@@ -15,17 +16,17 @@ import java.io.ObjectOutputStream;
 class ServicePanel extends JPanel {
 
     private JTable servTable;
-    private JButton servDeleteButton;
-    private JButton editServButton;
-    private JButton viewButton;
+    private static JButton servDeleteButton;
+    private static JButton editServButton;
+    private static JButton viewButton;
     private JScrollPane scrollPane;
     private JButton redoButton;
     private JPanel toolbar;
     private JButton undoButton;
     private JButton saveButton;
-    private JButton recoverButton;
-    private JButton servActivateButton;
-    private JButton deactButton;
+    private static JButton recoverButton;
+    private static JButton servActivateButton;
+    private static JButton barButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
@@ -54,14 +55,14 @@ class ServicePanel extends JPanel {
         recoverButton.setBackground(bColor);
         servActivateButton = new JButton("", new ImageIcon(getClass().getResource("activatebutton.png")));
         servActivateButton.setBackground(bColor);
-        deactButton = new JButton("", new ImageIcon(getClass().getResource("deactivatebutton.png")));
-        deactButton.setBackground(bColor);
+        barButton = new JButton("", new ImageIcon(getClass().getResource("deactivatebutton.png")));
+        barButton.setBackground(bColor);
         scrollPane = new JScrollPane();
         servTable = new JTable();
         servTable.getTableHeader().setReorderingAllowed(false);
         loginInfo = new JLabel("You are logged in as " + RYCOXv2.user + ".");
         loginInfo.setForeground(Color.WHITE);
-
+        defaultButtonSet();
         setBackground(new Color(23, 28, 30));
         toolbar.setBackground(bColor);
         toolbar.setPreferredSize(new Dimension(1500, 30));
@@ -69,42 +70,9 @@ class ServicePanel extends JPanel {
         GroupLayout toolbarLayout = new GroupLayout(toolbar);
         toolbar.setLayout(toolbarLayout);
         toolbarLayout.setHorizontalGroup(
-                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(editServButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(servDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(servActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(deactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
+                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup().addContainerGap().addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(editServButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(barButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE).addContainerGap()));
         toolbarLayout.setVerticalGroup(
-                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(toolbarLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(saveButton)
-                                        .addComponent(editServButton)
-                                        .addComponent(servActivateButton)
-                                        .addComponent(deactButton)
-                                        .addComponent(viewButton)
-                                        .addComponent(recoverButton)
-                                        .addComponent(loginInfo)
-                                        .addComponent(servDeleteButton))
-
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(toolbarLayout.createSequentialGroup().addContainerGap().addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(saveButton).addComponent(editServButton).addComponent(servActivateButton).addComponent(barButton).addComponent(viewButton).addComponent(recoverButton).addComponent(loginInfo).addComponent(servDeleteButton)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
         servTable.setBackground(new Color(227, 226, 226));
         servTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
@@ -135,21 +103,21 @@ class ServicePanel extends JPanel {
                 servData,
                 new String[]{
                         "SmartCard No.", "Client ID", "Decoder ID", "Address", "Service Status"
-                }
-        ) {
+                }) {
 
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-
             boolean[] canEdit = new boolean[]{
                     false, false, false, false, false
             };
 
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
 
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
@@ -165,23 +133,13 @@ class ServicePanel extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(toolbar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(toolbar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE).addContainerGap()));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE).addContainerGap()));
 
         servTable.addMouseListener(new MouseAdapter() {
+
+            @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     int rowNumber = servTable.rowAtPoint(e.getPoint());
@@ -194,7 +152,7 @@ class ServicePanel extends JPanel {
                         editServButton.setEnabled(true);
                         viewButton.setEnabled(true);
                         servDeleteButton.setEnabled(true);
-                        deactButton.setEnabled(true);
+                        barButton.setEnabled(true);
                         recoverButton.setEnabled(false);
                         servActivateButton.setEnabled(false);
                         viewServMI.setEnabled(true);
@@ -207,8 +165,8 @@ class ServicePanel extends JPanel {
                         servDeleteButton.setEnabled(true);
                         servActivateButton.setEnabled(true);
                         recoverButton.setEnabled(false);
-                        editServButton.setEnabled(false);
-                        deactButton.setEnabled(false);
+                        editServButton.setEnabled(true);
+                        barButton.setEnabled(false);
                         viewServMI.setEnabled(true);
                         editServMI.setEnabled(false);
                         activeServMI.setEnabled(true);
@@ -220,7 +178,7 @@ class ServicePanel extends JPanel {
                         viewButton.setEnabled(true);
                         servDeleteButton.setEnabled(false);
                         servActivateButton.setEnabled(false);
-                        deactButton.setEnabled(false);
+                        barButton.setEnabled(false);
                         viewServMI.setEnabled(true);
                         editServMI.setEnabled(false);
                         activeServMI.setEnabled(false);
@@ -240,7 +198,7 @@ class ServicePanel extends JPanel {
                         editServButton.setEnabled(true);
                         viewButton.setEnabled(true);
                         servDeleteButton.setEnabled(true);
-                        deactButton.setEnabled(true);
+                        barButton.setEnabled(true);
                         recoverButton.setEnabled(false);
                         servActivateButton.setEnabled(false);
                         viewServMI.setEnabled(true);
@@ -254,7 +212,7 @@ class ServicePanel extends JPanel {
                         servActivateButton.setEnabled(true);
                         recoverButton.setEnabled(false);
                         editServButton.setEnabled(false);
-                        deactButton.setEnabled(false);
+                        barButton.setEnabled(false);
                         viewServMI.setEnabled(true);
                         editServMI.setEnabled(false);
                         activeServMI.setEnabled(true);
@@ -266,7 +224,7 @@ class ServicePanel extends JPanel {
                         viewButton.setEnabled(true);
                         servDeleteButton.setEnabled(false);
                         servActivateButton.setEnabled(false);
-                        deactButton.setEnabled(false);
+                        barButton.setEnabled(false);
                         viewServMI.setEnabled(true);
                         editServMI.setEnabled(false);
                         activeServMI.setEnabled(false);
@@ -281,8 +239,7 @@ class ServicePanel extends JPanel {
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
-        }
-        ); //table right click
+        }); //table right click
 
         editServMI = new JMenuItem("Edit Service...");
         deleteServMI = new JMenuItem("Terminate Service...");
@@ -304,7 +261,7 @@ class ServicePanel extends JPanel {
         recoverButton.addActionListener(d);
         viewButton.addActionListener(d);
         servActivateButton.addActionListener(d);
-        deactButton.addActionListener(d);
+        barButton.addActionListener(d);
         viewServMI.addActionListener(d);
         editServMI.addActionListener(d);
         activeServMI.addActionListener(d);
@@ -314,47 +271,47 @@ class ServicePanel extends JPanel {
     }//end constructor
 
     public class DialogHandler implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == saveButton) {
                 try {
                     FileOutputStream FOS = new FileOutputStream("serv_data.rycox");
-                    ObjectOutputStream OOS = new ObjectOutputStream(FOS);
-                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-                        if (RYCOXv2.servList.get(i) != null) {
-                            OOS.writeObject(RYCOXv2.servList);
+                    try (ObjectOutputStream OOS = new ObjectOutputStream(FOS)) {
+                        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+                            if (RYCOXv2.servList.get(i) != null) {
+                                OOS.writeObject(RYCOXv2.servList);
+                            }
                         }
+                        OOS.flush();
                     }
-                    OOS.flush();
-                    OOS.close();
                     RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[SERVICE]");
                     RYCOXv2.logList.add(RYCOXv2.log);
                     RYCOXv2.printLog();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
                 try {
                     FileOutputStream FOS = new FileOutputStream("subsc_data.rycox");
-                    ObjectOutputStream OOS = new ObjectOutputStream(FOS);
-                    for (int i = 0; i < RYCOXv2.subsList.size(); i++) {
-                        if (RYCOXv2.subsList.get(i) != null) {
-                            OOS.writeObject(RYCOXv2.subsList);
+                    try (ObjectOutputStream OOS = new ObjectOutputStream(FOS)) {
+                        for (int i = 0; i < RYCOXv2.subsList.size(); i++) {
+                            if (RYCOXv2.subsList.get(i) != null) {
+                                OOS.writeObject(RYCOXv2.subsList);
+                            }
                         }
+                        OOS.flush();
                     }
-                    OOS.flush();
-                    OOS.close();
                     RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[SUBSCIPTION]");
                     RYCOXv2.logList.add(RYCOXv2.log);
                     RYCOXv2.printLog();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
+
             } else if (e.getSource() == editServButton || e.getSource() == editServMI) {
                 EditServiceDialog ESD = new EditServiceDialog((JFrame) popupMenu.getParent());
                 ESD.setVisible(true);
                 updateTable();
             } else if (e.getSource() == servDeleteButton || e.getSource() == deleteServMI) {
-                int terminate = JOptionPane.showConfirmDialog(null, "Terminate " + temp[0] + " ?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                int terminate = JOptionPane.showConfirmDialog(null, "Terminate " + temp[0] + " ?", "Terminate Service", JOptionPane.WARNING_MESSAGE);
                 if (terminate == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < RYCOXv2.servList.size(); i++) {
                         if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -368,7 +325,7 @@ class ServicePanel extends JPanel {
                     updateTable();
                 }
             } else if (e.getSource() == recoverButton) {
-                int recover = JOptionPane.showConfirmDialog(null, "Recover " + temp[0] + " ?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                int recover = JOptionPane.showConfirmDialog(null, "Recover " + temp[0] + " ?", "Recover Service", JOptionPane.WARNING_MESSAGE);
                 if (recover == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < RYCOXv2.servList.size(); i++) {
                         if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -388,7 +345,7 @@ class ServicePanel extends JPanel {
                 RYCOXv2.logList.add(RYCOXv2.log);
                 RYCOXv2.printLog();
             } else if (e.getSource() == servActivateButton || e.getSource() == activeServMI) {
-                int activate = JOptionPane.showConfirmDialog(null, "Activate " + temp[0] + " ?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                int activate = JOptionPane.showConfirmDialog(null, "Activate " + temp[0] + " ?", "Activate Service", JOptionPane.WARNING_MESSAGE);
                 if (activate == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < RYCOXv2.servList.size(); i++) {
                         if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -401,8 +358,8 @@ class ServicePanel extends JPanel {
                     }
                     updateTable();
                 }
-            } else if (e.getSource() == deactButton || e.getSource() == barredServMI) {
-                int deact = JOptionPane.showConfirmDialog(null, "Barred " + temp[0] + " ?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+            } else if (e.getSource() == barButton || e.getSource() == barredServMI) {
+                int deact = JOptionPane.showConfirmDialog(null, "Barred " + temp[0] + " ?", "Barred Service", JOptionPane.WARNING_MESSAGE);
                 if (deact == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < RYCOXv2.servList.size(); i++) {
                         if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -447,23 +404,23 @@ class ServicePanel extends JPanel {
                 servData,
                 new String[]{
                         "SmartCard No.", "Client ID", "Decoder ID", "Address", "Service Status"
-                }
-        ) {
+                }) {
 
             @SuppressWarnings("rawtypes")
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-
             boolean[] canEdit = new boolean[]{
                     false, false, false, false, false
             };
 
             @SuppressWarnings({"unchecked", "rawtypes"})
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
 
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
@@ -481,5 +438,14 @@ class ServicePanel extends JPanel {
         int row = RYCOXv2.servList.size() - 1;
         String[] newServ = new String[]{RYCOXv2.servList.get(row).getSmartCardNo(), RYCOXv2.servList.get(row).getClientID(), RYCOXv2.servList.get(row).getDecodeNo(), RYCOXv2.servList.get(row).getAddress(), RYCOXv2.servList.get(row).getServStatus()};
         ((DefaultTableModel) model).addRow(newServ);
+    }
+
+    static void defaultButtonSet() {
+        recoverButton.setEnabled(false);
+        editServButton.setEnabled(false);
+        viewButton.setEnabled(false);
+        servDeleteButton.setEnabled(false);
+        servActivateButton.setEnabled(false);
+        barButton.setEnabled(false);
     }
 }

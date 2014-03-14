@@ -60,6 +60,7 @@ public class ClientReportDialog extends JDialog {
         jPanel2.add(closeW);
         closeW.setBounds(258, 413, 120, 30);
         closeW.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }

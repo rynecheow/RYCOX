@@ -1,8 +1,10 @@
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
 public class SaveFilePopUp {
+
     public SaveFilePopUp() {
         JFileChooser fileChooser = new JFileChooser(".");
         FileFilter filter1 = new ExtensionFileFilter("TXT File", new String[]{"txt"});
@@ -18,6 +20,7 @@ public class SaveFilePopUp {
     }
 
     class ExtensionFileFilter extends FileFilter {
+
         String description;
         String extensions[];
 
@@ -41,10 +44,12 @@ public class SaveFilePopUp {
             }
         }
 
+        @Override
         public String getDescription() {
             return description;
         }
 
+        @Override
         public boolean accept(File file) {
             if (file.isDirectory()) {
                 return true;

@@ -5,6 +5,7 @@ class NGOClient extends ClientAccount {
         super(name, address, clientID, accStatus, email);
     }
 
+    @Override
     public void printClient() {
         System.out.println("Client Name:\t" + getName());
         System.out.println("Client Address:\t" + getBillingAddress());
@@ -18,8 +19,9 @@ class NGOClient extends ClientAccount {
         System.out.println("");
     }
 
+    @Override
     String stringClient() {
-        String name = "Client Name:\t" + getName();
+        String nameInput = "Client Name:\t" + getName();
         String add = "Client Address:\t" + getBillingAddress();
         String Id = "Client ID:\t" + getClientID();
         String accStats = "Creation Date:\t" + getCreationDate();
@@ -30,7 +32,7 @@ class NGOClient extends ClientAccount {
         else
             termDate = "";
 
-        String cl = name + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
+        String cl = nameInput + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
         return cl;
     }
 }

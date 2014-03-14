@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
@@ -34,13 +35,9 @@ class LogDialog extends JDialog {
         GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 100, Short.MAX_VALUE)
-        );
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 100, Short.MAX_VALUE));
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 100, Short.MAX_VALUE)
-        );
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 100, Short.MAX_VALUE));
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -66,6 +63,8 @@ class LogDialog extends JDialog {
         jPanel2.add(closeW);
         closeW.setBounds(258, 413, 120, 30);
         closeW.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
@@ -74,22 +73,18 @@ class LogDialog extends JDialog {
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE));
 
         pack();
     }
 
     static void readin(String fn, JTextComponent pane) {
         try {
-            FileReader fr = new FileReader(fn);
-            pane.read(fr, null);
-            fr.close();
+            try (FileReader fr = new FileReader(fn)) {
+                pane.read(fr, null);
+            }
         } catch (IOException e) {
             System.err.println(e);
         }

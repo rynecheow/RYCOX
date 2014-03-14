@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.AbstractTableModel;
@@ -19,16 +20,16 @@ class ProgrammePanel extends JPanel {
 
     private static JTable prgTable;
     private JButton prgAddButton;
-    private JButton prgDeleteButton;
-    private JButton editPrgButton;
+    private static JButton prgDeleteButton;
+    private static JButton editPrgButton;
     private JScrollPane scrollPane;
     //private JButton redoButton;
     private JPanel toolbar;
     private JButton saveButton;
     //private JButton undoButton;
-    private JButton viewButton;
-    private JButton prgActivateButton;
-    private JButton prgDeactButton;
+    private static JButton viewButton;
+    private static JButton prgActivateButton;
+    private static JButton prgDeactButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
@@ -37,7 +38,7 @@ class ProgrammePanel extends JPanel {
     private static AbstractTableModel prgModel;
     static String[] progtemp;
     private int rowno;
-
+    static int lol;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public ProgrammePanel() {
@@ -48,10 +49,6 @@ class ProgrammePanel extends JPanel {
         editPrgButton.setBackground(bColor);
         saveButton = new JButton("", new ImageIcon(getClass().getResource("savebutton.png")));
         saveButton.setBackground(bColor);
-        //redoButton = new JButton("",new ImageIcon(getClass().getResource("redobutton.png")));
-        //redoButton.setBackground(bColor);
-        //undoButton = new JButton("",new ImageIcon(getClass().getResource("undobutton.png")));
-        //undoButton.setBackground(bColor);
         prgDeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
         prgDeleteButton.setBackground(bColor);
         viewButton = new JButton("", new ImageIcon(getClass().getResource("viewbutton.png")));
@@ -70,52 +67,19 @@ class ProgrammePanel extends JPanel {
         setBackground(new Color(23, 28, 30));
         toolbar.setBackground(bColor);
         toolbar.setPreferredSize(new Dimension(1500, 30));
-
+        defaultButtonSet();
         GroupLayout toolbarLayout = new GroupLayout(toolbar);
         toolbar.setLayout(toolbarLayout);
         toolbarLayout.setHorizontalGroup(
-                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(prgAddButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(editPrgButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(prgDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                        //.addComponent(undoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-                                        //.addPreferredGap(ComponentPlacement.UNRELATED)
-                                        //.addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-                                        //.addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(prgActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(prgDeactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
+                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup().addContainerGap().addComponent(prgAddButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(editPrgButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(prgDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED) //.addComponent(undoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+                        //.addPreferredGap(ComponentPlacement.UNRELATED)
+                        //.addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+                        //.addPreferredGap(ComponentPlacement.UNRELATED)
+                        .addComponent(prgActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(prgDeactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE).addContainerGap()));
         toolbarLayout.setVerticalGroup(
-                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(toolbarLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(prgAddButton)
-                                        .addComponent(saveButton)
-                                        .addComponent(editPrgButton)
-                                        .addComponent(viewButton)
-                                                //.addComponent(redoButton)
-                                                //.addComponent(undoButton)
-                                        .addComponent(prgActivateButton)
-                                        .addComponent(prgDeactButton)
-                                        .addComponent(loginInfo)
-                                        .addComponent(prgDeleteButton))
-
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(toolbarLayout.createSequentialGroup().addContainerGap().addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(prgAddButton).addComponent(saveButton).addComponent(editPrgButton).addComponent(viewButton) //.addComponent(redoButton)
+                        //.addComponent(undoButton)
+                        .addComponent(prgActivateButton).addComponent(prgDeactButton).addComponent(loginInfo).addComponent(prgDeleteButton)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
         prgTable.setBackground(new Color(227, 226, 226));
         prgTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
@@ -151,13 +115,10 @@ class ProgrammePanel extends JPanel {
                 prgData,
                 new String[]{
                         "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type", "Programme Status"
-                }
-        ) {
+                }) {
 
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
-            };
-
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,};
             boolean[] canEdit = new boolean[]{
                     false, false, false, false, false, false
             };
@@ -182,23 +143,12 @@ class ProgrammePanel extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(toolbar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(toolbar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE).addContainerGap()));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE).addContainerGap()));
 
         prgTable.addMouseListener(new MouseAdapter() {
+
             public void mouseReleased(MouseEvent e) {          //////////////////
                 if (SwingUtilities.isRightMouseButton(e)) {
                     int rowNumber = prgTable.rowAtPoint(e.getPoint());
@@ -221,8 +171,7 @@ class ProgrammePanel extends JPanel {
                             progtemp[7] = RYCOXv2.prgList.get(j).getViewerStatus();
                             progtemp[8] = RYCOXv2.prgList.get(j).getType();
                             progtemp[9] = RYCOXv2.prgList.get(j).getNotes();
-
-
+                            lol = j;
                             break;
                         }
                     }
@@ -250,7 +199,6 @@ class ProgrammePanel extends JPanel {
                             progtemp[8] = RYCOXv2.prgList.get(j).getType();
                             progtemp[9] = RYCOXv2.prgList.get(j).getNotes();
 
-
                             break;
                         }
                     }
@@ -265,8 +213,7 @@ class ProgrammePanel extends JPanel {
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
-        }
-        ); //table click            /////////////////////////////////////////////////
+        }); //table click            /////////////////////////////////////////////////
 
         editPrgMI = new JMenuItem("Edit Programme...");
         deletePrgMI = new JMenuItem("Terminate Programme...");
@@ -282,7 +229,39 @@ class ProgrammePanel extends JPanel {
         popupMenu.add(deactivateMI);
         popupMenu.add(viewMI);
 
-		/*-------------------------- MENU ITEM LISTENER --------------------------*/
+        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+            prgAddButton.setVisible(true);
+            saveButton.setVisible(true);
+            editPrgButton.setVisible(true);
+            viewButton.setVisible(true);
+            prgDeleteButton.setVisible(true);
+            prgActivateButton.setVisible(true);
+            prgDeactButton.setVisible(true);
+            editPrgMI.setVisible(true);
+            deletePrgMI.setVisible(true);
+            activateMI.setVisible(true);
+            deactivateMI.setVisible(true);
+            viewMI.setVisible(true);
+        } else {
+            prgAddButton.setVisible(false);
+            saveButton.setVisible(false);
+            editPrgButton.setVisible(false);
+            viewButton.setVisible(true);
+            prgDeleteButton.setVisible(false);
+            prgActivateButton.setVisible(false);
+            prgDeactButton.setVisible(false);
+            editPrgMI.setVisible(false);
+            deletePrgMI.setVisible(false);
+            activateMI.setVisible(false);
+            deactivateMI.setVisible(false);
+            viewMI.setVisible(true);
+        }
+
+
+
+	/*
+     * -------------------------- MENU ITEM LISTENER --------------------------
+	 */
         activateMI.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -316,7 +295,6 @@ class ProgrammePanel extends JPanel {
                 }
 
             }
-
         });
 
 
@@ -364,7 +342,6 @@ class ProgrammePanel extends JPanel {
                 new ViewProgrammeDialog((JFrame) popupMenu.getParent());
                 prgTable.clearSelection();
             }
-
         });
 
         editPrgMI.addActionListener(new ActionListener() {
@@ -390,7 +367,9 @@ class ProgrammePanel extends JPanel {
                             JOptionPane.showMessageDialog(null, "The programme is included in one or more packages. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
                             flag = false;
                             break;
-                        } else flag = true;
+                        } else {
+                            flag = true;
+                        }
                     }
 
                     if (flag == true) {
@@ -422,7 +401,9 @@ class ProgrammePanel extends JPanel {
             }
         });
 
-		/*-------------------------- BUTTON LISTENER --------------------------*/
+	/*
+	 * -------------------------- BUTTON LISTENER --------------------------
+	 */
         prgActivateButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -455,7 +436,6 @@ class ProgrammePanel extends JPanel {
                 }
 
             }
-
         });
 
 
@@ -505,7 +485,6 @@ class ProgrammePanel extends JPanel {
                     JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-
         });
 
         prgAddButton.addActionListener(new ActionListener() {
@@ -519,6 +498,7 @@ class ProgrammePanel extends JPanel {
         });
 
         saveButton.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 try {
                     FileOutputStream prg_fostream = new FileOutputStream("prg_data.rycox");
@@ -533,7 +513,7 @@ class ProgrammePanel extends JPanel {
                     RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[PROGRAMME]");
                     RYCOXv2.logList.add(RYCOXv2.log);
                     RYCOXv2.printLog();
-//					JOptionPane.showMessageDialog(null, "You have successfully saved the changes of TV Programmes !", "Save successfully", JOptionPane.PLAIN_MESSAGE);
+                    //					JOptionPane.showMessageDialog(null, "You have successfully saved the changes of TV Programmes !", "Save successfully", JOptionPane.PLAIN_MESSAGE);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -569,7 +549,9 @@ class ProgrammePanel extends JPanel {
                                 JOptionPane.showMessageDialog(null, "The programme is included in one or more packages. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
                                 flag = false;
                                 break;
-                            } else flag = true;
+                            } else {
+                                flag = true;
+                            }
                         }
 
 
@@ -607,7 +589,6 @@ class ProgrammePanel extends JPanel {
 
     }//end constructor
 
-
     public void updateProgrammeTable() {
         prgData = new String[RYCOXv2.prgList.size()][6];
         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
@@ -639,14 +620,11 @@ class ProgrammePanel extends JPanel {
                 prgData,
                 new String[]{
                         "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type", "Programme Status"
-                }
-        ) {
+                }) {
 
             @SuppressWarnings("rawtypes")
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
-            };
-
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,};
             boolean[] canEdit = new boolean[]{
                     false, false, false, false, false, false
             };
@@ -669,37 +647,72 @@ class ProgrammePanel extends JPanel {
         scrollPane.setViewportView(prgTable);
     }
 
-
     private void changeMode() {
         rowno = prgTable.getSelectedRow();
         String ID = (String) prgTable.getValueAt(rowno, 0);
 
         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
             if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-
-                if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                lol = i;
+                if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                    prgDeleteButton.setEnabled(true);
+                    editPrgButton.setEnabled(true);
+                    prgActivateButton.setEnabled(false);
                     prgDeactButton.setEnabled(true);
+                    deletePrgMI.setEnabled(true);
+                    editPrgMI.setEnabled(true);
+                    activateMI.setEnabled(false);
                     deactivateMI.setEnabled(true);
-                    prgActivateButton.setEnabled(false);
-                    activateMI.setEnabled(false);
-                } else if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
-                    prgDeactButton.setEnabled(false);
-                    deactivateMI.setEnabled(false);
+                    deletePrgMI.setEnabled(true);
+                    viewButton.setEnabled(true);
+                    prgDeleteButton.setVisible(true);
+                    editPrgButton.setVisible(true);
+                    prgActivateButton.setVisible(true);
+                    prgDeactButton.setVisible(true);
+                    editPrgMI.setVisible(true);
+                    activateMI.setVisible(true);
+                    deactivateMI.setVisible(true);
+                    deletePrgMI.setVisible(true);
+                } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                    prgDeleteButton.setEnabled(true);
+                    editPrgButton.setEnabled(true);
                     prgActivateButton.setEnabled(true);
-                    activateMI.setEnabled(true);
-                } else {
                     prgDeactButton.setEnabled(false);
+                    deletePrgMI.setEnabled(true);
+                    editPrgMI.setEnabled(true);
+                    activateMI.setEnabled(true);
                     deactivateMI.setEnabled(false);
-                    prgActivateButton.setEnabled(false);
-                    activateMI.setEnabled(false);
-                    editPrgButton.setEnabled(false);
-                    editPrgMI.setEnabled(false);
-                    prgDeleteButton.setEnabled(false);
+                    deletePrgMI.setEnabled(true);
+                    viewButton.setEnabled(true);
+                    prgDeleteButton.setVisible(true);
+                    editPrgButton.setVisible(true);
+                    prgActivateButton.setVisible(true);
+                    prgDeactButton.setVisible(true);
+                    editPrgMI.setVisible(true);
+                    activateMI.setVisible(true);
+                    deactivateMI.setVisible(true);
+                    deletePrgMI.setVisible(true);
+                } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("TERMINATED")) {
+                    prgDeleteButton.setVisible(false);
+                    editPrgButton.setVisible(false);
+                    prgActivateButton.setVisible(false);
+                    prgDeactButton.setVisible(false);
                     deletePrgMI.setEnabled(false);
+                    editPrgMI.setVisible(false);
+                    activateMI.setVisible(false);
+                    deactivateMI.setVisible(false);
+                    deletePrgMI.setVisible(false);
+                    viewButton.setEnabled(true);
                 }
             }
         }
     }
 
-
+    static void defaultButtonSet() {
+        editPrgButton.setEnabled(false);
+        viewButton.setEnabled(false);
+        prgDeleteButton.setEnabled(false);
+        prgActivateButton.setEnabled(false);
+        prgDeactButton.setEnabled(false);
+    }
 }

@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -5,13 +6,12 @@ import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 class ViewProgrammeDialog extends JDialog {
+
     private JLabel label1, label2, label3, label4, label5, label6, label7, label8, label9, label10;
     private JLabel label11, label12, label14, label15, label16, label17, label18, label19, label20;
     private JLabel label13;
-
     private JButton button1;
     private Color color, color1;
-
 
     public ViewProgrammeDialog(JFrame frame) {
         super(frame, "Programme details", true);
@@ -71,11 +71,12 @@ class ViewProgrammeDialog extends JDialog {
 
 
         button1.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 dispose();
             }
-
         });
 
         container.setLayout(spring);
@@ -168,7 +169,6 @@ class ViewProgrammeDialog extends JDialog {
         setSize(780, 420);
         setLocation(200, 60);
         setVisible(true);
+        ProgrammePanel.defaultButtonSet();
     }
-
-
 }

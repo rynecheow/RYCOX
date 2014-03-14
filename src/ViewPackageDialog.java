@@ -1,11 +1,13 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class ViewPackageDialog extends JDialog {
+
     private JLabel label1, label2, label3, label4;
     private JTextField textfield1, textfield2, textfield3, textfield4;
     private JList leftList;
@@ -21,7 +23,6 @@ class ViewPackageDialog extends JDialog {
     private JScrollPane leftListScroll;
     private JScrollPane rightListScroll;
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public ViewPackageDialog(JFrame frame) {
         super(frame, "Package Management- View a TV Package", true);
 
@@ -55,7 +56,7 @@ class ViewPackageDialog extends JDialog {
         color2 = new Color(241, 236, 236);
 
 
-        leftPrgList = new LinkedList<String>();
+        leftPrgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
@@ -115,6 +116,7 @@ class ViewPackageDialog extends JDialog {
 
         button2.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 dispose();
@@ -174,6 +176,4 @@ class ViewPackageDialog extends JDialog {
         setLocation(400, 60);
         setVisible(true);
     }
-
-
 }

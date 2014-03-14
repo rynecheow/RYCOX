@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
@@ -49,8 +50,8 @@ public class ManageUsers extends JDialog implements ActionListener {
                 usData,
                 new String[]{
                         "User Type", "User ID", "Last logged in:"
-                }
-        ) {
+                }) {
+
             @SuppressWarnings("rawtypes")
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class, java.lang.String.class
@@ -60,10 +61,12 @@ public class ManageUsers extends JDialog implements ActionListener {
             };
 
             @SuppressWarnings({"rawtypes", "unchecked"})
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
 
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
@@ -79,43 +82,20 @@ public class ManageUsers extends JDialog implements ActionListener {
         GroupLayout BGPanelLayout = new GroupLayout(BGPanel);
         BGPanel.setLayout(BGPanelLayout);
         BGPanelLayout.setHorizontalGroup(
-                BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(BGPanelLayout.createSequentialGroup()
-                                .addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(BGPanelLayout.createSequentialGroup()
-                                                .addGap(115, 115, 115)
-                                                .addComponent(addNewUserButton)
-                                                .addGap(98, 98, 98)
-                                                .addComponent(deleteUserButton))
-                                        .addGroup(BGPanelLayout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(scrollpane, GroupLayout.PREFERRED_SIZE, 548, GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(19, Short.MAX_VALUE))
-        );
+                BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(BGPanelLayout.createSequentialGroup().addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(BGPanelLayout.createSequentialGroup().addGap(115, 115, 115).addComponent(addNewUserButton).addGap(98, 98, 98).addComponent(deleteUserButton)).addGroup(BGPanelLayout.createSequentialGroup().addGap(18, 18, 18).addComponent(scrollpane, GroupLayout.PREFERRED_SIZE, 548, GroupLayout.PREFERRED_SIZE))).addContainerGap(19, Short.MAX_VALUE)));
         BGPanelLayout.setVerticalGroup(
-                BGPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(BGPanelLayout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(scrollpane, GroupLayout.PREFERRED_SIZE, 376, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(BGPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(addNewUserButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(deleteUserButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(23, Short.MAX_VALUE))
-        );
+                BGPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(BGPanelLayout.createSequentialGroup().addGap(28, 28, 28).addComponent(scrollpane, GroupLayout.PREFERRED_SIZE, 376, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addGroup(BGPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(addNewUserButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE).addComponent(deleteUserButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)).addContainerGap(23, Short.MAX_VALUE)));
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE));
 
         userTable.addMouseListener(new MouseAdapter() {
+
+            @Override
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     int rowNumber = userTable.rowAtPoint(e.getPoint());
@@ -125,6 +105,7 @@ public class ManageUsers extends JDialog implements ActionListener {
                 }
             }
 
+            @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     int rowNumber = userTable.rowAtPoint(e.getPoint());
@@ -145,7 +126,8 @@ public class ManageUsers extends JDialog implements ActionListener {
     }
 
     /**
-     * This method first loads all the users (except the current user) into a 2- dimensional array.
+     * This method first loads all the users (except the current user) into a 2-
+     * dimensional array.
      */
     private void loadData() {
         int count = RYCOXv2.userList.size() - 1;

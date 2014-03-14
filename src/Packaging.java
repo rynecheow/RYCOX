@@ -1,7 +1,9 @@
+
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
 class Packaging implements Serializable {
+
     private String pkgCode;                    //initialise variables
     private String progCode;
 

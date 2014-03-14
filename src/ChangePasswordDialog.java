@@ -159,6 +159,7 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
     }
 
 
+    @SuppressWarnings("deprecation")
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == confirmButton) {

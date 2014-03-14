@@ -29,6 +29,7 @@ class IndividualClient extends ClientAccount {
     }
 
     //Print Basic Details
+    @Override
     public void printClient() {
         System.out.println();
         System.out.println("Client Name:\t" + getName());
@@ -41,9 +42,10 @@ class IndividualClient extends ClientAccount {
         System.out.println();
     }
 
+    @Override
     String stringClient() {
-        String name = "Client Name:\t" + getName();
-        String age = "Client Age:\t" + getAge();
+        String nameInput = "Client Name:\t" + getName();
+        String ageInput = "Client Age:\t" + getAge();
         String Ic = "Client IC:\t" + getIC();
         String add = "Client Address:\t" + getBillingAddress();
         String Id = "Client ID:\t" + getClientID();
@@ -55,7 +57,7 @@ class IndividualClient extends ClientAccount {
         else
             termDate = "";
 
-        String cl = name + "\n" + age + "\n" + Ic + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
+        String cl = nameInput + "\n" + ageInput + "\n" + Ic + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
         return cl;
     }
 }

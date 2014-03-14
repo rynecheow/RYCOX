@@ -6,6 +6,7 @@ class Administrators extends Users {
         super(userID, password);
     }
 
+    @Override
     public void printUser() {
         System.out.println("Staff type: Administrator");
         System.out.println("UserID:\t" + getUserID());

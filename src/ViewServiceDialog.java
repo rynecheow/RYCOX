@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -5,8 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class ViewServiceDialog extends JDialog {
+
     private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, rightLabel;
     private JTextField idInput, scInput, dcInput;
     private JTextArea addInput;
@@ -15,10 +17,8 @@ class ViewServiceDialog extends JDialog {
     private JScrollPane addScroll;
     private static JScrollPane rightListScroll;
     private JSeparator separator, separator2;
-    @SuppressWarnings("rawtypes")
     private JComboBox statusBox;
     private String[] status = {"Active", "Inactive", "Barred"};
-    @SuppressWarnings("unused")
     private String smartCard, decoder, clientID, address, actualStatus;
     private Color bColor = new Color(23, 28, 30);
     private Color nColor = new Color(51, 60, 64);
@@ -33,7 +33,6 @@ class ViewServiceDialog extends JDialog {
     private String addPkg;
     private int subsNo;
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public ViewServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
         idLabel = new JLabel("Client ID: ");
@@ -82,7 +81,7 @@ class ViewServiceDialog extends JDialog {
         statusBox = new JComboBox(status);
         statusBox.setSelectedItem(ServicePanel.temp[4]);
 
-        selPkgList = new LinkedList<String>();
+        selPkgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
         for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
@@ -123,6 +122,7 @@ class ViewServiceDialog extends JDialog {
         rightListScroll = new JScrollPane(rightList);
         rightListScroll.setViewportView(rightList);
         rightListScroll.setBorder(null);
+//		rightListScroll.setViewportBorder(Border );
 
         Container c = getContentPane();
         SpringLayout spring = new SpringLayout();
@@ -174,9 +174,11 @@ class ViewServiceDialog extends JDialog {
         ButtonHandler handler = new ButtonHandler();
         closeBut.addActionListener(handler);
         setSize(700, 420);
+        ServicePanel.defaultButtonSet();
     }
 
     public class ButtonHandler implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == closeBut) {

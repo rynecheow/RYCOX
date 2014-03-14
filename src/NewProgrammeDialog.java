@@ -1,12 +1,13 @@
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 @SuppressWarnings("serial")
 class NewProgrammeDialog extends JDialog {
+
     private JLabel label2, label3, label4, label5, label6, label7;
     private JLabel error3, error4, error5, error6, error7, error8;
     private JTextField textfield2, textfield3, textfield4;
@@ -76,6 +77,7 @@ class NewProgrammeDialog extends JDialog {
         label7.setForeground(color1);
         button1.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
@@ -145,17 +147,19 @@ class NewProgrammeDialog extends JDialog {
                     }
                     int newID = existedID + 1;
                     String newIDS = Integer.toString(newID);
-                    if (existedID < 10)
+                    if (existedID < 10) {
                         a = "F00" + newIDS;
-                    else if (existedID < 99)
+                    } else if (existedID < 99) {
                         a = "F0" + newIDS;
-                    else if ((existedID >= 99) && (existedID <= 999))
+                    } else if ((existedID >= 99) && (existedID <= 999)) {
                         a = "F" + newIDS;
+                    }
 
                     RYCOXv2.prgList.addLast(new TVProgramme(a, b, y, d, "ACTIVE", z, f, g));
                     JOptionPane.showMessageDialog(null, "You have successfully created a new TV Programme with programme code " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
                     LogFile log = new LogFile(RYCOXv2.user, "has created a new TV Programme '" + a + "'.");
                     RYCOXv2.logList.add(log);
+
                     dispose();
                 }
             }
@@ -163,9 +167,11 @@ class NewProgrammeDialog extends JDialog {
 
         button2.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int closeCf = JOptionPane.showConfirmDialog(null, "Stop Adding? All the changes will not be saved.", "Cancel Adding", JOptionPane.WARNING_MESSAGE);
                 if (closeCf == JOptionPane.YES_OPTION) {
+
                     dispose();
                 }
             }
@@ -239,5 +245,6 @@ class NewProgrammeDialog extends JDialog {
         setSize(580, 550);
         setLocation(400, 60);
         setVisible(true);
+        ProgrammePanel.defaultButtonSet();
     }
 }

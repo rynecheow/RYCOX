@@ -7,11 +7,13 @@ import java.util.LinkedList;
 
 @SuppressWarnings("serial")
 class EditServiceDialog extends JDialog {
-    private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, leftLabel, rightLabel;
+    private JLabel idLabel, scLabel, dcLabel, addLabel, leftLabel, rightLabel;
     private JTextField idInput, scInput, dcInput;
     private JTextArea addInput;
     private JButton okBut, ccBut, addBut, rmvBut;
+    @SuppressWarnings("rawtypes")
     private static JList leftList;
+    @SuppressWarnings("rawtypes")
     private static JList rightList;
     private JScrollPane addScroll;
     private static JScrollPane leftListScroll;
@@ -23,13 +25,17 @@ class EditServiceDialog extends JDialog {
     @SuppressWarnings("unused")
     private String smartCard, decoder, clientID, address, actualStatus;
     private Color fColor = new Color(255, 255, 255);
+    @SuppressWarnings("unused")
     private LinkedList<String> leftPkgList;
     private LinkedList<String> selPkgList;
+    @SuppressWarnings("rawtypes")
     private AbstractListModel leftModel;
+    @SuppressWarnings("rawtypes")
     private AbstractListModel rightModel;
     private String[] leftElArr;
     private String[] rightElArr;
     private String[] selPkg;
+    @SuppressWarnings("unused")
     private String addPkg;
     private int subsNo;
     private JWarnLabel scFormatWarn, scEmptyWarn, scSameWarn, dcFormatWarn, dcEmptyWarn, dcSameWarn, addWarn, subsPkgWarn;
@@ -79,7 +85,7 @@ class EditServiceDialog extends JDialog {
         statusBox = new JComboBox(status);
         statusBox.setSelectedItem(ServicePanel.temp[4]);
 
-        selPkgList = new LinkedList<String>();
+        selPkgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
         for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
@@ -214,6 +220,7 @@ class EditServiceDialog extends JDialog {
         addBut.addActionListener(handler);
         rmvBut.addActionListener(handler);
         setSize(1000, 480);
+        ServicePanel.defaultButtonSet();
     }
 
     public class ButtonHandler implements ActionListener {
@@ -330,7 +337,7 @@ class EditServiceDialog extends JDialog {
             }
         }
 
-        LinkedList<String> addElements = new LinkedList<String>();
+        LinkedList<String> addElements = new LinkedList<>();
         for (int p = 0; p < rightList.getModel().getSize(); p++) {
             addElements.add(((String) rightList.getModel().getElementAt(p)).substring(0, 3));
         }
@@ -340,7 +347,7 @@ class EditServiceDialog extends JDialog {
     }
 
     public void updateList() {
-        int k = 0;
+        int k;
         for (k = 0; k < RYCOXv2.servList.size(); k++) {
             if (RYCOXv2.servList.get(k).getSmartCardNo().equalsIgnoreCase(ServicePanel.temp[0])) {
                 break;
@@ -355,7 +362,7 @@ class EditServiceDialog extends JDialog {
     public void pkgAdd() {
         int leftIndex = leftList.getSelectedIndex();
         String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));
-        LinkedList<String> leftElements = new LinkedList<String>();
+        LinkedList<String> leftElements = new LinkedList<>();
         for (int p = 0; p < leftList.getModel().getSize(); p++) {
             leftElements.add((String) leftList.getModel().getElementAt(p));
         }
@@ -372,7 +379,7 @@ class EditServiceDialog extends JDialog {
         leftList.revalidate();
         leftList.repaint();
 
-        LinkedList<String> rightElements = new LinkedList<String>();
+        LinkedList<String> rightElements = new LinkedList<>();
         for (int z = 0; z < rightList.getModel().getSize(); z++) {
             rightElements.add((String) rightList.getModel().getElementAt(z));
         }
@@ -383,10 +390,11 @@ class EditServiceDialog extends JDialog {
         rightList.revalidate();
     }
 
+    @SuppressWarnings("unchecked")
     public void pkgRemove() {
         int rightIndex = rightList.getSelectedIndex();
         String toBeRemoved = ((String) rightList.getModel().getElementAt(rightIndex));
-        LinkedList<String> rightElements = new LinkedList<String>();
+        LinkedList<String> rightElements = new LinkedList<>();
         for (int p = 0; p < rightList.getModel().getSize(); p++) {
             rightElements.add((String) rightList.getModel().getElementAt(p));
         }
@@ -404,7 +412,7 @@ class EditServiceDialog extends JDialog {
         rightList.repaint();
 
 
-        LinkedList<String> leftElements = new LinkedList<String>();
+        LinkedList<String> leftElements = new LinkedList<>();
         for (int z = 0; z < leftList.getModel().getSize(); z++) {
             leftElements.add((String) leftList.getModel().getElementAt(z));
         }

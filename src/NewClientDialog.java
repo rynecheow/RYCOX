@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -10,7 +11,7 @@ import java.awt.event.ItemListener;
 @SuppressWarnings("serial")
 class NewClientDialog extends JDialog {
 
-    // Variables declaration
+    // Variables declaration 
     private JPanel BGPanel;
     private JSeparator DialogSeparator;
     private JButton cancelbutton;
@@ -124,6 +125,8 @@ class NewClientDialog extends JDialog {
         BGPanel.add(clTypeCombo);
         clTypeCombo.setBounds(440, 14, 150, 25);
         clTypeCombo.addItemListener(new ItemListener() {
+
+            @Override
             public void itemStateChanged(ItemEvent ie) {
                 if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("Individual")) {
                     clAgeCombo.setEnabled(true);
@@ -202,17 +205,23 @@ class NewClientDialog extends JDialog {
         BGPanel.add(warningMsgName);
 
         clFNameInput.addCaretListener(new CaretListener() {
+
+            @Override
             public void caretUpdate(CaretEvent e) {
-                if (clFNameInput.getText().trim() != "" && clFNameInput.getText().trim() != null && clLNameInput.getText().trim() != "" && clLNameInput.getText().trim() != null)
+                if (!"".equals(clFNameInput.getText().trim()) && clFNameInput.getText().trim() != null && !"".equals(clLNameInput.getText().trim()) && clLNameInput.getText().trim() != null) {
                     clAppearedName.setText(clFNameInput.getText().trim() + " " + clLNameInput.getText().trim());
+                }
                 repaint();
             }
         });
 
         clLNameInput.addCaretListener(new CaretListener() {
+
+            @Override
             public void caretUpdate(CaretEvent e) {
-                if (clFNameInput.getText().trim() != "" && clFNameInput.getText().trim() != null && clLNameInput.getText().trim() != "" && clLNameInput.getText().trim() != null)
+                if (!"".equals(clFNameInput.getText().trim()) && clFNameInput.getText().trim() != null && !"".equals(clLNameInput.getText().trim()) && clLNameInput.getText().trim() != null) {
                     clAppearedName.setText(clFNameInput.getText().trim() + " " + clLNameInput.getText().trim());
+                }
                 repaint();
             }
         });
@@ -256,6 +265,8 @@ class NewClientDialog extends JDialog {
         BGPanel.add(warningMsgAddr);
         submitbutton.setText("OK");
         submitbutton.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 submitbuttonActionPerformed(evt);
             }
@@ -265,6 +276,8 @@ class NewClientDialog extends JDialog {
 
         cancelbutton.setText("Cancel");
         cancelbutton.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 cancelbuttonActionPerformed(evt);
             }
@@ -302,15 +315,12 @@ class NewClientDialog extends JDialog {
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE));
 
         pack();
+        ClientPanel.defaultButtonSet();
     }//end constructor
 
     @SuppressWarnings("unused")
@@ -328,157 +338,162 @@ class NewClientDialog extends JDialog {
         String appendedID = "";
 
         type = (String) clTypeCombo.getSelectedItem();
-        if (type.equals("Individual")) {
-            String[] temp = {clFNameInput.getText().trim(), clLNameInput.getText().trim(), clIDInput.getText().trim(), clICInput.getText().trim(), clAddInput.getText().trim(), ((String) clAgeCombo.getSelectedItem()), clEmailInput.getText().trim()};
-            for (int i = 0; i < temp.length; i++) {
-                switch (i) {
-                    case 0:
-                        if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
-                            checkEmptyFN = true;
-                            warningMsgName.setVisible(true);
-                        } else {
-                            warningMsgName.setVisible(false);
-                        }
-                    case 1:
-                        if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
-                            checkEmptyFN = true;
-                            warningMsgName.setVisible(true);
+        switch (type) {
+            case "Individual": {
+                String[] temp = {clFNameInput.getText().trim(), clLNameInput.getText().trim(), clIDInput.getText().trim(), clICInput.getText().trim(), clAddInput.getText().trim(), ((String) clAgeCombo.getSelectedItem()), clEmailInput.getText().trim()};
+                for (int i = 0; i < temp.length; i++) {
+                    switch (i) {
+                        case 0:
+                            if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
+                                checkEmptyFN = true;
+                                warningMsgName.setVisible(true);
+                            } else {
+                                warningMsgName.setVisible(false);
+                            }
+                        case 1:
+                            if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
+                                checkEmptyFN = true;
+                                warningMsgName.setVisible(true);
 
-                        } else {
-                            warningMsgName.setVisible(false);
-                        }
-                    case 2:
-                        if (temp[2].length() == 0 || temp[2] == null) {
-                            checkEmptyID = true;
-                            warningMsgID.setVisible(true);
-                            warningMsgFormat.setVisible(false);
-                            warningMsgIDEx.setVisible(false);
-                        } else {
-                            warningMsgID.setVisible(false);
-                            if (temp[2].matches("[Ii][0-9]{6}")) {
-                                checkWrongFormat = false;
+                            } else {
+                                warningMsgName.setVisible(false);
+                            }
+                        case 2:
+                            if (temp[2].length() == 0 || temp[2] == null) {
+                                checkEmptyID = true;
+                                warningMsgID.setVisible(true);
                                 warningMsgFormat.setVisible(false);
                                 warningMsgIDEx.setVisible(false);
-                                for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                    if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
-                                        warningMsgIDEx.setVisible(true);
-                                        existed = true;
-                                        break;
-                                    } else {
-                                        warningMsgIDEx.setVisible(false);
-                                        existed = false;
-                                    }
-                                }
                             } else {
-                                checkWrongFormat = true;
-                                warningMsgFormat.setVisible(true);
-                                warningMsgIDEx.setVisible(false);
+                                warningMsgID.setVisible(false);
+                                if (temp[2].matches("[Ii][0-9]{6}")) {
+                                    checkWrongFormat = false;
+                                    warningMsgFormat.setVisible(false);
+                                    warningMsgIDEx.setVisible(false);
+                                    for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
+                                        if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                            warningMsgIDEx.setVisible(true);
+                                            existed = true;
+                                            break;
+                                        } else {
+                                            warningMsgIDEx.setVisible(false);
+                                            existed = false;
+                                        }
+                                    }
+                                } else {
+                                    checkWrongFormat = true;
+                                    warningMsgFormat.setVisible(true);
+                                    warningMsgIDEx.setVisible(false);
+                                }
                             }
-                        }
-                    case 3:
-                        if (temp[3].length() == 0 || temp[3] == null) {
-                            checkEmptyIC = true;
-                            warningMsgIC.setVisible(true);
+                        case 3:
+                            if (temp[3].length() == 0 || temp[3] == null) {
+                                checkEmptyIC = true;
+                                warningMsgIC.setVisible(true);
 
-                        } else {
-                            warningMsgIC.setVisible(false);
-                        }
-                    case 4:
-                        if (temp[4].length() == 0 || temp[4] == null) {
-                            checkEmptyADD = true;
-                            warningMsgAddr.setVisible(true);
-                        } else {
-                            warningMsgAddr.setVisible(false);
-                        }
-                    case 5:
-                        if (temp[5].equals("--")) {
-                            checkEmptyAGE = true;
-                            warningMsgAge.setVisible(true);
+                            } else {
+                                warningMsgIC.setVisible(false);
+                            }
+                        case 4:
+                            if (temp[4].length() == 0 || temp[4] == null) {
+                                checkEmptyADD = true;
+                                warningMsgAddr.setVisible(true);
+                            } else {
+                                warningMsgAddr.setVisible(false);
+                            }
+                        case 5:
+                            if (temp[5].equals("--")) {
+                                checkEmptyAGE = true;
+                                warningMsgAge.setVisible(true);
 
-                        } else {
-                            warningMsgAge.setVisible(false);
-                        }
-                    case 6:
-                        if (temp[6].length() == 0 || temp[6] == null) {
-                            checkEmptyEM = true;
-                            warningMsgEmail.setVisible(true);
-                        } else {
-                            warningMsgEmail.setVisible(false);
-                        }
+                            } else {
+                                warningMsgAge.setVisible(false);
+                            }
+                        case 6:
+                            if (temp[6].length() == 0 || temp[6] == null) {
+                                checkEmptyEM = true;
+                                warningMsgEmail.setVisible(true);
+                            } else {
+                                warningMsgEmail.setVisible(false);
+                            }
+                    }
+                    break;
                 }
-                break;
+                if (existed == false && checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyIC == false && checkEmptyADD == false && checkEmptyAGE == false && checkEmptyEM == false && checkWrongFormat == false) {
+                    clientCreation();
+                    dispose();
+                }
             }
-            if (existed == false && checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyIC == false && checkEmptyADD == false && checkEmptyAGE == false && checkEmptyEM == false && checkWrongFormat == false) {
-                clientCreation();
-                dispose();
-            }
-        } else if (type.equals("Government") || type.equals("Government") || type.equals("Private Organisation") || type.equals("NGO")) {
-            String[] temp = {clFNameInput.getText().trim(), clLNameInput.getText().trim(), clIDInput.getText().trim(), clAddInput.getText().trim(), clEmailInput.getText().trim()};
-            for (int i = 0; i < temp.length; i++) {
-                switch (i) {
-                    case 0:
-                        if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
-                            checkEmptyFN = true;
-                            warningMsgName.setVisible(true);
-                        } else {
-                            warningMsgName.setVisible(false);
-                        }
-                    case 1:
-                        if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
-                            checkEmptyFN = true;
-                            warningMsgName.setVisible(true);
+            case "Government":
+            case "Private Organisation":
+            case "NGO": {
+                String[] temp = {clFNameInput.getText().trim(), clLNameInput.getText().trim(), clIDInput.getText().trim(), clAddInput.getText().trim(), clEmailInput.getText().trim()};
+                for (int i = 0; i < temp.length; i++) {
+                    switch (i) {
+                        case 0:
+                            if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
+                                checkEmptyFN = true;
+                                warningMsgName.setVisible(true);
+                            } else {
+                                warningMsgName.setVisible(false);
+                            }
+                        case 1:
+                            if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
+                                checkEmptyFN = true;
+                                warningMsgName.setVisible(true);
 
-                        } else {
-                            warningMsgName.setVisible(false);
-                        }
-                    case 2:
-                        if (temp[2].length() == 0 || temp[2] == null) {
-                            checkEmptyID = true;
-                            warningMsgID.setVisible(true);
-                            warningMsgFormat.setVisible(false);
-                            warningMsgIDEx.setVisible(false);
-                        } else {
-                            warningMsgID.setVisible(false);
-                            if (temp[2].matches("[IiNnGgPp][0-9]{6}")) {
-                                checkWrongFormat = false;
+                            } else {
+                                warningMsgName.setVisible(false);
+                            }
+                        case 2:
+                            if (temp[2].length() == 0 || temp[2] == null) {
+                                checkEmptyID = true;
+                                warningMsgID.setVisible(true);
                                 warningMsgFormat.setVisible(false);
                                 warningMsgIDEx.setVisible(false);
-                                for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                    if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
-                                        warningMsgIDEx.setVisible(true);
-                                        existed = true;
-                                        break;
-                                    } else {
-                                        warningMsgIDEx.setVisible(false);
-                                        existed = false;
-                                    }
-                                }
                             } else {
-                                checkWrongFormat = true;
-                                warningMsgFormat.setVisible(true);
-                                warningMsgIDEx.setVisible(false);
+                                warningMsgID.setVisible(false);
+                                if (temp[2].matches("[IiNnGgPp][0-9]{6}")) {
+                                    checkWrongFormat = false;
+                                    warningMsgFormat.setVisible(false);
+                                    warningMsgIDEx.setVisible(false);
+                                    for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
+                                        if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                            warningMsgIDEx.setVisible(true);
+                                            existed = true;
+                                            break;
+                                        } else {
+                                            warningMsgIDEx.setVisible(false);
+                                            existed = false;
+                                        }
+                                    }
+                                } else {
+                                    checkWrongFormat = true;
+                                    warningMsgFormat.setVisible(true);
+                                    warningMsgIDEx.setVisible(false);
+                                }
                             }
-                        }
-                    case 3:
-                        if (temp[3].length() == 0 || temp[3] == null) {
-                            checkEmptyADD = true;
-                            warningMsgAddr.setVisible(true);
-                        } else {
-                            warningMsgAddr.setVisible(false);
-                        }
-                    case 4:
-                        if (temp[4].length() == 0 || temp[4] == null) {
-                            checkEmptyEM = true;
-                            warningMsgEmail.setVisible(true);
-                        } else {
-                            warningMsgEmail.setVisible(false);
-                        }
+                        case 3:
+                            if (temp[3].length() == 0 || temp[3] == null) {
+                                checkEmptyADD = true;
+                                warningMsgAddr.setVisible(true);
+                            } else {
+                                warningMsgAddr.setVisible(false);
+                            }
+                        case 4:
+                            if (temp[4].length() == 0 || temp[4] == null) {
+                                checkEmptyEM = true;
+                                warningMsgEmail.setVisible(true);
+                            } else {
+                                warningMsgEmail.setVisible(false);
+                            }
+                    }
+                    break;
                 }
-                break;
-            }
-            if (existed == false && checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyADD == false && checkEmptyEM == false && checkWrongFormat == false) {
-                clientCreation();
-                dispose();
+                if (existed == false && checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyADD == false && checkEmptyEM == false && checkWrongFormat == false) {
+                    clientCreation();
+                    dispose();
+                }
             }
         }
     }
@@ -493,18 +508,23 @@ class NewClientDialog extends JDialog {
         String address = clAddInput.getText().trim();
         String clID;
         String type2;
-        if (((String) clTypeCombo.getSelectedItem()).equals("Individual")) {
-            clID = generatedIndID;
-            type2 = "Ind";
-        } else if (((String) clTypeCombo.getSelectedItem()).equals("Government")) {
-            clID = generatedGovID;
-            type2 = "Gov";
-        } else if (((String) clTypeCombo.getSelectedItem()).equals("Private Organisation")) {
-            clID = generatedPrvID;
-            type2 = "Prv";
-        } else {
-            clID = generatedNGOID;
-            type2 = "NGO";
+        switch ((String) clTypeCombo.getSelectedItem()) {
+            case "Individual":
+                clID = generatedIndID;
+                type2 = "Ind";
+                break;
+            case "Government":
+                clID = generatedGovID;
+                type2 = "Gov";
+                break;
+            case "Private Organisation":
+                clID = generatedPrvID;
+                type2 = "Prv";
+                break;
+            default:
+                clID = generatedNGOID;
+                type2 = "NGO";
+                break;
         }
         String accStatus = "ACTIVE";
         String email = clEmailInput.getText().trim();
@@ -530,6 +550,7 @@ class NewClientDialog extends JDialog {
     }
 
     private class WarningLabel extends JLabel {
+
         public WarningLabel(String s) {
             super(s);
             setVisible(false);

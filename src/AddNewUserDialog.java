@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,8 @@ public class AddNewUserDialog extends JDialog {
 
 
         okButton.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String type = ((String) userTypeCombo.getSelectedItem());
                 String ID = IDInput.getText().trim();
@@ -66,16 +69,19 @@ public class AddNewUserDialog extends JDialog {
                     }
                     if (flag == false) {
                         warningID.setForeground(new Color(23, 28, 30));
-                        if (type.equals("Administrator")) {
-                            RYCOXv2.userList.add(new Administrators(ID, defaultPassword));
-                            ManageUsers.updateAdd();
-                            JOptionPane.showMessageDialog(null, "User '" + ID + "' is created successfully with default password " + defaultPassword + ".", "RYCOX System - Successful Adding", JOptionPane.INFORMATION_MESSAGE);
-                            dispose();
-                        } else if (type.equals("Front Desk Staff")) {
-                            RYCOXv2.userList.add(new FrontdeskStaffs(ID, defaultPassword));
-                            ManageUsers.updateAdd();
-                            JOptionPane.showMessageDialog(null, "User '" + ID + "' is created successfully with default password " + defaultPassword + ".", "RYCOX System - Successful Adding", JOptionPane.INFORMATION_MESSAGE);
-                            dispose();
+                        switch (type) {
+                            case "Administrator":
+                                RYCOXv2.userList.add(new Administrators(ID, defaultPassword));
+                                ManageUsers.updateAdd();
+                                JOptionPane.showMessageDialog(null, "User '" + ID + "' is created successfully with default password " + defaultPassword + ".", "RYCOX System - Successful Adding", JOptionPane.INFORMATION_MESSAGE);
+                                dispose();
+                                break;
+                            case "Front Desk Staff":
+                                RYCOXv2.userList.add(new FrontdeskStaffs(ID, defaultPassword));
+                                ManageUsers.updateAdd();
+                                JOptionPane.showMessageDialog(null, "User '" + ID + "' is created successfully with default password " + defaultPassword + ".", "RYCOX System - Successful Adding", JOptionPane.INFORMATION_MESSAGE);
+                                dispose();
+                                break;
                         }
                     }
                 }
@@ -84,10 +90,13 @@ public class AddNewUserDialog extends JDialog {
         cancelButton.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int opt = JOptionPane.showConfirmDialog(null, "Are you sure to cancel adding user? Data will not be saved.", "RYCOX System - Confirm cancel", JOptionPane.WARNING_MESSAGE);
-                if (opt == JOptionPane.YES_OPTION)
+                if (opt == JOptionPane.YES_OPTION) {
                     dispose();
+                }
             }
         });
 
@@ -101,58 +110,17 @@ public class AddNewUserDialog extends JDialog {
         GroupLayout BGPanelLayout = new GroupLayout(BGPanel);
         BGPanel.setLayout(BGPanelLayout);
         BGPanelLayout.setHorizontalGroup(
-                BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(GroupLayout.Alignment.TRAILING, BGPanelLayout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addComponent(userTypeLabel)
-                                        .addComponent(IDLabel))
-                                .addGap(18, 18, 18)
-                                .addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(userTypeCombo, 0, 229, Short.MAX_VALUE)
-                                        .addComponent(IDInput))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(warningID)
-                                .addGap(53, 53, 53))
-                        .addGroup(BGPanelLayout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(okButton, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-                                .addGap(58, 58, 58))
-        );
+                BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, BGPanelLayout.createSequentialGroup().addGap(38, 38, 38).addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING).addComponent(userTypeLabel).addComponent(IDLabel)).addGap(18, 18, 18).addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(userTypeCombo, 0, 229, Short.MAX_VALUE).addComponent(IDInput)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(warningID).addGap(53, 53, 53)).addGroup(BGPanelLayout.createSequentialGroup().addGap(69, 69, 69).addComponent(okButton, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE).addGap(58, 58, 58)));
         BGPanelLayout.setVerticalGroup(
-                BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(BGPanelLayout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(userTypeLabel)
-                                        .addComponent(userTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(IDLabel)
-                                        .addComponent(IDInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(warningID))
-                                .addGap(18, 18, 18)
-                                .addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(okButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cancelButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap(33, Short.MAX_VALUE))
-        );
+                BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(BGPanelLayout.createSequentialGroup().addGap(28, 28, 28).addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(userTypeLabel).addComponent(userTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(IDLabel).addComponent(IDInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(warningID)).addGap(18, 18, 18).addGroup(BGPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(okButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(cancelButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addContainerGap(33, Short.MAX_VALUE)));
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE));
 
         pack();
     }
-
-
 }

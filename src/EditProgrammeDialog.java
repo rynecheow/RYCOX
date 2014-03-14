@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -6,6 +7,7 @@ import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 class EditProgrammeDialog extends JDialog {
+
     private JLabel label1, label2, label3, label4, label5, label6, label7;
     private JLabel error1, error2, error3, error4, error5, error6;
     private JTextField textfield1, textfield2, textfield3, textfield4;
@@ -86,6 +88,8 @@ class EditProgrammeDialog extends JDialog {
 
 
         button1.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
                 if ((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))) {
@@ -191,15 +195,19 @@ class EditProgrammeDialog extends JDialog {
                     JOptionPane.showMessageDialog(null, "You have successfully changed the details of a TV Programme which is " + ProgrammePanel.progtemp[0] + " !", ProgrammePanel.progtemp[0] + " edited", JOptionPane.PLAIN_MESSAGE);
                     LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Programme '" + ProgrammePanel.progtemp[0] + "'.");
                     RYCOXv2.logList.add(log);
+
                     dispose();
                 }
             }
         });
 
         button2.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int closeCf = JOptionPane.showConfirmDialog(null, "Stop editing? All the changes will not be saved.", "Cancel Editing", JOptionPane.WARNING_MESSAGE);
                 if (closeCf == JOptionPane.YES_OPTION) {
+
                     dispose();
                 } else {
                 }
@@ -278,7 +286,6 @@ class EditProgrammeDialog extends JDialog {
         setSize(620, 600);
         setLocation(400, 60);
         setVisible(true);
+        ProgrammePanel.defaultButtonSet();
     }
-
-
 }

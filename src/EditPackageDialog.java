@@ -1,11 +1,13 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class EditPackageDialog extends JDialog {
+
     private JLabel label1, label2, label3, label4, label5, label6;
     private JLabel error3, error4, error5, error6, error7;
     private JTextField textfield1, textfield2, textfield3;
@@ -25,7 +27,6 @@ class EditPackageDialog extends JDialog {
     private JScrollPane rightListScroll;
     private LinkedList<String> rightElements;
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public EditPackageDialog(JFrame frame) {
         super(frame, "Package Management- Edit a TV Package", true);
 
@@ -54,8 +55,7 @@ class EditPackageDialog extends JDialog {
         color = new Color(23, 28, 30);
         color1 = new Color(244, 219, 234);
 
-
-        selPrgList = new LinkedList<String>();
+        selPrgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
@@ -135,12 +135,12 @@ class EditPackageDialog extends JDialog {
 
         addBut.addActionListener(new ActionListener() {
 
-
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     int leftIndex = leftList.getSelectedIndex();
                     String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));
-                    LinkedList<String> leftElements = new LinkedList<String>();
+                    LinkedList<String> leftElements = new LinkedList<>();
                     for (int p = 0; p < leftList.getModel().getSize(); p++) {
                         leftElements.add((String) leftList.getModel().getElementAt(p));
                     }
@@ -158,7 +158,7 @@ class EditPackageDialog extends JDialog {
                     leftList.repaint();
 
 
-                    rightElements = new LinkedList<String>();
+                    rightElements = new LinkedList<>();
                     for (int z = 0; z < rightList.getModel().getSize(); z++) {
                         rightElements.add((String) rightList.getModel().getElementAt(z));
                     }
@@ -173,17 +173,16 @@ class EditPackageDialog extends JDialog {
                 }
 
             }
-
-
         });
 
         rmvBut.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     int rightIndex = rightList.getSelectedIndex();
                     String toBeRemoved = ((String) rightList.getModel().getElementAt(rightIndex));
-                    LinkedList<String> rightElements = new LinkedList<String>();
+                    LinkedList<String> rightElements = new LinkedList<>();
                     for (int p = 0; p < rightList.getModel().getSize(); p++) {
                         rightElements.add((String) rightList.getModel().getElementAt(p));
                     }
@@ -201,7 +200,7 @@ class EditPackageDialog extends JDialog {
                     rightList.repaint();
 
 
-                    LinkedList<String> leftElements = new LinkedList<String>();
+                    LinkedList<String> leftElements = new LinkedList<>();
                     for (int z = 0; z < leftList.getModel().getSize(); z++) {
                         leftElements.add((String) leftList.getModel().getElementAt(z));
                     }
@@ -217,13 +216,12 @@ class EditPackageDialog extends JDialog {
                 }
 
             }
-
-
         });
 
 
         button1.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false;
@@ -235,7 +233,6 @@ class EditPackageDialog extends JDialog {
                 } else {
                     flag1 = true;
                     error3.setVisible(false);
-
                 }
 
                 if ((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))) {
@@ -243,9 +240,7 @@ class EditPackageDialog extends JDialog {
                     error6.setVisible(false);
                     flag2 = false;
                 } else {
-
                     try {
-
                         flag2 = true;
                         error4.setVisible(false);
                         error6.setVisible(false);
@@ -264,8 +259,6 @@ class EditPackageDialog extends JDialog {
                 } else {
                     flag3 = true;
                     error5.setVisible(false);
-
-
                 }
 
                 try {
@@ -281,13 +274,11 @@ class EditPackageDialog extends JDialog {
 
                     }
                 } catch (NullPointerException npe) {
-
                     flag4 = true;
                 }
 
 
                 if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true)) {
-
                     for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
                         if (RYCOXv2.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
                             RYCOXv2.pkgList.get(i).setPkgName(textfield1.getText());
@@ -315,14 +306,10 @@ class EditPackageDialog extends JDialog {
                                 RYCOXv2.pckgingList.remove(i);
                                 i--;
                             }
-
                         }
 
-
                         for (int i = 0; i < rightElArr.length; i++) {
-
                             RYCOXv2.pckgingList.addLast(new Packaging(PackagePanel.pkgtemp[0], (rightElArr[i]).substring(0, 4)));
-
                         }
                     } else {
                         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
@@ -335,9 +322,7 @@ class EditPackageDialog extends JDialog {
                                 }
                             }
                         }
-
                     }
-
 
                     JOptionPane.showMessageDialog(null, "You have successfully changed the details of TV Package " + PackagePanel.pkgtemp[0] + " !", PackagePanel.pkgtemp[0] + " edited", JOptionPane.PLAIN_MESSAGE);
                     LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Package '" + PackagePanel.pkgtemp[0] + "'.");
@@ -349,6 +334,7 @@ class EditPackageDialog extends JDialog {
 
         button2.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int closeCf = JOptionPane.showConfirmDialog(null, "Stop Adding? All the changes will not be saved.", "Cancel Adding", JOptionPane.WARNING_MESSAGE);
                 if (closeCf == JOptionPane.YES_OPTION) {
@@ -437,6 +423,4 @@ class EditPackageDialog extends JDialog {
         setLocation(300, 60);
         setVisible(true);
     }
-
-
 }

@@ -1,3 +1,4 @@
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
@@ -78,14 +79,17 @@ class Service implements Serializable {
 
     public void setServStatus(String servStatus) {
         String s = servStatus.toLowerCase();
-        if (s.equals("active"))
-            this.servStatus = "ACTIVE";
-
-        else if (s.equals("barred"))
-            this.servStatus = "BARRED";
-
-        else if (s.equals("terminated"))
-            this.servStatus = "TERMINATED";
+        switch (s) {
+            case "active":
+                this.servStatus = "ACTIVE";
+                break;
+            case "barred":
+                this.servStatus = "BARRED";
+                break;
+            case "terminated":
+                this.servStatus = "TERMINATED";
+                break;
+        }
     }
 
     public void setTermDate(String terminationDate) {
@@ -93,10 +97,11 @@ class Service implements Serializable {
     }
 
     public boolean terminationStatus() {
-        if (this.servStatus.equalsIgnoreCase("TERMINATED"))
+        if (this.servStatus.equalsIgnoreCase("TERMINATED")) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public void printServ() {
@@ -107,8 +112,9 @@ class Service implements Serializable {
         System.out.println("Status: " + servStatus);
         System.out.println("Registration Date: " + registrationDate);
 
-        if (terminationStatus() == true)
+        if (terminationStatus() == true) {
             System.out.println("Termination Date:\t" + getTermDate());
+        }
 
         System.out.println("Current Outstanding Balance: " + currOstBal);
         System.out.println("Previous Bill Amount: " + prevBillAmount);

@@ -1,9 +1,11 @@
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
 @SuppressWarnings("serial")
 abstract class Users implements Serializable {
+
     protected String userID;
     protected String password = "abc123";
     protected String lastLoggedIn;

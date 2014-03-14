@@ -1,10 +1,11 @@
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
-
 @SuppressWarnings("serial")
 class TVPackage implements Serializable {
+
     private String pkgCode;                    //initialise variables
     private String pkgName;
     private String startDate;
@@ -50,32 +51,26 @@ class TVPackage implements Serializable {
         return terminationDate;
     }
 
-
     public double getChargePrice() { //to return the price charges by the package
         return chargePrice;
     }
-
 
     public String getChargeType() { //to return the type that the package charges by
         return chargeType;
     }
 
-
     public String getPkgStatus() { //to return the package's status
         return pkgStatus;
     }
-
 
     //mutators
     public void setPkgCode(String pkgCode) {//to change package's code
         this.pkgCode = pkgCode;
     }
 
-
     public void setPkgName(String pkgName) { //to change package's name
         this.pkgName = pkgName;
     }
-
 
     public void setChargePrice(double chargePrice) { //to change package's charge price
         this.chargePrice = chargePrice;

@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,11 +20,10 @@ public class MainUI extends JFrame implements ActionListener {
     private int i;
     private JMenu adminMenu;
 
-
     public MainUI() {
-
+        super("RYCOX System - Customer Management Module");
         getContentPane().setBackground(mainbgColor);
-        setTitle("RYCOX System - Customer Management Module");
+//		setTitle();
         setSize(1600, 900);
         setLocationRelativeTo(null);
         //setLayout(null);
@@ -71,19 +71,18 @@ public class MainUI extends JFrame implements ActionListener {
         prgTab();
         pkgTab();
 
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof FrontdeskStaffs) {
-            adminMenu.setVisible(false);
-        }
+//		if(RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof FrontdeskStaffs){
+//			adminMenu.setVisible(false);
+//		}
+
         tabbedPane = new JTabbedPane();
         tabbedPane.setBackground(mainbgColor);
         tabbedPane.setTabPlacement(SwingConstants.LEFT);
         tabbedPane.addTab("Main Menu", homePanel);
         tabbedPane.addTab("", new ImageIcon(getClass().getResource("clmanagetab.png")), clientPanel);
         tabbedPane.addTab("", new ImageIcon(getClass().getResource("servmanagetab.png")), servPanel);
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
-            tabbedPane.addTab("", new ImageIcon(getClass().getResource("prgmanagetab.png")), prgPanel);
-            tabbedPane.addTab("", new ImageIcon(getClass().getResource("pkgmanagetab.png")), pkgPanel);
-        }
+        tabbedPane.addTab("", new ImageIcon(getClass().getResource("pkgmanagetab.png")), pkgPanel);
+        tabbedPane.addTab("", new ImageIcon(getClass().getResource("prgmanagetab.png")), prgPanel);
         tabbedPane.setForegroundAt(tabbedPane.getTabCount() - 1, Color.ORANGE);
         tabbedPane.setOpaque(true);
         add(tabbedPane);
@@ -94,6 +93,8 @@ public class MainUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         addWindowListener(new WindowAdapter() {
+
+            @Override
             public void windowClosing(WindowEvent winEvt) {
                 int closeCf = JOptionPane.showConfirmDialog(null, "Exit without saving?", "Confirm exit", JOptionPane.YES_NO_OPTION);
                 if (closeCf == JOptionPane.YES_OPTION) {
@@ -103,7 +104,6 @@ public class MainUI extends JFrame implements ActionListener {
                     System.exit(0);
                 }
             }
-
         });
 
     }
@@ -111,7 +111,6 @@ public class MainUI extends JFrame implements ActionListener {
     private void clientTab() {
         clientPanel = new ClientPanel();
     }
-
 
     private void servTab() {
         servPanel = new ServicePanel();
@@ -125,110 +124,103 @@ public class MainUI extends JFrame implements ActionListener {
         pkgPanel = new PackagePanel();
     }
 
-
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == saveMI) {
             try {
                 FileOutputStream client_fostream = new FileOutputStream("cl_data.rycox");
-                ObjectOutputStream client_oostream = new ObjectOutputStream(client_fostream);
-                for (i = 0; i < RYCOXv2.clientList.size(); i++) {
-                    if (RYCOXv2.clientList.get(i) != null) {
-                        client_oostream.writeObject(RYCOXv2.clientList);
+                try (ObjectOutputStream client_oostream = new ObjectOutputStream(client_fostream)) {
+                    for (i = 0; i < RYCOXv2.clientList.size(); i++) {
+                        if (RYCOXv2.clientList.get(i) != null) {
+                            client_oostream.writeObject(RYCOXv2.clientList);
+                        }
                     }
+                    client_oostream.flush();
                 }
-                client_oostream.flush();
-                client_oostream.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
 
             //saving added data serv_data.rycox
             try {
                 FileOutputStream serv_fostream = new FileOutputStream("serv_data.rycox");
-                ObjectOutputStream serv_oostream = new ObjectOutputStream(serv_fostream);
-                for (i = 0; i < RYCOXv2.servList.size(); i++) {
-                    if (RYCOXv2.servList.get(i) != null) {
-                        serv_oostream.writeObject(RYCOXv2.servList);
+                try (ObjectOutputStream serv_oostream = new ObjectOutputStream(serv_fostream)) {
+                    for (i = 0; i < RYCOXv2.servList.size(); i++) {
+                        if (RYCOXv2.servList.get(i) != null) {
+                            serv_oostream.writeObject(RYCOXv2.servList);
+                        }
                     }
+                    serv_oostream.flush();
                 }
-                serv_oostream.flush();
-                serv_oostream.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
 
             //saving added data subsc_data.rycox
             try {
                 FileOutputStream subsc_fostream = new FileOutputStream("subsc_data.rycox");
-                ObjectOutputStream subsc_oostream = new ObjectOutputStream(subsc_fostream);
-                for (i = 0; i < RYCOXv2.subsList.size(); i++) {
-                    if (RYCOXv2.subsList.get(i) != null) {
-                        subsc_oostream.writeObject(RYCOXv2.subsList);
+                try (ObjectOutputStream subsc_oostream = new ObjectOutputStream(subsc_fostream)) {
+                    for (i = 0; i < RYCOXv2.subsList.size(); i++) {
+                        if (RYCOXv2.subsList.get(i) != null) {
+                            subsc_oostream.writeObject(RYCOXv2.subsList);
+                        }
                     }
+                    subsc_oostream.flush();
                 }
-                subsc_oostream.flush();
-                subsc_oostream.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
 
             //saving added data pkg_data.rycox
             try {
                 FileOutputStream pkg_fostream = new FileOutputStream("pkg_data.rycox");
-                ObjectOutputStream pkg_oostream = new ObjectOutputStream(pkg_fostream);
-                for (i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                    if (RYCOXv2.pkgList.get(i) != null) {
-                        pkg_oostream.writeObject(RYCOXv2.pkgList);
+                try (ObjectOutputStream pkg_oostream = new ObjectOutputStream(pkg_fostream)) {
+                    for (i = 0; i < RYCOXv2.pkgList.size(); i++) {
+                        if (RYCOXv2.pkgList.get(i) != null) {
+                            pkg_oostream.writeObject(RYCOXv2.pkgList);
+                        }
                     }
+                    pkg_oostream.flush();
                 }
-                pkg_oostream.flush();
-                pkg_oostream.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
             //saving added data pckging_data.rycox
             try {
                 FileOutputStream pckging_fostream = new FileOutputStream("pckging_data.rycox");
-                ObjectOutputStream pckging_oostream = new ObjectOutputStream(pckging_fostream);
-                for (i = 0; i < RYCOXv2.pckgingList.size(); i++) {
-                    if (RYCOXv2.pckgingList.get(i) != null) {
-                        pckging_oostream.writeObject(RYCOXv2.pckgingList);
+                try (ObjectOutputStream pckging_oostream = new ObjectOutputStream(pckging_fostream)) {
+                    for (i = 0; i < RYCOXv2.pckgingList.size(); i++) {
+                        if (RYCOXv2.pckgingList.get(i) != null) {
+                            pckging_oostream.writeObject(RYCOXv2.pckgingList);
+                        }
                     }
+                    pckging_oostream.flush();
                 }
-                pckging_oostream.flush();
-                pckging_oostream.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
 
             //saving added data prg_data.rycox
             try {
                 FileOutputStream prg_fostream = new FileOutputStream("prg_data.rycox");
-                ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream);
-                for (i = 0; i < RYCOXv2.prgList.size(); i++) {
-                    if (RYCOXv2.prgList.get(i) != null) {
-                        prg_oostream.writeObject(RYCOXv2.prgList);
+                try (ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream)) {
+                    for (i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i) != null) {
+                            prg_oostream.writeObject(RYCOXv2.prgList);
+                        }
                     }
+                    prg_oostream.flush();
                 }
-                prg_oostream.flush();
-                prg_oostream.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
 
             //saving added data user_data.rycox
             try {
                 FileOutputStream user_fostream = new FileOutputStream("user_data.rycox");
-                ObjectOutputStream user_oostream = new ObjectOutputStream(user_fostream);
-                for (i = 0; i < RYCOXv2.userList.size(); i++) {
-                    if (RYCOXv2.userList.get(i) != null) {
-                        user_oostream.writeObject(RYCOXv2.userList);
+                try (ObjectOutputStream user_oostream = new ObjectOutputStream(user_fostream)) {
+                    for (i = 0; i < RYCOXv2.userList.size(); i++) {
+                        if (RYCOXv2.userList.get(i) != null) {
+                            user_oostream.writeObject(RYCOXv2.userList);
+                        }
                     }
+                    user_oostream.flush();
                 }
-                user_oostream.flush();
-                user_oostream.close();
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
             RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[CLIENT]");
             RYCOXv2.logList.add(RYCOXv2.log);

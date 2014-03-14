@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -8,7 +9,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 class EditClientDialog extends JDialog {
 
-    // Variables declaration
+    // Variables declaration 
     private JPanel BGPanel;
     private JSeparator DialogSeparator;
     private JButton cancelbutton;
@@ -152,9 +153,12 @@ class EditClientDialog extends JDialog {
         BGPanel.add(warningMsgName);
 
         clNameInput.addCaretListener(new CaretListener() {
+
+            @Override
             public void caretUpdate(CaretEvent e) {
-                if (clNameInput.getText().trim() != "" && clNameInput.getText().trim() != null)
+                if (!"".equals(clNameInput.getText().trim()) && clNameInput.getText().trim() != null) {
                     clAppearedName.setText(clNameInput.getText().trim());
+                }
                 repaint();
             }
         });
@@ -199,6 +203,8 @@ class EditClientDialog extends JDialog {
         BGPanel.add(warningMsgAddr);
         submitbutton.setText("OK");
         submitbutton.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 submitbuttonActionPerformed(evt);
             }
@@ -208,6 +214,8 @@ class EditClientDialog extends JDialog {
 
         cancelbutton.setText("Cancel");
         cancelbutton.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 cancelbuttonActionPerformed(evt);
             }
@@ -244,14 +252,10 @@ class EditClientDialog extends JDialog {
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE)
-        );
-
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(BGPanel, GroupLayout.PREFERRED_SIZE, 422, GroupLayout.PREFERRED_SIZE));
+        ClientPanel.defaultButtonSet();
         pack();
     }//end constructor
 
@@ -263,86 +267,90 @@ class EditClientDialog extends JDialog {
         boolean checkEmptyADD = false;
         boolean checkEmptyAGE = false;
         boolean checkEmptyEM = false;
+        switch (paramType) {
+            case "Individual": {
+                String[] temp = {clNameInput.getText().trim(), clICInput.getText().trim(), clAddInput.getText().trim(), ((String) clAgeCombo.getSelectedItem()), clEmailInput.getText().trim()};
+                for (int i = 0; i < temp.length; i++) {
+                    switch (i) {
+                        case 0:
+                            if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
+                                checkEmptyN = true;
+                                warningMsgName.setVisible(true);
+                            } else {
+                                warningMsgName.setVisible(false);
+                            }
+                        case 1:
+                            if (temp[1].length() == 0 || temp[1] == null) {
+                                checkEmptyIC = true;
+                                warningMsgIC.setVisible(true);
 
-        if (paramType.equals("Individual")) {
-            String[] temp = {clNameInput.getText().trim(), clICInput.getText().trim(), clAddInput.getText().trim(), ((String) clAgeCombo.getSelectedItem()), clEmailInput.getText().trim()};
-            for (int i = 0; i < temp.length; i++) {
-                switch (i) {
-                    case 0:
-                        if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
-                            checkEmptyN = true;
-                            warningMsgName.setVisible(true);
-                        } else {
-                            warningMsgName.setVisible(false);
-                        }
-                    case 1:
-                        if (temp[1].length() == 0 || temp[1] == null) {
-                            checkEmptyIC = true;
-                            warningMsgIC.setVisible(true);
+                            } else {
+                                warningMsgIC.setVisible(false);
+                            }
+                        case 2:
+                            if (temp[2].length() == 0 || temp[2] == null) {
+                                checkEmptyADD = true;
+                                warningMsgAddr.setVisible(true);
+                            } else {
+                                warningMsgAddr.setVisible(false);
+                            }
+                        case 3:
+                            if (temp[3].equals("--")) {
+                                checkEmptyAGE = true;
+                                warningMsgAge.setVisible(true);
 
-                        } else {
-                            warningMsgIC.setVisible(false);
-                        }
-                    case 2:
-                        if (temp[2].length() == 0 || temp[2] == null) {
-                            checkEmptyADD = true;
-                            warningMsgAddr.setVisible(true);
-                        } else {
-                            warningMsgAddr.setVisible(false);
-                        }
-                    case 3:
-                        if (temp[3].equals("--")) {
-                            checkEmptyAGE = true;
-                            warningMsgAge.setVisible(true);
-
-                        } else {
-                            warningMsgAge.setVisible(false);
-                        }
-                    case 4:
-                        if (temp[4].length() == 0 || temp[4] == null) {
-                            checkEmptyEM = true;
-                            warningMsgEmail.setVisible(true);
-                        } else {
-                            warningMsgEmail.setVisible(false);
-                        }
+                            } else {
+                                warningMsgAge.setVisible(false);
+                            }
+                        case 4:
+                            if (temp[4].length() == 0 || temp[4] == null) {
+                                checkEmptyEM = true;
+                                warningMsgEmail.setVisible(true);
+                            } else {
+                                warningMsgEmail.setVisible(false);
+                            }
+                    }
+                    break;
                 }
-                break;
-            }
-            if (checkEmptyN == false && checkEmptyIC == false && checkEmptyADD == false && checkEmptyAGE == false && checkEmptyEM == false) {
-                clientEdition();
-                dispose();
-            }
-        } else if (paramType.equals("Government") || paramType.equals("Private Organisation") || paramType.equals("NGO")) {
-            String[] temp = {clNameInput.getText().trim(), clAddInput.getText().trim(), clEmailInput.getText().trim()};
-            for (int i = 0; i < temp.length; i++) {
-                switch (i) {
-                    case 0:
-                        if (temp[0].length() == 0 || temp[0] == null) {
-                            checkEmptyN = true;
-                            warningMsgName.setVisible(true);
-                        } else {
-                            warningMsgName.setVisible(false);
-                        }
-                    case 1:
-                        if (temp[1].length() == 0 || temp[1] == null) {
-                            checkEmptyADD = true;
-                            warningMsgAddr.setVisible(true);
-                        } else {
-                            warningMsgAddr.setVisible(false);
-                        }
-                    case 2:
-                        if (temp[2].length() == 0 || temp[2] == null) {
-                            checkEmptyEM = true;
-                            warningMsgEmail.setVisible(true);
-                        } else {
-                            warningMsgEmail.setVisible(false);
-                        }
+                if (checkEmptyN == false && checkEmptyIC == false && checkEmptyADD == false && checkEmptyAGE == false && checkEmptyEM == false) {
+                    clientEdition();
+                    dispose();
                 }
-                break;
             }
-            if (checkEmptyN == false && checkEmptyADD == false && checkEmptyEM == false) {
-                clientEdition();
-                dispose();
+            case "Government":
+            case "Private Organisation":
+            case "NGO": {
+                String[] temp = {clNameInput.getText().trim(), clAddInput.getText().trim(), clEmailInput.getText().trim()};
+                for (int i = 0; i < temp.length; i++) {
+                    switch (i) {
+                        case 0:
+                            if (temp[0].length() == 0 || temp[0] == null) {
+                                checkEmptyN = true;
+                                warningMsgName.setVisible(true);
+                            } else {
+                                warningMsgName.setVisible(false);
+                            }
+                        case 1:
+                            if (temp[1].length() == 0 || temp[1] == null) {
+                                checkEmptyADD = true;
+                                warningMsgAddr.setVisible(true);
+                            } else {
+                                warningMsgAddr.setVisible(false);
+                            }
+                        case 2:
+                            if (temp[2].length() == 0 || temp[2] == null) {
+                                checkEmptyEM = true;
+                                warningMsgEmail.setVisible(true);
+                            } else {
+                                warningMsgEmail.setVisible(false);
+                            }
+                    }
+                    break;
+                }
+                if (checkEmptyN == false && checkEmptyADD == false && checkEmptyEM == false) {
+                    clientEdition();
+                    dispose();
+                }
             }
         }
     }
@@ -385,6 +393,7 @@ class EditClientDialog extends JDialog {
     }
 
     private class WarningLabel extends JLabel {
+
         public WarningLabel(String s) {
             super(s);
             setVisible(false);
