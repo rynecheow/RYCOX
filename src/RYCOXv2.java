@@ -24,8 +24,6 @@ class RYCOXv2 extends JFrame {
                 int closeCf = JOptionPane.showConfirmDialog(null, "Exit RYCOX CMM?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
                 if (closeCf == JOptionPane.YES_OPTION) {
                     System.exit(0);
-                } else {
-
                 }
             }
         });
@@ -44,6 +42,7 @@ class RYCOXv2 extends JFrame {
     static int currentUser;
     static String user;//index for current user
     Container mainFrame = getContentPane();
+
 
     /*USER LOGIN FRAME*/
     private JPanel ulpanelleft, ulpanelright;
@@ -154,6 +153,7 @@ class RYCOXv2 extends JFrame {
 
                 }
             }
+
         });
     }
 

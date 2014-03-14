@@ -18,7 +18,6 @@ public class ProgrammePanel extends JPanel {
     private JButton redoButton;
     private JPanel toolbar;
     private JButton undoButton;
-    private JButton recoverButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
@@ -39,8 +38,6 @@ public class ProgrammePanel extends JPanel {
         undoButton.setBackground(bColor);
         prgDeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
         prgDeleteButton.setBackground(bColor);
-        recoverButton = new JButton("", new ImageIcon(getClass().getResource("recoverbutton.png")));
-        recoverButton.setBackground(bColor);
         scrollPane = new JScrollPane();
         prgTable = new JTable();
         prgTable.getTableHeader().setReorderingAllowed(false);
@@ -63,8 +60,6 @@ public class ProgrammePanel extends JPanel {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(prgDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(undoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
@@ -81,7 +76,6 @@ public class ProgrammePanel extends JPanel {
                                         .addComponent(editPrgButton)
                                         .addComponent(redoButton)
                                         .addComponent(undoButton)
-                                        .addComponent(recoverButton)
                                         .addComponent(loginInfo)
                                         .addComponent(prgDeleteButton))
 
