@@ -1,0 +1,6 @@
+.DS_Store
+target/
+
+# IDE specific settings
+##################
+.idea/*
