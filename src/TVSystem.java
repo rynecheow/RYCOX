@@ -415,7 +415,7 @@ class TVSystem {
             p.println("1.\tDisplay all clients");
             p.println("2.\tDisplay clients by type");
             p.println("3.\tDisplay specific client's Details");
-            p.println("4.\tManage client profiles - Add/Edit/Terminate");
+            p.println("4.\tManage client profiles - Add/Edit/Terminate/Recover");
             p.println("5.\tManage client services - Add/Edit/Terminate");
             p.println("6.\tManage subscriptions - Add/Edit");
             p.println("7.\tManage TV packages- Add/Edit/Terminate/Display");
@@ -503,7 +503,11 @@ class TVSystem {
         logList.addLast(log);
 
         for (i = 0; i < clientList.size(); i++) {
-            p.println(clientList.get(i).getName() + "\t" + clientList.get(i).getClientID());
+            if (clientList.get(i).getAccountStatus().equalsIgnoreCase("terminated")) {
+                continue;
+            } else {
+                p.println(clientList.get(i).getName() + "\t" + clientList.get(i).getClientID());
+            }
         }
 
         log = new LogFile(lgTime, username, "has displayed clients.");
@@ -577,7 +581,11 @@ class TVSystem {
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof IndividualClient) {
-                            p.println(clientList.get(i).getName());
+                            if (clientList.get(i).getAccountStatus().equalsIgnoreCase("terminated")) {
+                                continue;
+                            } else {
+                                p.println(clientList.get(i).getName());
+                            }
                         }
                     }
 
@@ -597,7 +605,11 @@ class TVSystem {
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof GovClient) {
-                            p.println(clientList.get(i).getName());
+                            if (clientList.get(i).getAccountStatus().equalsIgnoreCase("terminated")) {
+                                continue;
+                            } else {
+                                p.println(clientList.get(i).getName());
+                            }
                         }
                     }
 
@@ -617,7 +629,11 @@ class TVSystem {
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof NGOClient) {
-                            p.println(clientList.get(i).getName());
+                            if (clientList.get(i).getAccountStatus().equalsIgnoreCase("terminated")) {
+                                continue;
+                            } else {
+                                p.println(clientList.get(i).getName());
+                            }
                         }
                     }
 
@@ -642,7 +658,11 @@ class TVSystem {
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof PrvClient) {
-                            p.println(clientList.get(i).getName());
+                            if (clientList.get(i).getAccountStatus().equalsIgnoreCase("terminated")) {
+                                continue;
+                            } else {
+                                p.println(clientList.get(i).getName());
+                            }
                         }
                     }
 
@@ -695,42 +715,45 @@ class TVSystem {
         int a = 0, b = 0;
         for (i = 0; i < clientList.size(); i++) {
             if (valID_f3.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                int c = 0, z = 0;
+                String d = "", e = "";
                 clientList.get(i).printClient();
-
                 //Display services
-                p.println("\nService details");
-                for (int p = 0; p < servList.size(); p++) {
-                    if ((clientList.get(i).getClientID()).equalsIgnoreCase(servList.get(p).getClientID())) {
-                        servList.get(p).printServ();
-                        a = p;
-                        break;
-                    }
-                }
+                p.println("\nService details: ");
+                for (z = 0; z < servList.size(); z++) {
+                    if ((clientList.get(i).getClientID()).equalsIgnoreCase(servList.get(z).getClientID())) {
+                        servList.get(z).printServ();
+                        p.println();
 
-                //Display subscriptions
-                for (int q = 0; q < subsList.size(); q++) {
-                    if ((servList.get(a).getSmartCardNo().equalsIgnoreCase(subsList.get(q).getSmartCardNo()))) {
-                        subsList.get(q).printSubs();
-                        b = q;
-                        break;
-                    }
-                }
+                        //Display subscriptions
+                        for (a = 0; a < subsList.size(); a++) {
+                            if ((servList.get(z).getSmartCardNo()).equalsIgnoreCase(subsList.get(a).getSmartCardNo())) {
+                                subsList.get(a).printSubs();
+                                p.println();
+                                d = subsList.get(a).getPkgCode();
 
-                //Display packages
-                for (int r = 0; r < pkgList.size(); r++) {
-                    if ((subsList.get(b).getPkgCode().equalsIgnoreCase(pkgList.get(r).getPkgCode()))) {
-                        pkgList.get(r).printPkg();
-                        break;
+                                //Display packages
+                                p.println("Subscribed Package(s):");
+                                for (b = 0; b < pkgList.size(); b++) {
+                                    if (d.equalsIgnoreCase(pkgList.get(b).getPkgCode())) {
+                                        pkgList.get(b).printPkg();
+                                        p.println();
+                                        e = pkgList.get(b).getPkgCode();
+
+                                        //Display packaging
+                                        p.println("This package consist of ");
+                                        for (c = 0; c < pckgingList.size(); c++) {
+                                            if (e.equalsIgnoreCase(pckgingList.get(c).getPkgCode())) {
+                                                pckgingList.get(c).printPckging();
+                                                p.println("-----------------------------------");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                }
-                log = new LogFile(lgTime, username, "has displayed Client '" + valID_f3 + "' details.");
-                logList.addLast(log);
-                break;
-            } else {
-                if (i == (clientList.size() - 1)) {
-                    p.println("Client '" + valID_f3 + "' does not exist!");
-                    log = new LogFile(lgTime, username, "has not displayed Client '" + valID_f3 + "' details[CLIENT DOES NOT EXIST].");
-                    logList.addLast(log);
                 }
             }
         }
@@ -1684,6 +1707,11 @@ class TVSystem {
                             }
                         } while (val == false);
 
+                        if (servList.get(i).getServStatus().equalsIgnoreCase("terminated")) {
+                            p.println("The Smart Card has been terminated.");
+                            break;
+                        }
+
                         do {
                             p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
                             p.println("UNITV RYCOX CUSTOMER MANAGEMENT MODULE(CMM)");
@@ -2258,7 +2286,7 @@ class TVSystem {
 
                         do {
                             do {
-                                p.print("a) Package Code: ");
+                                p.print("a) Package Code(P##): ");
                                 pckCode = input.nextLine();
                                 p.println();
 
@@ -2268,16 +2296,24 @@ class TVSystem {
                                 }
                             } while (pckCode.trim().length() == 0);
 
-                            for (i = 0; i < pkgList.size(); i++) {
-                                if (pckCode.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
-                                    p.println("Sorry, the package code that you entered is already existed.");
-                                    p.println("Please try another one. ");
-                                    check = false;
-                                    break;
-                                } else
-                                    check = true;
+                            if (pckCode.matches(Pkg_IDregex)) {
+
+                                for (i = 0; i < pkgList.size(); i++) {
+                                    if (pckCode.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
+                                        p.println("Sorry, the package code that you entered is already existed.");
+                                        p.println("Please try another one. ");
+                                        check = false;
+                                        break;
+                                    } else
+                                        check = true;
+                                }
+                                val = true;
+                            } else {
+                                p.println("Wrong Package ID format. Please reenter again.");
+                                p.println();
+                                val = false;
                             }
-                        } while (check == false);
+                        } while ((check == false) || (val == false));
 
                         do {
                             p.print("b) Package Name: ");
