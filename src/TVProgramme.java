@@ -65,7 +65,7 @@ public class TVProgramme implements Serializable {
     }
 
     public void printList() {  //to print out all the information of a TV programme
-        System.out.println(" Programme Code: " + progCode + "\n Programme Title: " + progTitle + "\n Description: " + desc + "\n Content Origin: " + contentOrigin + "\n Creation Date: " + creationDate + "\n Status: " + prgStatus + "\n Viewer Status: " + viewerStatus + "\n Type: " + type + "\n Notes: " + notes);
+        System.out.println(" Programme Code: " + progCode + "\n Programme Title: " + progTitle + "\n Description: " + desc + "\n Content Origin: " + contentOrigin + "\n Creation Date: " + creationDate + "\n Status: " + prgStatus + "\n Viewer Status: " + viewerStatus + "\n Type: " + type + "\n Notes: " + notes + "\n");
     }
 
     //mutators

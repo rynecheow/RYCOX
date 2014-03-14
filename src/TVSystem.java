@@ -81,13 +81,17 @@ class TVSystem {
         log = new LogFile("", "", "");
         userList.add(new Administrators("admin", "nimda"));
         userList.add(new FrontdeskStaffs("staff", "123abc"));
+        //userList.add(new FrontdeskStaffs("", ""));		
         clientList.add(new IndividualClient("Izhar", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "ACTIVE"));
+        clientList.add(new IndividualClient("Rimi Azizi", 21, "901010-05-2828", "10, Jalan Taylor's", "I000002", "ACTIVE"));
         clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "INACTIVE"));
         clientList.add(new NGOClient("NGO", "56, Taylor's Street", "N000001", "ACTIVE"));
         clientList.add(new PrvClient("Private Organisation", "88, Sohai's Street", "P000001", "ACTIVE"));
         clientList.add(new PrvClient("Private Org2", "80, TROLLOLOL's Street", "P000002", "ACTIVE"));
         servList.add(new Service("S000001", "I000001", "D999999", "5, Jalan Sungai Beranang"));
         servList.add(new Service("S000002", "I000001", "D999998", "Lot 1-3 Starhill"));
+        servList.add(new Service("S000007", "I000002", "D999993", "Jalan Ara 2"));
+        servList.add(new Service("S000008", "I000002", "D999992", "Jalan Tebrau"));
         servList.add(new Service("S000003", "N000001", "D999997", "Lot 3-10 Jalan Taylor"));
         servList.add(new Service("S000004", "P000001", "D999996", "32, Jalan Kota Kemuning"));
         servList.add(new Service("S000005", "G000001", "D999995", "30, Jalan Kota Baru"));
@@ -95,61 +99,73 @@ class TVSystem {
         subsList.add(new Subscription("S000001", 1, "P01"));
         subsList.add(new Subscription("S000001", 1, "P02"));
         subsList.add(new Subscription("S000002", 2, "P02"));
-        subsList.add(new Subscription("S000002", 2, "P01"));
+        subsList.add(new Subscription("S000002", 2, "P10"));
         subsList.add(new Subscription("S000003", 1, "P03"));
-        subsList.add(new Subscription("S000004", 1, "P04"));
+        subsList.add(new Subscription("S000003", 1, "P04"));
+        subsList.add(new Subscription("S000003", 1, "P05"));
+        subsList.add(new Subscription("S000004", 1, "P05"));
+        subsList.add(new Subscription("S000004", 1, "P07"));
         subsList.add(new Subscription("S000005", 1, "P05"));
         subsList.add(new Subscription("S000005", 1, "P06"));
         subsList.add(new Subscription("S000005", 1, "P07"));
         subsList.add(new Subscription("S000005", 1, "P08"));
-        subsList.add(new Subscription("S000005", 2, "P09"));
-        subsList.add(new Subscription("S000005", 2, "P10"));
-        pkgList.add(new TVPackage("P01", "Variety", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
-        pkgList.add(new TVPackage("P02", "Fun", "18/04/2012", 50.00, "Monthly", "ACTIVE"));
-        pkgList.add(new TVPackage("P03", "Concert", "18/04/2012", 65.00, "Monthly", "ACTIVE"));
-        pkgList.add(new TVPackage("P04", "Concert", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
-        pkgList.add(new TVPackage("P05", "Movie", "7/12/2011", 350.00, "Yearly", "ACTIVE"));
-        pkgList.add(new TVPackage("P06", "Movie", "6/8/2011", 350.00, "Yearly", "ACTIVE"));
-        pkgList.add(new TVPackage("P07", "Movie", "9/21/2011", 360.00, "Yearly", "ACTIVE"));
-        pkgList.add(new TVPackage("P08", "Movie", "11/04/2012", 300.00, "Yearly", "ACTIVE"));
-        pkgList.add(new TVPackage("P09", "Series", "18/01/2012", 250.00, "Quarterly", "ACTIVE"));
-        pkgList.add(new TVPackage("P10", "Series", "18/03/2012", 250.00, "Quarterly", "ACTIVE"));
+        subsList.add(new Subscription("S000007", 1, "P05"));
+        subsList.add(new Subscription("S000007", 1, "P07"));
+        subsList.add(new Subscription("S000007", 1, "P01"));
+        subsList.add(new Subscription("S000008", 2, "P02"));
+        subsList.add(new Subscription("S000008", 2, "P03"));
+        pkgList.add(new TVPackage("P01", "Variety", "18/04/2012", 70.00, "Monthly", "ACTIVE"));
+        pkgList.add(new TVPackage("P02", "Anime Fun", "18/04/2012", 50.00, "Monthly", "ACTIVE"));
+        pkgList.add(new TVPackage("P03", "MTV", "18/04/2012", 45.00, "Monthly", "ACTIVE"));
+        pkgList.add(new TVPackage("P04", "Golden Music", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
+        pkgList.add(new TVPackage("P05", "Fox Movie", "7/12/2011", 350.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P06", "Celebrities Movie", "6/8/2011", 250.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P07", "HBO", "9/21/2011", 210.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P08", "Double Star", "11/04/2012", 100.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P09", "ZhiZun", "18/01/2012", 90.00, "Quarterly", "ACTIVE"));
+        pkgList.add(new TVPackage("P10", "Series", "18/03/2012", 150.00, "Quarterly", "ACTIVE"));
         pckgingList.add(new Packaging("P01", "F001"));
+        pckgingList.add(new Packaging("P01", "F002"));
+        pckgingList.add(new Packaging("P01", "F007"));
+        pckgingList.add(new Packaging("P01", "F011"));
         pckgingList.add(new Packaging("P02", "F001"));
-        pckgingList.add(new Packaging("P03", "F001"));
-        pckgingList.add(new Packaging("P04", "F001"));
-        pckgingList.add(new Packaging("P05", "F001"));
-        pckgingList.add(new Packaging("P06", "F001"));
-        pckgingList.add(new Packaging("P07", "F001"));
-        pckgingList.add(new Packaging("P08", "F001"));
-        pckgingList.add(new Packaging("P09", "F001"));
-        pckgingList.add(new Packaging("P10", "F001"));
-        pckgingList.add(new Packaging("P01", "F018"));
-        pckgingList.add(new Packaging("P01", "F017"));
-        pckgingList.add(new Packaging("P05", "F016"));
-        pckgingList.add(new Packaging("P05", "F006"));
-        pckgingList.add(new Packaging("P05", "F007"));
-        pckgingList.add(new Packaging("P06", "F004"));
-        pckgingList.add(new Packaging("P06", "F009"));
-        pckgingList.add(new Packaging("P10", "F011"));
-        pckgingList.add(new Packaging("P10", "F012"));
-        prgList.add(new TVProgramme("F001", "My Boss My Hero", "Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002", "Active", "18SG", "Comedy", ""));
-        prgList.add(new TVProgramme("F002", "Naruto", "Story about a ninja world that a child want to be a leader of the ninja.", "Japan", "27/11/1999", "Active", "U", "Comedy", ""));
-        prgList.add(new TVProgramme("F003", "One Piece", "The adventures of Monkey D. Luffy, a 17-year-old boy who gains elastic abilities after inadvertently eating a supernatural fruit.", "Japan", "4/8/1997", "Active", "U", "Comedy", ""));
-        prgList.add(new TVProgramme("F004", "Pokemon", "Ash Ketchum and his friends (human and Pok��mon) that he makes on the way as he travels the world catching new Pok��mon.", "Japan", "1/4/1997", "Active", "U", "Comedy", ""));
-        prgList.add(new TVProgramme("F005", "Tom & Jerry", "A Cat and Mouse cannot be a friend forever.", "Japan", "3/10/96", "Active", "U", "Comedy", ""));
+        pckgingList.add(new Packaging("P02", "F002"));
+        pckgingList.add(new Packaging("P02", "F003"));
+        pckgingList.add(new Packaging("P02", "F004"));
+        pckgingList.add(new Packaging("P02", "F005"));
+        pckgingList.add(new Packaging("P03", "F017"));
+        pckgingList.add(new Packaging("P03", "F018"));
+        pckgingList.add(new Packaging("P04", "F016"));
+        pckgingList.add(new Packaging("P04", "F018"));
+        pckgingList.add(new Packaging("P05", "F011"));
+        pckgingList.add(new Packaging("P05", "F012"));
+        pckgingList.add(new Packaging("P05", "F013"));
+        pckgingList.add(new Packaging("P06", "F014"));
+        pckgingList.add(new Packaging("P06", "F015"));
+        pckgingList.add(new Packaging("P07", "F012"));
+        pckgingList.add(new Packaging("P07", "F015"));
+        pckgingList.add(new Packaging("P08", "F010"));
+        pckgingList.add(new Packaging("P08", "F009"));
+        pckgingList.add(new Packaging("P09", "F006"));
+        pckgingList.add(new Packaging("P10", "F007"));
+        pckgingList.add(new Packaging("P10", "F008"));
+        prgList.add(new TVProgramme("F001", "My Boss My Hero", "Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002", "Active", "18SG", "Comedy", "5stars"));
+        prgList.add(new TVProgramme("F002", "Naruto", "Story about a ninja world that a child want to be a leader of the ninja.", "Japan", "27/11/1999", "Active", "U", "Comedy", "4stars"));
+        prgList.add(new TVProgramme("F003", "One Piece", "The adventures of Monkey D. Luffy, a 17-year-old boy who gains elastic abilities after inadvertently eating a supernatural fruit.", "Japan", "4/8/1997", "Active", "U", "Comedy", "3stars"));
+        prgList.add(new TVProgramme("F004", "Pokemon", "Ash Ketchum and his friends (human and Pok��mon) that he makes on the way as he travels the world catching new Pok��mon.", "Japan", "1/4/1997", "Active", "U", "Comedy", "2stars"));
+        prgList.add(new TVProgramme("F005", "Tom & Jerry", "A Cat and Mouse cannot be a friend forever.", "Japan", "3/10/96", "Active", "U", "Comedy", "1star"));
         prgList.add(new TVProgramme("F006", "City Hunter", "Korean Drama from the comic.", "Korea", "27/06/2011", "Active", "PG13", "Series", ""));
-        prgList.add(new TVProgramme("F007", "Gloves Come Off", "A Story about a group of boxer.", "Hong Kong", "19/4/2012", "Active", "18SG", "Series", ""));
-        prgList.add(new TVProgramme("F008", "Sergeant Tabloid", "A Drama about work and love for a female cop.", "Hong Kong", "2/4/2012", "Active", "PG13", "Series", ""));
-        prgList.add(new TVProgramme("F009", "A Song To Remember", "A Romance story between a musician and a pretty protg.", "Singapore", "1/4/2012", "Active", "PG13", "Series", ""));
-        prgList.add(new TVProgramme("F010", "Office Girls", "A Shopping mall heir discovers a fine mentoe in his female co-worker.", "Taiwan", "27/3/2012", "Active", "PG13", "Series", ""));
-        prgList.add(new TVProgramme("F011", "I Am Number 4", "An extraordinary teen masks his true idntity.", "US", "2/5/2002", "Active", "PG13", "Movie", ""));
-        prgList.add(new TVProgramme("F012", "TRON", "A hacker is literally abducted into the world of computer.", "US", "4/6/2011", "Active", "PG13", "Movie", ""));
+        prgList.add(new TVProgramme("F007", "Gloves Come Off", "A Story about a group of boxer.", "Hong Kong", "19/4/2012", "Active", "18SG", "Series", "5stars"));
+        prgList.add(new TVProgramme("F008", "Sergeant Tabloid", "A Drama about work and love for a female cop.", "Hong Kong", "2/4/2012", "Active", "PG13", "Series", "5stars"));
+        prgList.add(new TVProgramme("F009", "A Song To Remember", "A Romance story between a musician and a pretty protg.", "Singapore", "1/4/2012", "Active", "PG13", "Series", "5stars"));
+        prgList.add(new TVProgramme("F010", "Office Girls", "A Shopping mall heir discovers a fine mentoe in his female co-worker.", "Taiwan", "27/3/2012", "Active", "PG13", "Series", "5stars"));
+        prgList.add(new TVProgramme("F011", "I Am Number 4", "An extraordinary teen masks his true idntity.", "US", "2/5/2002", "Active", "PG13", "Movie", "3stars"));
+        prgList.add(new TVProgramme("F012", "TRON", "A hacker is literally abducted into the world of computer.", "US", "4/6/2011", "Active", "PG13", "Movie", "2stars"));
         prgList.add(new TVProgramme("F013", "Green Zone", "At the start of war in Iraq.", "US", "15/3/2009", "Active", "18SG", "Movie", ""));
-        prgList.add(new TVProgramme("F014", "Kung Fu Mahjong", "Suave mahjong pro ken finds himself playing for the highest stakes ever.", "Hong Kong", "21/5/2009", "Active", "PG13", "Movie", ""));
-        prgList.add(new TVProgramme("F015", "Treasure Inn", "Law Enforcers who are pulled into a dangerous and seductive adventure.", "China", "11/9/2011", "Active", "18SG", "Movie", ""));
+        prgList.add(new TVProgramme("F014", "Kung Fu Mahjong", "Suave mahjong pro ken finds himself playing for the highest stakes ever.", "Hong Kong", "21/5/2009", "Active", "PG13", "Movie", "4stars"));
+        prgList.add(new TVProgramme("F015", "Treasure Inn", "Law Enforcers who are pulled into a dangerous and seductive adventure.", "China", "11/9/2011", "Active", "18SG", "Movie", "5stars"));
         prgList.add(new TVProgramme("F016", "MayDay", "MayDay Concert.", "China", "11/9/2011", "Active", "U", "Concert", ""));
-        prgList.add(new TVProgramme("F017", "Simple Plan", "Simple Plan Concert.", "China", "11/9/2011", "Active", "U", "Concert", ""));
+        prgList.add(new TVProgramme("F017", "Simple Plan", "Simple Plan Concert.", "China", "11/9/2011", "Active", "U", "Concert", "1star"));
         prgList.add(new TVProgramme("F018", "BigBang", "BigBang Concert.", "China", "11/9/2011", "Active", "U", "Concert", ""));
 
 
@@ -466,7 +482,7 @@ class TVSystem {
             p.println("2.\tDisplay clients by type");
             p.println("3.\tDisplay specific client's Details");
             p.println("4.\tManage client profiles - Add/Edit/Terminate/Recover");
-            p.println("5.\tManage client services - Add/Edit/Terminate");
+            p.println("5.\tManage client services - Add/Edit/Terminate/Display");
             p.println("6.\tManage subscriptions - Add/Edit");
             p.println("7.\tManage TV packages- Add/Edit/Terminate/Display");
             p.println("8.\tManage TV Programmes - Add/Edit/Terminate/Display");
@@ -803,16 +819,16 @@ class TVSystem {
                                         for (c = 0; c < pckgingList.size(); c++) {
                                             if (e.equalsIgnoreCase(pckgingList.get(c).getPkgCode())) {
                                                 pckgingList.get(c).printPckging();
-                                                p.println("-----------------------------------");
-                                                break;
                                             }
                                         }
                                     }
                                 }
+                                p.println();
+                                p.println("--------------------------------------------------------------------");
                             }
                         }
                         if (print1 == false) {
-                            p.println("No Package Subscibe.");
+                            p.println("No Package Subscribed.");
                         }
                     }
                 }
@@ -835,7 +851,7 @@ class TVSystem {
         logList.addLast(log);
 
         p.println("\nManage Client's Profile");
-        p.println("-----------------------------------------------------");
+        p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
 
 
         do {
@@ -844,12 +860,13 @@ class TVSystem {
             p.println("Enter EDIT to edit an existing client.\n");
             p.println("Enter TERMINATE to terminate an existing client.\n");
             p.println("Enter RECOVER to recover an existed and terminated client.\n");
-            p.println("-----------------------------------------------------");
+            p.println("Enter BACK to back to the main menu.\n");
+            p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
             ch1_f4 = input.nextLine();
 
             ch1_f4 = ch1_f4.toLowerCase();
 
-            if ((ch1_f4.trim().length() > 0) && ((ch1_f4.equalsIgnoreCase("add") || ch1_f4.equalsIgnoreCase("edit")) || (ch1_f4.equalsIgnoreCase("terminate")) || (ch1_f4.equalsIgnoreCase("recover")))) {
+            if ((ch1_f4.trim().length() > 0) && ((ch1_f4.equalsIgnoreCase("add") || ch1_f4.equalsIgnoreCase("edit")) || (ch1_f4.equalsIgnoreCase("terminate")) || (ch1_f4.equalsIgnoreCase("recover")) || (ch1_f4.equalsIgnoreCase("back")))) {
 
                 val1_f4 = true;
             } else {
@@ -870,7 +887,7 @@ class TVSystem {
                         p.println("Enter GOV to add a client to the 'Government' category.\n");
                         p.println("Enter NGO to add a client to the 'NGO' category.\n");
                         p.println("Enter PRV to add a client to the 'Private Organisation' category..\n");
-                        p.println("-----------------------------------------------------");
+                        p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
                         type = input.nextLine();
                         p.println();
 
@@ -1325,10 +1342,9 @@ class TVSystem {
 
                             p.println("Select data to edit(Name/Age/IC/Address/CreationDate/AccountStatus): ");
                             p.println("Enter NAME to edit the name of the client.\n");
-                            p.println("Enter AGE to edit the age of the client.\n");
-                            p.println("Enter IC to edit the IC of the client.\n");
+                            p.println("Enter AGE to edit the age of the client.(Only for Individual Client)\n");
+                            p.println("Enter IC to edit the IC of the client.(Only for Individual Client)\n");
                             p.println("Enter ADDRESS to edit the address of the client.\n");
-                            p.println("Enter CRDATE to creation date the name of the client.\n");
                             p.println("Enter ACCSTAT to edit the account status of the client.\n");
                             ch2_f4 = input.nextLine();
 
@@ -1628,6 +1644,8 @@ class TVSystem {
                     logList.addLast(log);
                     break;
                 }
+            case "back":
+                break;
         }
     } // end manage client
 
@@ -1659,7 +1677,7 @@ class TVSystem {
                         do {
                             do {
                                 p.println("Please Enter the Client ID");
-                                String clientID = input.nextLine();
+                                clientID = input.nextLine();
 
                                 if (clientID.matches(Cl_IDregex)) {
                                     val = true;
@@ -1965,6 +1983,7 @@ class TVSystem {
                                         p.println("The Smart Card was terminated before.\n");
                                     } else {
                                         servList.get(i).setServStatus("terminated");
+                                        servList.get(i).setTermDate(DateFormat.getInstance().format(new Date()));
                                         p.println("The Smart Card has been terminated successful.\n");
 
                                         log = new LogFile(lgTime, username, "has terminated the Smart Card " + smartCardNo);
@@ -2014,7 +2033,6 @@ class TVSystem {
 
                     case 5:
                         val = true;
-                        showMenu();
                         break;
 
                     default:
@@ -2110,7 +2128,7 @@ class TVSystem {
                                     if (smartCardNo.equalsIgnoreCase(subsList.get(i).getSmartCardNo())) {
                                         if (pkgCode.equalsIgnoreCase(subsList.get(i).getPkgCode())) {
                                             val = true;
-                                            p.println("You have already Subscibe the package.\n");
+                                            p.println("You have already Subscribe the package.\n");
                                         }
                                     }
                                 }
@@ -2195,6 +2213,12 @@ class TVSystem {
                             }
                         } while (val == false);
 
+                        for (i = 0; i < servList.size(); i++) {
+                            if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
+                                break;
+                            }
+                        }
+
                         if (servList.get(i).getServStatus().equalsIgnoreCase("active")) {
                             do {
                                 val = false;
@@ -2223,7 +2247,7 @@ class TVSystem {
                                                     if (smartCardNo.equalsIgnoreCase(subsList.get(i).getSmartCardNo())) {
                                                         if (pkgCode.equalsIgnoreCase(subsList.get(i).getPkgCode())) {
                                                             val = true;
-                                                            p.println("You have already Subscibe the package.\n");
+                                                            p.println("You have already Subscribe the package.\n");
                                                             break;
                                                         }
                                                     }
@@ -2282,7 +2306,7 @@ class TVSystem {
 
                                                     if (val == false) {
                                                         val = true;
-                                                        p.println("You are not subscibe the package.\n");
+                                                        p.println("You are not subscribe the package.\n");
                                                     }
                                                 }
                                             } while (val == false);
@@ -2313,7 +2337,6 @@ class TVSystem {
 
                     case 3:
                         val = true;
-                        showMenu();
                         break;
 
                     default:
@@ -2568,10 +2591,10 @@ class TVSystem {
                                 try {
                                     check3 = true;
                                     p.println("-----------------------------------------------------");
-                                    p.println("Function");
+                                    p.println("Edit TV Package");
                                     p.println("-----------------------------------------------------");
-                                    p.println(" 1)Package Name \n 2)Charge Price \n 3)Charge Type \n 4)TV Programme \n 5)Stop Edit");
-                                    p.print("Please enter the selection number of contain that you would like to edit with: ");
+                                    p.println("1)Package Name \n2)Charge Price \n3)Charge Type \n4)TV Programme \n5)Stop Edit");
+                                    p.print("Please select the function that you would like to edit with: ");
                                     selection = input.nextInt();
 
                                     switch (selection) {
@@ -2592,7 +2615,7 @@ class TVSystem {
                                             p.println("You have changed the package name for package '" + pckCode2 + "'!");
                                             p.println();
                                             logList.addLast(new LogFile(lgTime, username, "has changed a package name for package '" + pckCode2 + "'."));
-
+                                            check3 = false;
                                             break;
 
                                         case 2:
@@ -2615,6 +2638,7 @@ class TVSystem {
                                             p.println("You have changed the charge price for package '" + pckCode2 + "'!");
                                             p.println();
                                             logList.addLast(new LogFile(lgTime, username, "has changed a charge price for package '" + pckCode2 + "'."));
+                                            check3 = false;
                                             break;
 
                                         case 3:
@@ -2647,7 +2671,7 @@ class TVSystem {
                                             p.println("You have changed the charge type for package '" + pckCode2 + "'!");
                                             p.println();
                                             logList.addLast(new LogFile(lgTime, username, "has changed a charge type for package '" + pckCode2 + "'."));
-
+                                            check3 = false;
                                             break;
 
                                         case 4:
@@ -2771,6 +2795,7 @@ class TVSystem {
                                                     check5 = false;
                                                 }
                                             } while ((selection2 < 1) || (selection2 > 2) || (check5 == false));
+                                            check3 = false;
                                             break;
 
                                         case 5:
@@ -3088,7 +3113,7 @@ class TVSystem {
                                 try {
                                     check2 = true;
                                     p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
-                                    p.println("UNITV RYCOX CUSTOMER MANAGEMENT MODULE(CMM)");
+                                    p.println("Edit TV Programme");
                                     p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
                                     p.println("1. Programme Title");
                                     p.println("2. Description");
@@ -3098,7 +3123,7 @@ class TVSystem {
                                     p.println("6. Notes");
                                     p.println("7. Stop Edit");
                                     p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
-                                    p.print("Please enter the selection number of contain that you would like to edit with: ");
+                                    p.print("Please select the function that you would like to edit with: ");
                                     selection = input.nextInt();
 
                                     switch (selection) {
@@ -3120,13 +3145,13 @@ class TVSystem {
                                             p.println("You have changed the programme title for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed a programme title for programme '" + progCode4 + "'."));
                                             p.println();
+                                            check2 = false;
                                             break;
 
                                         case 2:
                                             input.nextLine();
                                             do {
                                                 p.print("Please type some description that you would like to change for: ");
-
                                                 desc2 = input.nextLine();
                                                 p.println();
 
@@ -3140,6 +3165,7 @@ class TVSystem {
                                             p.println("You have changed the description for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed a description for programme '" + progCode4 + "'."));
                                             p.println();
+                                            check2 = false;
                                             break;
 
                                         case 3:
@@ -3159,6 +3185,7 @@ class TVSystem {
                                             p.println("You have changed the content origin for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed a content origin for programme '" + progCode4 + "'."));
                                             p.println();
+                                            check2 = false;
                                             break;
 
                                         case 4:
@@ -3188,6 +3215,7 @@ class TVSystem {
                                                 }
                                             }
                                             while ((!(viewerStatus2.equalsIgnoreCase("U"))) && (!(viewerStatus2.equalsIgnoreCase("PG13"))) && (!(viewerStatus2.equalsIgnoreCase("18"))));
+                                            check2 = false;
                                             break;
 
                                         case 5:
@@ -3224,6 +3252,7 @@ class TVSystem {
                                             }
                                             while ((!(progType2.equalsIgnoreCase("Movie"))) && (!(progType2.equalsIgnoreCase("Series"))) &&
                                                     (!(progType2.equalsIgnoreCase("Comedy"))) && (!(progType2.equalsIgnoreCase("Concert"))));
+                                            check2 = false;
                                             break;
 
                                         case 6:
@@ -3243,10 +3272,12 @@ class TVSystem {
                                             p.println("You have changed the notes for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed the notes for programme '" + progCode4 + "'."));
                                             p.println();
+                                            check2 = false;
                                             break;
 
                                         case 7:
-                                            check2 = false;
+                                            check2 = true;
+                                            input.nextLine();
                                             break;
 
                                         default:
@@ -3305,7 +3336,6 @@ class TVSystem {
                             } else
                                 flag4 = false;
                         }
-
                         if (flag4 == false) {
                             p.println("Sorry, the programme code that you entered doesn't exist or had already been terminated.");
                             p.println();
@@ -3316,7 +3346,6 @@ class TVSystem {
                         p.println();
                         input.nextLine();
                         do {
-
                             p.println("4. Check a TV Programme: ");
                             p.print("Please enter a programme code that you want to check with: ");
                             progCode6 = input.nextLine();
@@ -3369,15 +3398,20 @@ class TVSystem {
         log = new LogFile(lgTime, username, "has chosen the 'Manage User-Add/Change Password/Terminate' function.");
         logList.addLast(log);
 
-        p.println("\nManage User-Add/Change Password/Terminate");
-        p.println("--------------------------------------");
-
         do {
-            p.print("Please enter the function you would like to proceed(Add/ChangePassword/Terminate): ");
+            p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+            p.println("\nManage User-Add/Change Password/Terminate");
+            p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+            p.println("Enter ADD to create a new user.");
+            p.println("Enter CHG to change your existing password.");
+            p.println("Enter TER to terminate a user.");
+            p.println("Enter X to go back to the main menu.");
+            p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+            p.print("Your option: ");
             choice_f9 = input.nextLine();
             choice_f9 = choice_f9.toLowerCase();
 
-            if ((choice_f9.trim().length() > 0) && ((choice_f9.equalsIgnoreCase("add") || choice_f9.equalsIgnoreCase("changepassword")) || (choice_f9.equalsIgnoreCase("terminate")))) {
+            if ((choice_f9.trim().length() > 0) && ((choice_f9.equalsIgnoreCase("x") || choice_f9.equalsIgnoreCase("add") || choice_f9.equalsIgnoreCase("chg")) || (choice_f9.equalsIgnoreCase("ter")))) {
                 val1_f9 = true;
             } else {
                 p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
@@ -3498,7 +3532,7 @@ class TVSystem {
                 }
                 break;
             //Change a user's password
-            case "changepassword":
+            case "chg":
                 log = new LogFile(lgTime, username, "has chosen to change user '" + username + "' 's password");
                 logList.addLast(log);
 
@@ -3573,18 +3607,18 @@ class TVSystem {
                 } while (val3_f9 == false);
                 break;
 
-            case "terminate": //Terminate a user
+            case "ter": //Terminate a user
                 if (userList.get(u) instanceof Administrators) {
                     log = new LogFile(lgTime, username, "has chosen to Terminate a user.");
                     logList.addLast(log);
 
                     do {
                         do {
-                            p.print("Enter the user's name that you would like to Terminate: ");
+                            p.print("Enter the username of the user that you would like to Terminate: ");
                             un_f9 = input.nextLine();
 
                             if (un_f9.trim().length() == 0) {
-                                p.println("Blank input occured, please enter a user's name.");
+                                p.println("Blank input occured, please enter a username.");
                                 p.println();
                             }
 
@@ -3598,7 +3632,7 @@ class TVSystem {
 
                     if (un_f9.equalsIgnoreCase(username)) {
                         p.println("\nUser cannot Terminate itself!");
-                        log = new LogFile(lgTime, username, "has not Terminated user '" + un_f9 + "' details[USER CANNOT Terminate ITSELF].");
+                        log = new LogFile(lgTime, username, "has not terminated user '" + un_f9 + "'[USER CANNOT Terminate ITSELF].");
                         logList.addLast(log);
                         break;
                     }
@@ -3614,7 +3648,7 @@ class TVSystem {
                         } else {
                             if (i == (userList.size() - 1)) {
                                 p.println("\nUser '" + un_f9 + "' does not exist!");
-                                log = new LogFile(lgTime, username, "has not Terminated user '" + un_f9 + "' details[USER DOES NOT EXIST].");
+                                log = new LogFile(lgTime, username, "has not terminated user '" + un_f9 + "'[USER DOES NOT EXIST].");
                                 logList.addLast(log);
                             }
                         }
@@ -3625,8 +3659,7 @@ class TVSystem {
                     logList.addLast(log);
                 }
                 break;
-            default:
-                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+            case "x":
                 break;
         } //end switch
     } //end manage users
@@ -3689,22 +3722,23 @@ class TVSystem {
                                         for (c = 0; c < pckgingList.size(); c++) {
                                             if (e.equalsIgnoreCase(pckgingList.get(c).getPkgCode())) {
                                                 pckgingList.get(c).printPckging();
-                                                p.println("-----------------------------------");
-                                                break;
                                             }
                                         }
                                     }
                                 }
+                                p.println();
+                                p.println();
                             }
                         }
                         if (print1 == false) {
-                            p.println("No Package Subscibe.");
+                            p.println("No Package Subscribed.");
                         }
                     }
                 }
                 if (print == false) {
                     p.println("No Service Available.");
                 }
+                p.println();
                 p.println("--------------------------------------------------------------------");
 
                 log = new LogFile(lgTime, username, "has generated details of client '" + clientList.get(i).getClientID() + "'.");
@@ -3937,7 +3971,7 @@ class TVSystem {
             p.println("--------------------------------------------------------------------");
 
             //Programme
-            p.println("PACKAGE LIST\n");
+            p.println("PROGRAMME LIST\n");
 
             for (i = 0; i < prgList.size(); i++) {
                 prgList.get(i).printList();
