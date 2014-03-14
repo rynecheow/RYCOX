@@ -649,7 +649,11 @@ class TVSystem {
                 }
 
                 //Display packages
+                p.println("-----" + pkgList.size());
+
                 for (int r = 0; r < pkgList.size(); r++) {
+                    p.println("-----" + pkgList.get(r).getPkgCode());
+                    p.println(subsList.get(b).getPkgCode());
                     if ((subsList.get(b).getPkgCode().equalsIgnoreCase(pkgList.get(r).getPkgCode()))) {
                         pkgList.get(r).printPkg();
                         break;

@@ -10,6 +10,7 @@ class Subscription implements Serializable {
     public Subscription(String smartCardNo, int subsNo, String pkgCode) {
         this.smartCardNo = smartCardNo;
         this.subsNo = subsNo;
+        this.pkgCode = pkgCode;
     }
 
     public void printSubs() {
