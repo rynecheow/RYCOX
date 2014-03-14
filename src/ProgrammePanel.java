@@ -11,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 class ProgrammePanel extends JPanel {
@@ -25,10 +27,12 @@ class ProgrammePanel extends JPanel {
     private JButton saveButton;
     private JButton undoButton;
     private JButton viewButton;
+    private JButton prgActivateButton;
+    private JButton prgDeactButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
-    private JMenuItem editPrgMI, deletePrgMI, addToPkgMI;
+    private JMenuItem editPrgMI, deletePrgMI, activateMI, viewMI, deactivateMI;
     private String[][] prgData;
     private static AbstractTableModel prgModel;
     static String[] progtemp;
@@ -52,6 +56,10 @@ class ProgrammePanel extends JPanel {
         prgDeleteButton.setBackground(bColor);
         viewButton = new JButton("", new ImageIcon(getClass().getResource("viewbutton.png")));
         viewButton.setBackground(bColor);
+        prgActivateButton = new JButton("", new ImageIcon(getClass().getResource("activatebutton.png")));
+        prgActivateButton.setBackground(bColor);
+        prgDeactButton = new JButton("", new ImageIcon(getClass().getResource("deactivatebutton.png")));
+        prgDeactButton.setBackground(bColor);
         scrollPane = new JScrollPane();
         prgTable = new JTable();
         prgTable.getTableHeader().setReorderingAllowed(false);
@@ -83,6 +91,10 @@ class ProgrammePanel extends JPanel {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
+                                .addComponent(prgActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
+                                .addComponent(prgDeactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
@@ -97,6 +109,8 @@ class ProgrammePanel extends JPanel {
                                         .addComponent(viewButton)
                                         .addComponent(redoButton)
                                         .addComponent(undoButton)
+                                        .addComponent(prgActivateButton)
+                                        .addComponent(prgDeactButton)
                                         .addComponent(loginInfo)
                                         .addComponent(prgDeleteButton))
 
@@ -106,9 +120,9 @@ class ProgrammePanel extends JPanel {
         prgTable.setBackground(new Color(227, 226, 226));
         prgTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
 
-        prgData = new String[RYCOXv2.prgList.size()][5];
+        prgData = new String[RYCOXv2.prgList.size()][6];
         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            for (int j = 0; j <= 5; j++) {
+            for (int j = 0; j <= 6; j++) {
 
                 switch (j) {
                     case 0:
@@ -126,6 +140,9 @@ class ProgrammePanel extends JPanel {
                     case 4:
                         prgData[i][j] = RYCOXv2.prgList.get(i).getType();
                         break;
+                    case 5:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getPrgStatus();
+                        break;
                 }
             }
         }
@@ -133,16 +150,16 @@ class ProgrammePanel extends JPanel {
         prgModel = new DefaultTableModel(
                 prgData,
                 new String[]{
-                        "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type"
+                        "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type", "Programme Status"
                 }
         ) {
 
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
             };
 
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false
+                    false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -182,34 +199,274 @@ class ProgrammePanel extends JPanel {
         );
 
         prgTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {          //////////////////
                 if (SwingUtilities.isRightMouseButton(e)) {
                     int rowNumber = prgTable.rowAtPoint(e.getPoint());
                     // Get the ListSelectionModel of the JTable
                     ListSelectionModel model = prgTable.getSelectionModel();
                     model.setSelectionInterval(rowNumber, rowNumber);
+                    rowno = prgTable.rowAtPoint(e.getPoint());
+                    progtemp = new String[10];
+                    ////////////////////////////////////////
+                    progtemp[0] = (String) prgTable.getValueAt(rowno, 0);
+
+                    for (int j = 0; j < RYCOXv2.prgList.size(); j++) {
+                        if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(j).getProgCode())) {
+                            progtemp[1] = RYCOXv2.prgList.get(j).getProgTitle();
+                            progtemp[2] = RYCOXv2.prgList.get(j).getDesc();
+                            progtemp[3] = RYCOXv2.prgList.get(j).getContentOrigin();
+                            progtemp[4] = RYCOXv2.prgList.get(j).getCreationDate();
+                            progtemp[5] = RYCOXv2.prgList.get(j).getTerminationDate();
+                            progtemp[6] = RYCOXv2.prgList.get(j).getPrgStatus();
+                            progtemp[7] = RYCOXv2.prgList.get(j).getViewerStatus();
+                            progtemp[8] = RYCOXv2.prgList.get(j).getType();
+                            progtemp[9] = RYCOXv2.prgList.get(j).getNotes();
+
+
+                            break;
+                        }
+                    }
+
+                    changeMode();
+                    showPopup(e);
                 } else if (SwingUtilities.isLeftMouseButton(e)) {
                     ListSelectionModel model = prgTable.getSelectionModel();
                     model.setSelectionInterval(prgTable.rowAtPoint(e.getPoint()), prgTable.rowAtPoint(e.getPoint()));
                     rowno = prgTable.rowAtPoint(e.getPoint());
-                    progtemp = new String[5];
-                    for (int j = 0; j < 5; j++) {
-                        progtemp[j] = (String) prgTable.getValueAt(rowno, j);
+                    progtemp = new String[10];
+                    ////////////////////////////////////////
+                    progtemp[0] = (String) prgTable.getValueAt(rowno, 0);
+
+                    for (int j = 0; j < RYCOXv2.prgList.size(); j++) {
+                        if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(j).getProgCode())) {
+                            progtemp[1] = RYCOXv2.prgList.get(j).getProgTitle();
+                            progtemp[2] = RYCOXv2.prgList.get(j).getDesc();
+                            progtemp[3] = RYCOXv2.prgList.get(j).getContentOrigin();
+                            progtemp[4] = RYCOXv2.prgList.get(j).getCreationDate();
+                            progtemp[5] = RYCOXv2.prgList.get(j).getTerminationDate();
+                            progtemp[6] = RYCOXv2.prgList.get(j).getPrgStatus();
+                            progtemp[7] = RYCOXv2.prgList.get(j).getViewerStatus();
+                            progtemp[8] = RYCOXv2.prgList.get(j).getType();
+                            progtemp[9] = RYCOXv2.prgList.get(j).getNotes();
+
+
+                            break;
+                        }
                     }
+                    changeMode();
+
+                }
+            }
+
+            private void showPopup(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
         }
-        ); //table click
+        ); //table click            /////////////////////////////////////////////////
 
         editPrgMI = new JMenuItem("Edit Programme...");
         deletePrgMI = new JMenuItem("Terminate Programme...");
-        addToPkgMI = new JMenuItem("Add Programme...");
+        activateMI = new JMenuItem("Activate Programme...");
+        deactivateMI = new JMenuItem("Deactivate Prgramme...");
+        viewMI = new JMenuItem("View Programme...");
+
 
         popupMenu = new JPopupMenu("Menu");
         popupMenu.add(editPrgMI);
         popupMenu.add(deletePrgMI);
-        popupMenu.add(addToPkgMI);
+        popupMenu.add(activateMI);
+        popupMenu.add(deactivateMI);
+        popupMenu.add(viewMI);
 
+		/*-------------------------- MENU ITEM LISTENER --------------------------*/
+        activateMI.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+                        if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                            RYCOXv2.prgList.get(i).setPrgStatus("ACTIVE");
+                            int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "'?");
+                            if (opt == JOptionPane.YES_OPTION) {
+                                JOptionPane.showMessageDialog(null, "Programme " + RYCOXv2.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updateProgrammeTable();
+                                prgTable.clearSelection();
+                                prgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                prgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                                break;
+                            } else if (opt == JOptionPane.NO_OPTION) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                //				prgTable.clearSelection();
+                //				prgDeactButton.setEnabled(true);
+                //				deactivateMI.setEnabled(true);
+                //				prgActivateButton.setEnabled(true);
+                //				activateMI.setEnabled(true);
+
+
+            }
+
+        });
+
+
+        deactivateMI.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+                        if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                            RYCOXv2.prgList.get(i).setPrgStatus("INACTIVE");
+                            JOptionPane.showMessageDialog(null, "Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                }
+                updateProgrammeTable();
+                prgTable.clearSelection();
+                prgDeactButton.setEnabled(true);
+                deactivateMI.setEnabled(true);
+                prgActivateButton.setEnabled(true);
+                activateMI.setEnabled(true);
+
+            }
+        });
+
+
+        viewMI.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                new ViewProgrammeDialog((JFrame) popupMenu.getParent());
+                prgTable.clearSelection();
+            }
+
+        });
+
+        editPrgMI.addActionListener(new ActionListener() {
+
+            @SuppressWarnings("unused")
+            public void actionPerformed(ActionEvent e) {
+                EditProgrammeDialog epd = new EditProgrammeDialog((JFrame) popupMenu.getParent());
+                updateProgrammeTable();
+                prgTable.clearSelection();
+            }
+        });
+
+
+        deletePrgMI.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
+                if (choice == JOptionPane.YES_OPTION) {
+                    for (int counts = 0; counts < RYCOXv2.prgList.size(); counts++) {
+                        if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(counts).getProgCode())) {
+                            if ((RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
+
+                                RYCOXv2.prgList.get(counts).setPrgStatus("TERMINATED");
+                                String date = DateFormat.getInstance().format(new Date());
+                                RYCOXv2.prgList.get(counts).setTerminationDate(date);
+                                JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
+                                LogFile log = new LogFile(RYCOXv2.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
+                                RYCOXv2.logList.add(log);
+                                break;
+
+                            } else if (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("TERMINATED")) {
+
+                                JOptionPane.showMessageDialog(null, "The programme has been terminated. It cannot be terminated twice!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
+                                break;
+                            }
+
+                        }
+                    }
+
+                } else {
+                }
+
+                updateProgrammeTable();
+                prgTable.clearSelection();
+            }
+        });
+
+		/*-------------------------- BUTTON LISTENER --------------------------*/
+        prgActivateButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+                        if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                            RYCOXv2.prgList.get(i).setPrgStatus("ACTIVE");
+                            int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "'?");
+                            if (opt == JOptionPane.YES_OPTION) {
+                                JOptionPane.showMessageDialog(null, "Programme " + RYCOXv2.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updateProgrammeTable();
+                                prgTable.clearSelection();
+                                prgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                prgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                                break;
+                            } else if (opt == JOptionPane.NO_OPTION) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                //				prgTable.clearSelection();
+                //				prgDeactButton.setEnabled(true);
+                //				deactivateMI.setEnabled(true);
+                //				prgActivateButton.setEnabled(true);
+                //				activateMI.setEnabled(true);
+
+
+            }
+
+        });
+
+
+        prgDeactButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+                        if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                            RYCOXv2.prgList.get(i).setPrgStatus("INACTIVE");
+                            JOptionPane.showMessageDialog(null, "Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                }
+                updateProgrammeTable();
+                prgTable.clearSelection();
+                prgDeactButton.setEnabled(true);
+                deactivateMI.setEnabled(true);
+                prgActivateButton.setEnabled(true);
+                activateMI.setEnabled(true);
+
+            }
+        });
+
+
+        viewButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                new ViewProgrammeDialog((JFrame) popupMenu.getParent());
+                prgTable.clearSelection();
+            }
+
+        });
 
         prgAddButton.addActionListener(new ActionListener() {
 
@@ -217,6 +474,7 @@ class ProgrammePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 NewProgrammeDialog npd = new NewProgrammeDialog((JFrame) popupMenu.getParent());
                 updateProgrammeTable();
+                prgTable.clearSelection();
             }
         });
 
@@ -248,6 +506,7 @@ class ProgrammePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 EditProgrammeDialog epd = new EditProgrammeDialog((JFrame) popupMenu.getParent());
                 updateProgrammeTable();
+                prgTable.clearSelection();
             }
         });
 
@@ -260,14 +519,20 @@ class ProgrammePanel extends JPanel {
                 if (choice == JOptionPane.YES_OPTION) {
                     for (int counts = 0; counts < RYCOXv2.prgList.size(); counts++) {
                         if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(counts).getProgCode())) {
-                            if (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("Active")) {
+                            if ((RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
 
-                                RYCOXv2.prgList.remove(counts);
+                                RYCOXv2.prgList.get(counts).setPrgStatus("TERMINATED");
+                                String date = DateFormat.getInstance().format(new Date());
+                                RYCOXv2.prgList.get(counts).setTerminationDate(date);
                                 JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
                                 LogFile log = new LogFile(RYCOXv2.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
                                 RYCOXv2.logList.add(log);
                                 break;
 
+                            } else if (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("TERMINATED")) {
+
+                                JOptionPane.showMessageDialog(null, "The programme has been terminated. It cannot be terminated twice!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
+                                break;
                             }
 
                         }
@@ -277,6 +542,7 @@ class ProgrammePanel extends JPanel {
                 }
 
                 updateProgrammeTable();
+                prgTable.clearSelection();
             }
         });
 
@@ -284,9 +550,9 @@ class ProgrammePanel extends JPanel {
 
 
     public void updateProgrammeTable() {
-        prgData = new String[RYCOXv2.prgList.size()][5];
+        prgData = new String[RYCOXv2.prgList.size()][6];
         for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            for (int j = 0; j <= 5; j++) {
+            for (int j = 0; j <= 6; j++) {
                 switch (j) {
                     case 0:
                         prgData[i][j] = RYCOXv2.prgList.get(i).getProgCode();
@@ -303,6 +569,9 @@ class ProgrammePanel extends JPanel {
                     case 4:
                         prgData[i][j] = RYCOXv2.prgList.get(i).getType();
                         break;
+                    case 5:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getPrgStatus();
+                        break;
                 }
             }
         }
@@ -310,17 +579,17 @@ class ProgrammePanel extends JPanel {
         prgModel = new DefaultTableModel(
                 prgData,
                 new String[]{
-                        "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type"
+                        "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type", "Programme Status"
                 }
         ) {
 
             @SuppressWarnings("rawtypes")
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
             };
 
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false
+                    false, false, false, false, false, false
             };
 
             @SuppressWarnings({"unchecked", "rawtypes"})
@@ -339,6 +608,34 @@ class ProgrammePanel extends JPanel {
         prgTable.setName("");
         prgTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(prgTable);
+    }
+
+
+    private void changeMode() {
+        rowno = prgTable.getSelectedRow();
+        String ID = (String) prgTable.getValueAt(rowno, 0);
+
+        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+            if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+
+                if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                    prgDeactButton.setEnabled(true);
+                    deactivateMI.setEnabled(true);
+                    prgActivateButton.setEnabled(false);
+                    activateMI.setEnabled(false);
+                } else if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                    prgDeactButton.setEnabled(false);
+                    deactivateMI.setEnabled(false);
+                    prgActivateButton.setEnabled(true);
+                    activateMI.setEnabled(true);
+                } else {
+                    prgDeactButton.setEnabled(false);
+                    deactivateMI.setEnabled(false);
+                    prgActivateButton.setEnabled(false);
+                    activateMI.setEnabled(false);
+                }
+            }
+        }
     }
 
 

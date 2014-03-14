@@ -15,8 +15,9 @@ public class MainUI extends JFrame implements ActionListener {
     private Color mainbgColor = new Color(23, 28, 30);
     private JMenuBar menubar;
     private JMenu fileMenu, editMenu, viewMenu, helpMenu;
-    private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI;
+    private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI, saveClientMI;
     private int i;
+    private JMenu adminMenu;
 
 
     public MainUI() {
@@ -31,6 +32,7 @@ public class MainUI extends JFrame implements ActionListener {
         editMenu = new JMenu("Edit");
         viewMenu = new JMenu("View");
         helpMenu = new JMenu("Help");
+        adminMenu = new JMenu("Admin");
         menubar.add(fileMenu);
         menubar.add(editMenu);
         menubar.add(viewMenu);
@@ -40,11 +42,13 @@ public class MainUI extends JFrame implements ActionListener {
         aboutMI = new JMenuItem("About..");
         viewLogMI = new JMenuItem("View Log...");
         logoutMI = new JMenuItem("Log out '" + RYCOXv2.user + "'...");
+        saveClientMI = new JMenuItem("Save clients as...");
         fileMenu.add(saveMI);
         fileMenu.add(exitMI);
         fileMenu.add(logoutMI);
         helpMenu.add(aboutMI);
         viewMenu.add(viewLogMI);
+        adminMenu.add(saveClientMI);
         viewLogMI.addActionListener(this);
         logoutMI.addActionListener(this);
         setJMenuBar(menubar);
@@ -90,12 +94,13 @@ public class MainUI extends JFrame implements ActionListener {
             }
 
         });
-
+        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+            adminMenu.setVisible(false);
+        }
     }
 
     private void clientTab() {
         clientPanel = new ClientPanel();
-
     }
 
 
@@ -205,6 +210,7 @@ public class MainUI extends JFrame implements ActionListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
             //saving added data user_data.rycox
             try {
                 FileOutputStream user_fostream = new FileOutputStream("user_data.rycox");
@@ -234,12 +240,17 @@ public class MainUI extends JFrame implements ActionListener {
             LogDialog ld = new LogDialog(this);
             ld.setVisible(true);
         } else if (e.getSource() == logoutMI) {
-            RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
-            RYCOXv2.logList.add(RYCOXv2.log);
-            RYCOXv2.printLog();
-            dispose();
-            new RYCOXv2();
-            RYCOXv2.initialise();
+            int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to log out? Any unsaved changes will be discarded.", "Confirm logout", JOptionPane.WARNING_MESSAGE);
+            System.out.println("option");
+
+            if (option == JOptionPane.YES_OPTION) {
+                RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
+                RYCOXv2.logList.add(RYCOXv2.log);
+                RYCOXv2.printLog();
+                dispose();
+                new RYCOXv2();
+                RYCOXv2.initialise();
+            }
         }
     }
 }

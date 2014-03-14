@@ -341,16 +341,7 @@ class NewClientDialog extends JDialog {
                                 checkWrongFormat = false;
                                 warningMsgFormat.setVisible(false);
                                 warningMsgIDEx.setVisible(false);
-                                if (((String) clTypeCombo.getSelectedItem()).equals("Individual")) {
-                                    appendedID = "I" + temp[2];
-                                } else if (((String) clTypeCombo.getSelectedItem()).equals("Government")) {
-                                    appendedID = "G" + temp[2];
-                                } else if (((String) clTypeCombo.getSelectedItem()).equals("NGO")) {
-                                    appendedID = "N" + temp[2];
-                                } else if (((String) clTypeCombo.getSelectedItem()).equals("Private Organisation")) {
-                                    appendedID = "P" + temp[2];
-                                }
-                                System.out.println(appendedID);
+                                appendedID = "I" + temp[2];
                                 for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
                                     if (appendedID.equals(RYCOXv2.clientList.get(p).getClientID())) {
                                         warningMsgIDEx.setVisible(true);
@@ -359,7 +350,6 @@ class NewClientDialog extends JDialog {
                                     } else {
                                         warningMsgIDEx.setVisible(false);
                                         existed = false;
-                                        break;
                                     }
                                 }
                             } else {
@@ -401,7 +391,7 @@ class NewClientDialog extends JDialog {
                 }
                 break;
             }
-            if (checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyIC == false && checkEmptyADD == false && checkEmptyAGE == false && checkEmptyEM == false && checkWrongFormat == false) {
+            if (existed == false && checkEmptyFN == false && checkEmptyLN == false && checkEmptyID == false && checkEmptyIC == false && checkEmptyADD == false && checkEmptyAGE == false && checkEmptyEM == false && checkWrongFormat == false) {
                 clientCreation();
                 dispose();
             }
@@ -429,14 +419,34 @@ class NewClientDialog extends JDialog {
                             checkEmptyID = true;
                             warningMsgID.setVisible(true);
                             warningMsgFormat.setVisible(false);
+                            warningMsgIDEx.setVisible(false);
                         } else {
                             warningMsgID.setVisible(false);
                             if (temp[2].matches("[0-9]{6}")) {
                                 checkWrongFormat = false;
                                 warningMsgFormat.setVisible(false);
+                                warningMsgIDEx.setVisible(false);
+                                if (((String) clTypeCombo.getSelectedItem()).equals("Government")) {
+                                    appendedID = "G" + temp[2];
+                                } else if (((String) clTypeCombo.getSelectedItem()).equals("NGO")) {
+                                    appendedID = "N" + temp[2];
+                                } else if (((String) clTypeCombo.getSelectedItem()).equals("Private Organisation")) {
+                                    appendedID = "P" + temp[2];
+                                }
+                                for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
+                                    if (appendedID.equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                        warningMsgIDEx.setVisible(true);
+                                        existed = true;
+                                        break;
+                                    } else {
+                                        warningMsgIDEx.setVisible(false);
+                                        existed = false;
+                                    }
+                                }
                             } else {
                                 checkWrongFormat = true;
                                 warningMsgFormat.setVisible(true);
+                                warningMsgIDEx.setVisible(false);
                             }
                         }
                     case 3:

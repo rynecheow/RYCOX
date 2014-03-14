@@ -11,21 +11,23 @@ class TVPackage implements Serializable {
     private String terminationDate = "N/A";
     private double chargePrice;
     private String chargeType;
-    private String pkgStatus = "Active";
+    private String pkgStatus = "ACTIVE";
 
     public TVPackage(String pkgCode, String pkgName, double chargePrice, String chargeType, String pkgStatus) { //constructor{
         this.pkgCode = pkgCode;
         this.pkgName = pkgName;
         this.startDate = DateFormat.getInstance().format(new Date());
+        this.terminationDate = "N/A";
         this.chargePrice = chargePrice;
         this.chargeType = chargeType;
         this.pkgStatus = pkgStatus;
     }
 
-    public TVPackage(String pkgCode, String pkgName, String startDate, double chargePrice, String chargeType, String pkgStatus) { //constructor{
+    public TVPackage(String pkgCode, String pkgName, String startDate, String terminationDate, double chargePrice, String chargeType, String pkgStatus) { //constructor{
         this.pkgCode = pkgCode;
         this.pkgName = pkgName;
         this.startDate = DateFormat.getInstance().format(new Date());
+        this.terminationDate = "N/A";
         this.chargePrice = chargePrice;
         this.chargeType = chargeType;
         this.pkgStatus = pkgStatus;

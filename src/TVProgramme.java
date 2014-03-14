@@ -11,7 +11,8 @@ class TVProgramme implements Serializable {
     private String desc;
     private String contentOrigin;
     private String creationDate;
-    private String prgStatus = "Active";
+    private String terminationDate = "N/A";
+    private String prgStatus = "ACTIVE";
     private String viewerStatus;
     private String type;
     private String notes;
@@ -22,18 +23,20 @@ class TVProgramme implements Serializable {
         this.desc = desc;
         this.contentOrigin = contentOrigin;
         this.creationDate = DateFormat.getInstance().format(new Date());
+        this.terminationDate = "N/A";
         this.prgStatus = prgStatus;
         this.viewerStatus = viewerStatus;
         this.type = type;
         this.notes = notes;
     }
 
-    public TVProgramme(String progCode, String progTitle, String desc, String contentOrigin, String creationDate, String prgStatus, String viewerStatus, String type, String notes) { //constructor
+    public TVProgramme(String progCode, String progTitle, String desc, String contentOrigin, String creationDate, String terminationDate, String prgStatus, String viewerStatus, String type, String notes) { //constructor
         this.progCode = progCode;
         this.progTitle = progTitle;
         this.desc = desc;
         this.contentOrigin = contentOrigin;
         this.creationDate = DateFormat.getInstance().format(new Date());
+        this.terminationDate = "N/A";
         this.prgStatus = prgStatus;
         this.viewerStatus = viewerStatus;
         this.type = type;
@@ -59,6 +62,12 @@ class TVProgramme implements Serializable {
 
     public String getCreationDate() { //to return the creation date of a programme
         return creationDate;
+    }
+
+    public String getTerminationDate() {  //to return the termination date of a programme
+
+        return terminationDate;
+
     }
 
     public String getPrgStatus() { //to return the programme's status
@@ -109,6 +118,12 @@ class TVProgramme implements Serializable {
 
     public void setNotes(String notes) {//to change programme's notes
         this.notes = notes;
+    }
+
+    public void setTerminationDate(String terminationDate) {
+
+        this.terminationDate = terminationDate;
+
     }
 
     public void setContentOrigin(String contentOrigin) {

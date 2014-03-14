@@ -39,8 +39,8 @@ class EditProgrammeDialog extends JDialog {
         combobox1 = new JComboBox();
         combobox2 = new JComboBox();
         textfield4 = new JTextField(15);
-        button1 = new JButton("SUBMIT");
-        button2 = new JButton("CANCEL");
+        button1 = new JButton("Submit");
+        button2 = new JButton("Cancel");
         color = new Color(23, 28, 30);
         color1 = new Color(244, 219, 234);
 
@@ -75,18 +75,16 @@ class EditProgrammeDialog extends JDialog {
         label6.setForeground(color1);
         label7.setForeground(color1);
 
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                textfield1.setText(RYCOXv2.prgList.get(i).getProgCode());
-                textfield2.setText(RYCOXv2.prgList.get(i).getProgTitle());
-                textarea1.setText(RYCOXv2.prgList.get(i).getDesc());
-                textfield3.setText(RYCOXv2.prgList.get(i).getContentOrigin());
-                combobox1.setSelectedItem((String) (RYCOXv2.prgList.get(i).getViewerStatus()));
-                combobox2.setSelectedItem((String) (RYCOXv2.prgList.get(i).getType()));
-                textfield4.setText(RYCOXv2.prgList.get(i).getNotes());
-                break;
-            }
-        }
+
+        textfield1.setText(ProgrammePanel.progtemp[0]);
+        textfield2.setText(ProgrammePanel.progtemp[1]);
+        textarea1.setText(ProgrammePanel.progtemp[2]);
+        textfield3.setText(ProgrammePanel.progtemp[3]);
+        combobox1.setSelectedItem((String) (ProgrammePanel.progtemp[7]));
+        combobox2.setSelectedItem((String) (ProgrammePanel.progtemp[8]));
+        textfield4.setText(ProgrammePanel.progtemp[9]);
+
+
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
@@ -225,7 +223,7 @@ class EditProgrammeDialog extends JDialog {
         container.add(textfield3);
         container.add(error3);
         spring.putConstraint(SpringLayout.WEST, label4, 20, SpringLayout.WEST, container);
-        spring.putConstraint(SpringLayout.NORTH, label4, 115, SpringLayout.SOUTH, label3);
+        spring.putConstraint(SpringLayout.NORTH, label4, 120, SpringLayout.SOUTH, label3);
         spring.putConstraint(SpringLayout.WEST, textfield3, 80, SpringLayout.EAST, label1);
         spring.putConstraint(SpringLayout.NORTH, textfield3, 25, SpringLayout.SOUTH, scrollpane1);
         spring.putConstraint(SpringLayout.NORTH, error3, 5, SpringLayout.SOUTH, textfield3);
