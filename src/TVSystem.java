@@ -55,7 +55,8 @@ class TVSystem {
     LinkedList<Packaging> pckgingList = new LinkedList<Packaging>();
     LinkedList<TVProgramme> prgList = new LinkedList<TVProgramme>();
     LinkedList<LogFile> logList = new LinkedList<LogFile>();
-    LogFile log = new LogFile("", "");
+    LogFile log = new LogFile("", "", "");
+    //LogFile log=new LogFile("", "");
     //List<Integer> t=new LinkedList<Integer>();
     File client_file = new File("cl_data.dat");
     boolean exist_cl_data = client_file.exists();
@@ -280,7 +281,7 @@ class TVSystem {
     }
 
 
-    /*--------------------------------------------------------------------------METHOD ONE- USER LOGIN----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION ONE- USER LOGIN----------------------------------------------------------------------------------------*/
     public void loginMenu() {
         do {
             p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
@@ -334,8 +335,9 @@ class TVSystem {
                                 } else {
                                     pwVal = true;
                                     login = true;
-
-                                    log = new LogFile(username, "has logged into the system.");
+                                    Date logTime = new Date();
+                                    String lgTime = DateFormat.getInstance().format(logTime);
+                                    log = new LogFile(lgTime, username, "has logged into the system.");
                                     logList.addLast(log);
 
                                     break;
@@ -362,7 +364,7 @@ class TVSystem {
         } while ((menu1_opt_1 != 2) && (login == false));
     } //login method
 
-    /*--------------------------------------------------------------------------METHOD TWO - MENU----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION TWO - MENU----------------------------------------------------------------------------------------*/
     public void showMenu() {
         do {
             p.println("\nMENU");
@@ -415,7 +417,7 @@ class TVSystem {
                         manageUsers();
                         break;
                     case 10:
-                        //reportGener();
+                        reportGen();
                         break;
                     case 11:
                         logout();
@@ -428,19 +430,20 @@ class TVSystem {
         } while ((menu2_opt_1 != 10) && (login));
     } //end showMenu
 
-    /*--------------------------------------------------------------------------METHOD THREE - DISPLAY CLIENTS----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION THREE - DISPLAY CLIENTS----------------------------------------------------------------------------------------*/
     public void displayClients() {
         p.println("\nDisplay Clients");
         p.println("---------------");
-
-        log = new LogFile(username, "has chosen the 'Display Clients' function.");
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
+        log = new LogFile(lgTime, username, "has chosen the 'Display Clients' function.");
         logList.addLast(log);
 
         for (i = 0; i < clientList.size(); i++) {
             p.println(clientList.get(i).getName() + "\t" + clientList.get(i).getClientID());
         }
 
-        log = new LogFile(username, "has displayed clients.");
+        log = new LogFile(lgTime, username, "has displayed clients.");
         logList.addLast(log);
     } //end display client
 
@@ -448,8 +451,9 @@ class TVSystem {
         String type;
         @SuppressWarnings("unused")
         boolean val1_o2 = false, val2_o2 = false;
-
-        log = new LogFile(username, "has chosen the 'Display Client by Type' function.");
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
+        log = new LogFile(lgTime, username, "has chosen the 'Display Client by Type' function.");
         logList.addLast(log);
 
         p.println("\nDisplay Client by Type");
@@ -514,14 +518,14 @@ class TVSystem {
                         }
                     }
 
-                    log = new LogFile(username, "has displayed the clients in Individual category.");
+                    log = new LogFile(lgTime, username, "has displayed the clients in Individual category.");
                     logList.addLast(log);
 
                     val2_o2 = true;
                 } else {
                     p.println("There is no client registered under the Individual category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in Individual category [NO CLIENTS].");
+                    log = new LogFile(lgTime, username, "has not displayed the clients in Individual category [NO CLIENTS].");
                     logList.addLast(log);
                 }
             } else if (type.equalsIgnoreCase("Gov")) {//Government
@@ -534,14 +538,14 @@ class TVSystem {
                         }
                     }
 
-                    log = new LogFile(username, "has displayed the clients in Government category.");
+                    log = new LogFile(lgTime, username, "has displayed the clients in Government category.");
                     logList.addLast(log);
 
                     val2_o2 = true;
                 } else {
                     p.println("There is no client registered under the Government category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in Government category [NO CLIENTS].");
+                    log = new LogFile(lgTime, username, "has not displayed the clients in Government category [NO CLIENTS].");
                     logList.addLast(log);
                 }
             } else if (type.equalsIgnoreCase("NGO")) {//NGO
@@ -554,7 +558,7 @@ class TVSystem {
                         }
                     }
 
-                    log = new LogFile(username, "has displayed the clients in NGO type.");
+                    log = new LogFile(lgTime, username, "has displayed the clients in NGO type.");
                     logList.addLast(log);
 
                     val2_o2 = true;
@@ -563,7 +567,7 @@ class TVSystem {
 
                     p.println("There is no client registered under the NGO category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in NGO category[NO CLIENTS].");
+                    log = new LogFile(lgTime, username, "has not displayed the clients in NGO category[NO CLIENTS].");
                     logList.addLast(log);
                 }
             }
@@ -579,14 +583,14 @@ class TVSystem {
                         }
                     }
 
-                    log = new LogFile(username, "has displayed the clients in Private Organisation category.");
+                    log = new LogFile(lgTime, username, "has displayed the clients in Private Organisation category.");
                     logList.addLast(log);
 
                     val2_o2 = true;
                 } else {
                     p.println("There is no client registered under the Private Organisation category yet.");
 
-                    log = new LogFile(username, "has not displayed the clients in Private Organisation category [NO CLIENTS].");
+                    log = new LogFile(lgTime, username, "has not displayed the clients in Private Organisation category [NO CLIENTS].");
                     logList.addLast(log);
                 }
             } //end else if
@@ -594,7 +598,7 @@ class TVSystem {
             else {
                 p.println("Error! Client type does not exist!");
 
-                log = new LogFile(username, "has not displayed the any client.[TYPE DOES NOT EXIST].");
+                log = new LogFile(lgTime, username, "has not displayed the any client.[TYPE DOES NOT EXIST].");
                 logList.addLast(log);
             } //end else
 
@@ -606,8 +610,9 @@ class TVSystem {
     public void displayCLDetails() {
         String valID_f3;
         boolean val1_f3 = false;    //check emptiness
-
-        log = new LogFile(username, "has chosen the 'Display Client's Details' function.");
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
+        log = new LogFile(lgTime, username, "has chosen the 'Display Client's Details' function.");
         logList.addLast(log);
 
         p.println("\nDisplay Client's Details");
@@ -660,27 +665,28 @@ class TVSystem {
                     }
                 }
 
-                log = new LogFile(username, "has displayed Client '" + valID_f3 + "' details.");
+                log = new LogFile(lgTime, username, "has displayed Client '" + valID_f3 + "' details.");
                 logList.addLast(log);
 
                 break;
             } else {
                 if (i == (clientList.size() - 1)) {
                     p.println("Client '" + valID_f3 + "' does not exist!");
-                    log = new LogFile(username, "has not displayed Client '" + valID_f3 + "' details[CLIENT DOES NOT EXIST].");
+                    log = new LogFile(lgTime, username, "has not displayed Client '" + valID_f3 + "' details[CLIENT DOES NOT EXIST].");
                     logList.addLast(log);
                 }
             }
         }
     }// end display client details
 
-    /*--------------------------------------------------------------------------METHOD FOUR - MANAGE CLIENTS----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION FOUR - MANAGE CLIENTS----------------------------------------------------------------------------------------*/
     public void manageClients() {
         String ch1_f4, ch2_f4, valID_f4;
         boolean val1_f4 = false;  //check emptiness and valid string
         boolean val2_f4 = false;
-
-        log = new LogFile(username, "has chosen the 'Manage Client's Profile' function.");
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
+        log = new LogFile(lgTime, username, "has chosen the 'Manage Client's Profile' function.");
         logList.addLast(log);
 
         p.println("\nManage Client's Profile");
@@ -706,7 +712,7 @@ class TVSystem {
 
         switch (ch1_f4) {
             case "add":        //Add a new client's profile
-                log = new LogFile(username, "has chosen to add a new client profile.");
+                log = new LogFile(lgTime, username, "has chosen to add a new client profile.");
                 logList.addLast(log);
 
                 do {
@@ -947,7 +953,7 @@ class TVSystem {
 
                 break;
             case "edit":
-                log = new LogFile(username, "has chosen to edit a client.");
+                log = new LogFile(lgTime, username, "has chosen to edit a client.");
                 logList.addLast(log);
 
                 p.print("Enter the Client's ID that you would like to edit: ");
@@ -972,7 +978,7 @@ class TVSystem {
                                 clientList.get(i).setName(newName_f4);
 
                                 p.println("\nClient '" + valID_f4 + "' 's name has been edited to '" + newName_f4 + "'.");
-                                log = new LogFile(username, "has edited client '" + valID_f4 + "' 's name to '" + newName_f4 + "'.");
+                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's name to '" + newName_f4 + "'.");
                                 logList.addLast(log);
                                 break;
 
@@ -988,12 +994,12 @@ class TVSystem {
                                     client.setAge(newAgeI_f4);
 
                                     p.println("\nClient '" + valID_f4 + "' 's age has been edited.");
-                                    log = new LogFile(username, "has edited client '" + valID_f4 + "' 's age.");
+                                    log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's age.");
                                     logList.addLast(log);
                                     break;
                                 } else {
                                     p.println("\nThis is only for Individual Client!");
-                                    log = new LogFile(username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
+                                    log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
                                     logList.addLast(log);
                                     break;
                                 }
@@ -1007,12 +1013,12 @@ class TVSystem {
                                     client.setIC(f4nic);
 
                                     p.println("\nClient '" + valID_f4 + "' 's IC has been edited.");
-                                    log = new LogFile(username, "has edited client '" + valID_f4 + "' 's IC.");
+                                    log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's IC.");
                                     logList.addLast(log);
                                     break;
                                 } else {
                                     p.println("\nThis is only for Individual Client!");
-                                    log = new LogFile(username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
+                                    log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
                                     logList.addLast(log);
                                     break;
                                 }
@@ -1023,7 +1029,7 @@ class TVSystem {
                                 clientList.get(i).setName(f4naddress);
 
                                 p.println("\nClient '" + valID_f4 + "' 's address has been edited.");
-                                log = new LogFile(username, "has edited client '" + valID_f4 + "' 's address.");
+                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's address.");
                                 logList.addLast(log);
 
                                 break;
@@ -1035,7 +1041,7 @@ class TVSystem {
                                 clientList.get(i).setName(f4ndate);
 
                                 p.println("\nClient '" + valID_f4 + "' 's creation date has been edited.");
-                                log = new LogFile(username, "has edited client '" + valID_f4 + "' 's creation date.");
+                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's creation date.");
                                 logList.addLast(log);
                                 break;
                             case "accstat":
@@ -1045,12 +1051,12 @@ class TVSystem {
                                 clientList.get(i).setName(f4naccstatus);
 
                                 p.println("\nClient '" + valID_f4 + "' 's account status has been edited.");
-                                log = new LogFile(username, "has edited client '" + valID_f4 + "' 's account status.");
+                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's account status.");
                                 logList.addLast(log);
                                 break;
                             default:
                                 p.println("Action '" + ch2_f4 + "' does not exist!");
-                                log = new LogFile(username, "has not edited Client '" + valID_f4 + "' details[ACTION DOES NOT EXIST].");
+                                log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[ACTION DOES NOT EXIST].");
                                 logList.addLast(log);
                                 break;
                         }
@@ -1059,7 +1065,7 @@ class TVSystem {
                         if (i == (clientList.size() - 1)) {
                             p.println("\nClient '" + valID_f4 + "' does not exist!");
 
-                            log = new LogFile(username, "has not edited client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
+                            log = new LogFile(lgTime, username, "has not edited client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
                             logList.addLast(log);
                         }
                     }
@@ -1067,7 +1073,7 @@ class TVSystem {
                 break;
             //Terminate a client's profile
             case "terminate":
-                log = new LogFile(username, "has chosen to terminate a client.");
+                log = new LogFile(lgTime, username, "has chosen to terminate a client.");
                 logList.addLast(log);
 
                 do {
@@ -1088,14 +1094,14 @@ class TVSystem {
 
                         p.println("\nClient '" + valID_f4 + "' has been terminated.");
 
-                        log = new LogFile(username, "has terminated Client '" + valID_f4 + "'.");
+                        log = new LogFile(lgTime, username, "has terminated Client '" + valID_f4 + "'.");
                         logList.addLast(log);
 
                         break;
                     } else {
                         if (i == (clientList.size() - 1)) {
                             p.println("Client '" + valID_f4 + "' does not exist!");
-                            log = new LogFile(username, "has not terminated Client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
+                            log = new LogFile(lgTime, username, "has not terminated Client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
                             logList.addLast(log);
                         }
                     }
@@ -1105,10 +1111,11 @@ class TVSystem {
         }
     } // end manage client
 
-    /*--------------------------------------------------------------------------METHOD FIVE - MANAGE SERVICES----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION FIVE - MANAGE SERVICES----------------------------------------------------------------------------------------*/
     public void manageService() {
         val = false;
-
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
         do {
             p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
             p.println("UNITV RYCOX CUSTOMER MANAGEMENT MODULE(CMM)");
@@ -1193,7 +1200,7 @@ class TVSystem {
                             }
                         }
 
-                        log = new LogFile(username, "has created a new Service");
+                        log = new LogFile(lgTime, username, "has created a new Service");
                         logList.addLast(log);
                         break;
 
@@ -1235,7 +1242,7 @@ class TVSystem {
                                                     servList.get(i).setAddress(address);
                                                     val = true;
 
-                                                    log = new LogFile(username, "has edited address.");
+                                                    log = new LogFile(lgTime, username, "has edited address.");
                                                     logList.addLast(log);
                                                     break;
 
@@ -1262,7 +1269,7 @@ class TVSystem {
                                                         }
                                                     } while (val == false);
 
-                                                    log = new LogFile(username, "has edited Smart Card Number.");
+                                                    log = new LogFile(lgTime, username, "has edited Smart Card Number.");
                                                     logList.addLast(log);
                                                     break;
 
@@ -1288,7 +1295,7 @@ class TVSystem {
                                                         }
                                                     } while (val == false);
 
-                                                    log = new LogFile(username, "has edited Decoder Number.");
+                                                    log = new LogFile(lgTime, username, "has edited Decoder Number.");
                                                     logList.addLast(log);
                                                     break;
 
@@ -1315,7 +1322,7 @@ class TVSystem {
                                                         }
                                                     } while (val == false);
 
-                                                    log = new LogFile(username, "has edited the status.");
+                                                    log = new LogFile(lgTime, username, "has edited the status.");
                                                     logList.addLast(log);
                                                     break;
 
@@ -1372,7 +1379,7 @@ class TVSystem {
                             }
                         }
 
-                        log = new LogFile(username, "has access the terminated service.");
+                        log = new LogFile(lgTime, username, "has access the terminated service.");
                         logList.addLast(log);
                         break;
 
@@ -1392,10 +1399,11 @@ class TVSystem {
         } while ((menu3_opt_1 != 4) || (val == false));
     } // end manage service
 
-    /*--------------------------------------------------------------------------METHOD SIX - MANAGE SUBSCRIPTION----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION SIX - MANAGE SUBSCRIPTION----------------------------------------------------------------------------------------*/
     public void manageSubscription() {
         val = false;
-
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
         do {
             p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
             p.println("UNITV RYCOX CUSTOMER MANAGEMENT MODULE(CMM)");
@@ -1503,7 +1511,7 @@ class TVSystem {
 
                         } while ((val == false) || (repeat == true));
 
-                        log = new LogFile(username, "has create a new subscription.");
+                        log = new LogFile(lgTime, username, "has create a new subscription.");
                         logList.addLast(log);
                         break;
 
@@ -1577,7 +1585,7 @@ class TVSystem {
                                             }
                                         } while (val == false);
 
-                                        log = new LogFile(username, "has added an new package to a service.");
+                                        log = new LogFile(lgTime, username, "has added an new package to a service.");
                                         logList.addLast(log);
                                         break;
 
@@ -1618,7 +1626,7 @@ class TVSystem {
                                             }
                                         } while (val == false);
 
-                                        log = new LogFile(username, "has remove a package from a service.");
+                                        log = new LogFile(lgTime, username, "has remove a package from a service.");
                                         logList.addLast(log);
                                         break;
 
@@ -1655,8 +1663,10 @@ class TVSystem {
         ;
     }
 
-    /*--------------------------------------------------------------------------METHOD SEVEN - MANAGE PACKAGES----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION SEVEN - MANAGE PACKAGES----------------------------------------------------------------------------------------*/
     public void managePackage() {
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
         do {
             try {
                 check1 = true;
@@ -1837,7 +1847,7 @@ class TVSystem {
                         p.println("You have successfully created a new package '" + pckCode + "'.");
                         p.println();
 
-                        logList.addLast(new LogFile(username, "has created a TV Package item of ID '" + pckCode + "'."));
+                        logList.addLast(new LogFile(lgTime, username, "has created a TV Package item of ID '" + pckCode + "'."));
 
                         break;
 
@@ -1909,7 +1919,7 @@ class TVSystem {
                                             pkgList.get(i).setPkgName(pkgName2);
                                             p.println("You have changed the package name for package '" + pckCode2 + "'!");
                                             p.println();
-                                            logList.addLast(new LogFile(username, "has changed a package name for package '" + pckCode2 + "'."));
+                                            logList.addLast(new LogFile(lgTime, username, "has changed a package name for package '" + pckCode2 + "'."));
 
                                             break;
 
@@ -1932,7 +1942,7 @@ class TVSystem {
                                             pkgList.get(i).setChargePrice(chargePrice2);
                                             p.println("You have changed the charge price for package '" + pckCode2 + "'!");
                                             p.println();
-                                            logList.addLast(new LogFile(username, "has changed a charge price for package '" + pckCode2 + "'."));
+                                            logList.addLast(new LogFile(lgTime, username, "has changed a charge price for package '" + pckCode2 + "'."));
 
                                             break;
 
@@ -1967,7 +1977,7 @@ class TVSystem {
                                             pkgList.get(i).setChargeType(chargeType2);
                                             p.println("You have changed the charge type for package '" + pckCode2 + "'!");
                                             p.println();
-                                            logList.addLast(new LogFile(username, "has changed a charge type for package '" + pckCode2 + "'."));
+                                            logList.addLast(new LogFile(lgTime, username, "has changed a charge type for package '" + pckCode2 + "'."));
 
                                             break;
 
@@ -2022,7 +2032,7 @@ class TVSystem {
                                                                 pckgingList.add(new Packaging(pckCode2, progCode2));
                                                                 p.println("You have successfully added a tv programme into package '" + pckCode2 + "'!");
                                                                 p.println();
-                                                                logList.addLast(new LogFile(username, "has added a tv programme into package '" + pckCode2 + "'."));
+                                                                logList.addLast(new LogFile(lgTime, username, "has added a tv programme into package '" + pckCode2 + "'."));
                                                                 flag2 = true;
                                                                 break;
                                                             } else
@@ -2064,7 +2074,7 @@ class TVSystem {
                                                                     if (pckCode2.equalsIgnoreCase(pckgingList.get(j).getPkgCode())) {
                                                                         pckgingList.remove(j);
                                                                         p.println("You have successfully removed a tv programme from package '" + pckCode2 + "'!");
-                                                                        logList.addLast(new LogFile(username, "has removed a tv programme from package '" + pckCode2 + "'."));
+                                                                        logList.addLast(new LogFile(lgTime, username, "has removed a tv programme from package '" + pckCode2 + "'."));
                                                                         p.println();
                                                                         flag3 = true;
                                                                         break;
@@ -2141,7 +2151,7 @@ class TVSystem {
                                     pkgList.get(i).setTerminationDate(termDate);
                                     pkgList.get(i).setStatus("Inactive");
                                     p.println("You have successfully terminated package '" + pckCode3 + "'!");
-                                    logList.addLast(new LogFile(username, "has terminated a package which is '" + pckCode3 + "'."));
+                                    logList.addLast(new LogFile(lgTime, username, "has terminated a package which is '" + pckCode3 + "'."));
                                     p.println();
                                     flag4 = true;
                                     break;
@@ -2177,7 +2187,7 @@ class TVSystem {
 
                                         p.print("'" + pckgingList.get(j).getProgCode() + "'\n");
 
-                                        logList.addLast(new LogFile(username, "has displayed the details of package'" + packageCode + "' ."));
+                                        logList.addLast(new LogFile(lgTime, username, "has displayed the details of package'" + packageCode + "' ."));
                                         p.println();
                                     }
                                 }
@@ -2213,8 +2223,10 @@ class TVSystem {
         } while (check1 == false);
     }
 
-    /*--------------------------------------------------------------------------METHOD EIGHT - MANAGE PROGRAMMES----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION EIGHT - MANAGE PROGRAMMES----------------------------------------------------------------------------------------*/
     public void manageProgramme() {
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
         do {
             try {
                 check1 = true;
@@ -2374,7 +2386,7 @@ class TVSystem {
                         prgList.add(new TVProgramme(programmeCode, programmeTitle, desc, contentOrigin, crtDate, "Active", viewerStatus, progType, notes));
 
                         p.println("You have successfully created a new TV Programme which is '" + programmeCode + "'.");
-                        logList.addLast(new LogFile(username, "has created a new TV Programme which is '" + programmeCode + "'."));
+                        logList.addLast(new LogFile(lgTime, username, "has created a new TV Programme which is '" + programmeCode + "'."));
                         p.println();
 
                         break;
@@ -2447,7 +2459,7 @@ class TVSystem {
 
                                             prgList.get(i).setProgTitle(programmeTitle2);
                                             p.println("You have changed the programme title for programme '" + progCode4 + "'!");
-                                            logList.addLast(new LogFile(username, "has changed a programme title for programme '" + progCode4 + "'."));
+                                            logList.addLast(new LogFile(lgTime, username, "has changed a programme title for programme '" + progCode4 + "'."));
                                             p.println();
 
                                             break;
@@ -2468,7 +2480,7 @@ class TVSystem {
 
                                             prgList.get(i).setDesc(desc2);
                                             p.println("You have changed the description for programme '" + progCode4 + "'!");
-                                            logList.addLast(new LogFile(username, "has changed a description for programme '" + progCode4 + "'."));
+                                            logList.addLast(new LogFile(lgTime, username, "has changed a description for programme '" + progCode4 + "'."));
                                             p.println();
 
                                             break;
@@ -2488,7 +2500,7 @@ class TVSystem {
 
                                             prgList.get(i).setContentOrigin(contentOrigin2);
                                             p.println("You have changed the content origin for programme '" + progCode4 + "'!");
-                                            logList.addLast(new LogFile(username, "has changed a content origin for programme '" + progCode4 + "'."));
+                                            logList.addLast(new LogFile(lgTime, username, "has changed a content origin for programme '" + progCode4 + "'."));
                                             p.println();
 
                                             break;
@@ -2511,7 +2523,7 @@ class TVSystem {
 
                                                 if ((viewerStatus2.equalsIgnoreCase("U")) || (viewerStatus2.equalsIgnoreCase("PG13")) || (viewerStatus2.equalsIgnoreCase("18"))) {
                                                     p.println("You have changed the viewer status for programme '" + progCode4 + "'!");
-                                                    logList.addLast(new LogFile(username, "has changed a viewer status for programme '" + progCode4 + "'."));
+                                                    logList.addLast(new LogFile(lgTime, username, "has changed a viewer status for programme '" + progCode4 + "'."));
                                                     p.println();
                                                     prgList.get(i).setViewerStatus(viewerStatus2);
                                                 } else {
@@ -2547,7 +2559,7 @@ class TVSystem {
                                                         (progType2.equalsIgnoreCase("Comedy")) || (progType2.equalsIgnoreCase("Concert"))) {
 
                                                     p.println("You have changed the type of programme '" + progCode4 + "'!");
-                                                    logList.addLast(new LogFile(username, "has changed a programme type for programme '" + progCode4 + "'."));
+                                                    logList.addLast(new LogFile(lgTime, username, "has changed a programme type for programme '" + progCode4 + "'."));
                                                     p.println();
                                                     prgList.get(i).setType(progType2);
                                                 } else {
@@ -2575,7 +2587,7 @@ class TVSystem {
 
                                             prgList.get(i).setNotes(notes2);
                                             p.println("You have changed the notes for programme '" + progCode4 + "'!");
-                                            logList.addLast(new LogFile(username, "has changed the notes for programme '" + progCode4 + "'."));
+                                            logList.addLast(new LogFile(lgTime, username, "has changed the notes for programme '" + progCode4 + "'."));
                                             p.println();
 
                                             break;
@@ -2641,7 +2653,7 @@ class TVSystem {
                                 }
 
                                 p.println("You have successfully terminated a TV Programme '" + progCode5 + "'!");
-                                logList.addLast(new LogFile(username, "has terminate a TV Programme '" + progCode5 + "'."));
+                                logList.addLast(new LogFile(lgTime, username, "has terminate a TV Programme '" + progCode5 + "'."));
                                 p.println();
                                 flag4 = true;
                                 break;
@@ -2675,7 +2687,7 @@ class TVSystem {
                             if (progCode6.equalsIgnoreCase(prgList.get(i).getProgCode())) {
                                 prgList.get(i).printList();
                                 p.println();
-                                logList.addLast(new LogFile(username, "has displayed the details for programme '" + progCode6 + "'."));
+                                logList.addLast(new LogFile(lgTime, username, "has displayed the details for programme '" + progCode6 + "'."));
                                 flag5 = true;
                                 break;
                             } else
@@ -2704,13 +2716,14 @@ class TVSystem {
         } while (check1 == false);
     }
 
-    /*--------------------------------------------------------------------------METHOD NINE - MANAGE USERS----------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------SECTION NINE - MANAGE USERS----------------------------------------------------------------------------------------*/
     @SuppressWarnings("unused")
     public void manageUsers() {
         String choice_f9, type_f9, un_f9, oldpw_f9, newpw_1_f9, newpw_2_f9;
         boolean val1_f9 = false, val2_f9 = false, val3_f9 = false;
-
-        log = new LogFile(username, "has chosen the 'Manage User-Add/Change Password/Terminate' function.");
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
+        log = new LogFile(lgTime, username, "has chosen the 'Manage User-Add/Change Password/Terminate' function.");
         logList.addLast(log);
 
         p.println("\nManage User-Add/Change Password/Terminate");
@@ -2731,7 +2744,7 @@ class TVSystem {
         //Add a new user
         switch (choice_f9) {
             case "add":
-                log = new LogFile(username, "has chosen to add a new user.");
+                log = new LogFile(lgTime, username, "has chosen to add a new user.");
                 logList.addLast(log);
 
                 p.print("Enter the type of new user(Case-insensitive): \n");
@@ -2748,7 +2761,7 @@ class TVSystem {
                         if (un_f9.equalsIgnoreCase(userList.get(i).getUserID())) {
                             p.println("Username already exist!");
 
-                            log = new LogFile(username, "has not added any new user[USERNAME ALREADY EXIST].");
+                            log = new LogFile(lgTime, username, "has not added any new user[USERNAME ALREADY EXIST].");
                             logList.addLast(log);
                             break;
                         } else {
@@ -2763,7 +2776,7 @@ class TVSystem {
                                     if (userList.get(u) instanceof Administrators) {
                                         userList.add(new Administrators(un_f9, newpw_2_f9));
                                         p.println("\nNew user '" + un_f9 + "' has been added successfully!");
-                                        log = new LogFile(username, "has added a new user '" + un_f9 + "'.");
+                                        log = new LogFile(lgTime, username, "has added a new user '" + un_f9 + "'.");
                                         logList.addLast(log);
                                     } else {
                                         p.println("\nOnly Admin has the accessibility to Terminate a user.");
@@ -2773,13 +2786,13 @@ class TVSystem {
                                 } else {
                                     userList.add(new FrontdeskStaffs(un_f9, newpw_2_f9));
                                     p.println("\nNew user '" + un_f9 + "' has been added successfully!");
-                                    log = new LogFile(username, "has added a new user '" + un_f9 + "'.");
+                                    log = new LogFile(lgTime, username, "has added a new user '" + un_f9 + "'.");
                                     logList.addLast(log);
                                 }
                                 break;
                             } else {
                                 p.println("\nRe-entered password mis-matched!");
-                                log = new LogFile(username, "has not added new user[RE-ENTERED PASSWORD MIS-MATCHED].");
+                                log = new LogFile(lgTime, username, "has not added new user[RE-ENTERED PASSWORD MIS-MATCHED].");
                                 logList.addLast(log);
                                 break;
                             }
@@ -2787,13 +2800,13 @@ class TVSystem {
                     }
                 } else {
                     p.println("\nThe user type is not available.");
-                    log = new LogFile(username, "has not added any new user[USER TYPE NOT AVAILABLE].");
+                    log = new LogFile(lgTime, username, "has not added any new user[USER TYPE NOT AVAILABLE].");
                     logList.addLast(log);
                 }
                 break;
             //Change a user's password
             case "changepassword":
-                log = new LogFile(username, "has chosen to change user '" + username + "' 's password");
+                log = new LogFile(lgTime, username, "has chosen to change user '" + username + "' 's password");
                 logList.addLast(log);
 
                 do {
@@ -2813,20 +2826,20 @@ class TVSystem {
 
                                 p.println("\nPassword changed successfully!");
 
-                                log = new LogFile(username, "has changed password.");
+                                log = new LogFile(lgTime, username, "has changed password.");
                                 logList.addLast(log);
                                 val3_f9 = true;
                             } else {
                                 p.println("\nRe-entered password mis-matched!");
 
-                                log = new LogFile(username, "has not changed password[RE-ENTERED PASSWORD MIS-MATCHED].");
+                                log = new LogFile(lgTime, username, "has not changed password[RE-ENTERED PASSWORD MIS-MATCHED].");
                                 logList.addLast(log);
                                 break;
                             }
                         } else {
                             p.println("\nPassword mismatch!");
 
-                            log = new LogFile(username, "has not changed password[PASSWORD MIS-MATCHED].");
+                            log = new LogFile(lgTime, username, "has not changed password[PASSWORD MIS-MATCHED].");
                             logList.addLast(log);
                             break;
                         }
@@ -2838,7 +2851,7 @@ class TVSystem {
 
             case "terminate": //Terminate a user
                 if (userList.get(u) instanceof Administrators) {
-                    log = new LogFile(username, "has chosen to Terminate a user.");
+                    log = new LogFile(lgTime, username, "has chosen to Terminate a user.");
                     logList.addLast(log);
 
                     do {
@@ -2854,7 +2867,7 @@ class TVSystem {
 
                     if (un_f9.equalsIgnoreCase(username)) {
                         p.println("\nUser cannot Terminate itself!");
-                        log = new LogFile(username, "has not Terminated user '" + un_f9 + "' details[USER CANNOT Terminate ITSELF].");
+                        log = new LogFile(lgTime, username, "has not Terminated user '" + un_f9 + "' details[USER CANNOT Terminate ITSELF].");
                         logList.addLast(log);
                         break;
                     }
@@ -2864,20 +2877,20 @@ class TVSystem {
                             userList.remove(i);
                             p.println("\nUser '" + un_f9 + "' has been Terminated.");
 
-                            log = new LogFile(username, "has Terminate user '" + un_f9 + "'.");
+                            log = new LogFile(lgTime, username, "has Terminate user '" + un_f9 + "'.");
                             logList.addLast(log);
                             break;
                         } else {
                             if (i == (userList.size() - 1)) {
                                 p.println("\nUser '" + un_f9 + "' does not exist!");
-                                log = new LogFile(username, "has not Terminated user '" + un_f9 + "' details[USER DOES NOT EXIST].");
+                                log = new LogFile(lgTime, username, "has not Terminated user '" + un_f9 + "' details[USER DOES NOT EXIST].");
                                 logList.addLast(log);
                             }
                         }
                     }
                 } else {
                     p.println("\nOnly Admin has the accessibility to Terminate a user.");
-                    log = new LogFile(username, "has not Terminated any user[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+                    log = new LogFile(lgTime, username, "has not Terminated any user[USER TYPE DO NOT HAVE ACCESSIBILITY].");
                     logList.addLast(log);
                 }
                 break;
@@ -2886,17 +2899,86 @@ class TVSystem {
                 break;
         } //end switch
     } //end manage users
+    /*--------------------------------------------------------------------------SECTION ELEVEN - LOGOUT----------------------------------------------------------------------------------------*/
 
-    /*--------------------------------------------------------------------------METHOD TEN - LOGOUT----------------------------------------------------------------------------------------*/
+    public void reportGen() {
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
+        log = new LogFile(lgTime, username, "has chosen the 'Generate Report' function.");
+        logList.addLast(log);
+
+        if ((userList.get(u)) instanceof FrontdeskStaffs) {
+            p.println("\nOnly Admin or Manager have the accessibility to generate a report.");
+            log = new LogFile(lgTime, username, "has not generated a report[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+            logList.addLast(log);
+        } else {
+            p.println("\nGenerate Report");
+            p.println("---------------");
+            int a = 0, b = 0, c = 0;
+            for (i = 0; i < clientList.size(); i++) {
+                clientList.get(i).printClient();
+                //Display services
+                p.println("\nService details");
+                for (int p = 0; p < servList.size(); p++) {
+                    if ((clientList.get(i).getClientID()).equalsIgnoreCase(servList.get(p).getClientID())) {
+                        servList.get(p).printServ();
+                        a = p;
+                        break;
+                    }
+                }
+
+                //Display subscriptions
+                for (int q = 0; q < subsList.size(); q++) {
+                    if ((servList.get(a).getSmartCardNo().equalsIgnoreCase(subsList.get(q).getSmartCardNo()))) {
+                        subsList.get(q).printSubs();
+                        b = q;
+                        break;
+                    }
+                }
+
+                //Display packages
+                p.println("Subscribed Package(s):");
+                for (int r = 0; r < pkgList.size(); r++) {
+                    if ((subsList.get(b).getPkgCode().equalsIgnoreCase(pkgList.get(r).getPkgCode()))) {
+                        pkgList.get(r).printPkg();
+                        c = r;
+                        break;
+                    }
+                }
+
+                //Display packaging
+                p.println("This package consist of ");
+                for (int s = 0; s < pckgingList.size(); s++) {
+                    if ((pkgList.get(c).getPkgCode().equalsIgnoreCase(pckgingList.get(s).getPkgCode()))) {
+                        pckgingList.get(s).printPckging();
+                        break;
+                    }
+                }
+
+
+                p.println("--------------------------------------------------------------------");
+
+                log = new LogFile(lgTime, username, "has generated details of client '" + clientList.get(i).getClientID() + "'.");
+                logList.addLast(log);
+            }
+
+            log = new LogFile(lgTime, username, "has generated a report.");
+            logList.addLast(log);
+        }
+    }
+
+    /*--------------------------------------------------------------------------SECTION ELEVEN - LOGOUT----------------------------------------------------------------------------------------*/
     public void logout() {
-        log = new LogFile(username, "has chosen the 'Log Off' function.");
+        Date logTime = new Date();
+        String lgTime = DateFormat.getInstance().format(logTime);
+        log = new LogFile(lgTime, username, "has chosen the 'Log Off' function.");
         logList.addLast(log);
 
         p.println("\nYou are successfully logged off from the system.");
         p.println("\nLOG FILE\n------------\n");
 
         login = false;
-        log = new LogFile(username, "has logged off from the system.");
+        log = new LogFile(lgTime, username, "has logged off from the system.");
         logList.addLast(log);
 
         for (i = 0; i < logList.size(); i++) {

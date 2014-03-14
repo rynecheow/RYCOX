@@ -20,6 +20,9 @@ class Packaging implements Serializable {
         return progCode;
     }
 
+    public void printPckging() {
+        System.out.println(getProgCode());
+    }
 }
 
 
