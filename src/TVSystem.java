@@ -28,6 +28,7 @@ class TVSystem {
     String servStatus;
     String address;
     String pkgCode;
+    String sel;
     /*extra*/
     String pckCode = "", pckCode2 = "", pckCode3 = "", packageCode = "";
     String progCode = "", progCode2 = "", progCode3 = "", progCode4 = "", progCode5 = "", progCode6 = "", programmeCode = "";
@@ -92,9 +93,9 @@ class TVSystem {
         servList.add(new Service("S000005", "I000002", "D999995", "32 Jalan Kota Kemuning "));
         servList.add(new Service("S000006", "P000002", "D999994", "32 Jalan Kota Kemuning "));
         subsList.add(new Subscription("S000001", 1, "P01"));
-        subsList.add(new Subscription("S000001", 2, "P01"));
-        subsList.add(new Subscription("S000001", 3, "P02"));
-        subsList.add(new Subscription("S000002", 1, "P01"));
+        subsList.add(new Subscription("S000001", 1, "P02"));
+        subsList.add(new Subscription("S000002", 2, "P02"));
+        subsList.add(new Subscription("S000002", 2, "P01"));
         subsList.add(new Subscription("S000003", 1, "P03"));
         subsList.add(new Subscription("S000004", 1, "P04"));
         pkgList.add(new TVPackage("P01", "Variety", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
@@ -189,7 +190,7 @@ class TVSystem {
                 ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream);
                 for (i = 0; i < prgList.size(); i++) {
                     if (prgList.get(i) != null) {
-                        prg_oostream.writeObject(pckgingList);
+                        prg_oostream.writeObject(prgList);
                     }
                 }
                 prg_oostream.flush();
@@ -451,11 +452,29 @@ class TVSystem {
                         manageSubscription();
                         break;
                     case 7:
-                        managePackage();
-                        break;
+                        if ((userList.get(u)) instanceof FrontdeskStaffs) {
+                            String lgTime = "[" + DateFormat.getInstance().format(new Date()) + "]\t";
+
+                            p.println("\nOnly Administators have the accessibility to manage a package.");
+                            log = new LogFile(lgTime, userList.get(u).getUserID(), "has not managed a package[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+                            logList.addLast(log);
+                            break;
+                        } else {
+                            managePackage();
+                            break;
+                        }
                     case 8:
-                        manageProgramme();
-                        break;
+                        if ((userList.get(u)) instanceof FrontdeskStaffs) {
+                            String lgTime = "[" + DateFormat.getInstance().format(new Date()) + "]\t";
+
+                            p.println("\nOnly Administators have the accessibility to manage a programme.");
+                            log = new LogFile(lgTime, userList.get(u).getUserID(), "has not managed a programme[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+                            logList.addLast(log);
+                            break;
+                        } else {
+                            manageProgramme();
+                            break;
+                        }
                     case 9:
                         manageUsers();
                         break;
@@ -718,6 +737,7 @@ class TVSystem {
     }// end display client details
 
     /*--------------------------------------------------------------------------SECTION FOUR - MANAGE CLIENTS----------------------------------------------------------------------------------------*/
+    @SuppressWarnings("unused")
     public void manageClients() {
         String ch1_f4, ch2_f4, valID_f4;
         boolean val1_f4 = false;  //check emptiness and valid string
@@ -736,6 +756,7 @@ class TVSystem {
             p.println("Enter ADD to add a new client.\n");
             p.println("Enter EDIT to edit an existing client.\n");
             p.println("Enter TERMINATE to terminate an existing client.\n");
+            p.println("Enter RECOVER to recover an existed and terminated client.\n");
             p.println("-----------------------------------------------------");
             ch1_f4 = input.nextLine();
 
@@ -829,6 +850,7 @@ class TVSystem {
 
                                 } while (address.trim().length() == 0);
 
+
                                 String y = "";
                                 do {
                                     String s = "";
@@ -844,24 +866,28 @@ class TVSystem {
                                         }
                                     } while (s.trim().length() == 0);
 
-                                    do {
-                                        if (s.matches(InCl_IDregex)) {
-                                            for (i = 0; i < clientList.size(); i++) {
-                                                if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                                                    p.println("Sorry, the ID has been taken. Please enter an unused ID.");
-                                                    check = false;
-                                                    break;
-                                                } else
-                                                    y = s;
+
+                                    if (s.matches(InCl_IDregex)) {
+                                        for (i = 0; i < clientList.size(); i++) {
+                                            if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                                p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                                check = false;
+                                                break;
+                                            } else {
+
+                                                y = s;
                                                 check = true;
                                             }
-                                            val = true;
-                                        } else {
-                                            p.print("Invalid ID format.");
-                                            val = false;
                                         }
-                                    } while (val == false);
-                                } while (check == false);
+                                        val = true;
+                                        break;
+                                    } else {
+                                        p.println("Invalid ID format.");
+                                        val = false;
+
+                                    }
+
+                                } while ((check == false) || (val == false));
                                 p.println();
 
                                 String a = "";
@@ -936,24 +962,24 @@ class TVSystem {
                                             p.println();
                                         }
                                     } while (s.trim().length() == 0);
-                                    do {
-                                        if (s.matches(GovCl_IDregex)) {
-                                            for (i = 0; i < clientList.size(); i++) {
-                                                if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                                                    p.println("Sorry, the ID has been taken. Please enter an unused ID.");
-                                                    check = false;
-                                                    break;
-                                                } else
-                                                    y = s;
-                                                check = true;
-                                            }
-                                            val = true;
-                                        } else {
-                                            p.print("Invalid ID format.");
-                                            val = false;
+
+                                    if (s.matches(GovCl_IDregex)) {
+                                        for (i = 0; i < clientList.size(); i++) {
+                                            if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                                p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                                check = false;
+                                                break;
+                                            } else
+                                                y = s;
+                                            check = true;
                                         }
-                                    } while (val == false);
-                                } while (check == false);
+                                        val = true;
+                                    } else {
+                                        p.println("Invalid ID format.");
+                                        val = false;
+                                    }
+
+                                } while (check == false || (val == false));
                                 p.println();
 
 
@@ -1018,11 +1044,11 @@ class TVSystem {
                                 } while (address.trim().length() == 0);
 
                                 String y = "";
+
                                 do {
                                     String s = "";
                                     do {
-
-                                        p.print("Please enter client's ID: ");
+                                        p.print("Please enter client's ID:[N######] ");
                                         s = input.nextLine();
                                         p.println();
 
@@ -1030,19 +1056,25 @@ class TVSystem {
                                             p.println("Blank input occured, please enter client's ID.");
                                             p.println();
                                         }
-
                                     } while (s.trim().length() == 0);
 
-                                    for (i = 0; i < clientList.size(); i++) {
-                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
-                                            check = false;
-                                            break;
-                                        } else
-                                            y = s;
-                                        check = true;
+                                    if (s.matches(NGOCl_IDregex)) {
+                                        for (i = 0; i < clientList.size(); i++) {
+                                            if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                                p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                                check = false;
+                                                break;
+                                            } else
+                                                y = s;
+                                            check = true;
+                                        }
+                                        val = true;
+                                    } else {
+                                        p.println("Invalid ID format.");
+                                        val = false;
                                     }
-                                } while (check == false);
+
+                                } while (check == false || (val == false));
                                 p.println();
 
 
@@ -1114,7 +1146,7 @@ class TVSystem {
                                     String s = "";
                                     do {
 
-                                        p.print("Please enter client's ID: ");
+                                        p.print("Please enter client's ID:[P######]");
                                         s = input.nextLine();
                                         p.println();
 
@@ -1125,16 +1157,22 @@ class TVSystem {
 
                                     } while (s.trim().length() == 0);
 
-                                    for (i = 0; i < clientList.size(); i++) {
-                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
-                                            check = false;
-                                            break;
-                                        } else
-                                            y = s;
-                                        check = true;
+                                    if (s.matches(PrvCl_IDregex)) {
+                                        for (i = 0; i < clientList.size(); i++) {
+                                            if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                                p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                                check = false;
+                                                break;
+                                            } else
+                                                y = s;
+                                            check = true;
+                                        }
+                                    } else {
+                                        p.println("Invalid ID format.");
+                                        val = false;
                                     }
-                                } while (check == false);
+
+                                } while (check == false || (val == false));
                                 p.println();
 
                                 String a = "";
@@ -1358,40 +1396,145 @@ class TVSystem {
                 break;
             //Terminate a client's profile
             case "terminate":
-                log = new LogFile(lgTime, username, "has chosen to terminate a client.");
-                logList.addLast(log);
+                if (userList.get(u) instanceof Administrators) {
+                    log = new LogFile(lgTime, username, "has chosen to terminate a client.");
+                    logList.addLast(log);
 
-                do {
-                    p.print("Enter the client's ID that you would like to terminate: ");
-                    valID_f4 = input.nextLine();
+                    do {
+                        p.print("Enter the client's ID that you would like to terminate: ");
+                        valID_f4 = input.nextLine();
 
-                    if (valID_f4.trim().length() > 0) {
-                        val2_f4 = true;
-                    } else {
-                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
-                    }
-                } while (val2_f4 == false);
+                        if (valID_f4.trim().length() > 0) {
+                            val2_f4 = true;
+                        } else {
+                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+                        }
+                    } while (val2_f4 == false);
 
-                for (i = 0; i < clientList.size(); i++) {
-                    if (valID_f4.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                        //clientList.remove(i);
-                        clientList.get(i).setAccountStatus("Terminated");
+                    for (i = 0; i < clientList.size(); i++) {
+                        if (valID_f4.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                            //clientList.remove(i);
+                            clientList.get(i).setAccountStatus("Terminated");
+                            clientList.get(i).setTerminationDate(DateFormat.getInstance().format(new Date()));
+                            for (j = 0; j < servList.size(); j++) {
+                                if (clientList.get(i).getClientID().equalsIgnoreCase(servList.get(j).getClientID())) {
+                                    servList.get(j).setServStatus("Terminated");
+                                    servList.get(j).setTermDate(DateFormat.getInstance().format(new Date()));
+                                    break;
+                                }
+                            }
+                            p.println("\nClient '" + valID_f4 + "' has been terminated.");
 
-                        p.println("\nClient '" + valID_f4 + "' has been terminated.");
-
-                        log = new LogFile(lgTime, username, "has terminated Client '" + valID_f4 + "'.");
-                        logList.addLast(log);
-
-                        break;
-                    } else {
-                        if (i == (clientList.size() - 1)) {
-                            p.println("Client '" + valID_f4 + "' does not exist!");
-                            log = new LogFile(lgTime, username, "has not terminated Client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
+                            log = new LogFile(lgTime, username, "has terminated Client '" + valID_f4 + "'.");
                             logList.addLast(log);
+                            break;
+                        } else {
+                            if (i == (clientList.size() - 1)) {
+                                p.println("Client '" + valID_f4 + "' does not exist!");
+                                log = new LogFile(lgTime, username, "has not terminated Client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
+                                logList.addLast(log);
+                            }
+                        }
+                    }
+                    break;
+                } else {
+                    p.println("\nOnly Admin has the accessibility to recover a client.");
+                    log = new LogFile(lgTime, username, "has not terminated any client[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+                    logList.addLast(log);
+                }
+            case "recover":
+                if (userList.get(u) instanceof Administrators) {
+                    log = new LogFile(lgTime, username, "has chosen to recover a client.");
+                    logList.addLast(log);
+
+                    boolean sel_f4 = false;
+                    do {
+                        p.print("Enter the client's ID that you would like to recover: ");
+                        valID_f4 = input.nextLine();
+                        if (valID_f4.trim().length() > 0) {
+                            val2_f4 = true;
+                        } else {
+                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+                        }
+                    } while (val2_f4 == false);
+
+                    for (i = 0; i < clientList.size(); i++) {
+                        if (valID_f4.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                            if (clientList.get(i).terminationStatus() == true) {
+                                clientList.get(i).setAccountStatus("Active");
+                                clientList.get(i).setTerminationDate("N/A");
+
+                                for (j = 0; j < servList.size(); j++) {
+                                    if (clientList.get(i).getClientID().equalsIgnoreCase(servList.get(j).getClientID())) {
+                                        String termSCD = servList.get(j).getSmartCardNo();
+                                        p.println("Recover service?");
+                                        p.println("Enter YES to recover.");
+                                        p.println("Enter NO to clear all the service information.");
+
+                                        do {
+                                            p.println("Enter YES to recover.");
+                                            p.println("Enter NO to clear all the service information.\n");
+                                            sel = input.nextLine();
+                                            if (sel.trim().length() > 0) {
+                                                sel_f4 = true;
+                                            } else {
+                                                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+                                            }
+                                        } while (sel_f4 == false);
+
+                                        do {
+                                            switch (sel.toLowerCase()) {
+                                                case "yes":
+                                                    val = true;
+                                                    servList.get(j).setServStatus("Active");
+                                                    servList.get(j).setTermDate("N/A");
+                                                    break;
+                                                case "no":
+                                                    val = true;
+                                                    servList.remove(j);
+                                                    for (k = 0; k < subsList.size(); k++) {
+                                                        if ((servList.get(k).getSmartCardNo()).equalsIgnoreCase(termSCD)) {
+                                                            subsList.remove(k);
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                default:
+                                                    p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+                                                    break;
+                                            } //end switch
+                                        } while (val == false);
+                                        p.println("\nClient '" + valID_f4 + "' has been recovered.");
+
+                                        log = new LogFile(lgTime, username, "has recovered Client '" + valID_f4 + "'.");
+                                        logList.addLast(log);
+                                        flag = true;
+                                        break;
+                                    } else {
+                                        p.println("\nClient '" + valID_f4 + "' cannot be recovered.");
+                                        log = new LogFile(lgTime, username, "has not recover Client '" + valID_f4 + "' details[CLIENT IS ACTIVE].");
+                                        logList.addLast(log);
+                                        flag = true;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                flag = false;
+                            }
+                            if (flag == false) {
+                                p.println("Client '" + valID_f4 + "' does not exist!");
+                                log = new LogFile(lgTime, username, "has not recover Client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
+                                logList.addLast(log);
+                            }
+                            break;
+                        } else {
+                            p.println("\nOnly Admin has the accessibility to recover a client.");
+                            log = new LogFile(lgTime, username, "has not recovered any client[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+                            logList.addLast(log);
+                            break;
                         }
                     }
                 }
-                break;
         }
     } // end manage client
 
@@ -1429,7 +1572,7 @@ class TVSystem {
                                     val = true;
                                 } else {
                                     val = false;
-                                    p.println("Incorrect Client ID format.");
+                                    p.println("Incorrect Client ID format.\n");
                                 }
                             } while (val == false);
 
@@ -1443,7 +1586,7 @@ class TVSystem {
                             }
 
                             if (val == false)
-                                p.println("Invalid Client ID, Please Check the Client ID.");
+                                p.println("Invalid Client ID, Please Check the Client ID.\n");
 
 
                         } while (val == false);
@@ -1459,13 +1602,13 @@ class TVSystem {
                                         val = true;
                                     } else {
                                         val = false;
-                                        p.println("Incorrect Smart Card format.");
+                                        p.println("Incorrect Smart Card format.\n");
                                     }
                                 } while (val == false);
                                 for (int i = 0; i < servList.size(); i++) {
                                     if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
                                         val = false;
-                                        p.println("This is not a new Smart Card");
+                                        p.println("This is not a new Smart Card.\n");
                                         break;
                                     }
                                 }
@@ -1481,13 +1624,13 @@ class TVSystem {
                                         val = true;
                                     } else {
                                         val = false;
-                                        p.println("Incorrect Decoder Number format.");
+                                        p.println("Incorrect Decoder Number format.\n");
                                     }
                                 } while (val == false);
                                 for (int i = 0; i < servList.size(); i++) {
                                     if (decoderNo.equalsIgnoreCase(servList.get(i).getDecodeNo())) {
                                         val = false;
-                                        p.println("This is not a new Decoder");
+                                        p.println("This is not a new Decoder.\n");
                                         break;
                                     }
                                 }
@@ -1501,14 +1644,14 @@ class TVSystem {
                             for (int i = 0; i < servList.size(); i++) {
                                 if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
                                     servList.get(i).setServStatus("Active");
-                                    p.println("Your Service has been Active.");
+                                    p.println("Your Service has been Active.\n");
                                 }
                             }
 
                             log = new LogFile(lgTime, username, "has created a new Service for " + clientID + " Smart Card " + smartCardNo);
                             logList.addLast(log);
                         } else
-                            p.println("The Client ID is not active.");
+                            p.println("The Client ID is not active.\n");
 
                         break;
 
@@ -1524,7 +1667,7 @@ class TVSystem {
                                     val = true;
                                 } else {
                                     val = false;
-                                    p.println("Incorrect Smart Card format.");
+                                    p.println("Incorrect Smart Card format.\n");
                                 }
                             } while (val == false);
                             val = false;
@@ -1537,170 +1680,161 @@ class TVSystem {
                             }
 
                             if (val == false) {
-                                p.println("Invalid Smart Card Number, Please Check the Smart Card Number.");
+                                p.println("Invalid Smart Card Number, Please Check the Smart Card Number.\n");
                             }
                         } while (val == false);
 
-                        if (servList.get(i).getServStatus().equalsIgnoreCase("active")) {
-                            val = true;
+                        do {
+                            p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+                            p.println("UNITV RYCOX CUSTOMER MANAGEMENT MODULE(CMM)");
+                            p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+                            p.println("1. Edit Address");
+                            p.println("2. Edit Smart Card Number");
+                            p.println("3. Edit Decoder Number");
+                            p.println("4. Edit Status");
+                            p.println("5. Back");
+                            p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
+                            p.print("\nEnter Option: ");
+                            menu3_opt = input.nextLine();
 
-                            do {
-                                p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
-                                p.println("UNITV RYCOX CUSTOMER MANAGEMENT MODULE(CMM)");
-                                p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
-                                p.println("1. Edit Address");
-                                p.println("2. Edit Smart Card Number");
-                                p.println("3. Edit Decoder Number");
-                                p.println("4. Edit Status");
-                                p.println("5. Back");
-                                p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
-                                p.print("\nEnter Option: ");
-                                menu3_opt = input.nextLine();
+                            if ((menu3_opt.matches("^[1-5]{1}$")) || (menu3_opt.matches("^[0]([0]|[1])$"))) {
+                                menu3_opt_1 = Integer.parseInt(menu3_opt);
 
-                                if ((menu3_opt.matches("^[1-5]{1}$")) || (menu3_opt.matches("^[0]([0]|[1])$"))) {
-                                    menu3_opt_1 = Integer.parseInt(menu3_opt);
+                                switch (menu3_opt_1) {
+                                    case 1:
+                                        val = false;
 
-                                    switch (menu3_opt_1) {
-                                        case 1:
-                                            val = false;
+                                        p.println("Please enter the new address.");
+                                        address = input.nextLine();
 
-                                            p.println("Please enter the new address.");
-                                            address = input.nextLine();
+                                        servList.get(i).setAddress(address);
+                                        val = true;
 
-                                            servList.get(i).setAddress(address);
+                                        log = new LogFile(lgTime, username, "has edited the address of " + smartCardNo);
+                                        logList.addLast(log);
+                                        break;
+
+                                    case 2:
+                                        do {
                                             val = true;
-
-                                            log = new LogFile(lgTime, username, "has edited the address of " + smartCardNo);
-                                            logList.addLast(log);
-                                            break;
-
-                                        case 2:
+                                            oldSmartCard = smartCardNo;
                                             do {
-                                                val = true;
-                                                oldSmartCard = smartCardNo;
-                                                do {
-                                                    p.println("Please Enter the Smart Card Number: ");
-                                                    smartCardNo = input.nextLine();
+                                                p.println("Please Enter the Smart Card Number: ");
+                                                smartCardNo = input.nextLine();
 
-                                                    if (smartCardNo.matches(ScNo_IDregex)) {
-                                                        val = true;
-                                                    } else {
-                                                        val = false;
-                                                        p.println("Incorrect Smart Card format.");
-                                                    }
-                                                } while (val == false);
-
-                                                for (int j = 0; j < servList.size(); j++) {
-                                                    if (smartCardNo.equalsIgnoreCase(servList.get(j).getSmartCardNo())) {
-                                                        val = false;
-                                                        break;
-                                                    }
-                                                }
-
-                                                if (val == false)
-                                                    p.println("It isn't a new Smart Card.");
-
-                                                else if (val = true) {
-                                                    servList.get(i).setSmartCardNo(smartCardNo);
-                                                    p.println("Smart Card change Success.");
-                                                }
-                                            } while (val == false);
-
-                                            log = new LogFile(lgTime, username, "has changed the Smart Card Number " + oldSmartCard + " to " + smartCardNo);
-                                            logList.addLast(log);
-                                            break;
-
-                                        case 3:
-                                            do {
-                                                val = true;
-                                                oldDecoder = decoderNo;
-                                                do {
-                                                    p.println("Please Enter the Decoder Number: ");
-                                                    decoderNo = input.nextLine();
-
-                                                    if (decoderNo.matches(decNo_IDregex)) {
-                                                        val = true;
-                                                    } else {
-                                                        val = false;
-                                                        p.println("Incorrect Decoder Number format.");
-                                                    }
-                                                } while (val == false);
-
-                                                for (int j = 0; j < servList.size(); j++) {
-                                                    if (decoderNo.equalsIgnoreCase(servList.get(j).getDecodeNo())) {
-                                                        val = false;
-                                                        break;
-                                                    }
-                                                }
-
-                                                if (val == false) {
-                                                    p.println("It isn't a new Decoder.");
-                                                } else if (val == true) {
-                                                    servList.get(i).setDecoderNo(decoderNo);
-                                                    p.println("Decoder change Success.");
-                                                }
-                                            } while (val == false);
-
-                                            log = new LogFile(lgTime, username, "has changed the Decoder from " + oldDecoder + " to " + decoderNo);
-                                            logList.addLast(log);
-                                            break;
-
-                                        case 4:
-                                            val = false;
-
-                                            do {
-                                                p.println("Please Enter the Service Status (Active, Inactive or Barred): ");
-                                                servStatus = input.nextLine();
-                                                servStatus.toLowerCase();
-
-                                                if (servStatus.equals("active")) {
+                                                if (smartCardNo.matches(ScNo_IDregex)) {
                                                     val = true;
-                                                    servList.get(i).setServStatus(servStatus);
-                                                    p.println("The Smart Card status has set to Active.");
-                                                } else if (servStatus.equals("inactive")) {
-                                                    val = true;
-                                                    servList.get(i).setServStatus(servStatus);
-                                                    p.println("The Smart Card status has set to Inactive.");
-                                                } else if (servStatus.equals("barred")) {
-                                                    val = true;
-                                                    servList.get(i).setServStatus(servStatus);
-                                                    p.println("The Smart Card status has set to Barred.");
                                                 } else {
                                                     val = false;
-                                                    p.println("Invalid Enter.");
+                                                    p.println("Incorrect Smart Card format.\n");
                                                 }
                                             } while (val == false);
 
-                                            log = new LogFile(lgTime, username, "has change the " + smartCardNo + " status to " + servStatus);
-                                            logList.addLast(log);
-                                            break;
+                                            for (int j = 0; j < servList.size(); j++) {
+                                                if (smartCardNo.equalsIgnoreCase(servList.get(j).getSmartCardNo())) {
+                                                    val = false;
+                                                    break;
+                                                }
+                                            }
 
-                                        case 5:
+                                            if (val == false)
+                                                p.println("It isn't a new Smart Card.\n");
+
+                                            else if (val = true) {
+                                                servList.get(i).setSmartCardNo(smartCardNo);
+                                                p.println("Smart Card change Success.\n");
+                                            }
+                                        } while (val == false);
+
+                                        log = new LogFile(lgTime, username, "has changed the Smart Card Number " + oldSmartCard + " to " + smartCardNo);
+                                        logList.addLast(log);
+                                        break;
+
+                                    case 3:
+                                        do {
                                             val = true;
-                                            break;
+                                            oldDecoder = decoderNo;
+                                            do {
+                                                p.println("Please Enter the Decoder Number: ");
+                                                decoderNo = input.nextLine();
 
-                                        default:
-                                            val = false;
-                                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
-                                            break;
-                                    }
-                                } else {
-                                    val = false;
-                                    p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+                                                if (decoderNo.matches(decNo_IDregex)) {
+                                                    val = true;
+                                                } else {
+                                                    val = false;
+                                                    p.println("Incorrect Decoder Number format.\n");
+                                                }
+                                            } while (val == false);
+
+                                            for (int j = 0; j < servList.size(); j++) {
+                                                if (decoderNo.equalsIgnoreCase(servList.get(j).getDecodeNo())) {
+                                                    val = false;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (val == false) {
+                                                p.println("It isn't a new Decoder.\n");
+                                            } else if (val == true) {
+                                                servList.get(i).setDecoderNo(decoderNo);
+                                                p.println("Decoder change Success.\n");
+                                            }
+                                        } while (val == false);
+
+                                        log = new LogFile(lgTime, username, "has changed the Decoder from " + oldDecoder + " to " + decoderNo);
+                                        logList.addLast(log);
+                                        break;
+
+                                    case 4:
+                                        val = false;
+
+                                        do {
+                                            p.println("Please Enter the Service Status (Active, Inactive or Barred): ");
+                                            servStatus = input.nextLine();
+                                            servStatus.toLowerCase();
+
+                                            if (servStatus.equals("active")) {
+                                                val = true;
+                                                servList.get(i).setServStatus(servStatus);
+                                                p.println("The Smart Card status has set to Active.\n");
+                                            } else if (servStatus.equals("inactive")) {
+                                                val = true;
+                                                servList.get(i).setServStatus(servStatus);
+                                                p.println("The Smart Card status has set to Inactive.\n");
+                                            } else if (servStatus.equals("barred")) {
+                                                val = true;
+                                                servList.get(i).setServStatus(servStatus);
+                                                p.println("The Smart Card status has set to Barred.\n");
+                                            } else {
+                                                val = false;
+                                                p.println("Invalid Enter.\n");
+                                            }
+                                        } while (val == false);
+
+                                        log = new LogFile(lgTime, username, "has change the " + smartCardNo + " status to " + servStatus);
+                                        logList.addLast(log);
+                                        break;
+
+                                    case 5:
+                                        val = true;
+                                        break;
+
+                                    default:
+                                        val = false;
+                                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+                                        break;
                                 }
-                            } while ((menu3_opt_1 != 5) || (val == false));
-                            break;
-                        } else {
-                            val = true;
-                            p.println("The Smart Card No is not active");
-                        }
-
+                            } else {
+                                val = false;
+                                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
+                            }
+                        } while ((menu3_opt_1 != 5) || (val == false));
                         break;
 
                     case 3:
                         for (u = 0; u < userList.size(); u++) {
                             if (userList.get(u) instanceof FrontdeskStaffs) {
-                                p.println("Only Admin Can Access.");
+                                p.println("Only Admin Can Access.\n");
 
                                 log = new LogFile(lgTime, username, "has not Terminated any user[USER TYPE DO NOT HAVE ACCESSIBILITY].");
                                 logList.addLast(log);
@@ -1716,7 +1850,7 @@ class TVSystem {
                                             val = true;
                                         } else {
                                             val = false;
-                                            p.println("Incorrect Smart Card format.");
+                                            p.println("Incorrect Smart Card format.\n");
                                         }
                                     } while (val == false);
                                     val = false;
@@ -1730,16 +1864,16 @@ class TVSystem {
 
                                     if (val == true) {
                                         if (servList.get(i).getServStatus().equalsIgnoreCase("terminated")) {
-                                            p.println("The Smart Card was terminated before.");
+                                            p.println("The Smart Card was terminated before.\n");
                                         } else {
                                             servList.get(i).setServStatus("terminated");
-                                            p.println("The Smart Card has been terminated successful.");
+                                            p.println("The Smart Card has been terminated successful.\n");
 
                                             log = new LogFile(lgTime, username, "has terminated the Smart Card " + smartCardNo);
                                             logList.addLast(log);
                                         }
                                     } else if (val == false) {
-                                        p.println("Invalid Smart Card Enter.");
+                                        p.println("Invalid Smart Card Enter.\n");
                                     }
                                 } while (val == false);
                                 break;
@@ -1760,7 +1894,7 @@ class TVSystem {
                                     val = true;
                                 } else {
                                     val = false;
-                                    p.println("Incorrect Smart Card format.");
+                                    p.println("Incorrect Smart Card format.\n");
                                 }
                             } while (val == false);
                             val = false;
@@ -1773,7 +1907,7 @@ class TVSystem {
                             }
 
                             if (val == false) {
-                                p.println("Invalid Smart Card Number, Please Check the Smart Card Number.");
+                                p.println("Invalid Smart Card Number, Please Check the Smart Card Number.\n");
                             }
                         } while (val == false);
 
@@ -1825,20 +1959,20 @@ class TVSystem {
                             val = true;
 
                             do {
-                                p.println("Please Enter the Smart Card want to Subscibe package: ");
+                                p.println("Please Enter the Smart Card Number: ");
                                 smartCardNo = input.nextLine();
 
-                                if (smartCardNo.matches("ScNo_IDregex")) {
+                                if (smartCardNo.matches(ScNo_IDregex)) {
                                     val = true;
                                 } else {
                                     val = false;
-                                    p.println("Incorrect Smart Card format.");
+                                    p.println("Incorrect Smart Card format.\n");
                                 }
                             } while (val == false);
 
                             for (i = 0; i < subsList.size(); i++) {
                                 if (smartCardNo.equalsIgnoreCase(subsList.get(i).getSmartCardNo())) {
-                                    p.println("This Smart Card have a subsciption already.");
+                                    p.println("This Smart Card have a subsciption already.\n");
                                     val = false;
                                     break;
                                 }
@@ -1862,7 +1996,7 @@ class TVSystem {
                                         }
                                     }
                                 } else if (val == false) {
-                                    p.println("Invalid Smart Card enter, Please Enter again.");
+                                    p.println("Invalid Smart Card enter, Please Enter again.\n");
                                 }
                             }
                         } while (val == false);
@@ -1878,7 +2012,7 @@ class TVSystem {
                                     if (smartCardNo.equalsIgnoreCase(subsList.get(i).getSmartCardNo())) {
                                         if (pkgCode.equalsIgnoreCase(subsList.get(i).getPkgCode())) {
                                             val = true;
-                                            p.println("You have already Subscibe the package.");
+                                            p.println("You have already Subscibe the package.\n");
                                         }
                                     }
                                 }
@@ -1887,7 +2021,7 @@ class TVSystem {
                                     for (i = 0; i < pkgList.size(); i++) {
                                         if (pkgCode.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
                                             val = true;
-                                            p.println("Package has added successfully.");
+                                            p.println("Package has added successfully.\n");
                                             break;
                                         }
                                     }
@@ -1895,7 +2029,7 @@ class TVSystem {
                                     if (val == true) {
                                         subsList.add(new Subscription(smartCardNo, subsNo, pkgCode));
 
-                                        log = new LogFile(lgTime, username, "has created a subsciption " + subsNo + " for Client " + clientID + " Smart Card" + smartCardNo + " with pakage " + pkgCode);
+                                        log = new LogFile(lgTime, username, "has created a subsciption " + subsNo + " for Client " + clientID + " Smart Card" + smartCardNo + " with package " + pkgCode);
                                         logList.addLast(log);
 
                                         do {
@@ -1918,17 +2052,17 @@ class TVSystem {
                                             }
 
                                             if (val == false) {
-                                                p.println("Invalid Enter, Please Enter again.");
+                                                p.println("Invalid Enter, Please Enter again.\n");
                                             }
                                         } while (val == false);
                                     } else if (val == false) {
-                                        p.println("Invalid Package Code, Please Enter Again!");
+                                        p.println("Invalid Package Code, Please Enter Again!\n");
                                     }
                                 }
 
                             } while ((val == false) || (repeat == true));
                         } else {
-                            p.println("The Smart Card is not Active.");
+                            p.println("The Smart Card is not Active.\n");
                         }
 
                         break;
@@ -1941,11 +2075,11 @@ class TVSystem {
                                 p.println("Please Enter the Smart Card Number: ");
                                 smartCardNo = input.nextLine();
 
-                                if (smartCardNo.matches("ScNo_IDregex")) {
+                                if (smartCardNo.matches(ScNo_IDregex)) {
                                     val = true;
                                 } else {
                                     val = false;
-                                    p.println("Incorrect Smart Card format.");
+                                    p.println("Incorrect Smart Card format.\n");
                                 }
                             } while (val == false);
                             val = false;
@@ -1959,7 +2093,7 @@ class TVSystem {
                             }
 
                             if (val == false) {
-                                p.println("Invalid Smart Card Number, Please Enter again.");
+                                p.println("Invalid Smart Card Number, Please Enter again.\n");
                             }
                         } while (val == false);
 
@@ -1984,14 +2118,15 @@ class TVSystem {
                                             val = false;
 
                                             do {
-                                                p.println("Please Enter the Pakage want to add: ");
+                                                p.println("Please Enter the package want to add: ");
                                                 pkgCode = input.nextLine();
 
                                                 for (i = 0; i < subsList.size(); i++) {
                                                     if (smartCardNo.equalsIgnoreCase(subsList.get(i).getSmartCardNo())) {
                                                         if (pkgCode.equalsIgnoreCase(subsList.get(i).getPkgCode())) {
                                                             val = true;
-                                                            p.println("You have already Subscibe the package.");
+                                                            p.println("You have already Subscibe the package.\n");
+                                                            break;
                                                         }
                                                     }
                                                 }
@@ -2006,14 +2141,14 @@ class TVSystem {
 
                                                     if (val == true) {
                                                         subsList.add(new Subscription(smartCardNo, subsNo, pkgCode));
-                                                        p.println("Package add successful");
+                                                        p.println("Package add successful.\n");
                                                     } else if (val == false) {
-                                                        p.println("Invalid Package Code, Please Enter again.");
+                                                        p.println("Invalid Package Code, Please Enter again.\n");
                                                     }
                                                 }
                                             } while (val == false);
 
-                                            log = new LogFile(lgTime, username, "has added a pakage " + pkgCode + " to Smart Card " + smartCardNo);
+                                            log = new LogFile(lgTime, username, "has added a package " + pkgCode + " to Smart Card " + smartCardNo);
                                             logList.addLast(log);
                                             break;
 
@@ -2021,7 +2156,7 @@ class TVSystem {
                                             val = false;
 
                                             do {
-                                                p.println("Please Enter the Pakage want to remove: ");
+                                                p.println("Please Enter the package want to remove: ");
                                                 pkgCode = input.nextLine();
 
                                                 for (i = 0; i < pkgList.size(); i++) {
@@ -2032,7 +2167,7 @@ class TVSystem {
                                                 }
 
                                                 if (val == false) {
-                                                    p.println("Invalid Package Code Enter, Please Enter agian");
+                                                    p.println("Invalid Package Code Enter, Please Enter agian.\n");
                                                 } else if (val == true) {
                                                     val = false;
 
@@ -2041,7 +2176,7 @@ class TVSystem {
                                                             if (pkgCode.equalsIgnoreCase(subsList.get(i).getPkgCode())) {
                                                                 val = true;
                                                                 subsList.remove(subsList.get(i));
-                                                                p.println("Package remove succeessful");
+                                                                p.println("Package remove succeessful.\n");
                                                                 break;
                                                             }
                                                         }
@@ -2049,16 +2184,17 @@ class TVSystem {
 
                                                     if (val == false) {
                                                         val = true;
-                                                        p.println("You are not subscibe the package.");
+                                                        p.println("You are not subscibe the package.\n");
                                                     }
                                                 }
                                             } while (val == false);
 
-                                            log = new LogFile(lgTime, username, "has removed a pakage " + pkgCode + " from Smart Card " + smartCardNo);
+                                            log = new LogFile(lgTime, username, "has removed a package " + pkgCode + " from Smart Card " + smartCardNo);
                                             logList.addLast(log);
                                             break;
 
                                         case 3:
+                                            val = true;
                                             break;
 
                                         default:
@@ -2072,7 +2208,7 @@ class TVSystem {
                                 }
                             } while ((menu3_opt_1 != 3) || (val == false));
                         } else {
-                            p.println("The Smart Card is not Active.");
+                            p.println("The Smart Card is not Active.\n");
                         }
 
                         break;
@@ -2681,7 +2817,7 @@ class TVSystem {
                         input.nextLine();
                         do {
                             do {
-                                p.print("a) Programme Code: ");
+                                p.print("a) Programme Code(F###): ");
                                 programmeCode = input.nextLine();
                                 p.println();
 
@@ -2690,20 +2826,25 @@ class TVSystem {
                                     p.println();
                                 }
                             } while (programmeCode.trim().length() == 0);
-
-
-                            for (i = 0; i < prgList.size(); i++) {
-                                if (programmeCode.equalsIgnoreCase(prgList.get(i).getProgCode())) {
-                                    p.println("Sorry, the package code that you entered is already existed.");
-                                    p.println("Please try another one: ");
-                                    p.println();
-                                    check = false;
-                                    break;
-                                } else
-                                    check = true;
+                            if (programmeCode.matches(Prg_IDregex)) {
+                                for (i = 0; i < prgList.size(); i++) {
+                                    if (programmeCode.equalsIgnoreCase(prgList.get(i).getProgCode())) {
+                                        p.println("Sorry, the package code that you entered is already existed.");
+                                        p.println("Please try another one: ");
+                                        p.println();
+                                        check = false;
+                                        break;
+                                    } else {
+                                        check = true;
+                                    }
+                                }
+                                val = true;
+                            } else {
+                                p.println("Wrong input format. Please reenter it.");
+                                p.println();
+                                val = false;
                             }
-
-                        } while (check == false);
+                        } while ((check == false) || (val == false));
 
                         do {
                             p.print("b) Programme Title: ");
