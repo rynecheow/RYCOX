@@ -53,9 +53,6 @@ class EditClientDialog extends JDialog {
         clTypetype = new JLabel();
         clTypeLabel = new JLabel();
         clTypeLabel.setForeground(fColor);
-        //		clLNameInput = new JTextField("");
-        //		clLNameLabel = new JLabel();
-        //		clLNameLabel.setForeground(fColor);
         clNameInput = new JTextField(data[1]);
         clIDInput = new JTextField(data[0]);
         clIDLabel = new JLabel();

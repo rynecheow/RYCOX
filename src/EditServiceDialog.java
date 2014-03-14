@@ -222,8 +222,10 @@ class EditServiceDialog extends JDialog {
             if (e.getSource() == okBut) {
                 submit();
             } else if (e.getSource() == ccBut) {
-                //ADD PROMPT
-                dispose();
+                int confirm = JOptionPane.showConfirmDialog(null, "Exit without changes?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    dispose();
+                }
             } else if (e.getSource() == addBut) {
                 pkgAdd();
             } else if (e.getSource() == rmvBut) {

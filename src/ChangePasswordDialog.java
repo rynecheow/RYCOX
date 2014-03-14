@@ -21,7 +21,8 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
     private JLabel warningNotMatchNew;
     private JLabel warningNotMatchOld;
     boolean oldValid = false;
-    boolean newValid = true;
+    boolean newValid = false;
+    boolean newOldMatch = false;
     // End of variables declaration
 
     public ChangePasswordDialog(JFrame frame) {
@@ -195,7 +196,7 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
         if (e.getSource() == oldpw) {
             checkOld();
             if (oldValid == true) {
-                warningNotMatchOld.setText("Password matched.");
+                warningNotMatchOld.setText("Password matched.    ");
                 warningNotMatchOld.setForeground(Color.GREEN);
             } else {
                 warningNotMatchOld.setText("Password not matched!");
@@ -204,11 +205,16 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
         } else if (e.getSource() == confirmpw) {
             checkNew();
             if (newValid == true) {
-                warningNotMatchNew.setText("Password matched.");
+                warningNotMatchNew.setText("Password matched.    ");
                 warningNotMatchNew.setForeground(Color.GREEN);
             } else {
-                warningNotMatchNew.setText("Password not matched!");
-                warningNotMatchNew.setForeground(new Color(255, 0, 0));
+                if (newOldMatch == true) {
+                    warningNotMatchNew.setText("Password cannot be same.");
+                    warningNotMatchNew.setForeground(new Color(255, 0, 0));
+                } else {
+                    warningNotMatchNew.setText("Password not matched!");
+                    warningNotMatchNew.setForeground(new Color(255, 0, 0));
+                }
             }
         }
     }
@@ -231,12 +237,16 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
         String oldpwd = oldpw.getText();
         if (confpw.equals(newpwd)) {
             if (confpw.equals(oldpwd)) {
-
+                newValid = false;
+                newOldMatch = true;
             } else {
                 newValid = true;
+                newOldMatch = false;
             }
         } else {
             newValid = false;
+            newOldMatch = false;
         }
     }
+
 }
