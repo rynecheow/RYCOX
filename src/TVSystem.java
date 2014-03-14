@@ -48,7 +48,8 @@ class TVSystem {
     String PrvCl_IDregex = "^[pP][0-9]{6}$";
     String ScNo_IDregex = "^[sS][0-9]{6}$";
     String decNo_IDregex = "^[dD][0-9]{6}$";
-    String Pkg_IDregex = "P";
+    String Pkg_IDregex = "^[pP][0-9]{2}$";
+    String Prg_IDregex = "^[Ff][0-9]{3}$";
 
     int option = 0, option2 = 0, option3 = 0;
     int /*i = 0,*/ j = 0, k = 0;
@@ -755,7 +756,7 @@ class TVSystem {
                 do {
                     String type = "";
                     do {
-                        p.print("Please enter client's type:\n ");
+                        p.print("Please enter client's type:\n");
                         p.println("Enter IND to add a client to the 'Individual' category.\n");
                         p.println("Enter GOV to add a client to the 'Government' category.\n");
                         p.println("Enter NGO to add a client to the 'NGO' category.\n");
@@ -817,7 +818,6 @@ class TVSystem {
 
                                 String address = "";
                                 do {
-
                                     p.print("Please enter client's address: ");
                                     address = input.nextLine();
                                     p.println();
@@ -834,7 +834,7 @@ class TVSystem {
                                     String s = "";
                                     do {
 
-                                        p.print("Please enter client's ID: ");
+                                        p.print("Please enter client's ID: [I######]");
                                         s = input.nextLine();
                                         p.println();
 
@@ -842,18 +842,25 @@ class TVSystem {
                                             p.println("Blank input occured, please enter client's ID.");
                                             p.println();
                                         }
-
                                     } while (s.trim().length() == 0);
 
-                                    for (i = 0; i < clientList.size(); i++) {
-                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
-                                            check = false;
-                                            break;
-                                        } else
-                                            y = s;
-                                        check = true;
-                                    }
+                                    do {
+                                        if (s.matches(InCl_IDregex)) {
+                                            for (i = 0; i < clientList.size(); i++) {
+                                                if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                                    p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                                    check = false;
+                                                    break;
+                                                } else
+                                                    y = s;
+                                                check = true;
+                                            }
+                                            val = true;
+                                        } else {
+                                            p.print("Invalid ID format.");
+                                            val = false;
+                                        }
+                                    } while (val == false);
                                 } while (check == false);
                                 p.println();
 
@@ -861,7 +868,6 @@ class TVSystem {
                                 do {
                                     String accStatus = "";
                                     do {
-
                                         p.print("Please enter status of Account <active/inactive>: ");
                                         accStatus = input.nextLine();
                                         p.println();
@@ -869,7 +875,6 @@ class TVSystem {
                                             p.println("Blank input occured, please enter a status.");
                                             p.println();
                                         }
-
                                     } while (accStatus.trim().length() == 0);
 
                                     if (accStatus.equalsIgnoreCase("active") || accStatus.equalsIgnoreCase("inactive") || accStatus.equalsIgnoreCase("terminated")) {
@@ -921,30 +926,33 @@ class TVSystem {
 
                                 String y = "";
                                 do {
-
                                     String s = "";
                                     do {
-
-                                        p.print("Please enter client's ID: ");
+                                        p.print("Please enter client's ID: [G######]");
                                         s = input.nextLine();
                                         p.println();
-
                                         if (s.trim().length() == 0) {
                                             p.println("Blank input occured, please enter client's ID.");
                                             p.println();
                                         }
-
                                     } while (s.trim().length() == 0);
-
-                                    for (i = 0; i < clientList.size(); i++) {
-                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
-                                            check = false;
-                                            break;
-                                        } else
-                                            y = s;
-                                        check = true;
-                                    }
+                                    do {
+                                        if (s.matches(GovCl_IDregex)) {
+                                            for (i = 0; i < clientList.size(); i++) {
+                                                if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                                    p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                                    check = false;
+                                                    break;
+                                                } else
+                                                    y = s;
+                                                check = true;
+                                            }
+                                            val = true;
+                                        } else {
+                                            p.print("Invalid ID format.");
+                                            val = false;
+                                        }
+                                    } while (val == false);
                                 } while (check == false);
                                 p.println();
 
@@ -953,11 +961,9 @@ class TVSystem {
                                 do {
                                     String accStatus2 = "";
                                     do {
-
                                         p.print("Please enter status of Account <active/inactive>: ");
                                         accStatus2 = input.nextLine();
                                         p.println();
-
                                         if (accStatus2.trim().length() == 0) {
                                             p.println("Blank input occured, please enter a status.");
                                             p.println();
@@ -980,7 +986,6 @@ class TVSystem {
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
-
                             break;
                         case "ngo":
                             try {
