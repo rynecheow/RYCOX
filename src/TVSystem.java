@@ -714,19 +714,28 @@ class TVSystem {
         int a = 0, b = 0;
         for (i = 0; i < clientList.size(); i++) {
             if (valID_f3.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                if (clientList.get(i).getAccountStatus().equalsIgnoreCase("terminated")) {
+                    break;
+                }
                 int c = 0, z = 0;
                 String d = "", e = "";
+                boolean print = false;
+                boolean print1 = false;
                 clientList.get(i).printClient();
                 //Display services
+                print = false;
                 p.println("\nService details: ");
                 for (z = 0; z < servList.size(); z++) {
+                    print1 = false;
                     if ((clientList.get(i).getClientID()).equalsIgnoreCase(servList.get(z).getClientID())) {
+                        print = true;
                         servList.get(z).printServ();
                         p.println();
 
                         //Display subscriptions
                         for (a = 0; a < subsList.size(); a++) {
                             if ((servList.get(z).getSmartCardNo()).equalsIgnoreCase(subsList.get(a).getSmartCardNo())) {
+                                print1 = true;
                                 subsList.get(a).printSubs();
                                 p.println();
                                 d = subsList.get(a).getPkgCode();
@@ -752,7 +761,13 @@ class TVSystem {
                                 }
                             }
                         }
+                        if (print1 == false) {
+                            p.println("No Package Subscibe.");
+                        }
                     }
+                }
+                if (print == false) {
+                    p.println("No Service Available.");
                 }
             }
         }
@@ -1468,9 +1483,10 @@ class TVSystem {
                     }
                     break;
                 } else {
-                    p.println("\nOnly Admin has the accessibility to recover a client.");
+                    p.println("\nOnly Admin has the accessibility to terminate a client.");
                     log = new LogFile(lgTime, username, "has not terminated any client[USER TYPE DO NOT HAVE ACCESSIBILITY].");
                     logList.addLast(log);
+                    break;
                 }
             case "recover":
                 if (userList.get(u) instanceof Administrators) {
@@ -1498,7 +1514,6 @@ class TVSystem {
                                     if (clientList.get(i).getClientID().equalsIgnoreCase(servList.get(j).getClientID())) {
                                         String termSCD = servList.get(j).getSmartCardNo();
                                         p.println("Recover service?");
-
 
                                         do {
                                             p.println("Enter YES to recover.");
@@ -1532,7 +1547,6 @@ class TVSystem {
                                                 default:
                                                     p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                                                     val = false;
-
                                             } //end switch
                                         } while (val == false);
                                         p.println("\nClient '" + valID_f4 + "' has been recovered.");
@@ -3490,11 +3504,11 @@ class TVSystem {
 
                     do {
                         do {
-                            p.print("Enter the user's name that you would like to Terminate: ");
+                            p.print("Enter the user's ID that you would like to Terminate: ");
                             un_f9 = input.nextLine();
 
                             if (un_f9.trim().length() == 0) {
-                                p.println("Blank input occured, please enter a user's name.");
+                                p.println("Blank input occured, please enter a user's ID.");
                                 p.println();
                             }
 
@@ -3558,22 +3572,27 @@ class TVSystem {
 
             int a = 0, b = 0, c = 0, z = 0;
             String d = "", e = "", f = "";
+            boolean print = false;
+            boolean print1 = false;
             for (i = 0; i < clientList.size(); i++) {
                 clientList.get(i).printClient();
                 f = clientList.get(i).getClientID();
                 //Display services
-
+                print = false;
                 for (z = 0; z < servList.size(); z++) {
+                    print1 = false;
                     if (z == 0)
                         p.println("\nService details: ");
 
                     if (f.equalsIgnoreCase(servList.get(z).getClientID())) {
+                        print = true;
                         servList.get(z).printServ();
                         p.println();
 
                         //Display subscriptions
                         for (a = 0; a < subsList.size(); a++) {
                             if ((servList.get(z).getSmartCardNo()).equalsIgnoreCase(subsList.get(a).getSmartCardNo())) {
+                                print1 = true;
                                 subsList.get(a).printSubs();
                                 p.println();
                                 d = subsList.get(a).getPkgCode();
@@ -3602,7 +3621,13 @@ class TVSystem {
                                 }
                             }
                         }
+                        if (print1 == false) {
+                            p.println("No Package Subscibe.");
+                        }
                     }
+                }
+                if (print == false) {
+                    p.println("No Service Available.");
                 }
                 p.println("--------------------------------------------------------------------");
 
