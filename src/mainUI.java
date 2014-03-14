@@ -12,9 +12,6 @@ public class mainUI extends JFrame implements ActionListener {
     private JMenuBar menubar;
     private JMenu fileMenu, editMenu, viewMenu, helpMenu;
     private JMenuItem saveMI, exitMI, aboutMI;
-    private JTable clTable, servTable, subsTable, pkgTable, prgTable;
-    private JPanel toolbar;
-    private JScrollPane scrollPane;
 
     public mainUI() {
         getContentPane().setBackground(mainbgColor);
@@ -40,7 +37,6 @@ public class mainUI extends JFrame implements ActionListener {
         helpMenu.add(aboutMI);
         setJMenuBar(menubar);
 
-        toolbar = new JPanel();
         homePanel = new JPanel();
         homePanel.add(new JLabel(new ImageIcon(getClass().getResource("mainWelcome.png"))));
         homePanel.setBackground(new Color(41, 50, 51));
@@ -68,15 +64,16 @@ public class mainUI extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
     }
 
     private void clientTab() {
-        clientPanel = new clientPanel();
+        clientPanel = new ClientPanel();
     }
 
 
     private void servTab() {
-        servPanel = new JPanel();
+        servPanel = new servicePanel();
     }
 
     private void subsTab() {
@@ -84,7 +81,7 @@ public class mainUI extends JFrame implements ActionListener {
     }
 
     private void prgTab() {
-        prgPanel = new JPanel();
+        prgPanel = new ProgrammePanel();
     }
 
     private void pkgTab() {

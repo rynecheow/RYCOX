@@ -9,7 +9,7 @@ class Service implements Serializable {
     private String clientID;
     private String decoderNo;
     private String address;
-    private String servStatus = "Inactive";
+    private String servStatus = "Active";
     private String registrationDate;
     private String terminationDate = "N/A";
     private double currOstBal = 0;

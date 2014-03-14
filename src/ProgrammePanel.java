@@ -4,21 +4,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
-public class ClientPanel extends JPanel {
+public class ProgrammePanel extends JPanel {
 
-    private JTable clTable;
-    @SuppressWarnings("rawtypes")
-    private JComboBox clTypeCombo;
-    private JButton cldeleteButton;
-    private JButton editclButton;
+    private JTable prgTable;
+    private JButton prgAddButton;
+    private JButton prgDeleteButton;
+    private JButton editPrgButton;
     private JScrollPane scrollPane;
-    private JButton newclButton;
     private JButton redoButton;
     private JPanel toolbar;
     private JButton undoButton;
@@ -26,29 +22,28 @@ public class ClientPanel extends JPanel {
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
-    private JMenuItem editclMI, deleteclMI, addservMI;
-    private String[][] clData;
+    private JMenuItem editPrgMI, deletePrgMI, addToPkgMI;
+    private String[][] prgData;
 
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public ClientPanel() {
+    public ProgrammePanel() {
         toolbar = new JPanel();
-        clTypeCombo = new JComboBox();
-        newclButton = new JButton("", new ImageIcon(getClass().getResource("newbutton.png")));
-        newclButton.setBackground(bColor);
-        editclButton = new JButton("", new ImageIcon(getClass().getResource("editbutton.png")));
-        editclButton.setBackground(bColor);
+        prgAddButton = new JButton("", new ImageIcon(getClass().getResource("newbutton.png")));
+        prgAddButton.setBackground(bColor);
+        editPrgButton = new JButton("", new ImageIcon(getClass().getResource("editbutton.png")));
+        editPrgButton.setBackground(bColor);
         redoButton = new JButton("", new ImageIcon(getClass().getResource("redobutton.png")));
         redoButton.setBackground(bColor);
         undoButton = new JButton("", new ImageIcon(getClass().getResource("undobutton.png")));
         undoButton.setBackground(bColor);
-        cldeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
-        cldeleteButton.setBackground(bColor);
+        prgDeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
+        prgDeleteButton.setBackground(bColor);
         recoverButton = new JButton("", new ImageIcon(getClass().getResource("recoverbutton.png")));
         recoverButton.setBackground(bColor);
         scrollPane = new JScrollPane();
-        clTable = new JTable();
-        clTable.getTableHeader().setReorderingAllowed(false);
+        prgTable = new JTable();
+        prgTable.getTableHeader().setReorderingAllowed(false);
         loginInfo = new JLabel("You are logged in as " + RYCOXv2.user + ".");
         loginInfo.setForeground(Color.WHITE);
 
@@ -56,24 +51,17 @@ public class ClientPanel extends JPanel {
         toolbar.setBackground(bColor);
         toolbar.setPreferredSize(new Dimension(1500, 30));
 
-        clTypeCombo.setModel(new DefaultComboBoxModel(new String[]{"All", "Individual", "Government", "Private Organisation", "NGO"}));
-        clTypeCombo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
-            }
-        }
-        );
         GroupLayout toolbarLayout = new GroupLayout(toolbar);
         toolbar.setLayout(toolbarLayout);
         toolbarLayout.setHorizontalGroup(
                 toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(newclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(prgAddButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(editclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(editPrgButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(cldeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(prgDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
@@ -82,8 +70,6 @@ public class ClientPanel extends JPanel {
                                 .addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                                .addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
         toolbarLayout.setVerticalGroup(
@@ -91,53 +77,55 @@ public class ClientPanel extends JPanel {
                         .addGroup(toolbarLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(newclButton)
-                                        .addComponent(editclButton)
+                                        .addComponent(prgAddButton)
+                                        .addComponent(editPrgButton)
                                         .addComponent(redoButton)
                                         .addComponent(undoButton)
                                         .addComponent(recoverButton)
                                         .addComponent(loginInfo)
-                                        .addComponent(cldeleteButton))
+                                        .addComponent(prgDeleteButton))
 
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        clTable.setBackground(new Color(227, 226, 226));
-        clTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
-        clData = new String[RYCOXv2.clientList.size()][4];
-        for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
-            for (int j = 0; j <= 4; j++) {
+        prgTable.setBackground(new Color(227, 226, 226));
+        prgTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
+
+        prgData = new String[RYCOXv2.prgList.size()][5];
+        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+            for (int j = 0; j <= 5; j++) {
                 switch (j) {
                     case 0:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getClientID();
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgCode();
                         break;
                     case 1:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getName();
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgTitle();
                         break;
                     case 2:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getBillingAddress();
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getContentOrigin();
                         break;
                     case 3:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getAccountStatus();
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getViewerStatus();
                         break;
+                    case 4:
+                        prgData[i][j] = RYCOXv2.prgList.get(i).getType();
                 }
             }
         }
 
         DefaultTableModel model = new DefaultTableModel(
-                clData,
+                prgData,
                 new String[]{
-                        "Client ID", "Name", "Address", "Account Status"
+                        "Programme Code", "Programme Title", "Content Origin", "Viewer Status", "Type"
                 }
         ) {
 
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
             };
 
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false
+                    false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -148,13 +136,13 @@ public class ClientPanel extends JPanel {
                 return canEdit[columnIndex];
             }
         };
-        clTable.setModel(model);
+        prgTable.setModel(model);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-        clTable.setRowSorter(sorter);
-        clTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        clTable.setName("");
-        clTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        scrollPane.setViewportView(clTable);
+        prgTable.setRowSorter(sorter);
+        prgTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        prgTable.setName("");
+        prgTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        scrollPane.setViewportView(prgTable);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -175,26 +163,28 @@ public class ClientPanel extends JPanel {
                                 .addContainerGap())
         );
 
-        clTable.addMouseListener(new MouseAdapter() {
+        prgTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
-                    int rowNumber = clTable.rowAtPoint(e.getPoint());
+                    int rowNumber = prgTable.rowAtPoint(e.getPoint());
                     // Get the ListSelectionModel of the JTable
-                    ListSelectionModel model = clTable.getSelectionModel();
+                    ListSelectionModel model = prgTable.getSelectionModel();
                     model.setSelectionInterval(rowNumber, rowNumber);
-
+                } else if (SwingUtilities.isLeftMouseButton(e)) {
+                    ListSelectionModel model = prgTable.getSelectionModel();
+                    model.setSelectionInterval(prgTable.rowAtPoint(e.getPoint()), prgTable.rowAtPoint(e.getPoint()));
                 }
             }
         }
         ); //table right click
 
-        editclMI = new JMenuItem("Edit Client...");
-        deleteclMI = new JMenuItem("Terminate Client...");
-        addservMI = new JMenuItem("Add Service...");
+        editPrgMI = new JMenuItem("Edit Programme...");
+        deletePrgMI = new JMenuItem("Terminate Programme...");
+        addToPkgMI = new JMenuItem("Add Service...");
 
         popupMenu = new JPopupMenu("Menu");
-        popupMenu.add(editclMI);
-        popupMenu.add(deleteclMI);
-        popupMenu.add(addservMI);
+        popupMenu.add(editPrgMI);
+        popupMenu.add(deletePrgMI);
+        popupMenu.add(addToPkgMI);
     }//end constructor
 }

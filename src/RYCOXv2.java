@@ -1,7 +1,10 @@
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.LinkedList;
 
@@ -14,7 +17,18 @@ class RYCOXv2 extends JFrame {
         superMenu();
         setLocationRelativeTo(null);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent winEvt) {
+                int closeCf = JOptionPane.showConfirmDialog(null, "Exit RYCOX CMM?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                if (closeCf == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                } else {
+
+                }
+            }
+        });
     }
 
     static LinkedList<Users> userList;
@@ -27,7 +41,8 @@ class RYCOXv2 extends JFrame {
     static LinkedList<LogFile> logList;
     static LogFile log;
     static int i, u;
-    static int currentUser;    //index for current user
+    static int currentUser;
+    static String user;//index for current user
     Container mainFrame = getContentPane();
 
     /*USER LOGIN FRAME*/
@@ -120,22 +135,44 @@ class RYCOXv2 extends JFrame {
         ulsubmit.addActionListener(L);
         ulpanelright.add(ulclear).setBounds(220, 300, 100, 25);
         ulclear.addActionListener(L);
+
     }
 
     /*------------------------------------------------------------------------ MAIN USER INTERFACE ----------------------------------------------------------------*/
     public void mainUI() {
         setTitle("RYCOX System - Customer Management Module");
-        setSize(1600, 900);
-        setLocationRelativeTo(null);
-        mainUI a = new mainUI();
+        setVisible(false);
+        //setSize(1600,900);
+        //setLocationRelativeTo(null);
+        mainUI main = new mainUI();
+        main.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent winEvt) {
+                int closeCf = JOptionPane.showConfirmDialog(null, "Exit without saving?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                if (closeCf == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                } else {
+
+                }
+            }
+        });
     }
 
 	/*----------------------------------------------------------------------------- MAIN METHOD -------------------------------------------------------------------*/
 
     @SuppressWarnings("unchecked")
     public static void main(String[] rycox) {
-        RYCOXv2 inu = new RYCOXv2();
+        new RYCOXv2();
         //inu.setSize(1600,900);
+        try {
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // If Nimbus is not available, you can set the GUI to another look and feel.
+        }
 
         userList = new LinkedList<Users>();
         clientList = new LinkedList<ClientAccount>();
@@ -457,8 +494,8 @@ class RYCOXv2 extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == ulsubmit) {
                 //handle user login logic
-                boolean checkUsername = false;
-                boolean checkPassword = false;
+                boolean usernameVal = false;
+                boolean pwVal = false;
                 int u = 0;
 
                 String username = un_input.getText().trim();
@@ -472,28 +509,29 @@ class RYCOXv2 extends JFrame {
                     for (u = 0; u < userList.size(); u++) {
                         if ((username.equalsIgnoreCase(userList.get(u).getUserID())) == false) {
                             if (u == (userList.size() - 1)) {
-                                checkUsername = false;
+                                usernameVal = false;
                                 JOptionPane.showMessageDialog(null, "User not found!");
                             }
                         } else {
-                            checkUsername = true;
+                            usernameVal = true;
                             break;
                         }
                     }
 
-                    if (checkUsername) {
+                    if (usernameVal) {
                         for (int i = 0; i < userList.size(); i++) {
                             if ((password.equals(userList.get(u).getPassword())) == false) {
                                 if (i == (userList.size() - 1)) {
-                                    checkPassword = false;
+                                    pwVal = false;
                                     JOptionPane.showMessageDialog(null, "Password does not matched!");
                                 }
                             } else {
-                                checkPassword = true;
+                                pwVal = true;
                                 JOptionPane.showMessageDialog(null, "Welcome back, " + userList.get(u).getUserID() + "!");
                                 currentUser = u;
+                                user = userList.get(currentUser).getUserID();
 
-                                log = new LogFile(userList.get(currentUser).getUserID(), " has logged into the system.");
+                                log = new LogFile(user, " has logged into the system.");
                                 logList.addLast(log);
 
                                 mainFrame.removeAll();
@@ -513,6 +551,4 @@ class RYCOXv2 extends JFrame {
             }
         }
     }
-
-
 }

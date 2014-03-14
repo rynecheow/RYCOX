@@ -4,21 +4,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
-public class ClientPanel extends JPanel {
+public class servicePanel extends JPanel {
 
-    private JTable clTable;
-    @SuppressWarnings("rawtypes")
-    private JComboBox clTypeCombo;
-    private JButton cldeleteButton;
-    private JButton editclButton;
+    private JTable servTable;
+    private JButton servDeleteButton;
+    private JButton editServButton;
     private JScrollPane scrollPane;
-    private JButton newclButton;
     private JButton redoButton;
     private JPanel toolbar;
     private JButton undoButton;
@@ -26,29 +21,25 @@ public class ClientPanel extends JPanel {
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
-    private JMenuItem editclMI, deleteclMI, addservMI;
-    private String[][] clData;
-
+    private JMenuItem editServMI, deleteServMI, addSubsMI;
+    private String[][] servData;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public ClientPanel() {
+    public servicePanel() {
         toolbar = new JPanel();
-        clTypeCombo = new JComboBox();
-        newclButton = new JButton("", new ImageIcon(getClass().getResource("newbutton.png")));
-        newclButton.setBackground(bColor);
-        editclButton = new JButton("", new ImageIcon(getClass().getResource("editbutton.png")));
-        editclButton.setBackground(bColor);
+        editServButton = new JButton("", new ImageIcon(getClass().getResource("editbutton.png")));
+        editServButton.setBackground(bColor);
         redoButton = new JButton("", new ImageIcon(getClass().getResource("redobutton.png")));
         redoButton.setBackground(bColor);
         undoButton = new JButton("", new ImageIcon(getClass().getResource("undobutton.png")));
         undoButton.setBackground(bColor);
-        cldeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
-        cldeleteButton.setBackground(bColor);
+        servDeleteButton = new JButton("", new ImageIcon(getClass().getResource("deletebutton.png")));
+        servDeleteButton.setBackground(bColor);
         recoverButton = new JButton("", new ImageIcon(getClass().getResource("recoverbutton.png")));
         recoverButton.setBackground(bColor);
         scrollPane = new JScrollPane();
-        clTable = new JTable();
-        clTable.getTableHeader().setReorderingAllowed(false);
+        servTable = new JTable();
+        servTable.getTableHeader().setReorderingAllowed(false);
         loginInfo = new JLabel("You are logged in as " + RYCOXv2.user + ".");
         loginInfo.setForeground(Color.WHITE);
 
@@ -56,24 +47,15 @@ public class ClientPanel extends JPanel {
         toolbar.setBackground(bColor);
         toolbar.setPreferredSize(new Dimension(1500, 30));
 
-        clTypeCombo.setModel(new DefaultComboBoxModel(new String[]{"All", "Individual", "Government", "Private Organisation", "NGO"}));
-        clTypeCombo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
-            }
-        }
-        );
         GroupLayout toolbarLayout = new GroupLayout(toolbar);
         toolbar.setLayout(toolbarLayout);
         toolbarLayout.setHorizontalGroup(
                 toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(newclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(editServButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(editclButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(cldeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(servDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
@@ -82,8 +64,6 @@ public class ClientPanel extends JPanel {
                                 .addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                                .addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
         toolbarLayout.setVerticalGroup(
@@ -91,53 +71,55 @@ public class ClientPanel extends JPanel {
                         .addGroup(toolbarLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(clTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(newclButton)
-                                        .addComponent(editclButton)
+                                        .addComponent(editServButton)
                                         .addComponent(redoButton)
                                         .addComponent(undoButton)
                                         .addComponent(recoverButton)
                                         .addComponent(loginInfo)
-                                        .addComponent(cldeleteButton))
+                                        .addComponent(servDeleteButton))
 
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        clTable.setBackground(new Color(227, 226, 226));
-        clTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
-        clData = new String[RYCOXv2.clientList.size()][4];
-        for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
-            for (int j = 0; j <= 4; j++) {
+        servTable.setBackground(new Color(227, 226, 226));
+        servTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
+
+        servData = new String[RYCOXv2.servList.size()][5];
+        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+            for (int j = 0; j <= 5; j++) {
                 switch (j) {
                     case 0:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getClientID();
+                        servData[i][j] = RYCOXv2.servList.get(i).getSmartCardNo();
                         break;
                     case 1:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getName();
+                        servData[i][j] = RYCOXv2.servList.get(i).getClientID();
                         break;
                     case 2:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getBillingAddress();
+                        servData[i][j] = RYCOXv2.servList.get(i).getDecodeNo();
                         break;
                     case 3:
-                        clData[i][j] = RYCOXv2.clientList.get(i).getAccountStatus();
+                        servData[i][j] = RYCOXv2.servList.get(i).getAddress();
                         break;
+                    case 4:
+                        servData[i][j] = RYCOXv2.servList.get(i).getServStatus();
                 }
             }
         }
 
+
         DefaultTableModel model = new DefaultTableModel(
-                clData,
+                servData,
                 new String[]{
-                        "Client ID", "Name", "Address", "Account Status"
+                        "SmartCard No.", "Client ID", "Decoder ID", "Address", "Service Status"
                 }
         ) {
 
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false
+                    false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -148,13 +130,13 @@ public class ClientPanel extends JPanel {
                 return canEdit[columnIndex];
             }
         };
-        clTable.setModel(model);
+        servTable.setModel(model);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-        clTable.setRowSorter(sorter);
-        clTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        clTable.setName("");
-        clTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        scrollPane.setViewportView(clTable);
+        servTable.setRowSorter(sorter);
+        servTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        servTable.setName("");
+        servTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        scrollPane.setViewportView(servTable);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -175,12 +157,12 @@ public class ClientPanel extends JPanel {
                                 .addContainerGap())
         );
 
-        clTable.addMouseListener(new MouseAdapter() {
+        servTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
-                    int rowNumber = clTable.rowAtPoint(e.getPoint());
+                    int rowNumber = servTable.rowAtPoint(e.getPoint());
                     // Get the ListSelectionModel of the JTable
-                    ListSelectionModel model = clTable.getSelectionModel();
+                    ListSelectionModel model = servTable.getSelectionModel();
                     model.setSelectionInterval(rowNumber, rowNumber);
 
                 }
@@ -188,13 +170,13 @@ public class ClientPanel extends JPanel {
         }
         ); //table right click
 
-        editclMI = new JMenuItem("Edit Client...");
-        deleteclMI = new JMenuItem("Terminate Client...");
-        addservMI = new JMenuItem("Add Service...");
+        editServMI = new JMenuItem("Edit Service...");
+        deleteServMI = new JMenuItem("Terminate Service...");
+        addSubsMI = new JMenuItem("Add Subscription...");
 
         popupMenu = new JPopupMenu("Menu");
-        popupMenu.add(editclMI);
-        popupMenu.add(deleteclMI);
-        popupMenu.add(addservMI);
+        popupMenu.add(editServMI);
+        popupMenu.add(deleteServMI);
+        popupMenu.add(addSubsMI);
     }//end constructor
 }
