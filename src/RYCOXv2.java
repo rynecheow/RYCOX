@@ -42,12 +42,9 @@ class RYCOXv2 extends JFrame {
     private Color bgcolor = new Color(23, 28, 30);
     private Color fieldcolor = new Color(50, 60, 64);
     private Font defont = new Font("LucidaSansRegular", Font.PLAIN, 14);
-    private Color phcolor = new Color(211, 211, 211);
 
 
-    /*MAIN MENU PAGE*/
-    JTabbedPane tabbedPane;
-    JPanel mainmessage;
+	/*MAIN MENU PAGE*/
 
     /*---------------------------------------------------------------------------- SUPER MENU ---------------------------------------------------------------------*/
     public void superMenu() {
@@ -57,7 +54,6 @@ class RYCOXv2 extends JFrame {
 	/*------------------------------------------------------------------------ USER LOGIN INTERFACE ---------------------------------------------------------------*/
 
     public void userlogin() {
-        setTitle("RYCOX System User Login");
         setTitle("RYCOX System - Customer Management Module Log in");
         setSize(600, 500);
         getContentPane().setBackground(bgcolor);
@@ -107,8 +103,6 @@ class RYCOXv2 extends JFrame {
         uldisp.setIcon(new ImageIcon(getClass().getResource("CMM-LOGIN.png")));
         ulpanelright.add(uldisp).setBounds(50, 50, 300, 100);
         ulwelcomeMsg.setBounds(50, 150, 300, 50);
-//		PlaceHolderText a = new PlaceHolderText(un_input, "Please enter your User ID");
-//		PlaceHolderText b = new PlaceHolderText(pw_input, "Please enter your Password");
         ulpanelright.add(unpanel);
         ulpanelright.add(pwpanel);
         unpanel.setLayout(flay);
@@ -126,6 +120,14 @@ class RYCOXv2 extends JFrame {
         ulsubmit.addActionListener(L);
         ulpanelright.add(ulclear).setBounds(220, 300, 100, 25);
         ulclear.addActionListener(L);
+    }
+
+    /*------------------------------------------------------------------------ MAIN USER INTERFACE ----------------------------------------------------------------*/
+    public void mainUI() {
+        setTitle("RYCOX System - Customer Management Module");
+        setSize(1600, 900);
+        setLocationRelativeTo(null);
+        mainUI a = new mainUI();
     }
 
 	/*----------------------------------------------------------------------------- MAIN METHOD -------------------------------------------------------------------*/
@@ -234,12 +236,12 @@ class RYCOXv2 extends JFrame {
         prgList.add(new TVProgramme("F018", "BigBang", "BigBang Concert.", "China", "11/9/2011", "Active", "U", "Concert", ""));
 
 
-        File client_file = new File("cl_data.dat");
+        File client_file = new File("cl_data.rycox");
         boolean exist_cl_data = client_file.exists();
         if (exist_cl_data == false) {    //if client's file do not exist
-            //cl_data.dat file
+            //cl_data.rycox file
             try {
-                FileOutputStream client_fostream = new FileOutputStream("cl_data.dat");
+                FileOutputStream client_fostream = new FileOutputStream("cl_data.rycox");
                 ObjectOutputStream client_oostream = new ObjectOutputStream(client_fostream);
                 for (i = 0; i < clientList.size(); i++) {
                     if (clientList.get(i) != null) {
@@ -253,9 +255,9 @@ class RYCOXv2 extends JFrame {
                 e.printStackTrace();
             }
 
-            //serv_data.dat files
+            //serv_data.rycox files
             try {
-                FileOutputStream serv_fostream = new FileOutputStream("serv_data.dat");
+                FileOutputStream serv_fostream = new FileOutputStream("serv_data.rycox");
                 ObjectOutputStream serv_oostream = new ObjectOutputStream(serv_fostream);
                 for (i = 0; i < servList.size(); i++) {
                     if (servList.get(i) != null) {
@@ -269,9 +271,9 @@ class RYCOXv2 extends JFrame {
                 e.printStackTrace();
             }
 
-            //subsc_data.dat
+            //subsc_data.rycox
             try {
-                FileOutputStream subsc_fostream = new FileOutputStream("subsc_data.dat");
+                FileOutputStream subsc_fostream = new FileOutputStream("subsc_data.rycox");
                 ObjectOutputStream subsc_oostream = new ObjectOutputStream(subsc_fostream);
                 for (i = 0; i < subsList.size(); i++) {
                     if (subsList.get(i) != null) {
@@ -285,9 +287,9 @@ class RYCOXv2 extends JFrame {
                 e.printStackTrace();
             }
 
-            //pkg_data.dat files
+            //pkg_data.rycox files
             try {
-                FileOutputStream pkg_fostream = new FileOutputStream("pkg_data.dat");
+                FileOutputStream pkg_fostream = new FileOutputStream("pkg_data.rycox");
                 ObjectOutputStream pkg_oostream = new ObjectOutputStream(pkg_fostream);
                 for (i = 0; i < pkgList.size(); i++) {
                     if (pkgList.get(i) != null) {
@@ -300,9 +302,9 @@ class RYCOXv2 extends JFrame {
                 e.printStackTrace();
             }
 
-            //pckging_data.dat files
+            //pckging_data.rycox files
             try {
-                FileOutputStream pckging_fostream = new FileOutputStream("pckging_data.dat");
+                FileOutputStream pckging_fostream = new FileOutputStream("pckging_data.rycox");
                 ObjectOutputStream pckging_oostream = new ObjectOutputStream(pckging_fostream);
                 for (i = 0; i < pckgingList.size(); i++) {
                     if (pckgingList.get(i) != null) {
@@ -315,9 +317,9 @@ class RYCOXv2 extends JFrame {
                 e.printStackTrace();
             }
 
-            //prg_data.dat files
+            //prg_data.rycox files
             try {
-                FileOutputStream prg_fostream = new FileOutputStream("prg_data.dat");
+                FileOutputStream prg_fostream = new FileOutputStream("prg_data.rycox");
                 ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream);
                 for (i = 0; i < prgList.size(); i++) {
                     if (prgList.get(i) != null) {
@@ -329,9 +331,9 @@ class RYCOXv2 extends JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //user_data.dat files
+            //user_data.rycox files
             try {
-                FileOutputStream user_fostream = new FileOutputStream("user_data.dat");
+                FileOutputStream user_fostream = new FileOutputStream("user_data.rycox");
                 ObjectOutputStream user_oostream = new ObjectOutputStream(user_fostream);
                 for (i = 0; i < userList.size(); i++) {
                     if (userList.get(i) != null) {
@@ -345,9 +347,9 @@ class RYCOXv2 extends JFrame {
             }
 
         } else if (exist_cl_data == true) {        //reading files
-            //reading cl_data.dat
+            //reading cl_data.rycox
             try {
-                FileInputStream client_fistream = new FileInputStream("cl_data.dat");            //read from specified file
+                FileInputStream client_fistream = new FileInputStream("cl_data.rycox");            //read from specified file
                 ObjectInputStream client_oistream = new ObjectInputStream(client_fistream);
 
                 for (i = 0; i < clientList.size(); i++) {
@@ -360,9 +362,9 @@ class RYCOXv2 extends JFrame {
             } catch (Exception e) {
             }
 
-            //reading serv_data.dat
+            //reading serv_data.rycox
             try {
-                FileInputStream serv_fistream = new FileInputStream("serv_data.dat");            //read from specified file
+                FileInputStream serv_fistream = new FileInputStream("serv_data.rycox");            //read from specified file
                 ObjectInputStream serv_oistream = new ObjectInputStream(serv_fistream);
 
                 for (i = 0; i < servList.size(); i++) {
@@ -375,9 +377,9 @@ class RYCOXv2 extends JFrame {
             } catch (Exception e) {
             }
 
-            //reading subsc_data.dat
+            //reading subsc_data.rycox
             try {
-                FileInputStream subsc_fistream = new FileInputStream("subsc_data.dat");            //read from specified file
+                FileInputStream subsc_fistream = new FileInputStream("subsc_data.rycox");            //read from specified file
                 ObjectInputStream subsc_oistream = new ObjectInputStream(subsc_fistream);
 
                 for (i = 0; i < subsList.size(); i++) {
@@ -390,9 +392,9 @@ class RYCOXv2 extends JFrame {
             } catch (Exception e) {
             }
 
-            //reading pkg_data.dat
+            //reading pkg_data.rycox
             try {
-                FileInputStream pkg_fistream = new FileInputStream("pkg_data.dat");            //read from specified file
+                FileInputStream pkg_fistream = new FileInputStream("pkg_data.rycox");            //read from specified file
                 ObjectInputStream pkg_oistream = new ObjectInputStream(pkg_fistream);
 
                 for (i = 0; i < pkgList.size(); i++) {
@@ -405,9 +407,9 @@ class RYCOXv2 extends JFrame {
             } catch (Exception e) {
             }
 
-            //reading pckging_data.dat
+            //reading pckging_data.rycox
             try {
-                FileInputStream pckging_fistream = new FileInputStream("pckging_data.dat");            //read from specified file
+                FileInputStream pckging_fistream = new FileInputStream("pckging_data.rycox");            //read from specified file
                 ObjectInputStream pckging_oistream = new ObjectInputStream(pckging_fistream);
 
                 for (i = 0; i < pckgingList.size(); i++) {
@@ -420,9 +422,9 @@ class RYCOXv2 extends JFrame {
             } catch (Exception e) {
             }
 
-            //reading prg_data.dat
+            //reading prg_data.rycox
             try {
-                FileInputStream prg_fistream = new FileInputStream("prg_data.dat");            //read from specified file
+                FileInputStream prg_fistream = new FileInputStream("prg_data.rycox");            //read from specified file
                 ObjectInputStream prg_oistream = new ObjectInputStream(prg_fistream);
 
                 for (i = 0; i < prgList.size(); i++) {
@@ -434,9 +436,9 @@ class RYCOXv2 extends JFrame {
             } catch (Exception e) {
             }
 
-            //reading user_data.dat
+            //reading user_data.rycox
             try {
-                FileInputStream user_fistream = new FileInputStream("user_data.dat");            //read from specified file
+                FileInputStream user_fistream = new FileInputStream("user_data.rycox");            //read from specified file
                 ObjectInputStream user_oistream = new ObjectInputStream(user_fistream);
 
                 for (i = 0; i < userList.size(); i++) {
@@ -498,7 +500,6 @@ class RYCOXv2 extends JFrame {
                                 mainUI();
                                 mainFrame.repaint();
                                 mainFrame.validate();
-
                                 break;
                             }
                         }
@@ -513,97 +514,5 @@ class RYCOXv2 extends JFrame {
         }
     }
 
-    public void mainUI() {
-        setBackground(Color.WHITE);
-    }
-    /*---------------------------------------------------------------------------- PLACEHOLDER ---------------------------------------------------------------------*/
-//	private class PlaceHolderText {
-//
-//		private final JTextField textField;
-//		private final FocusListener focusListener = new FieldFocusListener();
-//		private final DocumentListener docListener = new FieldDocumentListener();
-//		private String placeholder;
-//		private String previousText = "";
-//		private Color previousColor;
-//		private boolean settingPlaceholder = false;
-//
-//		/**
-//		 * Create a new PlaceholderText.
-//		 * @param textField The field in which to show placeholder text.
-//		 * @param placeholder The placeholder text to display when the field is empty.
-//		 */
-//		public PlaceHolderText(JTextField textField, String placeholder) {
-//			this.textField = textField;
-//			this.placeholder = placeholder;
-//			this.textField.addFocusListener(this.focusListener);
-//			this.textField.getDocument().addDocumentListener(this.docListener);
-//		}
-//
-//		/**
-//		 * @return The placeholder text displayed by this object.
-//		 */
-//		@SuppressWarnings("unused")
-//		public String getPlaceholder() {
-//			return this.placeholder;
-//		}
-//
-//		/**
-//		 * @param placeholder The placeholder text this object should display.
-//		 */
-//		@SuppressWarnings("unused")
-//		public void setPlaceholder(String placeholder) {
-//			this.placeholder = placeholder;
-//		}
-//
-//		/**
-//		 * Tells this object to remove any listeners from its textfield.
-//		 */
-//		@SuppressWarnings("unused")
-//		public void dispose() {
-//			this.textField.removeFocusListener(this.focusListener);
-//			this.textField.getDocument().removeDocumentListener(this.docListener);
-//		}
-//
-//		private class FieldFocusListener implements FocusListener {
-//
-//			public void focusGained(FocusEvent e) {
-//				textField.setForeground(previousColor);
-//				textField.setText(previousText);
-//			}
-//
-//			public void focusLost(FocusEvent e) {
-//				previousText = textField.getText();
-//				previousColor = Color.WHITE;
-//				if (previousText.length() == 0||previousText==null) {
-//					settingPlaceholder = true;
-//					textField.setForeground(phcolor);
-//					textField.setText(placeholder);
-//					settingPlaceholder = false;
-//				}
-//			}
-//		}
-//
-//		private class FieldDocumentListener implements DocumentListener {
-//
-//			public void changedUpdate(DocumentEvent e) {
-//				this.textChanged();
-//			}
-//
-//			public void insertUpdate(DocumentEvent e) {
-//				this.textChanged();
-//			}
-//
-//			public void removeUpdate(DocumentEvent e) {
-//				this.textChanged();
-//			}
-//
-//			private void textChanged() {
-//				if (!settingPlaceholder) {
-//					previousText = textField.getText();
-//				}
-//			}
-//
-//		}
-//
-//	}
+
 }
