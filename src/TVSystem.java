@@ -17,10 +17,13 @@ class TVSystem {
     PrintStream p = System.out;
     boolean val = false;
     boolean repeat = false;
+    boolean stat = false;
+    boolean val_age = false;
     String clientID;
     String smartCardNo;
     String decoderNo;
     String menu3_opt = "";
+
     /*extra*/
     String pckCode = "", pckCode2 = "", pckCode3 = "", packageCode = "";
     String progCode = "", progCode2 = "", progCode3 = "", progCode4 = "", progCode5 = "", progCode6 = "", programmeCode = "";
@@ -57,31 +60,32 @@ class TVSystem {
     File client_file = new File("cl_data.dat");
     boolean exist_cl_data = client_file.exists();
 
+
     @SuppressWarnings("unchecked")
     public TVSystem() {
         //pre-defined objects
         userList.add(new Administrators("admin", "nimda"));
-        userList.add(new FrontdeskStaffs("staff", "123abc"));
+        //userList.add(new FrontdeskStaffs("staff", "123abc"));
         clientList.add(new IndividualClient("Izhar", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "17th Apr 2011", "ACTIVE"));
-        clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "17th Apr 2011", "INACTIVE"));
-        clientList.add(new NGOClient("NGO", "56, Taylor's Street", "N000001", "17th Apr 2011", "ACTIVE"));
-        clientList.add(new PrvClient("Private Organisation", "Address", "P000001", "17th Apr 2011", "ACTIVE"));
-        servList.add(new Service("S000001", "I00001", "D999999", "5, Jalan Sungai Beranang", "17th Apr 2011"));
-        servList.add(new Service("S000002", "G00001", "D999998", "Lot 1-3 Starhill", "17th Apr 2011"));
-        servList.add(new Service("S000003", "N00001", "D999997", "Lot 3-10 Jalan Taylor", "17th Apr 2011"));
-        servList.add(new Service("S000004", "P00001", "D999996", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
-        servList.add(new Service("S000005", "I00002", "D999995", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
-        servList.add(new Service("S000006", "P000002", "D999994", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
+        //clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "17th Apr 2011", "INACTIVE"));
+        //clientList.add(new NGOClient("NGO", "56, Taylor's Street", "N000001", "17th Apr 2011", "ACTIVE"));
+        //clientList.add(new PrvClient("Private Organisation", "Address", "P000001", "17th Apr 2011", "ACTIVE"));	
+        servList.add(new Service("S000001", "I000001", "D999999", "5, Jalan Sungai Beranang", "17th Apr 2011"));
+        servList.add(new Service("S000002", "I000001", "D999998", "Lot 1-3 Starhill", "17th Apr 2011"));
+        //servList.add(new Service("S000003", "N000001", "D999997", "Lot 3-10 Jalan Taylor", "17th Apr 2011"));
+        //servList.add(new Service("S000004", "P000001", "D999996", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
+        //servList.add(new Service("S000005", "I000002", "D999995", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
+        //servList.add(new Service("S000006", "P000002", "D999994", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
         subsList.add(new Subscription("S000001", 1, "P01"));
-        subsList.add(new Subscription("S000001", 2, "P01"));
-        subsList.add(new Subscription("S000001", 3, "P02"));
-        subsList.add(new Subscription("S000002", 1, "P01"));
-        subsList.add(new Subscription("S000003", 1, "P03"));
-        subsList.add(new Subscription("S000004", 1, "P04"));
+        //subsList.add(new Subscription("S000001", 2,"P01"));
+        //subsList.add(new Subscription("S000001", 3,"P02"));
+        //subsList.add(new Subscription("S000002", 1,"P01"));
+        //subsList.add(new Subscription("S000003", 1,"P03"));
+        //subsList.add(new Subscription("S000004", 1,"P04"));
         pkgList.add(new TVPackage("P01", "Variety", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
-        pkgList.add(new TVPackage("P02", "Fun", "18/04/2012", 350.00, "Yearly", "ACTIVE"));
-        pckgingList.add(new Packaging("P01", "F001"));
-        prgList.add(new TVProgramme("F001", "My Boss My Hero", "Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002", "Active", "18SG", "Comedy", ""));
+        //pkgList.add(new TVPackage("P02","Fun","18/04/2012",350.00,"Yearly","ACTIVE"));
+        //pckgingList.add(new Packaging("P01","F001"));
+        //prgList.add(new TVProgramme("F001", "My Boss My Hero","Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002","Active","18SG", "Comedy",""));
 
 
         if (!exist_cl_data) {    //if client's file do not exist
@@ -442,6 +446,7 @@ class TVSystem {
 
     public void displayClientsByType() {
         String type;
+        @SuppressWarnings("unused")
         boolean val1_o2 = false, val2_o2 = false;
 
         log = new LogFile(username, "has chosen the 'Display Client by Type' function.");
@@ -618,38 +623,38 @@ class TVSystem {
                 p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
             }
         } while (val1_f3 == false);
-
+        p.println("Client details\n----------------");
+        int a = 0, b = 0;
         for (i = 0; i < clientList.size(); i++) {
-            p.println("Client details");
             if (valID_f3.equalsIgnoreCase(clientList.get(i).getClientID())) {
                 clientList.get(i).printClient();
-                p.println("\nService details");
 
                 //Display services
-                int a = 0, b = 0, c = 0;
-                for (f = 0; f < servList.size(); f++) {
-                    if ((clientList.get(i).getClientID()).equals(servList.get(f).getClientID())) {
-                        servList.get(f).printServ();
+                p.println("\nService details");
+                for (int p = 0; p < servList.size(); p++) {
+                    if ((clientList.get(i).getClientID()).equalsIgnoreCase(servList.get(p).getClientID())) {
+                        servList.get(p).printServ();
+                        a = p;
+                        break;
                     }
-                    a = f;
                 }
 
                 //Display subscriptions
-                for (f = 0; f < subsList.size(); f++) {
-                    if ((servList.get(a).getSmartCardNo().equals(subsList.get(f).getSmartCardNo()))) {
-                        subsList.get(f).printSubs();
+                for (int q = 0; q < subsList.size(); q++) {
+                    if ((servList.get(a).getSmartCardNo().equalsIgnoreCase(subsList.get(q).getSmartCardNo()))) {
+                        subsList.get(q).printSubs();
+                        b = q;
+                        break;
                     }
-                    b = f;
                 }
 
                 //Display packages
-                for (f = 0; f < pkgList.size(); f++) {
-                    if ((subsList.get(b).getPkgCode().equals(pkgList.get(f).getPkgCode()))) {
-                        pkgList.get(f).printPkg();
+                for (int r = 0; r < pkgList.size(); r++) {
+                    if ((subsList.get(b).getPkgCode().equalsIgnoreCase(pkgList.get(r).getPkgCode()))) {
+                        pkgList.get(r).printPkg();
+                        break;
                     }
-                    c = f;
                 }
-
 
                 log = new LogFile(username, "has displayed Client '" + valID_f3 + "' details.");
                 logList.addLast(log);
@@ -701,6 +706,7 @@ class TVSystem {
                 logList.addLast(log);
 
                 do {
+                    input.nextLine(); //fix
                     p.print("Please enter client's type (Individual,Gov,NGO,Private):\n ");
                     String type = input.nextLine();
                     p.println();
@@ -712,11 +718,21 @@ class TVSystem {
                                 p.print("Please enter client's name: ");
                                 String name = input.nextLine();
                                 p.println();
-
-                                p.print("Please enter client's age: ");
-                                int age = input.nextInt();
+                                int g = 0;
+                                do {
+                                    p.print("Please enter client's age: ");
+                                    String age = input.nextLine();
+                                    if (age.matches("^[1-9][0-9]$") || age.matches("^[0][1-9][0-9]$")) {
+                                        g = Integer.parseInt(age);
+                                        val_age = true;
+                                        break;
+                                    } else
+                                        p.println("Only integer is allowed. [10-99]");
+                                    val_age = false;
+                                } while (val_age == false);
                                 p.println();
 
+                                //input.nextLine(); 												
                                 p.print("Please enter client's IC number: ");
                                 String ic = input.nextLine();
                                 p.println();
@@ -725,19 +741,42 @@ class TVSystem {
                                 String address = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter client's ID: ");
-                                String clientID = input.nextLine();
+                                String y = "";
+                                do {
+                                    p.print("Please enter client's ID: ");
+                                    String s = input.nextLine();
+                                    for (i = 0; i < clientList.size(); i++) {
+                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                            check = false;
+                                            break;
+                                        } else
+                                            y = s;
+                                        check = true;
+                                    }
+                                } while (check == false);
                                 p.println();
 
                                 p.print("Please enter date of creation: ");
                                 String creationDate = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter status of Account: ");
-                                String accStatus = input.nextLine();
-                                p.println();
+                                String a = "";
+                                do {
+                                    p.print("Please enter status of Account: ");
+                                    String accStatus = input.nextLine();
+                                    p.println();
+                                    if (accStatus.equalsIgnoreCase("active") || accStatus.equalsIgnoreCase("inactive") || accStatus.equalsIgnoreCase("terminated")) {
+                                        a = accStatus;
+                                        stat = true;
+                                        break;
+                                    } else {
+                                        p.println("Invalid status, please re-enter.");
+                                        stat = false;
+                                    }
+                                } while (stat == false);
 
-                                clientList.add(new IndividualClient(name, age, ic, address, clientID, creationDate, accStatus));
+                                clientList.add(new IndividualClient(name, g, ic, address, y, creationDate, a));
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
@@ -753,19 +792,42 @@ class TVSystem {
                                 String address = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter client's ID: ");
-                                String clientID = input.nextLine();
+                                String y = "";
+                                do {
+                                    p.print("Please enter client's ID: ");
+                                    String s = input.nextLine();
+                                    for (i = 0; i < clientList.size(); i++) {
+                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                            check = false;
+                                            break;
+                                        } else
+                                            y = s;
+                                        check = true;
+                                    }
+                                } while (check == false);
                                 p.println();
 
                                 p.print("Please enter date of creation: ");
                                 String creationDate = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter Status of Account: ");
-                                String accStatus = input.nextLine();
-                                p.println();
+                                String a = "";
+                                do {
+                                    p.print("Please enter status of Account: ");
+                                    String accStatus2 = input.nextLine();
+                                    p.println();
+                                    if (accStatus2.equalsIgnoreCase("active") || accStatus2.equalsIgnoreCase("inactive") || accStatus2.equalsIgnoreCase("terminated")) {
+                                        a = accStatus2;
+                                        stat = true;
+                                        break;
+                                    } else {
+                                        p.println("Invalid status, please re-enter.");
+                                        stat = false;
+                                    }
+                                } while (stat == false);
 
-                                clientList.add(new GovClient(name, address, clientID, creationDate, accStatus));
+                                clientList.add(new GovClient(name, address, y, creationDate, a));
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
@@ -781,19 +843,42 @@ class TVSystem {
                                 String address = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter client's ID: ");
-                                String clientID = input.nextLine();
+                                String y = "";
+                                do {
+                                    p.print("Please enter client's ID: ");
+                                    String s = input.nextLine();
+                                    for (i = 0; i < clientList.size(); i++) {
+                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                            check = false;
+                                            break;
+                                        } else
+                                            y = s;
+                                        check = true;
+                                    }
+                                } while (check == false);
                                 p.println();
 
                                 p.print("Please enter date of creation: ");
                                 String creationDate = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter Status of Account: ");
-                                String accStatus = input.nextLine();
-                                p.println();
+                                String a = "";
+                                do {
+                                    p.print("Please enter status of Account: ");
+                                    String accStatus3 = input.nextLine();
+                                    p.println();
+                                    if (accStatus3.equalsIgnoreCase("active") || accStatus3.equalsIgnoreCase("inactive") || accStatus3.equalsIgnoreCase("terminated")) {
+                                        a = accStatus3;
+                                        stat = true;
+                                        break;
+                                    } else {
+                                        p.println("Invalid status, please re-enter.");
+                                        stat = false;
+                                    }
+                                } while (stat == false);
 
-                                clientList.add(new NGOClient(name, address, clientID, creationDate, accStatus));
+                                clientList.add(new NGOClient(name, address, y, creationDate, a));
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
@@ -809,19 +894,42 @@ class TVSystem {
                                 String address = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter client's ID: ");
-                                String clientID = input.nextLine();
+                                String y = "";
+                                do {
+                                    p.print("Please enter client's ID: ");
+                                    String s = input.nextLine();
+                                    for (i = 0; i < clientList.size(); i++) {
+                                        if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
+                                            p.println("Sorry, the ID has been taken. Please enter an unused ID.");
+                                            check = false;
+                                            break;
+                                        } else
+                                            y = s;
+                                        check = true;
+                                    }
+                                } while (check == false);
                                 p.println();
 
                                 p.print("Please enter date of creation: ");
                                 String creationDate = input.nextLine();
                                 p.println();
 
-                                p.print("Please enter Status of Account: ");
-                                String accStatus = input.nextLine();
-                                p.println();
+                                String a = "";
+                                do {
+                                    p.print("Please enter status of Account: ");
+                                    String accStatus4 = input.nextLine();
+                                    p.println();
+                                    if (accStatus4.equalsIgnoreCase("active") || accStatus4.equalsIgnoreCase("inactive") || accStatus4.equalsIgnoreCase("terminated")) {
+                                        a = accStatus4;
+                                        stat = true;
+                                        break;
+                                    } else {
+                                        p.println("Invalid status, please re-enter.");
+                                        stat = false;
+                                    }
+                                } while (stat == false);
 
-                                clientList.add(new PrvClient(name, address, clientID, creationDate, accStatus));
+                                clientList.add(new PrvClient(name, address, y, creationDate, a));
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
@@ -1991,7 +2099,7 @@ class TVSystem {
 
                                         default:
                                             check3 = false;
-                                            p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                                             break;
                                     }
                                 } catch (InputMismatchException ime) {
@@ -2088,7 +2196,7 @@ class TVSystem {
 
                     default:
                         check = false;
-                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                         break;
                 }
             } catch (InputMismatchException ime) {
@@ -2473,7 +2581,7 @@ class TVSystem {
                                             break;
 
                                         default:
-                                            p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                                             break;
                                     }
                                 } catch (InputMismatchException ime) {
@@ -2580,7 +2688,7 @@ class TVSystem {
                         break;
 
                     default:
-                        p.println("WRONG OPTION! PLEASE RE-ENTER YOUR OPTION!\n");
+                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
                         break;
                 }
             } catch (InputMismatchException ime) {

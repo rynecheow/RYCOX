@@ -20,9 +20,7 @@ abstract class Users {
         this.password = password;
     }
 
-    public void printUser() {
-        System.out.println("UserID:\t" + getUserID());
-        System.out.println("Password:\t" + getPassword());
-        System.out.println("");
-    }
+    abstract void printUser();
+
+
 }
