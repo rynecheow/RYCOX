@@ -1,10 +1,13 @@
+import java.text.DateFormat;
+import java.util.Date;
+
 class LogFile {
     private String date;
     private String user;
     private String action;
 
-    public LogFile(String date, String user, String action) {
-        this.date = date;
+    public LogFile(String user, String action) {
+        this.date = DateFormat.getInstance().format(new Date());
         this.user = user;
         this.action = action;
     }
