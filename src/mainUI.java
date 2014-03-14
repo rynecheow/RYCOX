@@ -11,16 +11,17 @@ import java.io.ObjectOutputStream;
 public class MainUI extends JFrame implements ActionListener {
 
     private JTabbedPane tabbedPane;
-    private JPanel homePanel, clientPanel, servPanel, subsPanel, pkgPanel, prgPanel;
+    private JPanel homePanel, clientPanel, servPanel, pkgPanel, prgPanel;
     private Color mainbgColor = new Color(23, 28, 30);
     private JMenuBar menubar;
     private JMenu fileMenu, editMenu, viewMenu, helpMenu;
-    private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI, saveClientMI;
+    private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI, listClientMI, manageUserMI, chgpwMI;
     private int i;
     private JMenu adminMenu;
 
 
     public MainUI() {
+
         getContentPane().setBackground(mainbgColor);
         setTitle("RYCOX System - Customer Management Module");
         setSize(1600, 900);
@@ -37,42 +38,52 @@ public class MainUI extends JFrame implements ActionListener {
         menubar.add(editMenu);
         menubar.add(viewMenu);
         menubar.add(helpMenu);
+        menubar.add(adminMenu);
         saveMI = new JMenuItem("Save All...");
         exitMI = new JMenuItem("Exit...");
         aboutMI = new JMenuItem("About..");
         viewLogMI = new JMenuItem("View Log...");
         logoutMI = new JMenuItem("Log out '" + RYCOXv2.user + "'...");
-        saveClientMI = new JMenuItem("Save clients as...");
+        listClientMI = new JMenuItem("List all client...");
+        manageUserMI = new JMenuItem("Manage users..");
+        chgpwMI = new JMenuItem("Change log in password...");
         fileMenu.add(saveMI);
         fileMenu.add(exitMI);
         fileMenu.add(logoutMI);
         helpMenu.add(aboutMI);
+        helpMenu.add(chgpwMI);
         viewMenu.add(viewLogMI);
-        adminMenu.add(saveClientMI);
+        adminMenu.add(listClientMI);
+        adminMenu.add(manageUserMI);
         viewLogMI.addActionListener(this);
         logoutMI.addActionListener(this);
         setJMenuBar(menubar);
-
         saveMI.addActionListener(this);
         exitMI.addActionListener(this);
+        listClientMI.addActionListener(this);
+        manageUserMI.addActionListener(this);
+        chgpwMI.addActionListener(this);
         homePanel = new JPanel();
         homePanel.add(new JLabel(new ImageIcon(getClass().getResource("mainWelcome.png"))));
         homePanel.setBackground(new Color(41, 50, 51));
         clientTab();
         servTab();
-        subsTab();
         prgTab();
         pkgTab();
 
+        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof FrontdeskStaffs) {
+            adminMenu.setVisible(false);
+        }
         tabbedPane = new JTabbedPane();
         tabbedPane.setBackground(mainbgColor);
         tabbedPane.setTabPlacement(SwingConstants.LEFT);
         tabbedPane.addTab("Main Menu", homePanel);
         tabbedPane.addTab("", new ImageIcon(getClass().getResource("clmanagetab.png")), clientPanel);
         tabbedPane.addTab("", new ImageIcon(getClass().getResource("servmanagetab.png")), servPanel);
-        tabbedPane.addTab("", new ImageIcon(getClass().getResource("subsmanagetab.png")), subsPanel);
-        tabbedPane.addTab("", new ImageIcon(getClass().getResource("prgmanagetab.png")), prgPanel);
-        tabbedPane.addTab("", new ImageIcon(getClass().getResource("pkgmanagetab.png")), pkgPanel);
+        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+            tabbedPane.addTab("", new ImageIcon(getClass().getResource("prgmanagetab.png")), prgPanel);
+            tabbedPane.addTab("", new ImageIcon(getClass().getResource("pkgmanagetab.png")), pkgPanel);
+        }
         tabbedPane.setForegroundAt(tabbedPane.getTabCount() - 1, Color.ORANGE);
         tabbedPane.setOpaque(true);
         add(tabbedPane);
@@ -94,9 +105,7 @@ public class MainUI extends JFrame implements ActionListener {
             }
 
         });
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
-            adminMenu.setVisible(false);
-        }
+
     }
 
     private void clientTab() {
@@ -106,10 +115,6 @@ public class MainUI extends JFrame implements ActionListener {
 
     private void servTab() {
         servPanel = new ServicePanel();
-    }
-
-    private void subsTab() {
-        subsPanel = new JPanel();
     }
 
     private void prgTab() {
@@ -251,6 +256,12 @@ public class MainUI extends JFrame implements ActionListener {
                 new RYCOXv2();
                 RYCOXv2.initialise();
             }
+        } else if (e.getSource() == manageUserMI) {
+            new ManageUsers(this).setVisible(true);
+        } else if (e.getSource() == listClientMI) {
+            new ClientReportDialog(this).setVisible(true);
+        } else if (e.getSource() == chgpwMI) {
+            new ChangePasswordDialog(this).setVisible(true);
         }
     }
 }

@@ -145,7 +145,12 @@ class NewProgrammeDialog extends JDialog {
                     }
                     int newID = existedID + 1;
                     String newIDS = Integer.toString(newID);
-                    a = "F" + newIDS;
+                    if (existedID < 10)
+                        a = "F00" + newIDS;
+                    else if (existedID < 99)
+                        a = "F0" + newIDS;
+                    else if ((existedID >= 99) && (existedID <= 999))
+                        a = "F" + newIDS;
 
                     RYCOXv2.prgList.addLast(new TVProgramme(a, b, y, d, "ACTIVE", z, f, g));
                     JOptionPane.showMessageDialog(null, "You have successfully created a new TV Programme with programme code " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
@@ -230,7 +235,7 @@ class NewProgrammeDialog extends JDialog {
         spring.putConstraint(SpringLayout.WEST, button2, 200, SpringLayout.EAST, label2);
         spring.putConstraint(SpringLayout.NORTH, button2, 42, SpringLayout.SOUTH, textfield4);
 
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(580, 550);
         setLocation(400, 60);
         setVisible(true);

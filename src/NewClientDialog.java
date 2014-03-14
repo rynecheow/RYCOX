@@ -27,7 +27,6 @@ class NewClientDialog extends JDialog {
     private JLabel clFNameLabel;
     private JTextField clICInput;
     private JLabel clICLabel;
-    private JLabel clIDFormat;
     private JTextField clIDInput;
     private JLabel clIDLabel;
     private JTextField clLNameInput;
@@ -44,6 +43,11 @@ class NewClientDialog extends JDialog {
     private String type;
     private WarningLabel warningMsgIDEx;
     // End of variables declaration
+    private int countInd = 0;
+    private int countPrv = 0;
+    private int countGov = 0;
+    private int countNGO = 0;
+    private String generatedIndID, generatedGovID, generatedPrvID, generatedNGOID;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public NewClientDialog(JFrame parent) {
@@ -51,6 +55,23 @@ class NewClientDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(null);
 
+        for (int x = 0; x < RYCOXv2.clientList.size(); x++) {
+            if (RYCOXv2.clientList.get(x) instanceof IndividualClient) {
+                countInd += 1;
+            } else if (RYCOXv2.clientList.get(x) instanceof PrvClient) {
+                countPrv += 1;
+            } else if (RYCOXv2.clientList.get(x) instanceof GovClient) {
+                countGov += 1;
+            } else if (RYCOXv2.clientList.get(x) instanceof NGOClient) {
+                countNGO += 1;
+            }
+        }
+        generatedIndID = "I" + Integer.toString(1000000 + countInd + 1).substring(1, 7);
+        generatedGovID = "G" + Integer.toString(1000000 + countPrv + 1).substring(1, 7);
+        generatedPrvID = "P" + Integer.toString(1000000 + countGov + 1).substring(1, 7);
+        generatedNGOID = "N" + Integer.toString(1000000 + countNGO + 1).substring(1, 7);
+        System.out.println(countInd + "\t" + countPrv + "\t" + countGov + "\t" + countGov);
+        System.out.println(generatedIndID + "\t" + generatedPrvID + "\t" + generatedPrvID + "\t" + generatedNGOID);
         BGPanel = new JPanel();
         BGPanel.setBackground(bColor);
         BGPanel.setForeground(fColor);
@@ -61,9 +82,8 @@ class NewClientDialog extends JDialog {
         clLNameLabel = new JLabel();
         clLNameLabel.setForeground(fColor);
         clFNameInput = new JTextField("");
-        clIDInput = new JTextField("");
+        clIDInput = new JTextField(generatedIndID);
         clIDLabel = new JLabel();
-        clIDLabel.setForeground(fColor);
         clFNameLabel = new JLabel();
         clFNameLabel.setForeground(fColor);
         clAgeLabel = new JLabel();
@@ -79,8 +99,6 @@ class NewClientDialog extends JDialog {
         submitbutton = new JButton();
         cancelbutton = new JButton();
         DialogSeparator = new JSeparator();
-        clIDFormat = new JLabel();
-        clIDFormat.setForeground(fColor);
         clEmailLabel = new JLabel();
         clEmailLabel.setForeground(fColor);
         clEmailInput = new JTextField("");
@@ -112,29 +130,28 @@ class NewClientDialog extends JDialog {
                     clAgeCombo.setSelectedItem("18");
                     clICInput.setEditable(true);
                     clICInput.setEnabled(true);
-                    clIDFormat.setText("I");
+                    clIDInput.setText(generatedIndID);
                 } else if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("Government")) {
                     clAgeCombo.setSelectedItem("--");
                     clAgeCombo.setEnabled(false);
                     clICInput.setText("");
                     clICInput.setEditable(false);
                     clICInput.setEnabled(false);
-                    clIDFormat.setText("G");
-
+                    clIDInput.setText(generatedGovID);
                 } else if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("NGO")) {
                     clAgeCombo.setSelectedItem("--");
                     clAgeCombo.setEnabled(false);
                     clICInput.setText("");
                     clICInput.setEditable(false);
                     clICInput.setEnabled(false);
-                    clIDFormat.setText("N");
+                    clIDInput.setText(generatedNGOID);
                 } else if (((String) clTypeCombo.getSelectedItem()).equalsIgnoreCase("Private Organisation")) {
                     clAgeCombo.setSelectedItem("--");
                     clAgeCombo.setEnabled(false);
                     clICInput.setText("");
                     clICInput.setEditable(false);
                     clICInput.setEnabled(false);
-                    clIDFormat.setText("P");
+                    clIDInput.setText(generatedPrvID);
                 }
             }
         });
@@ -160,8 +177,13 @@ class NewClientDialog extends JDialog {
         clIDInput.setFont(defont);
         BGPanel.add(clIDInput);
         clIDInput.setBounds(96, 43, 62, 25);
+        clIDInput.setEditable(false);
+        clIDInput.setBackground(bColor);
+        clIDInput.setForeground(fColor);
+        clIDInput.setBorder(null);
         clIDLabel.setFont(defont);
         clIDLabel.setText("Client ID   :");
+        clIDLabel.setForeground(fColor);
         BGPanel.add(clIDLabel);
         warningMsgID.setBounds(10, 15, 150, 25);
         BGPanel.add(warningMsgID);
@@ -252,10 +274,6 @@ class NewClientDialog extends JDialog {
         BGPanel.add(DialogSeparator);
         DialogSeparator.setBounds(0, 358, 590, 10);
 
-        clIDFormat.setFont(defont);
-        clIDFormat.setText("I");
-        BGPanel.add(clIDFormat);
-        clIDFormat.setBounds(82, 43, 10, 25);
 
         clEmailLabel.setFont(defont);
         clEmailLabel.setText("E-mail Address :");
@@ -337,13 +355,12 @@ class NewClientDialog extends JDialog {
                             warningMsgIDEx.setVisible(false);
                         } else {
                             warningMsgID.setVisible(false);
-                            if (temp[2].matches("[0-9]{6}")) {
+                            if (temp[2].matches("[Ii][0-9]{6}")) {
                                 checkWrongFormat = false;
                                 warningMsgFormat.setVisible(false);
                                 warningMsgIDEx.setVisible(false);
-                                appendedID = "I" + temp[2];
                                 for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                    if (appendedID.equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                    if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
                                         warningMsgIDEx.setVisible(true);
                                         existed = true;
                                         break;
@@ -422,19 +439,12 @@ class NewClientDialog extends JDialog {
                             warningMsgIDEx.setVisible(false);
                         } else {
                             warningMsgID.setVisible(false);
-                            if (temp[2].matches("[0-9]{6}")) {
+                            if (temp[2].matches("[IiNnGgPp][0-9]{6}")) {
                                 checkWrongFormat = false;
                                 warningMsgFormat.setVisible(false);
                                 warningMsgIDEx.setVisible(false);
-                                if (((String) clTypeCombo.getSelectedItem()).equals("Government")) {
-                                    appendedID = "G" + temp[2];
-                                } else if (((String) clTypeCombo.getSelectedItem()).equals("NGO")) {
-                                    appendedID = "N" + temp[2];
-                                } else if (((String) clTypeCombo.getSelectedItem()).equals("Private Organisation")) {
-                                    appendedID = "P" + temp[2];
-                                }
                                 for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                    if (appendedID.equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                    if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
                                         warningMsgIDEx.setVisible(true);
                                         existed = true;
                                         break;
@@ -484,16 +494,16 @@ class NewClientDialog extends JDialog {
         String clID;
         String type2;
         if (((String) clTypeCombo.getSelectedItem()).equals("Individual")) {
-            clID = "I" + clIDInput.getText().trim();
+            clID = generatedIndID;
             type2 = "Ind";
         } else if (((String) clTypeCombo.getSelectedItem()).equals("Government")) {
-            clID = "G" + clIDInput.getText().trim();
+            clID = generatedGovID;
             type2 = "Gov";
         } else if (((String) clTypeCombo.getSelectedItem()).equals("Private Organisation")) {
-            clID = "P" + clIDInput.getText().trim();
+            clID = generatedPrvID;
             type2 = "Prv";
         } else {
-            clID = "N" + clIDInput.getText().trim();
+            clID = generatedNGOID;
             type2 = "NGO";
         }
         String accStatus = "ACTIVE";

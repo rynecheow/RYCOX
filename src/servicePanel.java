@@ -24,12 +24,15 @@ class ServicePanel extends JPanel {
     private JButton undoButton;
     private JButton saveButton;
     private JButton recoverButton;
+    private JButton servActivateButton;
+    private JButton deactButton;
     private JLabel loginInfo;
     private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
-    private JMenuItem editServMI, deleteServMI, addSubsMI;
+    private JMenuItem editServMI, deleteServMI, viewServMI, activeServMI, barredServMI;
     private String[][] servData;
     static String[] temp;
+    static DefaultTableModel model;
     private int rowNumber;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -49,6 +52,10 @@ class ServicePanel extends JPanel {
         servDeleteButton.setBackground(bColor);
         recoverButton = new JButton("", new ImageIcon(getClass().getResource("recoverbutton.png")));
         recoverButton.setBackground(bColor);
+        servActivateButton = new JButton("", new ImageIcon(getClass().getResource("activatebutton.png")));
+        servActivateButton.setBackground(bColor);
+        deactButton = new JButton("", new ImageIcon(getClass().getResource("deactivatebutton.png")));
+        deactButton.setBackground(bColor);
         scrollPane = new JScrollPane();
         servTable = new JTable();
         servTable.getTableHeader().setReorderingAllowed(false);
@@ -75,9 +82,9 @@ class ServicePanel extends JPanel {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(undoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(servActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(redoButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(deactButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
@@ -89,9 +96,9 @@ class ServicePanel extends JPanel {
                                 .addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                         .addComponent(saveButton)
                                         .addComponent(editServButton)
+                                        .addComponent(servActivateButton)
+                                        .addComponent(deactButton)
                                         .addComponent(viewButton)
-                                        .addComponent(redoButton)
-                                        .addComponent(undoButton)
                                         .addComponent(recoverButton)
                                         .addComponent(loginInfo)
                                         .addComponent(servDeleteButton))
@@ -124,7 +131,7 @@ class ServicePanel extends JPanel {
             }
         }
 
-        DefaultTableModel model = new DefaultTableModel(
+        model = new DefaultTableModel(
                 servData,
                 new String[]{
                         "SmartCard No.", "Client ID", "Decoder ID", "Address", "Service Status"
@@ -151,7 +158,7 @@ class ServicePanel extends JPanel {
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         servTable.setRowSorter(sorter);
         servTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        servTable.setName("");
+        servTable.getRowSorter().toggleSortOrder(0);
         servTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(servTable);
 
@@ -175,18 +182,103 @@ class ServicePanel extends JPanel {
         );
 
         servTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     int rowNumber = servTable.rowAtPoint(e.getPoint());
                     // Get the ListSelectionModel of the JTable
+                    temp = new String[5];
+                    for (int j = 0; j < 5; j++) {
+                        temp[j] = (String) servTable.getValueAt(rowNumber, j);
+                    }
+                    if (temp[4].equalsIgnoreCase("ACTIVE")) {
+                        editServButton.setEnabled(true);
+                        viewButton.setEnabled(true);
+                        servDeleteButton.setEnabled(true);
+                        deactButton.setEnabled(true);
+                        recoverButton.setEnabled(false);
+                        servActivateButton.setEnabled(false);
+                        viewServMI.setEnabled(true);
+                        editServMI.setEnabled(true);
+                        activeServMI.setEnabled(false);
+                        barredServMI.setEnabled(true);
+                        deleteServMI.setEnabled(true);
+                    } else if (temp[4].equalsIgnoreCase("BARRED")) {
+                        viewButton.setEnabled(true);
+                        servDeleteButton.setEnabled(true);
+                        servActivateButton.setEnabled(true);
+                        recoverButton.setEnabled(false);
+                        editServButton.setEnabled(false);
+                        deactButton.setEnabled(false);
+                        viewServMI.setEnabled(true);
+                        editServMI.setEnabled(false);
+                        activeServMI.setEnabled(true);
+                        barredServMI.setEnabled(false);
+                        deleteServMI.setEnabled(true);
+                    } else if (temp[4].equalsIgnoreCase("TERMINATED")) {
+                        recoverButton.setEnabled(true);
+                        editServButton.setEnabled(false);
+                        viewButton.setEnabled(true);
+                        servDeleteButton.setEnabled(false);
+                        servActivateButton.setEnabled(false);
+                        deactButton.setEnabled(false);
+                        viewServMI.setEnabled(true);
+                        editServMI.setEnabled(false);
+                        activeServMI.setEnabled(false);
+                        barredServMI.setEnabled(false);
+                        deleteServMI.setEnabled(false);
+                    }
                     ListSelectionModel model = servTable.getSelectionModel();
                     model.setSelectionInterval(rowNumber, rowNumber);
+                    showPopup(e);
                 } else if (SwingUtilities.isLeftMouseButton(e)) {
                     rowNumber = servTable.rowAtPoint(e.getPoint());
                     temp = new String[5];
                     for (int j = 0; j < 5; j++) {
                         temp[j] = (String) servTable.getValueAt(rowNumber, j);
                     }
+                    if (temp[4].equalsIgnoreCase("ACTIVE")) {
+                        editServButton.setEnabled(true);
+                        viewButton.setEnabled(true);
+                        servDeleteButton.setEnabled(true);
+                        deactButton.setEnabled(true);
+                        recoverButton.setEnabled(false);
+                        servActivateButton.setEnabled(false);
+                        viewServMI.setEnabled(true);
+                        editServMI.setEnabled(true);
+                        activeServMI.setEnabled(false);
+                        barredServMI.setEnabled(true);
+                        deleteServMI.setEnabled(true);
+                    } else if (temp[4].equalsIgnoreCase("BARRED")) {
+                        viewButton.setEnabled(true);
+                        servDeleteButton.setEnabled(true);
+                        servActivateButton.setEnabled(true);
+                        recoverButton.setEnabled(false);
+                        editServButton.setEnabled(false);
+                        deactButton.setEnabled(false);
+                        viewServMI.setEnabled(true);
+                        editServMI.setEnabled(false);
+                        activeServMI.setEnabled(true);
+                        barredServMI.setEnabled(false);
+                        deleteServMI.setEnabled(true);
+                    } else if (temp[4].equalsIgnoreCase("TERMINATED")) {
+                        recoverButton.setEnabled(true);
+                        editServButton.setEnabled(false);
+                        viewButton.setEnabled(true);
+                        servDeleteButton.setEnabled(false);
+                        servActivateButton.setEnabled(false);
+                        deactButton.setEnabled(false);
+                        viewServMI.setEnabled(true);
+                        editServMI.setEnabled(false);
+                        activeServMI.setEnabled(false);
+                        barredServMI.setEnabled(false);
+                        deleteServMI.setEnabled(false);
+                    }
+                }
+            }
+
+            private void showPopup(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
         }
@@ -194,12 +286,16 @@ class ServicePanel extends JPanel {
 
         editServMI = new JMenuItem("Edit Service...");
         deleteServMI = new JMenuItem("Terminate Service...");
-        addSubsMI = new JMenuItem("Add Subscription...");
+        viewServMI = new JMenuItem("View Service...");
+        activeServMI = new JMenuItem("Activate Service...");
+        barredServMI = new JMenuItem("Barred Service...");
 
         popupMenu = new JPopupMenu("Menu");
+        popupMenu.add(viewServMI);
         popupMenu.add(editServMI);
+        popupMenu.add(activeServMI);
+        popupMenu.add(barredServMI);
         popupMenu.add(deleteServMI);
-        popupMenu.add(addSubsMI);
 
         DialogHandler d = new DialogHandler();
         editServButton.addActionListener(d);
@@ -207,6 +303,13 @@ class ServicePanel extends JPanel {
         servDeleteButton.addActionListener(d);
         recoverButton.addActionListener(d);
         viewButton.addActionListener(d);
+        servActivateButton.addActionListener(d);
+        deactButton.addActionListener(d);
+        viewServMI.addActionListener(d);
+        editServMI.addActionListener(d);
+        activeServMI.addActionListener(d);
+        barredServMI.addActionListener(d);
+        deleteServMI.addActionListener(d);
 
     }//end constructor
 
@@ -230,16 +333,35 @@ class ServicePanel extends JPanel {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            } else if (e.getSource() == editServButton) {
+                try {
+                    FileOutputStream FOS = new FileOutputStream("subsc_data.rycox");
+                    ObjectOutputStream OOS = new ObjectOutputStream(FOS);
+                    for (int i = 0; i < RYCOXv2.subsList.size(); i++) {
+                        if (RYCOXv2.subsList.get(i) != null) {
+                            OOS.writeObject(RYCOXv2.subsList);
+                        }
+                    }
+                    OOS.flush();
+                    OOS.close();
+                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[SUBSCIPTION]");
+                    RYCOXv2.logList.add(RYCOXv2.log);
+                    RYCOXv2.printLog();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else if (e.getSource() == editServButton || e.getSource() == editServMI) {
                 EditServiceDialog ESD = new EditServiceDialog((JFrame) popupMenu.getParent());
                 ESD.setVisible(true);
                 updateTable();
-            } else if (e.getSource() == servDeleteButton) {
+            } else if (e.getSource() == servDeleteButton || e.getSource() == deleteServMI) {
                 int terminate = JOptionPane.showConfirmDialog(null, "Terminate " + temp[0] + " ?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
                 if (terminate == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < RYCOXv2.servList.size(); i++) {
                         if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
                             RYCOXv2.servList.get(i).setServStatus("Terminated");
+                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has terminated the service " + temp[0] + ".");
+                            RYCOXv2.logList.add(RYCOXv2.log);
+                            RYCOXv2.printLog();
                             break;
                         }
                     }
@@ -251,14 +373,48 @@ class ServicePanel extends JPanel {
                     for (int i = 0; i < RYCOXv2.servList.size(); i++) {
                         if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
                             RYCOXv2.servList.get(i).setServStatus("Active");
+                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has recovered the service " + temp[0] + ".");
+                            RYCOXv2.logList.add(RYCOXv2.log);
+                            RYCOXv2.printLog();
                             break;
                         }
                     }
                     updateTable();
                 }
-            } else if (e.getSource() == viewButton) {
+            } else if (e.getSource() == viewButton || e.getSource() == viewServMI) {
                 ViewServiceDialog VSD = new ViewServiceDialog((JFrame) popupMenu.getParent());
                 VSD.setVisible(true);
+                RYCOXv2.log = new LogFile(RYCOXv2.user, " has viewed the service " + temp[0] + ".");
+                RYCOXv2.logList.add(RYCOXv2.log);
+                RYCOXv2.printLog();
+            } else if (e.getSource() == servActivateButton || e.getSource() == activeServMI) {
+                int activate = JOptionPane.showConfirmDialog(null, "Activate " + temp[0] + " ?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                if (activate == JOptionPane.YES_OPTION) {
+                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+                        if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
+                            RYCOXv2.servList.get(i).setServStatus("Active");
+                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has activated the service " + temp[0] + ".");
+                            RYCOXv2.logList.add(RYCOXv2.log);
+                            RYCOXv2.printLog();
+                            break;
+                        }
+                    }
+                    updateTable();
+                }
+            } else if (e.getSource() == deactButton || e.getSource() == barredServMI) {
+                int deact = JOptionPane.showConfirmDialog(null, "Barred " + temp[0] + " ?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                if (deact == JOptionPane.YES_OPTION) {
+                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+                        if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
+                            RYCOXv2.servList.get(i).setServStatus("Barred");
+                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has barred the service " + temp[0] + ".");
+                            RYCOXv2.logList.add(RYCOXv2.log);
+                            RYCOXv2.printLog();
+                            break;
+                        }
+                    }
+                    updateTable();
+                }
             }
         }
     }
@@ -287,7 +443,7 @@ class ServicePanel extends JPanel {
         }
 
 
-        DefaultTableModel model = new DefaultTableModel(
+        model = new DefaultTableModel(
                 servData,
                 new String[]{
                         "SmartCard No.", "Client ID", "Decoder ID", "Address", "Service Status"
@@ -316,8 +472,14 @@ class ServicePanel extends JPanel {
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         servTable.setRowSorter(sorter);
         servTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        servTable.setName("");
+        servTable.getRowSorter().toggleSortOrder(0);
         servTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(servTable);
+    }
+
+    static void addServ() {
+        int row = RYCOXv2.servList.size() - 1;
+        String[] newServ = new String[]{RYCOXv2.servList.get(row).getSmartCardNo(), RYCOXv2.servList.get(row).getClientID(), RYCOXv2.servList.get(row).getDecodeNo(), RYCOXv2.servList.get(row).getAddress(), RYCOXv2.servList.get(row).getServStatus()};
+        ((DefaultTableModel) model).addRow(newServ);
     }
 }

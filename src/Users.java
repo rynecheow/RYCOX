@@ -1,13 +1,17 @@
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 abstract class Users implements Serializable {
     protected String userID;
     protected String password = "abc123";
+    protected String lastLoggedIn;
 
     public Users(String userID, String password) {
         this.userID = userID;
         this.password = password;
+        this.lastLoggedIn = "--";
     }
 
     public String getUserID() {
@@ -20,6 +24,14 @@ abstract class Users implements Serializable {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void setLastLoggedIn() {
+        lastLoggedIn = DateFormat.getInstance().format(new Date());
+    }
+
+    public String getLastLoggedIn() {
+        return lastLoggedIn;
     }
 
     abstract void printUser();

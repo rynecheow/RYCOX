@@ -77,6 +77,8 @@ abstract class ClientAccount implements Serializable {
     }
 
     abstract void printClient();
+
+    abstract String stringClient();
 }
 
 /**************************************************************************

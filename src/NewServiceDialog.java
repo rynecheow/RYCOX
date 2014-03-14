@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 @SuppressWarnings("serial")
-class EditServiceDialog extends JDialog {
+class NewServiceDialog extends JDialog {
     private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, leftLabel, rightLabel;
     private JTextField idInput, scInput, dcInput;
     private JTextArea addInput;
@@ -29,13 +29,12 @@ class EditServiceDialog extends JDialog {
     private AbstractListModel rightModel;
     private String[] leftElArr;
     private String[] rightElArr;
-    private String[] selPkg;
     private String addPkg;
     private int subsNo;
     private JWarnLabel scFormatWarn, scEmptyWarn, scSameWarn, dcFormatWarn, dcEmptyWarn, dcSameWarn, addWarn, subsPkgWarn;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public EditServiceDialog(JFrame parent) {
+    public NewServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
         idLabel = new JLabel("Client ID: ");
         idLabel.setForeground(fColor);
@@ -50,14 +49,11 @@ class EditServiceDialog extends JDialog {
         rightLabel = new JLabel("Packages Subscribed: ");
         rightLabel.setForeground(fColor);
         idInput = new JTextField(20);
-        idInput.setText(ServicePanel.temp[1]);
+        idInput.setText(ClientPanel.editionData[0]);
         idInput.setEnabled(false);
         scInput = new JTextField(20);
-        scInput.setText(ServicePanel.temp[0]);
         dcInput = new JTextField(20);
-        dcInput.setText(ServicePanel.temp[2]);
         addInput = new JTextArea(5, 20);
-        addInput.setText(ServicePanel.temp[3]);
         okBut = new JButton("OK");
         ccBut = new JButton("Cancel");
         addBut = new JButton("ADD");
@@ -76,35 +72,12 @@ class EditServiceDialog extends JDialog {
         separator.setPreferredSize(new Dimension(2, 270));
         separator2 = new JSeparator(JSeparator.HORIZONTAL);
         separator2.setPreferredSize(new Dimension(990, 2));
-        statusBox = new JComboBox(status);
-        statusBox.setSelectedItem(ServicePanel.temp[4]);
 
-        selPkgList = new LinkedList<String>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-            for (int j = 0; j < RYCOXv2.subsList.size(); j++) {
-                if (ServicePanel.temp[0].equalsIgnoreCase(RYCOXv2.subsList.get(j).getSmartCardNo())) {
-                    if (RYCOXv2.subsList.get(j).getPkgCode().equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                        selPkgList.add(RYCOXv2.subsList.get(j).getPkgCode());
-                        ((DefaultListModel) rightModel).addElement(RYCOXv2.subsList.get(j).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
-                    }
-                }
-            }
-        }
-        selPkg = selPkgList.toArray(new String[selPkgList.size()]);
 
         for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-            boolean check = false;
-            for (int j = 0; j < selPkgList.size(); j++) {
-                if (selPkg[j].equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                    check = true;
-                    break;
-                }
-            }
-            if (check == false) {
-                ((DefaultListModel) leftModel).addElement(RYCOXv2.pkgList.get(i).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
-            }
+            ((DefaultListModel) leftModel).addElement(RYCOXv2.pkgList.get(i).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
         }
 
         leftList = new JList(leftModel);
@@ -246,26 +219,16 @@ class EditServiceDialog extends JDialog {
         } else if (!scInput.getText().matches(scNo_IDregex)) {
             scFormatWarn.setVisible(true);
         } else if (scInput.getText().matches(scNo_IDregex)) {
-            if (scInput.getText().equalsIgnoreCase(ServicePanel.temp[0])) {
+            for (int j = 0; j < RYCOXv2.servList.size(); j++) {
+                if (scInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getSmartCardNo())) {
+                    scSameWarn.setVisible(true);
+                    scCheck = false;
+                    break;
+                }
                 scEmptyWarn.setVisible(false);
                 scFormatWarn.setVisible(false);
                 scSameWarn.setVisible(false);
                 scCheck = true;
-            } else if (!scInput.getText().equalsIgnoreCase(ServicePanel.temp[0])) {
-                for (int j = 0; j < RYCOXv2.servList.size(); j++) {
-                    if (scInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getSmartCardNo())) {
-                        scSameWarn.setVisible(true);
-                        scCheck = false;
-                        break;
-                    }
-                    scEmptyWarn.setVisible(false);
-                    scFormatWarn.setVisible(false);
-                    scSameWarn.setVisible(false);
-                    scCheck = true;
-                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has edited the smart card number from " + ServicePanel.temp[0] + " to " + scInput.getText() + ".");
-                    RYCOXv2.logList.add(RYCOXv2.log);
-                    RYCOXv2.printLog();
-                }
             }
         }
 
@@ -274,26 +237,16 @@ class EditServiceDialog extends JDialog {
         } else if (!dcInput.getText().matches(decNo_IDregex)) {
             dcFormatWarn.setVisible(true);
         } else if (dcInput.getText().matches(decNo_IDregex)) {
-            if (dcInput.getText().equalsIgnoreCase(ServicePanel.temp[2])) {
+            for (int j = 0; j < RYCOXv2.servList.size(); j++) {
+                if (dcInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getDecodeNo())) {
+                    dcSameWarn.setVisible(true);
+                    dcCheck = false;
+                    break;
+                }
                 dcEmptyWarn.setVisible(false);
                 dcFormatWarn.setVisible(false);
                 dcSameWarn.setVisible(false);
                 dcCheck = true;
-            } else if (!dcInput.getText().equalsIgnoreCase(ServicePanel.temp[2])) {
-                for (int j = 0; j < RYCOXv2.servList.size(); j++) {
-                    if (dcInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getDecodeNo())) {
-                        dcSameWarn.setVisible(true);
-                        dcCheck = false;
-                        break;
-                    }
-                    dcEmptyWarn.setVisible(false);
-                    dcFormatWarn.setVisible(false);
-                    dcSameWarn.setVisible(false);
-                    dcCheck = true;
-                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has edited the decoder number from " + ServicePanel.temp[2] + " to " + dcInput.getText() + ".");
-                    RYCOXv2.logList.add(RYCOXv2.log);
-                    RYCOXv2.printLog();
-                }
             }
         }
 
@@ -313,18 +266,19 @@ class EditServiceDialog extends JDialog {
 
         if (scCheck == true && dcCheck == true && addCheck == true && subsPkgCheck == true) {
             updateList();
+            for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+                System.out.println(RYCOXv2.servList.get(i).getSmartCardNo());
+            }
             updateSubsList();
             dispose();
         }
     }
 
     private void updateSubsList() {
-        int i;
-        for (i = 0; i < RYCOXv2.subsList.size(); i++) {
-            if ((RYCOXv2.subsList.get(i).getSmartCardNo()).equalsIgnoreCase(ServicePanel.temp[0])) {
-                subsNo = RYCOXv2.subsList.get(i).getSubsNo();
-                RYCOXv2.subsList.remove(i);
-                i--;
+        subsNo = 0;
+        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+            if (RYCOXv2.servList.get(i).getClientID().equalsIgnoreCase(ClientPanel.editionData[0])) {
+                subsNo++;
             }
         }
 
@@ -332,21 +286,14 @@ class EditServiceDialog extends JDialog {
         for (int p = 0; p < rightList.getModel().getSize(); p++) {
             addElements.add(((String) rightList.getModel().getElementAt(p)).substring(0, 3));
         }
-        for (i = 0; i < addElements.size(); i++) {
-            RYCOXv2.subsList.add(new Subscription(ServicePanel.temp[0], subsNo, addElements.get(i)));
+        for (int i = 0; i < addElements.size(); i++) {
+            RYCOXv2.subsList.add(new Subscription(ClientPanel.editionData[0], subsNo, addElements.get(i)));
         }
     }
 
     public void updateList() {
-        int k = 0;
-        for (k = 0; k < RYCOXv2.servList.size(); k++) {
-            if (RYCOXv2.servList.get(k).getSmartCardNo().equalsIgnoreCase(ServicePanel.temp[0])) {
-                break;
-            }
-        }
-        RYCOXv2.servList.get(k).setSmartCardNo(scInput.getText());
-        RYCOXv2.servList.get(k).setDecoderNo(dcInput.getText());
-        RYCOXv2.servList.get(k).setAddress(addInput.getText());
+        RYCOXv2.servList.add(new Service(scInput.getText(), ClientPanel.editionData[0], dcInput.getText(), addInput.getText()));
+        ServicePanel.addServ();
     }
 
     @SuppressWarnings("unchecked")

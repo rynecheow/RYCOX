@@ -95,12 +95,7 @@ class EditProgrammeDialog extends JDialog {
                     flag1 = true;
                     error1.setVisible(false);
 
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setProgTitle(textfield2.getText());
-                            break;
-                        }
-                    }
+
                 }
 
                 if ((textarea1.getText().trim() == null) || (textarea1.getText().trim().equalsIgnoreCase(""))) {
@@ -109,12 +104,7 @@ class EditProgrammeDialog extends JDialog {
                 } else {
                     flag2 = true;
                     error2.setVisible(false);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setDesc(textarea1.getText());
-                            break;
-                        }
-                    }
+
                 }
 
                 if ((textfield3.getText().trim() == null) || (textfield3.getText().trim().equalsIgnoreCase(""))) {
@@ -123,12 +113,7 @@ class EditProgrammeDialog extends JDialog {
                 } else {
                     flag3 = true;
                     error3.setVisible(false);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setContentOrigin(textfield3.getText());
-                            break;
-                        }
-                    }
+
                 }
 
                 if ((combobox1.getSelectedItem()).equals("<-----Please Choose a viewer status----->")) {
@@ -138,12 +123,7 @@ class EditProgrammeDialog extends JDialog {
                     flag4 = true;
                     error4.setVisible(false);
 
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setViewerStatus(combobox1.getSelectedItem().toString());
-                            break;
-                        }
-                    }
+
                 }
 
                 if ((combobox2.getSelectedItem()).equals("<----Please Choose a programme type---->")) {
@@ -152,12 +132,7 @@ class EditProgrammeDialog extends JDialog {
                 } else {
                     flag5 = true;
                     error5.setVisible(false);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setType(combobox2.getSelectedItem().toString());
-                            break;
-                        }
-                    }
+
                 }
 
                 if ((textfield4.getText().trim() == null) || (textfield4.getText().trim().equalsIgnoreCase(""))) {
@@ -166,6 +141,46 @@ class EditProgrammeDialog extends JDialog {
                 } else {
                     flag6 = true;
                     error6.setVisible(false);
+
+
+                }
+                if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true) && (flag5 == true) && (flag6 == true)) {
+
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setProgTitle(textfield2.getText());
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setDesc(textarea1.getText());
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setContentOrigin(textfield3.getText());
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setViewerStatus(combobox1.getSelectedItem().toString());
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                            RYCOXv2.prgList.get(i).setType(combobox2.getSelectedItem().toString());
+                            break;
+                        }
+                    }
+
                     for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
                         if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
                             RYCOXv2.prgList.get(i).setNotes(textfield4.getText());
@@ -173,11 +188,8 @@ class EditProgrammeDialog extends JDialog {
                         }
                     }
 
-                }
-                if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true) && (flag5 == true) && (flag6 == true)) {
-
-                    JOptionPane.showMessageDialog(null, "You have successfully edited the details of a TV Programme which is " + textfield1.getText() + " !", textfield1.getText() + " edited", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Programme '" + textfield1.getText() + "'.");
+                    JOptionPane.showMessageDialog(null, "You have successfully changed the details of a TV Programme which is " + ProgrammePanel.progtemp[0] + " !", ProgrammePanel.progtemp[0] + " edited", JOptionPane.PLAIN_MESSAGE);
+                    LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Programme '" + ProgrammePanel.progtemp[0] + "'.");
                     RYCOXv2.logList.add(log);
                     dispose();
                 }

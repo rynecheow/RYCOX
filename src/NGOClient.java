@@ -17,6 +17,22 @@ class NGOClient extends ClientAccount {
         System.out.println("Account Status:\t" + getAccountStatus());
         System.out.println("");
     }
+
+    String stringClient() {
+        String name = "Client Name:\t" + getName();
+        String add = "Client Address:\t" + getBillingAddress();
+        String Id = "Client ID:\t" + getClientID();
+        String accStats = "Creation Date:\t" + getCreationDate();
+        String creaDate = "Creation Date:\t" + getCreationDate();
+        String termDate;
+        if (terminationStatus() == true)
+            termDate = "Termination Date:\t" + getTerminationDate() + "\n";
+        else
+            termDate = "";
+
+        String cl = name + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
+        return cl;
+    }
 }
 
 /**************************************************************************

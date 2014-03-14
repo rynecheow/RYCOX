@@ -9,7 +9,7 @@ class Service implements Serializable {
     private String clientID;
     private String decoderNo;
     private String address;
-    private String servStatus = "Active";
+    private String servStatus = "ACTIVE";
     private String registrationDate;
     private String terminationDate = "N/A";
     private double currOstBal = 0;
@@ -79,16 +79,13 @@ class Service implements Serializable {
     public void setServStatus(String servStatus) {
         String s = servStatus.toLowerCase();
         if (s.equals("active"))
-            this.servStatus = "Active";
-
-        else if (s.equals("inactive"))
-            this.servStatus = "Inactive";
+            this.servStatus = "ACTIVE";
 
         else if (s.equals("barred"))
-            this.servStatus = "Barred";
+            this.servStatus = "BARRED";
 
         else if (s.equals("terminated"))
-            this.servStatus = "Terminated";
+            this.servStatus = "TERMINATED";
     }
 
     public void setTermDate(String terminationDate) {
