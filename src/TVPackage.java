@@ -81,11 +81,11 @@ class TVPackage implements Serializable {
 
     public void printPkg() {
         System.out.println("Package Code: " + pkgCode);
-        System.out.println("\nPackage Name: " + pkgName);
-        System.out.println("\nStart Date: " + startDate);
-        System.out.println("\nTermination Date: " + terminationDate);
-        System.out.println("\nCharge Price: RM" + chargePrice);
-        System.out.println("\nCharge Type: " + chargeType);
-        System.out.println("\nStatus: " + pkgStatus);
+        System.out.println("Package Name: " + pkgName);
+        System.out.println("Start Date: " + startDate);
+        System.out.println("Termination Date: " + terminationDate);
+        System.out.println("Charge Price: RM" + chargePrice);
+        System.out.println("Charge Type: " + chargeType);
+        System.out.println("Status: " + pkgStatus);
     }
 }

@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 class Service implements Serializable {
@@ -13,12 +15,12 @@ class Service implements Serializable {
     private double currOstBal = 0;
     private double prevBillAmount = 0;
 
-    public Service(String smartCardNo, String clientID, String decoderNo, String address, String registrationDate) {
+    public Service(String smartCardNo, String clientID, String decoderNo, String address) {
         this.smartCardNo = smartCardNo;
         this.clientID = clientID;
         this.decoderNo = decoderNo;
         this.address = address;
-        this.registrationDate = registrationDate;
+        registrationDate = DateFormat.getInstance().format(new Date());
     }
 
     public String getRegDate() {

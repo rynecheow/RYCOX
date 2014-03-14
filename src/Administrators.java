@@ -1,4 +1,5 @@
 
+@SuppressWarnings("serial")
 class Administrators extends Users {
 
     public Administrators(String userID, String password) {

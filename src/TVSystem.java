@@ -41,6 +41,14 @@ class TVSystem {
     String notes = "", notes2 = "";
     String progType = "", progType2 = "";
     String choice1 = "Yes";
+    String Cl_IDregex = "[iIgGnNpP][0-9]{6}";
+    String InCl_IDregex = "^[iI][0-9]{6}$";
+    String GovCl_IDregex = "^[gG][0-9]{6}$";
+    String NGOCl_IDregex = "^[nN][0-9]{6}$";
+    String PrvCl_IDregex = "^[pP][0-9]{6}$";
+    String ScNo_IDregex = "^[sS][0-9]{6}$";
+    String decNo_IDregex = "^[dD][0-9]{6}$";
+    String Pkg_IDregex = "P";
 
     int option = 0, option2 = 0, option3 = 0;
     int /*i = 0,*/ j = 0, k = 0;
@@ -48,35 +56,40 @@ class TVSystem {
     double chargePrice = 0.0, chargePrice2 = 0.0;
     boolean flag = true, flag2 = true, flag3 = true, flag4 = true, flag5 = true, flag6 = true;
     boolean check = true, check1, check2, check3, check4, check5;
-
-    LinkedList<Users> userList = new LinkedList<Users>();
-    LinkedList<ClientAccount> clientList = new LinkedList<ClientAccount>();
-    LinkedList<Service> servList = new LinkedList<Service>();
-    LinkedList<Subscription> subsList = new LinkedList<Subscription>();
-    LinkedList<TVPackage> pkgList = new LinkedList<TVPackage>();
-    LinkedList<Packaging> pckgingList = new LinkedList<Packaging>();
-    LinkedList<TVProgramme> prgList = new LinkedList<TVProgramme>();
-    LinkedList<LogFile> logList = new LinkedList<LogFile>();
-    LogFile log = new LogFile("", "", "");
-    File client_file = new File("cl_data.dat");
-    boolean exist_cl_data = client_file.exists();
-
+    LinkedList<Users> userList;
+    LinkedList<ClientAccount> clientList;
+    LinkedList<Service> servList;
+    LinkedList<Subscription> subsList;
+    LinkedList<TVPackage> pkgList;
+    LinkedList<Packaging> pckgingList;
+    LinkedList<TVProgramme> prgList;
+    LinkedList<LogFile> logList;
+    LogFile log;
 
     @SuppressWarnings("unchecked")
     public TVSystem() {
         //pre-defined objects
+        userList = new LinkedList<Users>();
+        clientList = new LinkedList<ClientAccount>();
+        servList = new LinkedList<Service>();
+        subsList = new LinkedList<Subscription>();
+        pkgList = new LinkedList<TVPackage>();
+        pckgingList = new LinkedList<Packaging>();
+        prgList = new LinkedList<TVProgramme>();
+        logList = new LinkedList<LogFile>();
+        log = new LogFile("", "", "");
         userList.add(new Administrators("admin", "nimda"));
         userList.add(new FrontdeskStaffs("staff", "123abc"));
-        clientList.add(new IndividualClient("Izhar", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "17th Apr 2011", "ACTIVE"));
-        clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "17th Apr 2011", "INACTIVE"));
-        clientList.add(new NGOClient("NGO", "56, Taylor's Street", "N000001", "17th Apr 2011", "ACTIVE"));
-        clientList.add(new PrvClient("Private Organisation", "Address", "P000001", "17th Apr 2011", "ACTIVE"));
-        servList.add(new Service("S000001", "I000001", "D999999", "5, Jalan Sungai Beranang", "17th Apr 2011"));
-        servList.add(new Service("S000002", "I000001", "D999998", "Lot 1-3 Starhill", "17th Apr 2011"));
-        servList.add(new Service("S000003", "N000001", "D999997", "Lot 3-10 Jalan Taylor", "17th Apr 2011"));
-        servList.add(new Service("S000004", "P000001", "D999996", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
-        servList.add(new Service("S000005", "I000002", "D999995", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
-        servList.add(new Service("S000006", "P000002", "D999994", "32 Jalan Kota Kemuning ", "17th Apr 2011"));
+        clientList.add(new IndividualClient("Izhar", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "ACTIVE"));
+        clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "INACTIVE"));
+        clientList.add(new NGOClient("NGO", "56, Taylor's Street", "N000001", "ACTIVE"));
+        clientList.add(new PrvClient("Private Organisation", "Address", "P000001", "ACTIVE"));
+        servList.add(new Service("S000001", "I000001", "D999999", "5, Jalan Sungai Beranang"));
+        servList.add(new Service("S000002", "I000001", "D999998", "Lot 1-3 Starhill"));
+        servList.add(new Service("S000003", "N000001", "D999997", "Lot 3-10 Jalan Taylor"));
+        servList.add(new Service("S000004", "P000001", "D999996", "32 Jalan Kota Kemuning "));
+        servList.add(new Service("S000005", "I000002", "D999995", "32 Jalan Kota Kemuning "));
+        servList.add(new Service("S000006", "P000002", "D999994", "32 Jalan Kota Kemuning "));
         subsList.add(new Subscription("S000001", 1, "P01"));
         subsList.add(new Subscription("S000001", 2, "P01"));
         subsList.add(new Subscription("S000001", 3, "P02"));
@@ -88,8 +101,9 @@ class TVSystem {
         pckgingList.add(new Packaging("P01", "F001"));
         prgList.add(new TVProgramme("F001", "My Boss My Hero", "Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002", "Active", "18SG", "Comedy", ""));
 
-
-        if (!exist_cl_data) {    //if client's file do not exist
+        File client_file = new File("cl_data.dat");
+        boolean exist_cl_data = client_file.exists();
+        if (exist_cl_data == false) {    //if client's file do not exist
             //cl_data.dat file
             try {
                 FileOutputStream client_fostream = new FileOutputStream("cl_data.dat");
@@ -182,10 +196,22 @@ class TVSystem {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //user_data.dat files
+            try {
+                FileOutputStream user_fostream = new FileOutputStream("user_data.dat");
+                ObjectOutputStream user_oostream = new ObjectOutputStream(user_fostream);
+                for (i = 0; i < userList.size(); i++) {
+                    if (userList.get(i) != null) {
+                        user_oostream.writeObject(userList);
+                    }
+                }
+                user_oostream.flush();
+                user_oostream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            //
-
-        } else {        //reading files
+        } else if (exist_cl_data == true) {        //reading files
             //reading cl_data.dat
             try {
                 FileInputStream client_fistream = new FileInputStream("cl_data.dat");            //read from specified file
@@ -274,10 +300,24 @@ class TVSystem {
                 prg_oistream.close();
             } catch (Exception e) {
             }
-        } //end else
 
+            //reading user_data.dat
+            try {
+                FileInputStream user_fistream = new FileInputStream("user_data.dat");            //read from specified file
+                ObjectInputStream user_oistream = new ObjectInputStream(user_fistream);
+
+                for (i = 0; i < userList.size(); i++) {
+                    if (userList.get(i) != null) {
+                        userList = (LinkedList<Users>) user_oistream.readObject();
+                    }
+                }
+                user_oistream.close();
+            } catch (Exception e) {
+            }
+
+        } //end else
         loginMenu();
-    }
+    } //end constructor
 
 
     /*--------------------------------------------------------------------------SECTION ONE- USER LOGIN----------------------------------------------------------------------------------------*/
@@ -336,7 +376,7 @@ class TVSystem {
                                     pwVal = true;
                                     login = true;
                                     Date logTime = new Date();
-                                    String lgTime = DateFormat.getInstance().format(logTime);
+                                    String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
                                     log = new LogFile(lgTime, username, "has logged into the system.");
                                     logList.addLast(log);
 
@@ -348,24 +388,25 @@ class TVSystem {
                         break;
 
                     case 2:        //Good Bye!
-                        p.print("Thank you for using the system. Good Bye!\n");
+                        p.print("Thank you for using the system. GOOD BYE.\n");
                         System.exit(0);
 
                         break;
 
                     default:
 
-                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                         break;
                 }
             } else {
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
             }
         } while ((menu1_opt_1 != 2) && (login == false));
     } //login method
 
     /*--------------------------------------------------------------------------SECTION TWO - MENU----------------------------------------------------------------------------------------*/
     public void showMenu() {
+
         do {
             p.println("\nMENU");
             p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
@@ -374,9 +415,9 @@ class TVSystem {
             p.println("3.\tDisplay specific client's Details");
             p.println("4.\tManage client profiles - Add/Edit/Terminate");
             p.println("5.\tManage client services - Add/Edit/Terminate");
-            p.println("6.\tManage subscriptions - Add/Edit/Terminate");
-            p.println("7.\tManage TV packages- Add/Edit/Terminate");
-            p.println("8.\tManage TV Programmes - Add/Edit/Terminate");
+            p.println("6.\tManage subscriptions - Add/Edit");
+            p.println("7.\tManage TV packages- Add/Edit/Terminate/Display");
+            p.println("8.\tManage TV Programmes - Add/Edit/Terminate/Display");
             p.println("9.\tManage User - Add/Change Password/Terminate");
             p.println("10.\tGenerate Report");
             p.println("11.\tLog off");
@@ -427,7 +468,8 @@ class TVSystem {
                         //secretFunction();
                         break;
                 }
-            }
+            } else
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.");
         } while (login);
     } //end showMenu
 
@@ -436,7 +478,7 @@ class TVSystem {
         p.println("\nDisplay Clients");
         p.println("---------------");
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         log = new LogFile(lgTime, username, "has chosen the 'Display Clients' function.");
         logList.addLast(log);
 
@@ -453,26 +495,26 @@ class TVSystem {
         @SuppressWarnings("unused")
         boolean val1_o2 = false, val2_o2 = false;
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         log = new LogFile(lgTime, username, "has chosen the 'Display Client by Type' function.");
         logList.addLast(log);
 
         p.println("\nDisplay Client by Type");
-        p.println("----------------------");
+        p.println("--------------------------------------------");
 
         do {
             p.print("Enter the client's type(Individual,Gov,NGO,Private): \n\n");
-            p.println("Enter INDIVIDUAL to display all clients from the 'Individual' category.\n");
+            p.println("Enter IND to display all clients from the 'Individual' category.\n");
             p.println("Enter GOV to display all clients from the 'Government' category.\n");
             p.println("Enter NGO to display all clients from the 'NGO' category.\n");
-            p.println("Enter PRIVATE to display all clients from the 'Private Organisation' category..\n");
+            p.println("Enter PRV to display all clients from the 'Private Organisation' category..\n");
             p.println("-----------------------------------------------------");
             type = input.nextLine();
 
-            if (type.length() > 0) {
+            if (type.trim().length() > 0) {
                 val1_o2 = true;
             } else {
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
             }
 
             boolean val_idv = false;
@@ -509,7 +551,7 @@ class TVSystem {
             }
 
             //Individual
-            if (type.equalsIgnoreCase("Individual")) {
+            if (type.equalsIgnoreCase("Ind")) {
                 if (val_idv) {
                     p.println("\n\nRegistered client(s) from the 'Individual' category is/are:");
 
@@ -574,7 +616,7 @@ class TVSystem {
             }
 
             //Private Organisation
-            else if (type.equalsIgnoreCase("Private")) {
+            else if (type.equalsIgnoreCase("Prv")) {
                 if (val_prv) {
                     p.println("Registered client(s) from the 'Private Organisation' category is/are:");
 
@@ -612,7 +654,7 @@ class TVSystem {
         String valID_f3;
         boolean val1_f3 = false;    //check emptiness
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         log = new LogFile(lgTime, username, "has chosen the 'Display Client's Details' function.");
         logList.addLast(log);
 
@@ -623,10 +665,10 @@ class TVSystem {
             p.print("Please enter ID of client you would like to display the details for: ");
             valID_f3 = input.nextLine();
 
-            if (valID_f3.length() > 0) {
+            if (valID_f3.trim().length() > 0) {
                 val1_f3 = true;
             } else {
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
             }
         } while (val1_f3 == false);
         p.println("Client details\n----------------");
@@ -655,20 +697,14 @@ class TVSystem {
                 }
 
                 //Display packages
-                p.println("-----" + pkgList.size());
-
                 for (int r = 0; r < pkgList.size(); r++) {
-                    p.println("-----" + pkgList.get(r).getPkgCode());
-                    p.println(subsList.get(b).getPkgCode());
                     if ((subsList.get(b).getPkgCode().equalsIgnoreCase(pkgList.get(r).getPkgCode()))) {
                         pkgList.get(r).printPkg();
                         break;
                     }
                 }
-
                 log = new LogFile(lgTime, username, "has displayed Client '" + valID_f3 + "' details.");
                 logList.addLast(log);
-
                 break;
             } else {
                 if (i == (clientList.size() - 1)) {
@@ -686,7 +722,7 @@ class TVSystem {
         boolean val1_f4 = false;  //check emptiness and valid string
         boolean val2_f4 = false;
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         log = new LogFile(lgTime, username, "has chosen the 'Manage Client's Profile' function.");
         logList.addLast(log);
 
@@ -704,10 +740,10 @@ class TVSystem {
 
             ch1_f4 = ch1_f4.toLowerCase();
 
-            if ((ch1_f4.length() > 0) && ((ch1_f4.equalsIgnoreCase("add") || ch1_f4.equalsIgnoreCase("edit")) || (ch1_f4.equalsIgnoreCase("terminate")))) {
+            if ((ch1_f4.trim().length() > 0) && ((ch1_f4.equalsIgnoreCase("add") || ch1_f4.equalsIgnoreCase("edit")) || (ch1_f4.equalsIgnoreCase("terminate")))) {
                 val1_f4 = true;
             } else {
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
             }
         } while (val1_f4 == false);
 
@@ -716,23 +752,46 @@ class TVSystem {
                 log = new LogFile(lgTime, username, "has chosen to add a new client profile.");
                 logList.addLast(log);
 
-
                 do {
-                    p.print("Please enter client's type (Individual,Gov,NGO,Private):\n ");
-                    String type = input.nextLine();
-                    p.println();
+                    String type = "";
+                    do {
+                        p.print("Please enter client's type:\n ");
+                        p.println("Enter IND to add a client to the 'Individual' category.\n");
+                        p.println("Enter GOV to add a client to the 'Government' category.\n");
+                        p.println("Enter NGO to add a client to the 'NGO' category.\n");
+                        p.println("Enter PRV to add a client to the 'Private Organisation' category..\n");
+                        p.println("-----------------------------------------------------");
+                        type = input.nextLine();
+                        p.println();
+
+                        if (type.trim().length() == 0) {
+                            p.println("Blank input occured, please enter a type.");
+                            p.println();
+                        }
+                    } while (type.trim().length() == 0);
 
                     switch (type.toLowerCase()) {
 
-                        case "individual":
+                        case "ind":
                             try {
-                                p.print("Please enter client's name: ");
-                                String name = input.nextLine();
-                                p.println();
+                                String name = "";
+                                do {
+                                    p.print("Please enter client's name: ");
+                                    name = input.nextLine();
+                                    p.println();
+
+                                    if (name.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your name.");
+                                        p.println();
+                                    }
+
+                                } while (name.trim().length() == 0);
+
                                 int g = 0;
                                 do {
                                     p.print("Please enter client's age: ");
                                     String age = input.nextLine();
+
                                     if (age.matches("^[1-9][0-9]$") || age.matches("^[0][1-9][0-9]$")) {
                                         g = Integer.parseInt(age);
                                         val_age = true;
@@ -742,19 +801,50 @@ class TVSystem {
                                     val_age = false;
                                 } while (val_age == false);
                                 p.println();
+                                String ic = "";
+                                do {
 
-                                p.print("Please enter client's IC number: ");
-                                String ic = input.nextLine();
-                                p.println();
+                                    p.print("Please enter client's IC number: ");
+                                    ic = input.nextLine();
+                                    p.println();
 
-                                p.print("Please enter client's address: ");
-                                String address = input.nextLine();
-                                p.println();
+                                    if (ic.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your IC number.");
+                                        p.println();
+                                    }
+
+                                } while (ic.trim().length() == 0);
+
+                                String address = "";
+                                do {
+
+                                    p.print("Please enter client's address: ");
+                                    address = input.nextLine();
+                                    p.println();
+
+                                    if (address.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your address.");
+                                        p.println();
+                                    }
+
+                                } while (address.trim().length() == 0);
 
                                 String y = "";
                                 do {
-                                    p.print("Please enter client's ID: ");
-                                    String s = input.nextLine();
+                                    String s = "";
+                                    do {
+
+                                        p.print("Please enter client's ID: ");
+                                        s = input.nextLine();
+                                        p.println();
+
+                                        if (s.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter client's ID.");
+                                            p.println();
+                                        }
+
+                                    } while (s.trim().length() == 0);
+
                                     for (i = 0; i < clientList.size(); i++) {
                                         if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
                                             p.println("Sorry, the ID has been taken. Please enter an unused ID.");
@@ -767,15 +857,21 @@ class TVSystem {
                                 } while (check == false);
                                 p.println();
 
-                                p.print("Please enter date of creation: ");
-                                String creationDate = input.nextLine();
-                                p.println();
-
                                 String a = "";
                                 do {
-                                    p.print("Please enter status of Account: ");
-                                    String accStatus = input.nextLine();
-                                    p.println();
+                                    String accStatus = "";
+                                    do {
+
+                                        p.print("Please enter status of Account <active/inactive>: ");
+                                        accStatus = input.nextLine();
+                                        p.println();
+                                        if (accStatus.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter a status.");
+                                            p.println();
+                                        }
+
+                                    } while (accStatus.trim().length() == 0);
+
                                     if (accStatus.equalsIgnoreCase("active") || accStatus.equalsIgnoreCase("inactive") || accStatus.equalsIgnoreCase("terminated")) {
                                         a = accStatus;
                                         stat = true;
@@ -786,7 +882,8 @@ class TVSystem {
                                     }
                                 } while (stat == false);
 
-                                clientList.add(new IndividualClient(name, g, ic, address, y, creationDate, a));
+                                clientList.add(new IndividualClient(name, g, ic, address, y, a));
+                                p.println("You have successfully created a new account!");
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
@@ -794,18 +891,51 @@ class TVSystem {
                             break;
                         case "gov":
                             try {
-                                p.print("Please enter client's name: ");
-                                String name = input.nextLine();
-                                p.println();
+                                String name = "";
+                                do {
 
-                                p.print("Please enter client's address: ");
-                                String address = input.nextLine();
-                                p.println();
+                                    p.print("Please enter client's name: ");
+                                    name = input.nextLine();
+                                    p.println();
+
+                                    if (name.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your name.");
+                                        p.println();
+                                    }
+
+                                } while (name.trim().length() == 0);
+
+                                String address = "";
+                                do {
+
+                                    p.print("Please enter client's address: ");
+                                    address = input.nextLine();
+                                    p.println();
+
+                                    if (address.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your address.");
+                                        p.println();
+                                    }
+
+                                } while (address.trim().length() == 0);
 
                                 String y = "";
                                 do {
-                                    p.print("Please enter client's ID: ");
-                                    String s = input.nextLine();
+
+                                    String s = "";
+                                    do {
+
+                                        p.print("Please enter client's ID: ");
+                                        s = input.nextLine();
+                                        p.println();
+
+                                        if (s.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter client's ID.");
+                                            p.println();
+                                        }
+
+                                    } while (s.trim().length() == 0);
+
                                     for (i = 0; i < clientList.size(); i++) {
                                         if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
                                             p.println("Sorry, the ID has been taken. Please enter an unused ID.");
@@ -818,15 +948,23 @@ class TVSystem {
                                 } while (check == false);
                                 p.println();
 
-                                p.print("Please enter date of creation: ");
-                                String creationDate = input.nextLine();
-                                p.println();
 
                                 String a = "";
                                 do {
-                                    p.print("Please enter status of Account: ");
-                                    String accStatus2 = input.nextLine();
-                                    p.println();
+                                    String accStatus2 = "";
+                                    do {
+
+                                        p.print("Please enter status of Account <active/inactive>: ");
+                                        accStatus2 = input.nextLine();
+                                        p.println();
+
+                                        if (accStatus2.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter a status.");
+                                            p.println();
+                                        }
+
+                                    } while (accStatus2.trim().length() == 0);
+
                                     if (accStatus2.equalsIgnoreCase("active") || accStatus2.equalsIgnoreCase("inactive") || accStatus2.equalsIgnoreCase("terminated")) {
                                         a = accStatus2;
                                         stat = true;
@@ -837,7 +975,8 @@ class TVSystem {
                                     }
                                 } while (stat == false);
 
-                                clientList.add(new GovClient(name, address, y, creationDate, a));
+                                clientList.add(new GovClient(name, address, y, a));
+                                p.println("You have successfully created a new account!");
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
@@ -845,18 +984,50 @@ class TVSystem {
                             break;
                         case "ngo":
                             try {
-                                p.print("Please enter client's name: ");
-                                String name = input.nextLine();
-                                p.println();
+                                String name = "";
+                                do {
 
-                                p.print("Please enter client's address: ");
-                                String address = input.nextLine();
-                                p.println();
+                                    p.print("Please enter client's name: ");
+                                    name = input.nextLine();
+                                    p.println();
+
+                                    if (name.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your name.");
+                                        p.println();
+                                    }
+
+                                } while (name.trim().length() == 0);
+
+                                String address = "";
+                                do {
+
+                                    p.print("Please enter client's address: ");
+                                    address = input.nextLine();
+                                    p.println();
+
+                                    if (address.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your address.");
+                                        p.println();
+                                    }
+
+                                } while (address.trim().length() == 0);
 
                                 String y = "";
                                 do {
-                                    p.print("Please enter client's ID: ");
-                                    String s = input.nextLine();
+                                    String s = "";
+                                    do {
+
+                                        p.print("Please enter client's ID: ");
+                                        s = input.nextLine();
+                                        p.println();
+
+                                        if (s.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter client's ID.");
+                                            p.println();
+                                        }
+
+                                    } while (s.trim().length() == 0);
+
                                     for (i = 0; i < clientList.size(); i++) {
                                         if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
                                             p.println("Sorry, the ID has been taken. Please enter an unused ID.");
@@ -869,15 +1040,23 @@ class TVSystem {
                                 } while (check == false);
                                 p.println();
 
-                                p.print("Please enter date of creation: ");
-                                String creationDate = input.nextLine();
-                                p.println();
 
                                 String a = "";
                                 do {
-                                    p.print("Please enter status of Account: ");
-                                    String accStatus3 = input.nextLine();
-                                    p.println();
+                                    String accStatus3 = "";
+                                    do {
+
+                                        p.print("Please enter status of Account <active/inactive>: ");
+                                        accStatus3 = input.nextLine();
+                                        p.println();
+
+                                        if (accStatus3.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter a status.");
+                                            p.println();
+                                        }
+
+                                    } while (accStatus3.trim().length() == 0);
+
                                     if (accStatus3.equalsIgnoreCase("active") || accStatus3.equalsIgnoreCase("inactive") || accStatus3.equalsIgnoreCase("terminated")) {
                                         a = accStatus3;
                                         stat = true;
@@ -888,26 +1067,59 @@ class TVSystem {
                                     }
                                 } while (stat == false);
 
-                                clientList.add(new NGOClient(name, address, y, creationDate, a));
+                                clientList.add(new NGOClient(name, address, y, a));
+                                p.println("You have successfully created a new account!");
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
 
                             break;
-                        case "private":
+                        case "prv":
                             try {
-                                p.print("Please enter client's name: ");
-                                String name = input.nextLine();
-                                p.println();
+                                String name = "";
+                                do {
 
-                                p.print("Please enter client's address: ");
-                                String address = input.nextLine();
-                                p.println();
+                                    p.print("Please enter client's name: ");
+                                    name = input.nextLine();
+                                    p.println();
+
+                                    if (name.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your name.");
+                                        p.println();
+                                    }
+
+                                } while (name.trim().length() == 0);
+
+                                String address = "";
+                                do {
+
+                                    p.print("Please enter client's address: ");
+                                    address = input.nextLine();
+                                    p.println();
+
+                                    if (address.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your address.");
+                                        p.println();
+                                    }
+
+                                } while (address.trim().length() == 0);
 
                                 String y = "";
                                 do {
-                                    p.print("Please enter client's ID: ");
-                                    String s = input.nextLine();
+                                    String s = "";
+                                    do {
+
+                                        p.print("Please enter client's ID: ");
+                                        s = input.nextLine();
+                                        p.println();
+
+                                        if (s.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter client's ID.");
+                                            p.println();
+                                        }
+
+                                    } while (s.trim().length() == 0);
+
                                     for (i = 0; i < clientList.size(); i++) {
                                         if (s.equalsIgnoreCase(clientList.get(i).getClientID())) {
                                             p.println("Sorry, the ID has been taken. Please enter an unused ID.");
@@ -920,15 +1132,22 @@ class TVSystem {
                                 } while (check == false);
                                 p.println();
 
-                                p.print("Please enter date of creation: ");
-                                String creationDate = input.nextLine();
-                                p.println();
-
                                 String a = "";
                                 do {
-                                    p.print("Please enter status of Account: ");
-                                    String accStatus4 = input.nextLine();
-                                    p.println();
+                                    String accStatus4 = "";
+                                    do {
+
+                                        p.print("Please enter status of Account <active/inactive>: ");
+                                        accStatus4 = input.nextLine();
+                                        p.println();
+
+                                        if (accStatus4.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter a status.");
+                                            p.println();
+                                        }
+
+                                    } while (accStatus4.trim().length() == 0);
+
                                     if (accStatus4.equalsIgnoreCase("active") || accStatus4.equalsIgnoreCase("inactive") || accStatus4.equalsIgnoreCase("terminated")) {
                                         a = accStatus4;
                                         stat = true;
@@ -939,14 +1158,15 @@ class TVSystem {
                                     }
                                 } while (stat == false);
 
-                                clientList.add(new PrvClient(name, address, y, creationDate, a));
+                                clientList.add(new PrvClient(name, address, y, a));
+                                p.println("You have successfully created a new account!");
                                 val2_f4 = true;
                             } catch (Exception e) {
                             }
 
                             break;
                         default:
-                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                             break;
                     }
                 } while (val2_f4 == false);
@@ -961,7 +1181,7 @@ class TVSystem {
 
                 for (i = 0; i < clientList.size(); i++) {
                     if (valID_f4.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                        p.print("Select data to edit(Name/Age/IC/Address/CreationDate/AccountStatus): ");
+                        p.println("Select data to edit(Name/Age/IC/Address/CreationDate/AccountStatus): ");
                         p.println("Enter NAME to edit the name of the client.\n");
                         p.println("Enter AGE to edit the age of the client.\n");
                         p.println("Enter IC to edit the IC of the client.\n");
@@ -970,10 +1190,23 @@ class TVSystem {
                         p.println("Enter ACCSTAT to edit the account status of the client.\n");
                         ch2_f4 = input.nextLine();
 
+
                         switch (ch2_f4.toLowerCase()) {
                             case "name":
-                                p.println("Enter the new name: ");
-                                String newName_f4 = input.nextLine();
+                                String newName_f4 = "";
+                                do {
+
+                                    p.println("Enter the new name: ");
+                                    newName_f4 = input.nextLine();
+                                    p.println();
+
+                                    if (newName_f4.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your name.");
+                                        p.println();
+                                    }
+
+
+                                } while (newName_f4.trim().length() == 0);
 
                                 clientList.get(i).setName(newName_f4);
 
@@ -986,12 +1219,24 @@ class TVSystem {
                                 if (clientList.get(i) instanceof IndividualClient) {    //Re-casting
                                     IndividualClient client = (IndividualClient) clientList.get(i);
                                     //input.nextLine();
-                                    p.println("Enter the new age: ");
-                                    String newAge_f4 = input.nextLine();
 
-                                    int newAgeI_f4 = Integer.parseInt(newAge_f4);
 
-                                    client.setAge(newAgeI_f4);
+                                    String newAgeI_f4 = "";
+                                    int g = 0;
+                                    do {
+                                        p.print("Enter the new age: ");
+                                        newAgeI_f4 = input.nextLine();
+
+                                        if (newAgeI_f4.matches("^[1-9][0-9]$") || newAgeI_f4.matches("^[0][1-9][0-9]$")) {
+                                            g = Integer.parseInt(newAgeI_f4);
+                                            val_age = true;
+                                            break;
+                                        } else
+                                            p.println("Only integer is allowed. [10-99]");
+                                        val_age = false;
+                                    } while (val_age == false);
+
+                                    client.setAge(g);
 
                                     p.println("\nClient '" + valID_f4 + "' 's age has been edited.");
                                     log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's age.");
@@ -1006,9 +1251,19 @@ class TVSystem {
                             case "ic":
                                 if (clientList.get(i) instanceof IndividualClient) {    //Re-casting
                                     IndividualClient client = (IndividualClient) clientList.get(i);
+                                    String f4nic = "";
+                                    do {
 
-                                    p.println("Enter the new IC: ");
-                                    String f4nic = input.nextLine();
+                                        p.println("Enter the new IC: ");
+                                        f4nic = input.nextLine();
+                                        p.println();
+
+                                        if (f4nic.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter your IC.");
+                                            p.println();
+                                        }
+
+                                    } while (f4nic.trim().length() == 0);
 
                                     client.setIC(f4nic);
 
@@ -1023,8 +1278,19 @@ class TVSystem {
                                     break;
                                 }
                             case "address":
-                                p.println("Enter the new address: ");
-                                String f4naddress = input.nextLine();
+                                String f4naddress = "";
+                                do {
+
+                                    p.println("Enter the new address: ");
+                                    f4naddress = input.nextLine();
+                                    p.println();
+
+                                    if (f4naddress.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter your address.");
+                                        p.println();
+                                    }
+
+                                } while (f4naddress.trim().length() == 0);
 
                                 clientList.get(i).setName(f4naddress);
 
@@ -1034,19 +1300,33 @@ class TVSystem {
 
                                 break;
 
-                            case "crdate":
-                                p.println("Enter the new creation date: ");
-                                String f4ndate = input.nextLine();
 
-                                clientList.get(i).setName(f4ndate);
-
-                                p.println("\nClient '" + valID_f4 + "' 's creation date has been edited.");
-                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's creation date.");
-                                logList.addLast(log);
-                                break;
                             case "accstat":
-                                p.println("Enter the new account status(ACTIVE/INACTIVE): ");
-                                String f4naccstatus = input.nextLine();
+                                String f4naccstatus = "";
+                                do {
+
+
+                                    do {
+                                        p.println("Enter the new account status(active/inactive): ");
+                                        f4naccstatus = input.nextLine();
+                                        p.println();
+
+                                        if (f4naccstatus.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter a status.");
+                                            p.println();
+                                        }
+
+                                    } while (f4naccstatus.trim().length() == 0);
+
+
+                                    if ((!(f4naccstatus.equalsIgnoreCase("active"))) && (!(f4naccstatus.equalsIgnoreCase("inactive")))) {
+
+                                        p.println("Sorry, invalid status input. Please input again.");
+
+                                    }
+
+                                }
+                                while ((!(f4naccstatus.equalsIgnoreCase("active"))) && (!(f4naccstatus.equalsIgnoreCase("inactive"))));
 
                                 clientList.get(i).setName(f4naccstatus);
 
@@ -1080,10 +1360,10 @@ class TVSystem {
                     p.print("Enter the client's ID that you would like to terminate: ");
                     valID_f4 = input.nextLine();
 
-                    if (valID_f4.length() > 0) {
+                    if (valID_f4.trim().length() > 0) {
                         val2_f4 = true;
                     } else {
-                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                     }
                 } while (val2_f4 == false);
 
@@ -1106,7 +1386,6 @@ class TVSystem {
                         }
                     }
                 }
-
                 break;
         }
     } // end manage client
@@ -1123,12 +1402,13 @@ class TVSystem {
             p.println("1. Create new Service");
             p.println("2. Edit Service");
             p.println("3. Terminated Service");
-            p.println("4. Back");
+            p.println("4. Check Service detail");
+            p.println("5. Back");
             p.println("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=");
             p.print("\nEnter Option: ");
             menu3_opt = input.nextLine();
 
-            if ((menu3_opt.matches("^[1-4]{1}$")) || (menu3_opt.matches("^[0]([0]|[1])$"))) {
+            if ((menu3_opt.matches("^[1-5]{1}$")) || (menu3_opt.matches("^[0]([0]|[1])$"))) {
                 menu3_opt_1 = Integer.parseInt(menu3_opt);
 
                 switch (menu3_opt_1) {
@@ -1136,8 +1416,19 @@ class TVSystem {
                         val = false;
 
                         do {
-                            p.println("Please Enter the Client ID");
-                            clientID = input.nextLine();
+                            do {
+                                p.println("Please Enter the Client ID");
+                                clientID = input.nextLine();
+
+                                if (clientID.matches(Cl_IDregex)) {
+                                    val = true;
+                                } else {
+                                    val = false;
+                                    p.println("Incorrect Client ID format.");
+                                }
+                            } while (val == false);
+
+                            val = false;
 
                             for (i = 0; i < clientList.size(); i++) {
                                 if (clientID.equalsIgnoreCase(clientList.get(i).getClientID())) {
@@ -1155,10 +1446,17 @@ class TVSystem {
                         if (clientList.get(i).getAccountStatus().equalsIgnoreCase("active")) {
                             do {
                                 val = true;
+                                do {
+                                    p.println("Please Enter the Smart Card Number: ");
+                                    smartCardNo = input.nextLine();
 
-                                p.println("Please Enter the Smart Card Number: ");
-                                smartCardNo = input.nextLine();
-
+                                    if (smartCardNo.matches(ScNo_IDregex)) {
+                                        val = true;
+                                    } else {
+                                        val = false;
+                                        p.println("Incorrect Smart Card format.");
+                                    }
+                                } while (val == false);
                                 for (int i = 0; i < servList.size(); i++) {
                                     if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
                                         val = false;
@@ -1170,10 +1468,17 @@ class TVSystem {
 
                             do {
                                 val = true;
+                                do {
+                                    p.println("Please Enter the Decoder Number: ");
+                                    decoderNo = input.nextLine();
 
-                                p.println("Please Enter the Decoder Number: ");
-                                decoderNo = input.nextLine();
-
+                                    if (decoderNo.matches(decNo_IDregex)) {
+                                        val = true;
+                                    } else {
+                                        val = false;
+                                        p.println("Incorrect Decoder Number format.");
+                                    }
+                                } while (val == false);
                                 for (int i = 0; i < servList.size(); i++) {
                                     if (decoderNo.equalsIgnoreCase(servList.get(i).getDecodeNo())) {
                                         val = false;
@@ -1186,10 +1491,7 @@ class TVSystem {
                             p.println("Please Enter the Address: ");
                             String address = input.nextLine();
 
-                            p.println("Please Enter Registration Date.");
-                            String registrationDate = input.nextLine();
-
-                            servList.add(new Service(smartCardNo, decoderNo, clientID, address, registrationDate));
+                            servList.add(new Service(smartCardNo, decoderNo, clientID, address));
 
                             for (int i = 0; i < servList.size(); i++) {
                                 if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
@@ -1208,10 +1510,19 @@ class TVSystem {
 
                     case 2:
                         val = false;
-
                         do {
-                            p.println("Please Enter the Smart Card Number:");
-                            smartCardNo = input.nextLine();
+                            do {
+                                p.println("Please Enter the Smart Card Number: ");
+                                smartCardNo = input.nextLine();
+
+                                if (smartCardNo.matches(ScNo_IDregex)) {
+                                    val = true;
+                                } else {
+                                    val = false;
+                                    p.println("Incorrect Smart Card format.");
+                                }
+                            } while (val == false);
+                            val = false;
 
                             for (i = 0; i < servList.size(); i++) {
                                 if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
@@ -1262,8 +1573,17 @@ class TVSystem {
                                             do {
                                                 val = true;
                                                 oldSmartCard = smartCardNo;
-                                                p.println("Please enter the new Smart Card Number.");
-                                                smartCardNo = input.nextLine();
+                                                do {
+                                                    p.println("Please Enter the Smart Card Number: ");
+                                                    smartCardNo = input.nextLine();
+
+                                                    if (smartCardNo.matches(ScNo_IDregex)) {
+                                                        val = true;
+                                                    } else {
+                                                        val = false;
+                                                        p.println("Incorrect Smart Card format.");
+                                                    }
+                                                } while (val == false);
 
                                                 for (int j = 0; j < servList.size(); j++) {
                                                     if (smartCardNo.equalsIgnoreCase(servList.get(j).getSmartCardNo())) {
@@ -1289,8 +1609,17 @@ class TVSystem {
                                             do {
                                                 val = true;
                                                 oldDecoder = decoderNo;
-                                                p.println("Please enter the new Decoder Number.");
-                                                decoderNo = input.nextLine();
+                                                do {
+                                                    p.println("Please Enter the Decoder Number: ");
+                                                    decoderNo = input.nextLine();
+
+                                                    if (decoderNo.matches(decNo_IDregex)) {
+                                                        val = true;
+                                                    } else {
+                                                        val = false;
+                                                        p.println("Incorrect Decoder Number format.");
+                                                    }
+                                                } while (val == false);
 
                                                 for (int j = 0; j < servList.size(); j++) {
                                                     if (decoderNo.equalsIgnoreCase(servList.get(j).getDecodeNo())) {
@@ -1347,12 +1676,12 @@ class TVSystem {
 
                                         default:
                                             val = false;
-                                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                                             break;
                                     }
                                 } else {
                                     val = false;
-                                    p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                                    p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                                 }
                             } while ((menu3_opt_1 != 5) || (val == false));
                             break;
@@ -1374,8 +1703,18 @@ class TVSystem {
                             } else if (userList.get(u) instanceof Administrators) {
                                 do {
                                     val = false;
-                                    p.println("Please Enter the Smart Card No: ");
-                                    smartCardNo = input.nextLine();
+                                    do {
+                                        p.println("Please Enter the Smart Card Number: ");
+                                        smartCardNo = input.nextLine();
+
+                                        if (smartCardNo.matches(ScNo_IDregex)) {
+                                            val = true;
+                                        } else {
+                                            val = false;
+                                            p.println("Incorrect Smart Card format.");
+                                        }
+                                    } while (val == false);
+                                    val = false;
 
                                     for (i = 0; i < servList.size(); i++) {
                                         if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
@@ -1405,20 +1744,52 @@ class TVSystem {
                         break;
 
                     case 4:
+                        val = false;
+
+                        do {
+                            do {
+                                p.println("Please Enter the Smart Card Number: ");
+                                smartCardNo = input.nextLine();
+
+                                if (smartCardNo.matches(ScNo_IDregex)) {
+                                    val = true;
+                                } else {
+                                    val = false;
+                                    p.println("Incorrect Smart Card format.");
+                                }
+                            } while (val == false);
+                            val = false;
+
+                            for (i = 0; i < servList.size(); i++) {
+                                if (smartCardNo.equalsIgnoreCase(servList.get(i).getSmartCardNo())) {
+                                    val = true;
+                                    break;
+                                }
+                            }
+
+                            if (val == false) {
+                                p.println("Invalid Smart Card Number, Please Check the Smart Card Number.");
+                            }
+                        } while (val == false);
+
+                        servList.get(i).printServ();
+                        break;
+
+                    case 5:
                         val = true;
                         showMenu();
                         break;
 
                     default:
                         val = false;
-                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                         break;
                 }
             } else {
                 val = false;
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
             }
-        } while ((menu3_opt_1 != 4) || (val == false));
+        } while ((menu3_opt_1 != 5) || (val == false));
     } // end manage service
 
     /*--------------------------------------------------------------------------SECTION SIX - MANAGE SUBSCRIPTION----------------------------------------------------------------------------------------*/
@@ -1445,12 +1816,20 @@ class TVSystem {
 
                 switch (menu3_opt_1) {
                     case 1:
-
                         do {
                             val = true;
 
-                            p.println("Please Enter the Smart Card want to Subscibe package: ");
-                            smartCardNo = input.nextLine();
+                            do {
+                                p.println("Please Enter the Smart Card want to Subscibe package: ");
+                                smartCardNo = input.nextLine();
+
+                                if (smartCardNo.matches("ScNo_IDregex")) {
+                                    val = true;
+                                } else {
+                                    val = false;
+                                    p.println("Incorrect Smart Card format.");
+                                }
+                            } while (val == false);
 
                             for (i = 0; i < subsList.size(); i++) {
                                 if (smartCardNo.equalsIgnoreCase(subsList.get(i).getSmartCardNo())) {
@@ -1530,7 +1909,6 @@ class TVSystem {
                                                 } else if (enter.equalsIgnoreCase("n")) {
                                                     repeat = false;
                                                 }
-
                                                 break;
                                             }
 
@@ -1554,8 +1932,18 @@ class TVSystem {
                         val = false;
 
                         do {
-                            p.println("Please Enter the Smart Card Number: ");
-                            smartCardNo = input.nextLine();
+                            do {
+                                p.println("Please Enter the Smart Card Number: ");
+                                smartCardNo = input.nextLine();
+
+                                if (smartCardNo.matches("ScNo_IDregex")) {
+                                    val = true;
+                                } else {
+                                    val = false;
+                                    p.println("Incorrect Smart Card format.");
+                                }
+                            } while (val == false);
+                            val = false;
 
                             for (i = 0; i < subsList.size(); i++) {
                                 if (smartCardNo.equalsIgnoreCase(subsList.get(i).getSmartCardNo())) {
@@ -1670,12 +2058,12 @@ class TVSystem {
 
                                         default:
                                             val = false;
-                                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                                             break;
                                     }
                                 } else {
                                     val = false;
-                                    p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                                    p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                                 }
                             } while ((menu3_opt_1 != 3) || (val == false));
                         } else {
@@ -1691,21 +2079,21 @@ class TVSystem {
 
                     default:
                         val = false;
-                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                         break;
                 }
             } else {
                 val = false;
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
             }
         } while ((menu3_opt_1 != 3) || (val == false));
         ;
-    } //end manage subscription
+    }//end manage subscription
 
     /*--------------------------------------------------------------------------SECTION SEVEN - MANAGE PACKAGES----------------------------------------------------------------------------------------*/
     public void managePackage() {
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         do {
             try {
                 check1 = true;
@@ -1716,6 +2104,7 @@ class TVSystem {
                 p.println("2. Edit a TV Package");
                 p.println("3. Terminate a TV Package");
                 p.println("4. Check a TV Package");
+                p.println("5. Back");
                 p.print("Please enter the option number: ");
                 option2 = input.nextInt();
 
@@ -1732,11 +2121,11 @@ class TVSystem {
                                 pckCode = input.nextLine();
                                 p.println();
 
-                                if (pckCode.length() == 0) {
-                                    p.println("Blank input occured, please enter a package code.");
+                                if (pckCode.trim().length() == 0) {
+                                    p.println("Blank input is not allowed.");
                                     p.println();
                                 }
-                            } while (pckCode.length() == 0);
+                            } while (pckCode.trim().length() == 0);
 
                             for (i = 0; i < pkgList.size(); i++) {
                                 if (pckCode.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
@@ -1753,11 +2142,11 @@ class TVSystem {
                             p.print("b) Package Name: ");
                             pckName = input.nextLine();
                             p.println();
-                            if (pckName.length() == 0) {
+                            if (pckName.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a package name.");
                                 p.println();
                             }
-                        } while (pckName.length() == 0);
+                        } while (pckName.trim().length() == 0);
 
                         do {
                             try {
@@ -1776,7 +2165,6 @@ class TVSystem {
                         input.nextLine();
                         do {
                             do {
-
                                 p.println("d) Charge Type: ");
                                 p.println("1)Monthly");
                                 p.println("2)Quarterly");
@@ -1785,12 +2173,11 @@ class TVSystem {
 
                                 chargeType = input.nextLine();
 
-
-                                if (chargeType.length() == 0) {
+                                if (chargeType.trim().length() == 0) {
                                     p.println("Blank input occured, please enter a charge type.");
                                     p.println();
                                 }
-                            } while (chargeType.length() == 0);
+                            } while (chargeType.trim().length() == 0);
 
                             if ((!(chargeType.equalsIgnoreCase("Monthly"))) && (!(chargeType.equalsIgnoreCase("Quarterly"))) && (!(chargeType.equalsIgnoreCase("Annually")))) {
 
@@ -1814,11 +2201,11 @@ class TVSystem {
                                     p.print("Please enter TV Programme Code that you would like to add: ");
                                     progCode = input.nextLine();
 
-                                    if (progCode.length() == 0) {
+                                    if (progCode.trim().length() == 0) {
                                         p.println("Blank input occured, please enter a package name. TV Package must contain at least one TV Programme.");
                                         p.println();
                                     }
-                                } while (progCode.length() == 0);
+                                } while (progCode.trim().length() == 0);
 
                                 for (k = 0; k < pckgingList.size(); k++) {
                                     if (pckCode.equalsIgnoreCase(pckgingList.get(k).getPkgCode())) {
@@ -1855,11 +2242,11 @@ class TVSystem {
                                             p.print("Enter 'Yes' to add more programme, enter 'No' to refuse adding any programme: ");
                                             choice1 = input.nextLine();
 
-                                            if (choice1.length() == 0) {
+                                            if (choice1.trim().length() == 0) {
                                                 p.println("Blank input occured, please enter a choice.");
                                                 p.println();
                                             }
-                                        } while (choice1.length() == 0);
+                                        } while (choice1.trim().length() == 0);
 
 
                                         if ((!(choice1.equalsIgnoreCase("Yes"))) && (!(choice1.equalsIgnoreCase("No")))) {
@@ -1885,7 +2272,6 @@ class TVSystem {
 
                         p.println("You have successfully created a new package '" + pckCode + "'.");
                         p.println();
-
                         logList.addLast(new LogFile(lgTime, username, "has created a TV Package item of ID '" + pckCode + "'."));
 
                         break;
@@ -1900,11 +2286,11 @@ class TVSystem {
 
                             pckCode2 = input.nextLine();
 
-                            if (pckCode2.length() == 0) {
-                                p.println("Blank input occured, please enter a package code.");
+                            if (pckCode2.trim().length() == 0) {
+                                p.println("Blank input is not allowed.");
                                 p.println();
                             }
-                        } while (pckCode2.length() == 0);
+                        } while (pckCode2.trim().length() == 0);
 
                         for (i = 0; i < pkgList.size(); i++) {
                             if (pckCode2.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
@@ -1949,11 +2335,11 @@ class TVSystem {
                                                 pkgName2 = input.nextLine();
                                                 p.println();
 
-                                                if (pkgName2.length() == 0) {
+                                                if (pkgName2.trim().length() == 0) {
                                                     p.println("Blank input occured, please enter a package name.");
                                                     p.println();
                                                 }
-                                            } while (pkgName2.length() == 0);
+                                            } while (pkgName2.trim().length() == 0);
 
                                             pkgList.get(i).setPkgName(pkgName2);
                                             p.println("You have changed the package name for package '" + pckCode2 + "'!");
@@ -1982,14 +2368,12 @@ class TVSystem {
                                             p.println("You have changed the charge price for package '" + pckCode2 + "'!");
                                             p.println();
                                             logList.addLast(new LogFile(lgTime, username, "has changed a charge price for package '" + pckCode2 + "'."));
-
                                             break;
 
                                         case 3:
                                             input.nextLine();
                                             do {
                                                 do {
-
                                                     p.println("Charge Type: ");
                                                     p.println("1)Monthly");
                                                     p.println("2)Quarterly");
@@ -1997,11 +2381,11 @@ class TVSystem {
                                                     p.print("Please enter a type (Monthly/Quarterly/Annually) to the package: ");
                                                     chargeType2 = input.nextLine();
 
-                                                    if (chargeType2.length() == 0) {
+                                                    if (chargeType2.trim().length() == 0) {
                                                         p.println("Blank input occured, please enter a charge type.");
                                                         p.println();
                                                     }
-                                                } while (chargeType2.length() == 0);
+                                                } while (chargeType2.trim().length() == 0);
 
                                                 if ((!(chargeType2.equalsIgnoreCase("Monthly"))) && (!(chargeType2.equalsIgnoreCase("Quarterly"))) && (!(chargeType2.equalsIgnoreCase("Annually")))) {
                                                     p.println("Sorry, the type that you entered is invalid, please enter it again.");
@@ -2012,7 +2396,6 @@ class TVSystem {
                                             while ((!(chargeType2.equalsIgnoreCase("Monthly"))) && (!(chargeType2.equalsIgnoreCase("Quarterly"))) && (!(chargeType2.equalsIgnoreCase("Annually"))));
 
                                             p.println();
-
                                             pkgList.get(i).setChargeType(chargeType2);
                                             p.println("You have changed the charge type for package '" + pckCode2 + "'!");
                                             p.println();
@@ -2023,7 +2406,6 @@ class TVSystem {
                                         case 4:
                                             do {
                                                 try {
-
                                                     check5 = true;
                                                     p.println("1) Add a TV Programme to package " + pckCode2);
                                                     p.println("2) Delete a TV Programme from package " + pckCode2);
@@ -2038,11 +2420,11 @@ class TVSystem {
 
                                                                 p.print("Please enter a TV Programme code which you would like to add into the package: ");
                                                                 progCode2 = input.nextLine();
-                                                                if (progCode2.length() == 0) {
+                                                                if (progCode2.trim().length() == 0) {
                                                                     p.println("Blank input occured, please enter a programme code.");
                                                                     p.println();
                                                                 }
-                                                            } while (progCode2.length() == 0);
+                                                            } while (progCode2.trim().length() == 0);
 
                                                             for (k = 0; k < pckgingList.size(); k++) {
                                                                 if (pckCode2.equalsIgnoreCase(pckgingList.get(k).getPkgCode())) {
@@ -2059,7 +2441,6 @@ class TVSystem {
                                                                 }
                                                             }
                                                         } while (check == false);
-
 
                                                         for (i = 0; i < prgList.size(); i++) {
                                                             if (progCode2.equalsIgnoreCase(prgList.get(i).getProgCode())) {
@@ -2088,12 +2469,12 @@ class TVSystem {
                                                             p.print("Please enter a TV Programme code which you would like to delete from the package: ");
                                                             progCode3 = input.nextLine();
 
-                                                            if (progCode3.length() == 0) {
+                                                            if (progCode3.trim().length() == 0) {
                                                                 p.println("Blank input occured, please enter a programme code.");
                                                                 p.println();
                                                             }
 
-                                                        } while (progCode3.length() == 0);
+                                                        } while (progCode3.trim().length() == 0);
 
                                                         int count = 0;
                                                         for (k = 0; k < pckgingList.size(); k++) {
@@ -2143,7 +2524,6 @@ class TVSystem {
                                                     check5 = false;
                                                 }
                                             } while ((selection2 < 1) || (selection2 > 2) || (check5 == false));
-
                                             break;
 
                                         case 5:
@@ -2153,7 +2533,7 @@ class TVSystem {
 
                                         default:
                                             check3 = false;
-                                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                                             break;
                                     }
                                 } catch (InputMismatchException ime) {
@@ -2174,11 +2554,11 @@ class TVSystem {
                             p.println("3. Terminate a TV Package: ");
                             p.print("Please enter a package code that you want to terminate: ");
                             pckCode3 = input.nextLine();
-                            if (pckCode3.length() == 0) {
-                                p.println("Blank input occured, please enter a package code.");
+                            if (pckCode3.trim().length() == 0) {
+                                p.println("Blank input is not allowed.");
                                 p.println();
                             }
-                        } while (pckCode3.length() == 0);
+                        } while (pckCode3.trim().length() == 0);
 
                         for (i = 0; i < pkgList.size(); i++) {
                             if (pckCode3.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
@@ -2218,11 +2598,11 @@ class TVSystem {
                             p.print("Please enter a package code that you want to check with: ");
                             packageCode = input.nextLine();
 
-                            if (packageCode.length() == 0) {
-                                p.println("Blank input occured, please enter a package code.");
+                            if (packageCode.trim().length() == 0) {
+                                p.println("Blank input is not allowed.");
                                 p.println();
                             }
-                        } while (packageCode.length() == 0);
+                        } while (packageCode.trim().length() == 0);
 
                         for (i = 0; i < pkgList.size(); i++) {
                             if (packageCode.equalsIgnoreCase(pkgList.get(i).getPkgCode())) {
@@ -2233,7 +2613,6 @@ class TVSystem {
                                     if (packageCode.equalsIgnoreCase(pckgingList.get(j).getPkgCode())) {
 
                                         p.print("'" + pckgingList.get(j).getProgCode() + "'\n");
-
                                         logList.addLast(new LogFile(lgTime, username, "has displayed the details of package'" + packageCode + "' ."));
                                         p.println();
                                     }
@@ -2246,18 +2625,18 @@ class TVSystem {
 
                         if (flag5 == false)
                             p.println("Sorry, the programme code that you entered doesn't exist.");
-
                         p.println();
 
                         break;
 
                     case 5:
+                        input.nextLine();
                         showMenu();
                         break;
 
                     default:
                         check = false;
-                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                         break;
                 }
             } catch (InputMismatchException ime) {
@@ -2273,11 +2652,10 @@ class TVSystem {
     /*--------------------------------------------------------------------------SECTION EIGHT - MANAGE PROGRAMMES----------------------------------------------------------------------------------------*/
     public void manageProgramme() {
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         do {
             try {
                 check1 = true;
-
                 p.println("===========================================");
                 p.println("Manage TV Programmes item");
                 p.println("===========================================");
@@ -2285,7 +2663,7 @@ class TVSystem {
                 p.println("2. Edit a TV Programme");
                 p.println("3. Terminate a TV Programme");
                 p.println("4. Check a TV Programme");
-                p.println("5. Back to main menu");
+                p.println("5. Back");
                 p.print("Please enter the option number: ");
                 option3 = input.nextInt();
 
@@ -2297,24 +2675,20 @@ class TVSystem {
 
                         input.nextLine();
                         do {
-
                             do {
-
                                 p.print("a) Programme Code: ");
                                 programmeCode = input.nextLine();
                                 p.println();
 
-                                if (programmeCode.length() == 0) {
+                                if (programmeCode.trim().length() == 0) {
                                     p.println("Blank input occured, please enter a programme code.");
                                     p.println();
                                 }
-
-                            } while (programmeCode.length() == 0);
+                            } while (programmeCode.trim().length() == 0);
 
 
                             for (i = 0; i < prgList.size(); i++) {
                                 if (programmeCode.equalsIgnoreCase(prgList.get(i).getProgCode())) {
-
                                     p.println("Sorry, the package code that you entered is already existed.");
                                     p.println("Please try another one: ");
                                     p.println();
@@ -2328,49 +2702,40 @@ class TVSystem {
 
                         do {
                             p.print("b) Programme Title: ");
-
                             programmeTitle = input.nextLine();
                             p.println();
-
-                            if (programmeTitle.length() == 0) {
+                            if (programmeTitle.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a programme title.");
                                 p.println();
                             }
-                        } while (programmeTitle.length() == 0);
-
+                        } while (programmeTitle.trim().length() == 0);
                         do {
 
                             p.print("c) Description: ");
-
                             desc = input.nextLine();
                             p.println();
 
-                            if (desc.length() == 0) {
+                            if (desc.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a description.");
                                 p.println();
                             }
-                        } while (desc.length() == 0);
+                        } while (desc.trim().length() == 0);
 
                         do {
-
                             p.print("d) Content Origin: ");
-
                             contentOrigin = input.nextLine();
                             p.println();
-
-                            if (contentOrigin.length() == 0) {
+                            if (contentOrigin.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a content origin.");
                                 p.println();
                             }
-                        } while (contentOrigin.length() == 0);
+                        } while (contentOrigin.trim().length() == 0);
 
                         Date creationDate = new Date();
                         crtDate = DateFormat.getInstance().format(creationDate);
 
                         do {
-
                             do {
-
                                 p.println("e) Viewer Status: ");
                                 p.println("1) U (For general viewing without age limit)");
                                 p.println("2) PG13 (Parents guidance needed for audience under the age of 13)");
@@ -2378,13 +2743,11 @@ class TVSystem {
                                 p.print("Enter (U/PG13/18) to set to the viewer status: ");
 
                                 viewerStatus = input.nextLine();
-
-                                if (viewerStatus.length() == 0) {
+                                if (viewerStatus.trim().length() == 0) {
                                     p.println("Blank input occured, please enter a viewer status.");
                                     p.println();
                                 }
-
-                            } while (viewerStatus.length() == 0);
+                            } while (viewerStatus.trim().length() == 0);
 
                             if ((!(viewerStatus.equalsIgnoreCase("U"))) && (!(viewerStatus.equalsIgnoreCase("PG13"))) && (!(viewerStatus.equalsIgnoreCase("18")))) {
                                 p.println("\nSorry, the viewer status that you entered is invalid, please reenter it.");
@@ -2395,7 +2758,6 @@ class TVSystem {
 
                         do {
                             do {
-
                                 p.println("f) Type: ");
                                 p.println("1) Movie");
                                 p.println("2) Series");
@@ -2405,11 +2767,11 @@ class TVSystem {
 
                                 progType = input.nextLine();
 
-                                if (progType.length() == 0) {
+                                if (progType.trim().length() == 0) {
                                     p.println("Blank input occured, please enter a programme type.");
                                     p.println();
                                 }
-                            } while (progType.length() == 0);
+                            } while (progType.trim().length() == 0);
 
                             if ((!(progType.equalsIgnoreCase("Movie"))) && (!(progType.equalsIgnoreCase("Series"))) &&
                                     (!(progType.equalsIgnoreCase("Comedy"))) && (!(progType.equalsIgnoreCase("Concert")))) {
@@ -2424,18 +2786,16 @@ class TVSystem {
                             p.print("g) Notes: ");
                             notes = input.nextLine();
                             p.println();
-                            if (notes.length() == 0) {
+                            if (notes.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a notes.");
                                 p.println();
                             }
-                        } while (notes.length() == 0);
+                        } while (notes.trim().length() == 0);
 
                         prgList.add(new TVProgramme(programmeCode, programmeTitle, desc, contentOrigin, crtDate, "Active", viewerStatus, progType, notes));
-
                         p.println("You have successfully created a new TV Programme which is '" + programmeCode + "'.");
                         logList.addLast(new LogFile(lgTime, username, "has created a new TV Programme which is '" + programmeCode + "'."));
                         p.println();
-
                         break;
 
                     case 2:
@@ -2447,12 +2807,12 @@ class TVSystem {
                             p.print("Please enter a programme code that you want to edit: ");
                             progCode4 = input.nextLine();
 
-                            if (progCode4.length() == 0) {
+                            if (progCode4.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a programme code.");
                                 p.println();
                             }
 
-                        } while (progCode4.length() == 0);
+                        } while (progCode4.trim().length() == 0);
 
                         for (i = 0; i < prgList.size(); i++) {
                             if (progCode4.equalsIgnoreCase(prgList.get(i).getProgCode())) {
@@ -2498,17 +2858,16 @@ class TVSystem {
                                                 programmeTitle2 = input.nextLine();
                                                 p.println();
 
-                                                if (programmeTitle2.length() == 0) {
+                                                if (programmeTitle2.trim().length() == 0) {
                                                     p.println("Blank input occured, please enter a programme title.");
                                                     p.println();
                                                 }
-                                            } while (programmeTitle2.length() == 0);
+                                            } while (programmeTitle2.trim().length() == 0);
 
                                             prgList.get(i).setProgTitle(programmeTitle2);
                                             p.println("You have changed the programme title for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed a programme title for programme '" + progCode4 + "'."));
                                             p.println();
-
                                             break;
 
                                         case 2:
@@ -2519,17 +2878,16 @@ class TVSystem {
                                                 desc2 = input.nextLine();
                                                 p.println();
 
-                                                if (desc2.length() == 0) {
+                                                if (desc2.trim().length() == 0) {
                                                     p.println("Blank input occured, please enter a description.");
                                                     p.println();
                                                 }
-                                            } while (desc2.length() == 0);
+                                            } while (desc2.trim().length() == 0);
 
                                             prgList.get(i).setDesc(desc2);
                                             p.println("You have changed the description for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed a description for programme '" + progCode4 + "'."));
                                             p.println();
-
                                             break;
 
                                         case 3:
@@ -2539,17 +2897,16 @@ class TVSystem {
                                                 contentOrigin2 = input.nextLine();
                                                 p.println();
 
-                                                if (contentOrigin2.length() == 0) {
+                                                if (contentOrigin2.trim().length() == 0) {
                                                     p.println("Blank input occured, please enter a content origin.");
                                                     p.println();
                                                 }
-                                            } while (contentOrigin2.length() == 0);
+                                            } while (contentOrigin2.trim().length() == 0);
 
                                             prgList.get(i).setContentOrigin(contentOrigin2);
                                             p.println("You have changed the content origin for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed a content origin for programme '" + progCode4 + "'."));
                                             p.println();
-
                                             break;
 
                                         case 4:
@@ -2562,11 +2919,11 @@ class TVSystem {
                                                     p.print("Enter (U/PG13/18) to change the viewer status: ");
                                                     viewerStatus2 = input.nextLine();
 
-                                                    if (viewerStatus2.length() == 0) {
+                                                    if (viewerStatus2.trim().length() == 0) {
                                                         p.println("Blank input occured, please enter a viewer status.");
                                                         p.println();
                                                     }
-                                                } while (viewerStatus2.length() == 0);
+                                                } while (viewerStatus2.trim().length() == 0);
 
                                                 if ((viewerStatus2.equalsIgnoreCase("U")) || (viewerStatus2.equalsIgnoreCase("PG13")) || (viewerStatus2.equalsIgnoreCase("18"))) {
                                                     p.println("You have changed the viewer status for programme '" + progCode4 + "'!");
@@ -2579,7 +2936,6 @@ class TVSystem {
                                                 }
                                             }
                                             while ((!(viewerStatus2.equalsIgnoreCase("U"))) && (!(viewerStatus2.equalsIgnoreCase("PG13"))) && (!(viewerStatus2.equalsIgnoreCase("18"))));
-
                                             break;
 
                                         case 5:
@@ -2594,13 +2950,13 @@ class TVSystem {
                                                     p.print("Enter (Movie/Series/Comedy/Concert) to set to the programme's type: ");
                                                     progType2 = input.nextLine();
 
-                                                    if (progType2.length() == 0) {
+                                                    if (progType2.trim().length() == 0) {
                                                         p.println("Blank input occured, please enter a programme type.");
                                                         p.println();
                                                     }
 
 
-                                                } while (progType2.length() == 0);
+                                                } while (progType2.trim().length() == 0);
 
                                                 if ((progType2.equalsIgnoreCase("Movie")) || (progType2.equalsIgnoreCase("Series")) ||
                                                         (progType2.equalsIgnoreCase("Comedy")) || (progType2.equalsIgnoreCase("Concert"))) {
@@ -2616,7 +2972,6 @@ class TVSystem {
                                             }
                                             while ((!(progType2.equalsIgnoreCase("Movie"))) && (!(progType2.equalsIgnoreCase("Series"))) &&
                                                     (!(progType2.equalsIgnoreCase("Comedy"))) && (!(progType2.equalsIgnoreCase("Concert"))));
-
                                             break;
 
                                         case 6:
@@ -2626,17 +2981,16 @@ class TVSystem {
                                                 notes2 = input.nextLine();
                                                 p.println();
 
-                                                if (notes2.length() == 0) {
+                                                if (notes2.trim().length() == 0) {
                                                     p.println("Blank input occured, please enter a notes.");
                                                     p.println();
                                                 }
-                                            } while (notes2.length() == 0);
+                                            } while (notes2.trim().length() == 0);
 
                                             prgList.get(i).setNotes(notes2);
                                             p.println("You have changed the notes for programme '" + progCode4 + "'!");
                                             logList.addLast(new LogFile(lgTime, username, "has changed the notes for programme '" + progCode4 + "'."));
                                             p.println();
-
                                             break;
 
                                         case 7:
@@ -2644,7 +2998,7 @@ class TVSystem {
                                             break;
 
                                         default:
-                                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                                             break;
                                     }
                                 } catch (InputMismatchException ime) {
@@ -2654,27 +3008,22 @@ class TVSystem {
                                     check2 = false;
                                 }
                             } while (check2 == false);
-
                         }
-
                         break;
 
                     case 3:
                         p.println();
                         input.nextLine();
-
                         do {
                             p.println("3. Terminate a TV Programme: ");
                             p.print("Please enter a programme code that you want to terminate: ");
-
                             progCode5 = input.nextLine();
-                            if (progCode5.length() == 0) {
+                            if (progCode5.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a programme code.");
                                 p.println();
                             }
 
-                        } while (progCode5.length() == 0);
-
+                        } while (progCode5.trim().length() == 0);
 
                         for (i = 0; i < prgList.size(); i++) {
                             if (progCode5.equalsIgnoreCase(prgList.get(i).getProgCode())) {
@@ -2694,11 +3043,8 @@ class TVSystem {
                                                 break;
                                             }
                                         }
-
                                     }
-
                                 }
-
                                 p.println("You have successfully terminated a TV Programme '" + progCode5 + "'!");
                                 logList.addLast(new LogFile(lgTime, username, "has terminate a TV Programme '" + progCode5 + "'."));
                                 p.println();
@@ -2712,7 +3058,6 @@ class TVSystem {
                             p.println("Sorry, the programme code that you entered doesn't exist or had already been terminated.");
                             p.println();
                         }
-
                         break;
 
                     case 4:
@@ -2724,11 +3069,11 @@ class TVSystem {
                             p.print("Please enter a programme code that you want to check with: ");
                             progCode6 = input.nextLine();
 
-                            if (progCode6.length() == 0) {
+                            if (progCode6.trim().length() == 0) {
                                 p.println("Blank input occured, please enter a programme code.");
                                 p.println();
                             }
-                        } while (progCode6.length() == 0);
+                        } while (progCode6.trim().length() == 0);
 
                         for (i = 0; i < prgList.size(); i++) {
                             if (progCode6.equalsIgnoreCase(prgList.get(i).getProgCode())) {
@@ -2743,15 +3088,15 @@ class TVSystem {
                         if (flag5 == false)
                             p.println("Sorry, the programme code that you entered doesn't exist.");
                         p.println();
-
                         break;
 
                     case 5:
+                        input.nextLine();
                         showMenu();
                         break;
 
                     default:
-                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                         break;
                 }
             } catch (InputMismatchException ime) {
@@ -2769,7 +3114,7 @@ class TVSystem {
         String choice_f9, type_f9, un_f9, oldpw_f9, newpw_1_f9, newpw_2_f9;
         boolean val1_f9 = false, val2_f9 = false, val3_f9 = false;
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         log = new LogFile(lgTime, username, "has chosen the 'Manage User-Add/Change Password/Terminate' function.");
         logList.addLast(log);
 
@@ -2781,92 +3126,146 @@ class TVSystem {
             choice_f9 = input.nextLine();
             choice_f9 = choice_f9.toLowerCase();
 
-            if ((choice_f9.length() > 0) && ((choice_f9.equalsIgnoreCase("add") || choice_f9.equalsIgnoreCase("changepassword")) || (choice_f9.equalsIgnoreCase("terminate")))) {
+            if ((choice_f9.trim().length() > 0) && ((choice_f9.equalsIgnoreCase("add") || choice_f9.equalsIgnoreCase("changepassword")) || (choice_f9.equalsIgnoreCase("terminate")))) {
                 val1_f9 = true;
             } else {
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
             }
         } while (val1_f9 == false);
 
         //Add a new user
         switch (choice_f9) {
             case "add":
-                log = new LogFile(lgTime, username, "has chosen to add a new user.");
-                logList.addLast(log);
+                if (userList.get(u) instanceof Administrators) {
+                    log = new LogFile(lgTime, username, "has chosen to add a new user.");
+                    logList.addLast(log);
 
-                p.print("Enter the type of new user(Case-insensitive): \n");
-                p.print("Enter ADMIN for administrator type user.\n");
-                p.print("Enter STAFF for staff type user.\n");
-                type_f9 = input.nextLine();
-                type_f9 = type_f9.toLowerCase();
+                    do {
+                        p.print("Enter the type of new user(Case-insensitive): \n");
+                        p.print("Enter ADMIN for administrator type user.\n");
+                        p.print("Enter STAFF for staff type user.\n");
+                        type_f9 = input.nextLine();
+                        p.println();
+                        if (type_f9.trim().length() == 0) {
+                            p.println("Blank input occured, please enter a type of user.");
+                            p.println();
+                        }
 
-                if ((type_f9.equals("admin")) || (type_f9.equals("staff"))) {
-                    p.print("Enter new username: ");
-                    un_f9 = input.nextLine();
+                    } while (type_f9.trim().length() == 0);
 
-                    for (i = 0; i < userList.size(); i++) {
-                        if (un_f9.equalsIgnoreCase(userList.get(i).getUserID())) {
-                            p.println("Username already exist!");
+                    type_f9 = type_f9.toLowerCase();
 
-                            log = new LogFile(lgTime, username, "has not added any new user[USERNAME ALREADY EXIST].");
-                            logList.addLast(log);
-                            break;
-                        } else {
-                            p.print("Enter password: ");
-                            newpw_1_f9 = input.nextLine();
+                    if ((type_f9.equals("admin")) || (type_f9.equals("staff"))) {
+                        do {
+                            p.print("Enter new username: ");
+                            un_f9 = input.nextLine();
+                            p.println();
+                            if (un_f9.trim().length() == 0) {
+                                p.println("Blank input occured, please enter an username.");
+                                p.println();
+                            }
 
-                            p.print("Re-enter password: ");
-                            newpw_2_f9 = input.nextLine();
+                        } while (un_f9.trim().length() == 0);
 
-                            if (newpw_1_f9.equals(newpw_2_f9)) {
-                                if (type_f9.equals("admin")) {
-                                    if (userList.get(u) instanceof Administrators) {
+                        for (i = 0; i < userList.size(); i++) {
+                            if (un_f9.equalsIgnoreCase(userList.get(i).getUserID())) {
+                                p.println("Username already exist!");
+                                log = new LogFile(lgTime, username, "has not added any new user[USERNAME ALREADY EXIST].");
+                                logList.addLast(log);
+                                break;
+                            } else {
+
+                                do {
+                                    p.print("Enter password: ");
+                                    newpw_1_f9 = input.nextLine();
+                                    p.println();
+                                    if (newpw_1_f9.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter a password.");
+                                        p.println();
+                                    }
+                                } while (newpw_1_f9.trim().length() == 0);
+
+                                do {
+                                    p.print("Re-enter password: ");
+                                    newpw_2_f9 = input.nextLine();
+                                    p.println();
+                                    if (newpw_2_f9.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter a confirmation password.");
+                                        p.println();
+                                    }
+                                } while (newpw_2_f9.trim().length() == 0);
+
+                                if (newpw_1_f9.equals(newpw_2_f9)) {
+                                    if (type_f9.equals("admin")) {
                                         userList.add(new Administrators(un_f9, newpw_2_f9));
                                         p.println("\nNew user '" + un_f9 + "' has been added successfully!");
                                         log = new LogFile(lgTime, username, "has added a new user '" + un_f9 + "'.");
                                         logList.addLast(log);
                                     } else {
-                                        p.println("\nOnly Admin has the accessibility to Terminate a user.");
-
+                                        userList.add(new FrontdeskStaffs(un_f9, newpw_2_f9));
+                                        p.println("\nNew user '" + un_f9 + "' has been added successfully!");
+                                        log = new LogFile(lgTime, username, "has added a new user '" + un_f9 + "'.");
+                                        logList.addLast(log);
                                     }
-
+                                    break;
                                 } else {
-                                    userList.add(new FrontdeskStaffs(un_f9, newpw_2_f9));
-                                    p.println("\nNew user '" + un_f9 + "' has been added successfully!");
-                                    log = new LogFile(lgTime, username, "has added a new user '" + un_f9 + "'.");
+                                    p.println("\nRe-entered password mis-matched!");
+                                    log = new LogFile(lgTime, username, "has not added new user[RE-ENTERED PASSWORD MIS-MATCHED].");
                                     logList.addLast(log);
+                                    break;
                                 }
-                                break;
-                            } else {
-                                p.println("\nRe-entered password mis-matched!");
-                                log = new LogFile(lgTime, username, "has not added new user[RE-ENTERED PASSWORD MIS-MATCHED].");
-                                logList.addLast(log);
-                                break;
                             }
                         }
+                    } else {
+                        p.println("\nThe user type is not available.");
+                        log = new LogFile(lgTime, username, "has not added any new user[USER TYPE NOT AVAILABLE].");
+                        logList.addLast(log);
                     }
+                    break;
                 } else {
-                    p.println("\nThe user type is not available.");
-                    log = new LogFile(lgTime, username, "has not added any new user[USER TYPE NOT AVAILABLE].");
+                    p.println("\nOnly Admin has the accessibility to add a user.");
+                    log = new LogFile(lgTime, username, "has not added any user[USER TYPE DO NOT HAVE ACCESSIBILITY].");
                     logList.addLast(log);
                 }
-                break;
-            //Change a user's password
+                //Change a user's password
             case "changepassword":
                 log = new LogFile(lgTime, username, "has chosen to change user '" + username + "' 's password");
                 logList.addLast(log);
 
                 do {
-                    p.print("\nEnter the existing password: ");
-                    oldpw_f9 = input.nextLine();
+                    do {
+                        p.print("\nEnter the existing password: ");
+                        oldpw_f9 = input.nextLine();
+                        p.println();
 
-                    if (oldpw_f9.length() > 0) {
+                        if (oldpw_f9.trim().length() == 0) {
+                            p.println("Blank input occured, please enter the existing password.");
+                            p.println();
+                        }
+                    } while (oldpw_f9.trim().length() == 0);
+
+                    if (oldpw_f9.trim().length() > 0) {
                         if (oldpw_f9.equals(userList.get(u).getPassword())) {
-                            p.print("Enter a new password: ");
-                            newpw_1_f9 = input.nextLine();
+                            do {
+                                p.print("Enter a new password: ");
+                                newpw_1_f9 = input.nextLine();
+                                p.println();
+                                if (newpw_1_f9.trim().length() == 0) {
+                                    p.println("Blank input occured, please enter a type of user.");
+                                    p.println();
+                                }
+                            } while (newpw_1_f9.trim().length() == 0);
 
-                            p.print("Re-enter password: ");
-                            newpw_2_f9 = input.nextLine();
+                            do {
+                                p.print("Re-enter password: ");
+                                newpw_2_f9 = input.nextLine();
+                                p.println();
+                                if (newpw_2_f9.trim().length() == 0) {
+                                    p.println("Blank input occured, please enter a type of user.");
+                                    p.println();
+                                }
+
+                            } while (newpw_2_f9.trim().length() == 0);
 
                             if (newpw_1_f9.equals(newpw_2_f9)) { /*change password*/
                                 userList.get(u).changePassword(newpw_2_f9);
@@ -2891,7 +3290,7 @@ class TVSystem {
                             break;
                         }
                     } else {
-                        p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                        p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                     }
                 } while (val3_f9 == false);
                 break;
@@ -2902,13 +3301,20 @@ class TVSystem {
                     logList.addLast(log);
 
                     do {
-                        p.print("Enter the user's name that you would like to Terminate: ");
-                        un_f9 = input.nextLine();
+                        do {
+                            p.print("Enter the user's name that you would like to Terminate: ");
+                            un_f9 = input.nextLine();
 
-                        if (un_f9.length() > 0) {
+                            if (un_f9.trim().length() == 0) {
+                                p.println("Blank input occured, please enter a user's name.");
+                                p.println();
+                            }
+
+                        } while (un_f9.trim().length() == 0);
+                        if (un_f9.trim().length() > 0) {
                             val2_f9 = true;
                         } else {
-                            p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                            p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                         }
                     } while (val2_f9 == false);
 
@@ -2942,7 +3348,7 @@ class TVSystem {
                 }
                 break;
             default:
-                p.println("INVALID SELECTION, PLEASE RE-ENTER.\n");
+                p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
                 break;
         } //end switch
     } //end manage users
@@ -2950,7 +3356,7 @@ class TVSystem {
 
     public void reportGen() {
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         log = new LogFile(lgTime, username, "has chosen the 'Generate Report' function.");
         logList.addLast(log);
 
@@ -3021,7 +3427,7 @@ class TVSystem {
     /*--------------------------------------------------------------------------SECTION ELEVEN - LOGOUT----------------------------------------------------------------------------------------*/
     public void logout() {
         Date logTime = new Date();
-        String lgTime = DateFormat.getInstance().format(logTime);
+        String lgTime = "[" + DateFormat.getInstance().format(logTime) + "]\t";
         log = new LogFile(lgTime, username, "has chosen the 'Log Off' function.");
         logList.addLast(log);
 
@@ -3036,13 +3442,14 @@ class TVSystem {
             logList.get(i).showLog();
         }
         p.println();
-
+        p.println("You've successfully logged off from the system, please login to continue or exit the system.");
         //file handling for log.txt
         try {
             PrintWriter pw_log2 = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
 
             for (i = 0; i < logList.size(); i++) {
                 if (logList.get(i) != null) {
+                    pw_log2.print(lgTime + "\t");
                     pw_log2.print((logList.get(i)).getUser() + " ");
                     pw_log2.println((logList.get(i)).getAction());
                 }
@@ -3111,6 +3518,21 @@ class TVSystem {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //saving added data user_data.dat
+        try {
+            FileOutputStream user_fostream = new FileOutputStream("user_data.dat");
+            ObjectOutputStream user_oostream = new ObjectOutputStream(user_fostream);
+            for (i = 0; i < userList.size(); i++) {
+                if (userList.get(i) != null) {
+                    user_oostream.writeObject(userList);
+                }
+            }
+            user_oostream.flush();
+            user_oostream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //end of file handling
         //logList.clear();
         menu2_opt_1 = 0;

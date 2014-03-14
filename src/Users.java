@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-abstract class Users {
+@SuppressWarnings("serial")
+abstract class Users implements Serializable {
     protected String userID;
     protected String password = "abc123";
 

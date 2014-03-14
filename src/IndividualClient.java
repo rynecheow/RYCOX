@@ -1,11 +1,12 @@
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 class IndividualClient extends ClientAccount implements Serializable {
     private int age;
     private String ic;
 
-    public IndividualClient(String name, int age, String ic, String address, String clientID, String creationDate, String accStatus) {
-        super(name, address, clientID, creationDate, accStatus);
+    public IndividualClient(String name, int age, String ic, String address, String clientID, String accStatus) {
+        super(name, address, clientID, accStatus);
         this.age = age;
         this.ic = ic;
     }

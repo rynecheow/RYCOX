@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 abstract class ClientAccount implements Serializable {
@@ -9,11 +11,11 @@ abstract class ClientAccount implements Serializable {
     protected String terminationDate = "N/A";
     protected String accStatus = "INACTIVE";
 
-    public ClientAccount(String name, String billingAddress, String clientID, String creationDate, String accStatus) {
+    public ClientAccount(String name, String billingAddress, String clientID, String accStatus) {
         this.name = name;
         this.billingAddress = billingAddress;
         this.clientID = clientID;
-        this.creationDate = creationDate;
+        this.creationDate = DateFormat.getInstance().format(new Date());
         this.accStatus = accStatus;
     }
 
