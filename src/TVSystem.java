@@ -785,7 +785,8 @@ class TVSystem {
 
             ch1_f4 = ch1_f4.toLowerCase();
 
-            if ((ch1_f4.trim().length() > 0) && ((ch1_f4.equalsIgnoreCase("add") || ch1_f4.equalsIgnoreCase("edit")) || (ch1_f4.equalsIgnoreCase("terminate")))) {
+            if ((ch1_f4.trim().length() > 0) && ((ch1_f4.equalsIgnoreCase("add") || ch1_f4.equalsIgnoreCase("edit")) || (ch1_f4.equalsIgnoreCase("terminate")) || (ch1_f4.equalsIgnoreCase("recover")))) {
+
                 val1_f4 = true;
             } else {
                 p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
@@ -907,7 +908,6 @@ class TVSystem {
                                     } else {
                                         p.println("Invalid ID format.");
                                         val = false;
-
                                     }
 
                                 } while ((check == false) || (val == false));
@@ -961,7 +961,6 @@ class TVSystem {
 
                                 String address = "";
                                 do {
-
                                     p.print("Please enter client's address: ");
                                     address = input.nextLine();
                                     p.println();
@@ -1242,171 +1241,170 @@ class TVSystem {
                 log = new LogFile(lgTime, username, "has chosen to edit a client.");
                 logList.addLast(log);
 
-                p.print("Enter the Client's ID that you would like to edit: ");
-                valID_f4 = input.nextLine();
+                do {
+                    p.print("Enter the Client's ID that you would like to edit: ");
+                    valID_f4 = input.nextLine();
+                    p.println();
+
+                    if (valID_f4.trim().length() == 0) {
+                        p.println("Blank input occured, please enter a Client's ID.");
+                        p.println();
+                    }
+
+                } while (valID_f4.trim().length() == 0);
 
                 for (i = 0; i < clientList.size(); i++) {
                     if (valID_f4.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                        p.println("Select data to edit(Name/Age/IC/Address/CreationDate/AccountStatus): ");
-                        p.println("Enter NAME to edit the name of the client.\n");
-                        p.println("Enter AGE to edit the age of the client.\n");
-                        p.println("Enter IC to edit the IC of the client.\n");
-                        p.println("Enter ADDRESS to edit the address of the client.\n");
-                        p.println("Enter CRDATE to creation date the name of the client.\n");
-                        p.println("Enter ACCSTAT to edit the account status of the client.\n");
-                        ch2_f4 = input.nextLine();
+
+                        if (((clientList.get(i).getAccountStatus()).equalsIgnoreCase("inactive")) || ((clientList.get(i).getAccountStatus()).equalsIgnoreCase("active"))) {
+
+                            p.println("Select data to edit(Name/Age/IC/Address/CreationDate/AccountStatus): ");
+                            p.println("Enter NAME to edit the name of the client.\n");
+                            p.println("Enter AGE to edit the age of the client.\n");
+                            p.println("Enter IC to edit the IC of the client.\n");
+                            p.println("Enter ADDRESS to edit the address of the client.\n");
+                            p.println("Enter CRDATE to creation date the name of the client.\n");
+                            p.println("Enter ACCSTAT to edit the account status of the client.\n");
+                            ch2_f4 = input.nextLine();
 
 
-                        switch (ch2_f4.toLowerCase()) {
-                            case "name":
-                                String newName_f4 = "";
-                                do {
-
-                                    p.println("Enter the new name: ");
-                                    newName_f4 = input.nextLine();
-                                    p.println();
-
-                                    if (newName_f4.trim().length() == 0) {
-                                        p.println("Blank input occured, please enter your name.");
-                                        p.println();
-                                    }
-
-
-                                } while (newName_f4.trim().length() == 0);
-
-                                clientList.get(i).setName(newName_f4);
-
-                                p.println("\nClient '" + valID_f4 + "' 's name has been edited to '" + newName_f4 + "'.");
-                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's name to '" + newName_f4 + "'.");
-                                logList.addLast(log);
-                                break;
-
-                            case "age":
-                                if (clientList.get(i) instanceof IndividualClient) {    //Re-casting
-                                    IndividualClient client = (IndividualClient) clientList.get(i);
-                                    //input.nextLine();
-
-
-                                    String newAgeI_f4 = "";
-                                    int g = 0;
-                                    do {
-                                        p.print("Enter the new age: ");
-                                        newAgeI_f4 = input.nextLine();
-
-                                        if (newAgeI_f4.matches("^[1-9][0-9]$") || newAgeI_f4.matches("^[0][1-9][0-9]$")) {
-                                            g = Integer.parseInt(newAgeI_f4);
-                                            val_age = true;
-                                            break;
-                                        } else
-                                            p.println("Only integer is allowed. [10-99]");
-                                        val_age = false;
-                                    } while (val_age == false);
-
-                                    client.setAge(g);
-
-                                    p.println("\nClient '" + valID_f4 + "' 's age has been edited.");
-                                    log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's age.");
-                                    logList.addLast(log);
-                                    break;
-                                } else {
-                                    p.println("\nThis is only for Individual Client!");
-                                    log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
-                                    logList.addLast(log);
-                                    break;
-                                }
-                            case "ic":
-                                if (clientList.get(i) instanceof IndividualClient) {    //Re-casting
-                                    IndividualClient client = (IndividualClient) clientList.get(i);
-                                    String f4nic = "";
+                            switch (ch2_f4.toLowerCase()) {
+                                case "name":
+                                    String newName_f4 = "";
                                     do {
 
-                                        p.println("Enter the new IC: ");
-                                        f4nic = input.nextLine();
+                                        p.println("Enter the new name: ");
+                                        newName_f4 = input.nextLine();
                                         p.println();
 
-                                        if (f4nic.trim().length() == 0) {
-                                            p.println("Blank input occured, please enter your IC.");
+                                        if (newName_f4.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter your name.");
                                             p.println();
                                         }
+                                    } while (newName_f4.trim().length() == 0);
 
-                                    } while (f4nic.trim().length() == 0);
+                                    clientList.get(i).setName(newName_f4);
 
-                                    client.setIC(f4nic);
-
-                                    p.println("\nClient '" + valID_f4 + "' 's IC has been edited.");
-                                    log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's IC.");
+                                    p.println("\nClient '" + valID_f4 + "' 's name has been edited to '" + newName_f4 + "'.");
+                                    log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's name to '" + newName_f4 + "'.");
                                     logList.addLast(log);
                                     break;
-                                } else {
-                                    p.println("\nThis is only for Individual Client!");
-                                    log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
-                                    logList.addLast(log);
-                                    break;
-                                }
-                            case "address":
-                                String f4naddress = "";
-                                do {
 
-                                    p.println("Enter the new address: ");
-                                    f4naddress = input.nextLine();
-                                    p.println();
+                                case "age":
+                                    if (clientList.get(i) instanceof IndividualClient) {    //Re-casting
+                                        IndividualClient client = (IndividualClient) clientList.get(i);
+                                        //input.nextLine();
 
-                                    if (f4naddress.trim().length() == 0) {
-                                        p.println("Blank input occured, please enter your address.");
-                                        p.println();
+                                        String newAgeI_f4 = "";
+                                        int g = 0;
+                                        do {
+                                            p.print("Enter the new age: ");
+                                            newAgeI_f4 = input.nextLine();
+
+                                            if (newAgeI_f4.matches("^[1-9][0-9]$") || newAgeI_f4.matches("^[0][1-9][0-9]$")) {
+                                                g = Integer.parseInt(newAgeI_f4);
+                                                val_age = true;
+                                                break;
+                                            } else
+                                                p.println("Only integer is allowed. [10-99]");
+                                            val_age = false;
+                                        } while (val_age == false);
+
+                                        client.setAge(g);
+                                        p.println("\nClient '" + valID_f4 + "' 's age has been edited.");
+                                        log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's age.");
+                                        logList.addLast(log);
+                                        break;
+                                    } else {
+                                        p.println("\nThis is only for Individual Client!");
+                                        log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
+                                        logList.addLast(log);
+                                        break;
                                     }
+                                case "ic":
+                                    if (clientList.get(i) instanceof IndividualClient) {    //Re-casting
+                                        IndividualClient client = (IndividualClient) clientList.get(i);
+                                        String f4nic = "";
+                                        do {
+                                            p.println("Enter the new IC: ");
+                                            f4nic = input.nextLine();
+                                            p.println();
 
-                                } while (f4naddress.trim().length() == 0);
+                                            if (f4nic.trim().length() == 0) {
+                                                p.println("Blank input occured, please enter your IC.");
+                                                p.println();
+                                            }
 
-                                clientList.get(i).setName(f4naddress);
+                                        } while (f4nic.trim().length() == 0);
 
-                                p.println("\nClient '" + valID_f4 + "' 's address has been edited.");
-                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's address.");
-                                logList.addLast(log);
-
-                                break;
-
-
-                            case "accstat":
-                                String f4naccstatus = "";
-                                do {
-
-
+                                        client.setIC(f4nic);
+                                        p.println("\nClient '" + valID_f4 + "' 's IC has been edited.");
+                                        log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's IC.");
+                                        logList.addLast(log);
+                                        break;
+                                    } else {
+                                        p.println("\nThis is only for Individual Client!");
+                                        log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[CLIENT TYPE NOT ALLOWED].");
+                                        logList.addLast(log);
+                                        break;
+                                    }
+                                case "address":
+                                    String f4naddress = "";
                                     do {
-                                        p.println("Enter the new account status(active/inactive): ");
-                                        f4naccstatus = input.nextLine();
+                                        p.println("Enter the new address: ");
+                                        f4naddress = input.nextLine();
                                         p.println();
-
-                                        if (f4naccstatus.trim().length() == 0) {
-                                            p.println("Blank input occured, please enter a status.");
+                                        if (f4naddress.trim().length() == 0) {
+                                            p.println("Blank input occured, please enter your address.");
                                             p.println();
                                         }
+                                    } while (f4naddress.trim().length() == 0);
 
-                                    } while (f4naccstatus.trim().length() == 0);
+                                    clientList.get(i).setName(f4naddress);
+                                    p.println("\nClient '" + valID_f4 + "' 's address has been edited.");
+                                    log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's address.");
+                                    logList.addLast(log);
+                                    break;
 
+                                case "accstat":
+                                    String f4naccstatus = "";
+                                    do {
+                                        do {
+                                            p.println("Enter the new account status(active/inactive): ");
+                                            f4naccstatus = input.nextLine();
+                                            p.println();
 
-                                    if ((!(f4naccstatus.equalsIgnoreCase("active"))) && (!(f4naccstatus.equalsIgnoreCase("inactive")))) {
+                                            if (f4naccstatus.trim().length() == 0) {
+                                                p.println("Blank input occured, please enter a status.");
+                                                p.println();
+                                            }
 
-                                        p.println("Sorry, invalid status input. Please input again.");
+                                        } while (f4naccstatus.trim().length() == 0);
 
+                                        if ((!(f4naccstatus.equalsIgnoreCase("active"))) && (!(f4naccstatus.equalsIgnoreCase("inactive"))))
+                                            p.println("Sorry, invalid status input. Please input again.");
                                     }
+                                    while ((!(f4naccstatus.equalsIgnoreCase("active"))) && (!(f4naccstatus.equalsIgnoreCase("inactive"))));
 
-                                }
-                                while ((!(f4naccstatus.equalsIgnoreCase("active"))) && (!(f4naccstatus.equalsIgnoreCase("inactive"))));
-
-                                clientList.get(i).setName(f4naccstatus);
-
-                                p.println("\nClient '" + valID_f4 + "' 's account status has been edited.");
-                                log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's account status.");
-                                logList.addLast(log);
-                                break;
-                            default:
-                                p.println("Action '" + ch2_f4 + "' does not exist!");
-                                log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[ACTION DOES NOT EXIST].");
-                                logList.addLast(log);
-                                break;
+                                    clientList.get(i).setName(f4naccstatus);
+                                    p.println("\nClient '" + valID_f4 + "' 's account status has been edited.");
+                                    log = new LogFile(lgTime, username, "has edited client '" + valID_f4 + "' 's account status.");
+                                    logList.addLast(log);
+                                    break;
+                                default:
+                                    p.println("Action '" + ch2_f4 + "' does not exist!");
+                                    log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[ACTION DOES NOT EXIST].");
+                                    logList.addLast(log);
+                                    break;
+                            }
+                            break;
+                        } else {
+                            p.println("\nClient '" + valID_f4 + "' cannot be EDITED as it has already been terminated.");
+                            log = new LogFile(lgTime, username, "has not edited Client '" + valID_f4 + "' details[CLIENT WAS TERMINATED].");
+                            logList.addLast(log);
+                            break;
                         }
-                        break;
+
                     } else {
                         if (i == (clientList.size() - 1)) {
                             p.println("\nClient '" + valID_f4 + "' does not exist!");
@@ -1436,21 +1434,30 @@ class TVSystem {
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (valID_f4.equalsIgnoreCase(clientList.get(i).getClientID())) {
-                            //clientList.remove(i);
-                            clientList.get(i).setAccountStatus("Terminated");
-                            clientList.get(i).setTerminationDate(DateFormat.getInstance().format(new Date()));
-                            for (j = 0; j < servList.size(); j++) {
-                                if (clientList.get(i).getClientID().equalsIgnoreCase(servList.get(j).getClientID())) {
-                                    servList.get(j).setServStatus("Terminated");
-                                    servList.get(j).setTermDate(DateFormat.getInstance().format(new Date()));
-                                    break;
-                                }
-                            }
-                            p.println("\nClient '" + valID_f4 + "' has been terminated.");
 
-                            log = new LogFile(lgTime, username, "has terminated Client '" + valID_f4 + "'.");
-                            logList.addLast(log);
-                            break;
+                            if (!((clientList.get(i).getAccountStatus()).equalsIgnoreCase("terminated"))) {
+
+                                //clientList.remove(i);
+                                clientList.get(i).setAccountStatus("Terminated");
+                                clientList.get(i).setTerminationDate(DateFormat.getInstance().format(new Date()));
+                                for (j = 0; j < servList.size(); j++) {
+                                    if (clientList.get(i).getClientID().equalsIgnoreCase(servList.get(j).getClientID())) {
+                                        servList.get(j).setServStatus("Terminated");
+                                        servList.get(j).setTermDate(DateFormat.getInstance().format(new Date()));
+                                        break;
+                                    }
+                                }
+                                p.println("\nClient '" + valID_f4 + "' has been terminated.");
+                                log = new LogFile(lgTime, username, "has terminated Client '" + valID_f4 + "'.");
+                                logList.addLast(log);
+                                break;
+
+                            } else {
+                                p.println("\nClient '" + valID_f4 + "' cannot be TERMINATED as it has already been terminated.");
+                                log = new LogFile(lgTime, username, "has not terminated Client '" + valID_f4 + "' details[CLIENT WAS TERMINATED].");
+                                logList.addLast(log);
+                                break;
+                            }
                         } else {
                             if (i == (clientList.size() - 1)) {
                                 p.println("Client '" + valID_f4 + "' does not exist!");
@@ -1491,8 +1498,7 @@ class TVSystem {
                                     if (clientList.get(i).getClientID().equalsIgnoreCase(servList.get(j).getClientID())) {
                                         String termSCD = servList.get(j).getSmartCardNo();
                                         p.println("Recover service?");
-                                        p.println("Enter YES to recover.");
-                                        p.println("Enter NO to clear all the service information.");
+
 
                                         do {
                                             p.println("Enter YES to recover.");
@@ -1511,52 +1517,52 @@ class TVSystem {
                                                     val = true;
                                                     servList.get(j).setServStatus("Active");
                                                     servList.get(j).setTermDate("N/A");
-                                                    break;
+
                                                 case "no":
                                                     val = true;
                                                     servList.remove(j);
                                                     for (k = 0; k < subsList.size(); k++) {
-                                                        if ((servList.get(k).getSmartCardNo()).equalsIgnoreCase(termSCD)) {
+                                                        if ((servList.get(j).getSmartCardNo()).equalsIgnoreCase(subsList.get(k).getSmartCardNo())) {
                                                             subsList.remove(k);
+                                                            p.println("You can register for a new smart card number at the 'add service' function.");
                                                             break;
                                                         }
                                                     }
                                                     break;
                                                 default:
                                                     p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
-                                                    break;
+                                                    val = false;
+
                                             } //end switch
                                         } while (val == false);
                                         p.println("\nClient '" + valID_f4 + "' has been recovered.");
 
                                         log = new LogFile(lgTime, username, "has recovered Client '" + valID_f4 + "'.");
                                         logList.addLast(log);
-                                        flag = true;
-                                        break;
-                                    } else {
-                                        p.println("\nClient '" + valID_f4 + "' cannot be recovered.");
-                                        log = new LogFile(lgTime, username, "has not recover Client '" + valID_f4 + "' details[CLIENT IS ACTIVE].");
-                                        logList.addLast(log);
-                                        flag = true;
                                         break;
                                     }
                                 }
                             } else {
-                                flag = false;
-                            }
-                            if (flag == false) {
-                                p.println("Client '" + valID_f4 + "' does not exist!");
-                                log = new LogFile(lgTime, username, "has not recover Client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
+                                p.println("\nClient '" + valID_f4 + "' cannot be recovered as it is not terminated.");
+                                log = new LogFile(lgTime, username, "has not recover Client '" + valID_f4 + "' details[CLIENT IS ACTIVE].");
                                 logList.addLast(log);
+                                break;
                             }
+                            flag2 = true;
                             break;
-                        } else {
-                            p.println("\nOnly Admin has the accessibility to recover a client.");
-                            log = new LogFile(lgTime, username, "has not recovered any client[USER TYPE DO NOT HAVE ACCESSIBILITY].");
-                            logList.addLast(log);
-                            break;
-                        }
+                        } else
+                            flag2 = false;
                     }
+                    if (flag2 == false) {
+                        p.println("Client '" + valID_f4 + "' does not exist!");
+                        log = new LogFile(lgTime, username, "has not recover Client '" + valID_f4 + "' details[CLIENT DOES NOT EXIST].");
+                        logList.addLast(log);
+                    }
+                } else {
+                    p.println("\nOnly Admin has the accessibility to recover a client.");
+                    log = new LogFile(lgTime, username, "has not recovered any client[USER TYPE DO NOT HAVE ACCESSIBILITY].");
+                    logList.addLast(log);
+                    break;
                 }
         }
     } // end manage client
