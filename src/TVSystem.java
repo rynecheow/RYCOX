@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 class TVSystem {
-
     Scanner input = new Scanner(System.in);
     String username = "";
     String password = "";
@@ -85,23 +84,74 @@ class TVSystem {
         clientList.add(new IndividualClient("Izhar", 39, "631220-05-1243", "9, Trafalgar Road", "I000001", "ACTIVE"));
         clientList.add(new GovClient("Dept. of Education", "12, Long Fave Strt.", "G000001", "INACTIVE"));
         clientList.add(new NGOClient("NGO", "56, Taylor's Street", "N000001", "ACTIVE"));
-        clientList.add(new PrvClient("Private Organisation", "Address", "P000001", "ACTIVE"));
+        clientList.add(new PrvClient("Private Organisation", "88, Sohai's Street", "P000001", "ACTIVE"));
+        clientList.add(new PrvClient("Private Org2", "80, TROLLOLOL's Street", "P000002", "ACTIVE"));
         servList.add(new Service("S000001", "I000001", "D999999", "5, Jalan Sungai Beranang"));
         servList.add(new Service("S000002", "I000001", "D999998", "Lot 1-3 Starhill"));
         servList.add(new Service("S000003", "N000001", "D999997", "Lot 3-10 Jalan Taylor"));
-        servList.add(new Service("S000004", "P000001", "D999996", "32 Jalan Kota Kemuning "));
-        servList.add(new Service("S000005", "I000002", "D999995", "32 Jalan Kota Kemuning "));
-        servList.add(new Service("S000006", "P000002", "D999994", "32 Jalan Kota Kemuning "));
+        servList.add(new Service("S000004", "P000001", "D999996", "32, Jalan Kota Kemuning"));
+        servList.add(new Service("S000005", "G000001", "D999995", "30, Jalan Kota Baru"));
+        servList.add(new Service("S000006", "P000002", "D999994", "99, Jalan Kota Tua"));
         subsList.add(new Subscription("S000001", 1, "P01"));
         subsList.add(new Subscription("S000001", 1, "P02"));
         subsList.add(new Subscription("S000002", 2, "P02"));
         subsList.add(new Subscription("S000002", 2, "P01"));
         subsList.add(new Subscription("S000003", 1, "P03"));
         subsList.add(new Subscription("S000004", 1, "P04"));
+        subsList.add(new Subscription("S000005", 1, "P05"));
+        subsList.add(new Subscription("S000005", 1, "P06"));
+        subsList.add(new Subscription("S000005", 1, "P07"));
+        subsList.add(new Subscription("S000005", 1, "P08"));
+        subsList.add(new Subscription("S000005", 2, "P09"));
+        subsList.add(new Subscription("S000005", 2, "P10"));
         pkgList.add(new TVPackage("P01", "Variety", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
-        pkgList.add(new TVPackage("P02", "Fun", "18/04/2012", 350.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P02", "Fun", "18/04/2012", 50.00, "Monthly", "ACTIVE"));
+        pkgList.add(new TVPackage("P03", "Concert", "18/04/2012", 65.00, "Monthly", "ACTIVE"));
+        pkgList.add(new TVPackage("P04", "Concert", "18/04/2012", 40.00, "Monthly", "ACTIVE"));
+        pkgList.add(new TVPackage("P05", "Movie", "7/12/2011", 350.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P06", "Movie", "6/8/2011", 350.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P07", "Movie", "9/21/2011", 360.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P08", "Movie", "11/04/2012", 300.00, "Yearly", "ACTIVE"));
+        pkgList.add(new TVPackage("P09", "Series", "18/01/2012", 250.00, "Quarterly", "ACTIVE"));
+        pkgList.add(new TVPackage("P10", "Series", "18/03/2012", 250.00, "Quarterly", "ACTIVE"));
         pckgingList.add(new Packaging("P01", "F001"));
+        pckgingList.add(new Packaging("P02", "F001"));
+        pckgingList.add(new Packaging("P03", "F001"));
+        pckgingList.add(new Packaging("P04", "F001"));
+        pckgingList.add(new Packaging("P05", "F001"));
+        pckgingList.add(new Packaging("P06", "F001"));
+        pckgingList.add(new Packaging("P07", "F001"));
+        pckgingList.add(new Packaging("P08", "F001"));
+        pckgingList.add(new Packaging("P09", "F001"));
+        pckgingList.add(new Packaging("P10", "F001"));
+        pckgingList.add(new Packaging("P01", "F018"));
+        pckgingList.add(new Packaging("P01", "F017"));
+        pckgingList.add(new Packaging("P05", "F016"));
+        pckgingList.add(new Packaging("P05", "F006"));
+        pckgingList.add(new Packaging("P05", "F007"));
+        pckgingList.add(new Packaging("P06", "F004"));
+        pckgingList.add(new Packaging("P06", "F009"));
+        pckgingList.add(new Packaging("P10", "F011"));
+        pckgingList.add(new Packaging("P10", "F012"));
         prgList.add(new TVProgramme("F001", "My Boss My Hero", "Japanese Comedy Drama series about Yakuza members.", "Japan", "27/11/2002", "Active", "18SG", "Comedy", ""));
+        prgList.add(new TVProgramme("F002", "Naruto", "Story about a ninja world that a child want to be a leader of the ninja.", "Japan", "27/11/1999", "Active", "U", "Comedy", ""));
+        prgList.add(new TVProgramme("F003", "One Piece", "The adventures of Monkey D. Luffy, a 17-year-old boy who gains elastic abilities after inadvertently eating a supernatural fruit.", "Japan", "4/8/1997", "Active", "U", "Comedy", ""));
+        prgList.add(new TVProgramme("F004", "Pokemon", "Ash Ketchum and his friends (human and Pok��mon) that he makes on the way as he travels the world catching new Pok��mon.", "Japan", "1/4/1997", "Active", "U", "Comedy", ""));
+        prgList.add(new TVProgramme("F005", "Tom & Jerry", "A Cat and Mouse cannot be a friend forever.", "Japan", "3/10/96", "Active", "U", "Comedy", ""));
+        prgList.add(new TVProgramme("F006", "City Hunter", "Korean Drama from the comic.", "Korea", "27/06/2011", "Active", "PG13", "Series", ""));
+        prgList.add(new TVProgramme("F007", "Gloves Come Off", "A Story about a group of boxer.", "Hong Kong", "19/4/2012", "Active", "18SG", "Series", ""));
+        prgList.add(new TVProgramme("F008", "Sergeant Tabloid", "A Drama about work and love for a female cop.", "Hong Kong", "2/4/2012", "Active", "PG13", "Series", ""));
+        prgList.add(new TVProgramme("F009", "A Song To Remember", "A Romance story between a musician and a pretty protg.", "Singapore", "1/4/2012", "Active", "PG13", "Series", ""));
+        prgList.add(new TVProgramme("F010", "Office Girls", "A Shopping mall heir discovers a fine mentoe in his female co-worker.", "Taiwan", "27/3/2012", "Active", "PG13", "Series", ""));
+        prgList.add(new TVProgramme("F011", "I Am Number 4", "An extraordinary teen masks his true idntity.", "US", "2/5/2002", "Active", "PG13", "Movie", ""));
+        prgList.add(new TVProgramme("F012", "TRON", "A hacker is literally abducted into the world of computer.", "US", "4/6/2011", "Active", "PG13", "Movie", ""));
+        prgList.add(new TVProgramme("F013", "Green Zone", "At the start of war in Iraq.", "US", "15/3/2009", "Active", "18SG", "Movie", ""));
+        prgList.add(new TVProgramme("F014", "Kung Fu Mahjong", "Suave mahjong pro ken finds himself playing for the highest stakes ever.", "Hong Kong", "21/5/2009", "Active", "PG13", "Movie", ""));
+        prgList.add(new TVProgramme("F015", "Treasure Inn", "Law Enforcers who are pulled into a dangerous and seductive adventure.", "China", "11/9/2011", "Active", "18SG", "Movie", ""));
+        prgList.add(new TVProgramme("F016", "MayDay", "MayDay Concert.", "China", "11/9/2011", "Active", "U", "Concert", ""));
+        prgList.add(new TVProgramme("F017", "Simple Plan", "Simple Plan Concert.", "China", "11/9/2011", "Active", "U", "Concert", ""));
+        prgList.add(new TVProgramme("F018", "BigBang", "BigBang Concert.", "China", "11/9/2011", "Active", "U", "Concert", ""));
+
 
         File client_file = new File("cl_data.dat");
         boolean exist_cl_data = client_file.exists();
@@ -576,7 +626,7 @@ class TVSystem {
             //Individual
             if (type.equalsIgnoreCase("Ind")) {
                 if (val_idv) {
-                    p.println("\n\nRegistered client(s) from the 'Individual' category is/are:");
+                    p.println("\n\nRegistered client(s) from the 'Individual' category is/are:-");
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof IndividualClient) {
@@ -600,7 +650,7 @@ class TVSystem {
                 }
             } else if (type.equalsIgnoreCase("Gov")) {//Government
                 if (val_gov) {
-                    p.println("Registered client(s) from the 'Government' category is/are:");
+                    p.println("Registered client(s) from the 'Government' category is/are:-");
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof GovClient) {
@@ -653,7 +703,7 @@ class TVSystem {
             //Private Organisation
             else if (type.equalsIgnoreCase("Prv")) {
                 if (val_prv) {
-                    p.println("Registered client(s) from the 'Private Organisation' category is/are:");
+                    p.println("Registered client(s) from the 'Private Organisation' category is/are:-");
 
                     for (i = 0; i < clientList.size(); i++) {
                         if (clientList.get(i) instanceof PrvClient) {
@@ -3309,9 +3359,8 @@ class TVSystem {
             }
         } while (check1 == false);
     }
-
     /*--------------------------------------------------------------------------SECTION NINE - MANAGE USERS----------------------------------------------------------------------------------------*/
-    @SuppressWarnings("unused")
+
     public void manageUsers() {
         String choice_f9, type_f9, un_f9, oldpw_f9, newpw_1_f9, newpw_2_f9;
         boolean val1_f9 = false, val2_f9 = false, val3_f9 = false;
@@ -3324,7 +3373,7 @@ class TVSystem {
         p.println("--------------------------------------");
 
         do {
-            p.print("Please enter the function you would like to proceed(Add/Change Password/Terminate): ");
+            p.print("Please enter the function you would like to proceed(Add/ChangePassword/Terminate): ");
             choice_f9 = input.nextLine();
             choice_f9 = choice_f9.toLowerCase();
 
@@ -3343,49 +3392,60 @@ class TVSystem {
                     logList.addLast(log);
 
                     do {
-                        p.print("Enter the type of new user(Case-insensitive): \n");
-                        p.print("Enter ADMIN for administrator type user.\n");
-                        p.print("Enter STAFF for staff type user.\n");
-                        type_f9 = input.nextLine();
-                        p.println();
-                        if (type_f9.trim().length() == 0) {
-                            p.println("Blank input occured, please enter a type of user.");
-                            p.println();
-                        }
 
-                    } while (type_f9.trim().length() == 0);
-
-                    type_f9 = type_f9.toLowerCase();
-
-                    if ((type_f9.equals("admin")) || (type_f9.equals("staff"))) {
                         do {
-                            p.print("Enter new username: ");
-                            un_f9 = input.nextLine();
+                            p.print("Enter the type of new user(Case-insensitive): \n");
+                            p.print("Enter ADMIN for administrator type user.\n");
+                            p.print("Enter STAFF for staff type user.\n");
+                            type_f9 = input.nextLine();
                             p.println();
-                            if (un_f9.trim().length() == 0) {
-                                p.println("Blank input occured, please enter an username.");
+                            if (type_f9.trim().length() == 0) {
+                                p.println("Blank input occured, please enter a type of user.");
                                 p.println();
                             }
 
-                        } while (un_f9.trim().length() == 0);
+                        } while (type_f9.trim().length() == 0);
 
-                        for (i = 0; i < userList.size(); i++) {
-                            if (un_f9.equalsIgnoreCase(userList.get(i).getUserID())) {
-                                p.println("Username already exist!");
-                                log = new LogFile(lgTime, username, "has not added any new user[USERNAME ALREADY EXIST].");
-                                logList.addLast(log);
-                                break;
-                            } else {
+                        type_f9 = type_f9.toLowerCase();
 
+                        if ((type_f9.equals("admin")) || (type_f9.equals("staff"))) {
+                            do {
                                 do {
-                                    p.print("Enter password: ");
-                                    newpw_1_f9 = input.nextLine();
+                                    p.print("Enter new username: ");
+                                    un_f9 = input.nextLine();
                                     p.println();
-                                    if (newpw_1_f9.trim().length() == 0) {
-                                        p.println("Blank input occured, please enter a password.");
+                                    if (un_f9.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter an username.");
                                         p.println();
                                     }
-                                } while (newpw_1_f9.trim().length() == 0);
+
+                                } while (un_f9.trim().length() == 0);
+
+                                for (i = 0; i < userList.size(); i++) {
+                                    if (un_f9.equalsIgnoreCase(userList.get(i).getUserID())) {
+                                        p.println("Username already exist!");
+                                        log = new LogFile(lgTime, username, "has not added any new user[USERNAME ALREADY EXIST].");
+                                        logList.addLast(log);
+                                        flag = false;
+                                        break;
+                                    } else {
+                                        flag = true;
+                                    }
+                                }
+                            } while (flag == false);
+
+                            do {
+                                p.print("Enter password: ");
+                                newpw_1_f9 = input.nextLine();
+                                p.println();
+                                if (newpw_1_f9.trim().length() == 0) {
+                                    p.println("Blank input occured, please enter a password.");
+                                    p.println();
+                                }
+                            } while (newpw_1_f9.trim().length() == 0);
+
+                            flag2 = true;
+                            do {
 
                                 do {
                                     p.print("Re-enter password: ");
@@ -3398,6 +3458,7 @@ class TVSystem {
                                 } while (newpw_2_f9.trim().length() == 0);
 
                                 if (newpw_1_f9.equals(newpw_2_f9)) {
+                                    flag2 = true;
                                     if (type_f9.equals("admin")) {
                                         userList.add(new Administrators(un_f9, newpw_2_f9));
                                         p.println("\nNew user '" + un_f9 + "' has been added successfully!");
@@ -3414,22 +3475,29 @@ class TVSystem {
                                     p.println("\nRe-entered password mis-matched!");
                                     log = new LogFile(lgTime, username, "has not added new user[RE-ENTERED PASSWORD MIS-MATCHED].");
                                     logList.addLast(log);
-                                    break;
+                                    flag2 = false;
+
                                 }
-                            }
+                            } while (flag2 == false);
+
+                            flag3 = true;
+
+                        } else {
+                            p.println("\nThe user type is not available.");
+                            log = new LogFile(lgTime, username, "has not added any new user[USER TYPE NOT AVAILABLE].");
+                            logList.addLast(log);
+                            flag3 = false;
                         }
-                    } else {
-                        p.println("\nThe user type is not available.");
-                        log = new LogFile(lgTime, username, "has not added any new user[USER TYPE NOT AVAILABLE].");
-                        logList.addLast(log);
-                    }
+
+                    } while (flag3 == false);
                     break;
                 } else {
                     p.println("\nOnly Admin has the accessibility to add a user.");
                     log = new LogFile(lgTime, username, "has not added any user[USER TYPE DO NOT HAVE ACCESSIBILITY].");
                     logList.addLast(log);
                 }
-                //Change a user's password
+                break;
+            //Change a user's password
             case "changepassword":
                 log = new LogFile(lgTime, username, "has chosen to change user '" + username + "' 's password");
                 logList.addLast(log);
@@ -3448,48 +3516,56 @@ class TVSystem {
 
                     if (oldpw_f9.trim().length() > 0) {
                         if (oldpw_f9.equals(userList.get(u).getPassword())) {
+
                             do {
-                                p.print("Enter a new password: ");
+                                p.print("Enter password: ");
                                 newpw_1_f9 = input.nextLine();
                                 p.println();
                                 if (newpw_1_f9.trim().length() == 0) {
-                                    p.println("Blank input occured, please enter a type of user.");
+                                    p.println("Blank input occured, please enter a password.");
                                     p.println();
                                 }
                             } while (newpw_1_f9.trim().length() == 0);
 
+                            flag2 = true;
                             do {
-                                p.print("Re-enter password: ");
-                                newpw_2_f9 = input.nextLine();
-                                p.println();
-                                if (newpw_2_f9.trim().length() == 0) {
-                                    p.println("Blank input occured, please enter a type of user.");
+
+                                do {
+                                    p.print("Re-enter password: ");
+                                    newpw_2_f9 = input.nextLine();
                                     p.println();
+                                    if (newpw_2_f9.trim().length() == 0) {
+                                        p.println("Blank input occured, please enter a confirmation password.");
+                                        p.println();
+                                    }
+                                } while (newpw_2_f9.trim().length() == 0);
+
+                                if (newpw_1_f9.equals(newpw_2_f9)) {
+                                    flag2 = true;
+                                    userList.get(u).changePassword(newpw_2_f9);
+
+                                    p.println("\nPassword changed successfully!");
+
+                                    log = new LogFile(lgTime, username, "has changed password.");
+                                    logList.addLast(log);
+                                    val3_f9 = true;
+                                    break;
+                                } else {
+                                    p.println("\nRe-entered password mis-matched!");
+                                    log = new LogFile(lgTime, username, "has not changed password[RE-ENTERED PASSWORD MIS-MATCHED].");
+                                    logList.addLast(log);
+                                    flag2 = false;
+
                                 }
+                            } while (flag2 == false);
 
-                            } while (newpw_2_f9.trim().length() == 0);
 
-                            if (newpw_1_f9.equals(newpw_2_f9)) { /*change password*/
-                                userList.get(u).changePassword(newpw_2_f9);
-
-                                p.println("\nPassword changed successfully!");
-
-                                log = new LogFile(lgTime, username, "has changed password.");
-                                logList.addLast(log);
-                                val3_f9 = true;
-                            } else {
-                                p.println("\nRe-entered password mis-matched!");
-
-                                log = new LogFile(lgTime, username, "has not changed password[RE-ENTERED PASSWORD MIS-MATCHED].");
-                                logList.addLast(log);
-                                break;
-                            }
                         } else {
                             p.println("\nPassword mismatch!");
 
                             log = new LogFile(lgTime, username, "has not changed password[PASSWORD MIS-MATCHED].");
                             logList.addLast(log);
-                            break;
+
                         }
                     } else {
                         p.println("INVALID SELECTION OR EMPTY INPUT, PLEASE RE-ENTER.\n");
@@ -3504,11 +3580,11 @@ class TVSystem {
 
                     do {
                         do {
-                            p.print("Enter the user's ID that you would like to Terminate: ");
+                            p.print("Enter the user's name that you would like to Terminate: ");
                             un_f9 = input.nextLine();
 
                             if (un_f9.trim().length() == 0) {
-                                p.println("Blank input occured, please enter a user's ID.");
+                                p.println("Blank input occured, please enter a user's name.");
                                 p.println();
                             }
 
@@ -3554,7 +3630,7 @@ class TVSystem {
                 break;
         } //end switch
     } //end manage users
-    /*--------------------------------------------------------------------------SECTION TEN - GENERATE REPORT----------------------------------------------------------------------------------------*/
+	/*--------------------------------------------------------------------------SECTION TEN - GENERATE REPORT----------------------------------------------------------------------------------------*/
 
     public void reportGen() {
         Date logTime = new Date();
@@ -3871,7 +3947,6 @@ class TVSystem {
 
             p.println("--------------------------------------------------------------------");
 
-
             //Logs
             p.println("LOGS LIST\n");
 
@@ -3890,7 +3965,6 @@ class TVSystem {
         }
     }
 }
-
 /**************************************************************************
  * (C) Copyright 2012 by Ryne Cheow Yeong Chi , Ng Jia Jiun               *
  * Lai Li Hao. All rights reserved.                                       *
