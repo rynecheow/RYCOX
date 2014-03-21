@@ -209,6 +209,7 @@ class ClientPanel extends JPanel {
         recoverButton.addActionListener(dialoghandler);
         clActivateButton.addActionListener(dialoghandler);
         deactButton.addActionListener(dialoghandler);
+        addServButton.addActionListener(dialoghandler);
 	/*
 	 * -------------------------- DIALOG LISTENER --------------------------
 	 */

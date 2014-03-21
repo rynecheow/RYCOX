@@ -87,6 +87,7 @@ class Service implements Serializable {
                 break;
             case "terminated":
                 this.servStatus = "TERMINATED";
+                setTermDate(DateFormat.getInstance().format(new Date()));
                 break;
         }
     }

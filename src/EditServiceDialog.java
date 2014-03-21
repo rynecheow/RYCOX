@@ -6,8 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.LinkedList;
 
+/**
+ * @author LiHao
+ */
 @SuppressWarnings("serial")
 class EditServiceDialog extends JDialog {
+    // Variable declaration
     private JLabel idLabel, scLabel, dcLabel, addLabel, leftLabel, rightLabel;
     private JTextField idInput, scInput, dcInput;
     private JTextArea addInput;
@@ -35,6 +39,7 @@ class EditServiceDialog extends JDialog {
     private String addPkg;
     private int subsNo;
     private JWarnLabel scFormatWarn, scEmptyWarn, scSameWarn, dcFormatWarn, dcEmptyWarn, dcSameWarn, addWarn, subsPkgWarn;
+    // end of variable decaration
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public EditServiceDialog(JFrame parent) {
@@ -62,8 +67,10 @@ class EditServiceDialog extends JDialog {
         addInput.setText(ServicePanel.temp[3]);
         okBut = new JButton("OK");
         ccBut = new JButton("Cancel");
-        addBut = new JButton("ADD");
-        rmvBut = new JButton("REMOVE");
+        addBut = new JButton("", new ImageIcon(getClass().getResource("/resources/addtoright.png")));
+        addBut.setBackground(new Color(23, 28, 31));
+        rmvBut = new JButton("", new ImageIcon(getClass().getResource("/resources/removetoleft.png")));
+        rmvBut.setBackground(new Color(23, 28, 31));
         scFormatWarn = new JWarnLabel("Please Enter the correct Smart Card Format.");
         scEmptyWarn = new JWarnLabel("Please Enter the Smart Card Number.");
         scSameWarn = new JWarnLabel("Smart Card has been used.");
@@ -82,9 +89,9 @@ class EditServiceDialog extends JDialog {
         selPkgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
-        RYCOXv2.subsList.getLast().printSecSubs();
+
+        // get the package already subscribe by client
         for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-            System.out.println(ServicePanel.temp[0]);
             for (int j = 0; j < RYCOXv2.subsList.size(); j++) {
                 if (ServicePanel.temp[0].equalsIgnoreCase(RYCOXv2.subsList.get(j).getSmartCardNo())) {
                     if (RYCOXv2.subsList.get(j).getPkgCode().equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
@@ -96,6 +103,7 @@ class EditServiceDialog extends JDialog {
         }
         selPkg = selPkgList.toArray(new String[selPkgList.size()]);
 
+        // get the package that client is not subscribe
         for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
             boolean check = false;
             for (int j = 0; j < selPkgList.size(); j++) {
@@ -193,7 +201,7 @@ class EditServiceDialog extends JDialog {
         spring.putConstraint(SpringLayout.WEST, leftListScroll, 25, SpringLayout.EAST, separator);
         spring.putConstraint(SpringLayout.NORTH, leftListScroll, 48, SpringLayout.NORTH, c);
         spring.putConstraint(SpringLayout.WEST, addBut, 40, SpringLayout.EAST, leftListScroll);
-        spring.putConstraint(SpringLayout.NORTH, addBut, 52, SpringLayout.NORTH, c);
+        spring.putConstraint(SpringLayout.NORTH, addBut, 95, SpringLayout.NORTH, c);
         spring.putConstraint(SpringLayout.WEST, rmvBut, 30, SpringLayout.EAST, leftListScroll);
         spring.putConstraint(SpringLayout.NORTH, rmvBut, 10, SpringLayout.SOUTH, addBut);
         spring.putConstraint(SpringLayout.WEST, rightListScroll, 28, SpringLayout.EAST, rmvBut);
@@ -219,6 +227,10 @@ class EditServiceDialog extends JDialog {
         ServicePanel.defaultButtonSet();
     }
 
+    /**
+     * @author LiHao
+     *         This class is used for handler all the button listener and returns dialog for confirmation if necessary.
+     */
     public class ButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -230,13 +242,25 @@ class EditServiceDialog extends JDialog {
                     dispose();
                 }
             } else if (e.getSource() == addBut) {
-                pkgAdd();
+                try {
+                    pkgAdd();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "You can only add a TV Package from the left list.", "Adding error", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else if (e.getSource() == rmvBut) {
-                pkgRemove();
+                try {
+                    pkgRemove();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "You can only remove a TV Package from the right list when right list is filled in with TV Package.", "Remove error", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }
     }
 
+    /**
+     * @author LiHao
+     *         This class is used for handler all the mouse listener.
+     */
     public class mouseHandler extends MouseAdapter {
         public void mouseReleased(ActionEvent e) {
             if (e.getSource() == leftListScroll) {
@@ -247,6 +271,13 @@ class EditServiceDialog extends JDialog {
         }
     }
 
+    /**
+     * @author LiHao
+     * This method is used for validate the data entered by user is correct
+     * and the smart card number and decoder number is not repeat,
+     * if all the data is correct the edited will be update,
+     * if not will display the warning message.
+     */
     public void submit() {
         String scNo_IDregex = "^[sS][0-9]{6}$";
         String decNo_IDregex = "^[dD][0-9]{6}$";
@@ -336,6 +367,10 @@ class EditServiceDialog extends JDialog {
         }
     }
 
+    /**
+     * @author LiHao
+     * This method is used for updating the edited of subscription package.
+     */
     private void updateSubsList() {
         int i;
         for (i = 0; i < RYCOXv2.subsList.size(); i++) {
@@ -355,6 +390,10 @@ class EditServiceDialog extends JDialog {
         }
     }
 
+    /**
+     * @author LiHao
+     * This method is used for updating the edited of service's information.
+     */
     public void updateList() {
         int k;
         for (k = 0; k < RYCOXv2.servList.size(); k++) {
@@ -368,6 +407,11 @@ class EditServiceDialog extends JDialog {
     }
 
     @SuppressWarnings("unchecked")
+    /**
+     * @author LiHao
+     * This method is used for add the selected package from 
+     * the not subscribe package list to subscribe package list.
+     */
     public void pkgAdd() {
         int leftIndex = leftList.getSelectedIndex();
         String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));
@@ -399,6 +443,11 @@ class EditServiceDialog extends JDialog {
         rightList.revalidate();
     }
 
+    /**
+     * @author LiHao
+     * This method is used for remove the selected package from
+     * the subscribe package list to not subscribe package list.
+     */
     @SuppressWarnings("unchecked")
     public void pkgRemove() {
         int rightIndex = rightList.getSelectedIndex();
@@ -432,6 +481,10 @@ class EditServiceDialog extends JDialog {
         leftList.revalidate();
     }
 
+    /**
+     * @author LiHao
+     *         This class is used for declare the warning message label.
+     */
     public class JWarnLabel extends JLabel {
         public JWarnLabel(String s) {
             super(s);

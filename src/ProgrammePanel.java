@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -512,23 +510,7 @@ class ProgrammePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    FileOutputStream prg_fostream = new FileOutputStream("prg_data.rycox");
-                    ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i) != null) {
-                            prg_oostream.writeObject(RYCOXv2.prgList);
-                        }
-                    }
-                    prg_oostream.flush();
-                    prg_oostream.close();
-                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[PROGRAMME]");
-                    RYCOXv2.logList.add(RYCOXv2.log);
-                    RYCOXv2.printLog();
-                    //					JOptionPane.showMessageDialog(null, "You have successfully saved the changes of TV Programmes !", "Save successfully", JOptionPane.PLAIN_MESSAGE);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                RYCOXv2.saveProgramFile();
             }
         });
 
@@ -674,61 +656,77 @@ class ProgrammePanel extends JPanel {
     private void changeMode() {
         rowno = prgTable.getSelectedRow();
         String ID = (String) prgTable.getValueAt(rowno, 0);
-
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                lol = i;
-                if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
-                    prgDeleteButton.setEnabled(true);
-                    editPrgButton.setEnabled(true);
-                    prgActivateButton.setEnabled(false);
-                    prgDeactButton.setEnabled(true);
-                    deletePrgMI.setEnabled(true);
-                    editPrgMI.setEnabled(true);
-                    activateMI.setEnabled(false);
-                    deactivateMI.setEnabled(true);
-                    deletePrgMI.setEnabled(true);
-                    viewButton.setEnabled(true);
-                    prgDeleteButton.setVisible(true);
-                    editPrgButton.setVisible(true);
-                    prgActivateButton.setVisible(true);
-                    prgDeactButton.setVisible(true);
-                    editPrgMI.setVisible(true);
-                    activateMI.setVisible(true);
-                    deactivateMI.setVisible(true);
-                    deletePrgMI.setVisible(true);
-                } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
-                    prgDeleteButton.setEnabled(true);
-                    editPrgButton.setEnabled(true);
-                    prgActivateButton.setEnabled(true);
-                    prgDeactButton.setEnabled(false);
-                    deletePrgMI.setEnabled(true);
-                    editPrgMI.setEnabled(true);
-                    activateMI.setEnabled(true);
-                    deactivateMI.setEnabled(false);
-                    deletePrgMI.setEnabled(true);
-                    viewButton.setEnabled(true);
-                    prgDeleteButton.setVisible(true);
-                    editPrgButton.setVisible(true);
-                    prgActivateButton.setVisible(true);
-                    prgDeactButton.setVisible(true);
-                    editPrgMI.setVisible(true);
-                    activateMI.setVisible(true);
-                    deactivateMI.setVisible(true);
-                    deletePrgMI.setVisible(true);
-                } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("TERMINATED")) {
-                    prgDeleteButton.setVisible(false);
-                    editPrgButton.setVisible(false);
-                    prgActivateButton.setVisible(false);
-                    prgDeactButton.setVisible(false);
-                    deletePrgMI.setEnabled(false);
-                    editPrgMI.setVisible(false);
-                    activateMI.setVisible(false);
-                    deactivateMI.setVisible(false);
-                    deletePrgMI.setVisible(false);
-                    viewButton.setEnabled(true);
+        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+            for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+                    lol = i;
+                    if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                        prgDeleteButton.setEnabled(true);
+                        editPrgButton.setEnabled(true);
+                        prgActivateButton.setEnabled(false);
+                        prgDeactButton.setEnabled(true);
+                        deletePrgMI.setEnabled(true);
+                        editPrgMI.setEnabled(true);
+                        activateMI.setEnabled(false);
+                        deactivateMI.setEnabled(true);
+                        deletePrgMI.setEnabled(true);
+                        viewButton.setEnabled(true);
+                        prgDeleteButton.setVisible(true);
+                        editPrgButton.setVisible(true);
+                        prgActivateButton.setVisible(true);
+                        prgDeactButton.setVisible(true);
+                        editPrgMI.setVisible(true);
+                        activateMI.setVisible(true);
+                        deactivateMI.setVisible(true);
+                        deletePrgMI.setVisible(true);
+                    } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                        prgDeleteButton.setEnabled(true);
+                        editPrgButton.setEnabled(true);
+                        prgActivateButton.setEnabled(true);
+                        prgDeactButton.setEnabled(false);
+                        deletePrgMI.setEnabled(true);
+                        editPrgMI.setEnabled(true);
+                        activateMI.setEnabled(true);
+                        deactivateMI.setEnabled(false);
+                        deletePrgMI.setEnabled(true);
+                        viewButton.setEnabled(true);
+                        prgDeleteButton.setVisible(true);
+                        editPrgButton.setVisible(true);
+                        prgActivateButton.setVisible(true);
+                        prgDeactButton.setVisible(true);
+                        editPrgMI.setVisible(true);
+                        activateMI.setVisible(true);
+                        deactivateMI.setVisible(true);
+                        deletePrgMI.setVisible(true);
+                    } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("TERMINATED")) {
+                        prgDeleteButton.setVisible(false);
+                        editPrgButton.setVisible(false);
+                        prgActivateButton.setVisible(false);
+                        prgDeactButton.setVisible(false);
+                        deletePrgMI.setEnabled(false);
+                        editPrgMI.setVisible(false);
+                        activateMI.setVisible(false);
+                        deactivateMI.setVisible(false);
+                        deletePrgMI.setVisible(false);
+                        viewButton.setEnabled(true);
+                    }
                 }
             }
+        } else {
+            prgAddButton.setVisible(false);
+            saveButton.setVisible(false);
+            editPrgButton.setVisible(false);
+            viewButton.setVisible(true);
+            viewButton.setEnabled(true);
+            prgDeleteButton.setVisible(false);
+            prgActivateButton.setVisible(false);
+            prgDeactButton.setVisible(false);
+            editPrgMI.setVisible(false);
+            deletePrgMI.setVisible(false);
+            activateMI.setVisible(false);
+            deactivateMI.setVisible(false);
+            viewMI.setVisible(true);
+            viewMI.setEnabled(true);
         }
     }
 

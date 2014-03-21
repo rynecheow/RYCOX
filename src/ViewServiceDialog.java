@@ -8,17 +8,15 @@ import java.util.LinkedList;
 @SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class ViewServiceDialog extends JDialog {
 
-    private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, rightLabel;
-    private JTextField idInput, scInput, dcInput;
+    // Variable declaration
+    private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, rightLabel, termDateLabel, createDateLabel;
+    private JTextField idInput, scInput, dcInput, termDateInput, createDateInput;
     private JTextArea addInput;
     private JButton closeBut;
     private static JList rightList;
     private JScrollPane addScroll;
     private static JScrollPane rightListScroll;
     private JSeparator separator, separator2;
-    private JComboBox statusBox;
-    private String[] status = {"Active", "Inactive", "Barred"};
-    private String smartCard, decoder, clientID, address, actualStatus;
     private Color bColor = new Color(23, 28, 30);
     private Color nColor = new Color(51, 60, 64);
     private Color fColor = new Color(255, 255, 255);
@@ -31,6 +29,8 @@ class ViewServiceDialog extends JDialog {
     private String[] selPkg;
     private String addPkg;
     private int subsNo;
+    private Border line = BorderFactory.createLineBorder(nColor);
+    // end of variable declaration
 
     public ViewServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
@@ -44,41 +44,58 @@ class ViewServiceDialog extends JDialog {
         addLabel.setForeground(fColor);
         rightLabel = new JLabel("Packages Subscribed: ");
         rightLabel.setForeground(fColor);
-
+        termDateLabel = new JLabel("Termination Date: ");
+        termDateLabel.setForeground(fColor);
+        createDateLabel = new JLabel("Creation Date: ");
+        createDateLabel.setForeground(fColor);
         idInput = new JTextField(20);
         idInput.setText(ServicePanel.temp[1]);
         idInput.setEditable(false);
         idInput.setBackground(nColor);
         idInput.setForeground(fColor);
-        idInput.setBorder(null);
+        idInput.setBorder(line);
         scInput = new JTextField(20);
         scInput.setText(ServicePanel.temp[0]);
         scInput.setEditable(false);
         scInput.setBackground(nColor);
         scInput.setForeground(fColor);
-        scInput.setBorder(null);
+        scInput.setBorder(line);
         dcInput = new JTextField(20);
         dcInput.setText(ServicePanel.temp[2]);
         dcInput.setEditable(false);
         dcInput.setBackground(nColor);
         dcInput.setForeground(fColor);
-        dcInput.setBorder(null);
+        dcInput.setBorder(line);
         addInput = new JTextArea(5, 20);
         addInput.setText(ServicePanel.temp[3]);
         addInput.setEditable(false);
         addInput.setBackground(nColor);
         addInput.setForeground(fColor);
-        addInput.setBorder(null);
+        addInput.setBorder(line);
+        termDateInput = new JTextField(20);
+        createDateInput = new JTextField(20);
         closeBut = new JButton("Close");
         addScroll = new JScrollPane();
         addScroll.setViewportView(addInput);
-        addScroll.setBorder(null);
+        addScroll.setBorder(line);
 //		separator = new JSeparator(JSeparator.VERTICAL);
 //		separator.setPreferredSize(new Dimension(2,270));
 //		separator2 = new JSeparator(JSeparator.HORIZONTAL);
 //		separator2.setPreferredSize(new Dimension(680,2));
-        statusBox = new JComboBox(status);
-        statusBox.setSelectedItem(ServicePanel.temp[4]);
+        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+            if (ServicePanel.temp[0].equalsIgnoreCase(RYCOXv2.servList.get(i).getSmartCardNo())) {
+                termDateInput.setText(RYCOXv2.servList.get(i).getTermDate());
+                termDateInput.setEditable(false);
+                termDateInput.setForeground(fColor);
+                termDateInput.setBackground(nColor);
+                termDateInput.setBorder(line);
+                createDateInput.setText(RYCOXv2.servList.get(i).getRegDate());
+                createDateInput.setEditable(false);
+                createDateInput.setForeground(fColor);
+                createDateInput.setBackground(nColor);
+                createDateInput.setBorder(line);
+            }
+        }
 
         selPkgList = new LinkedList<>();
         leftModel = new DefaultListModel();
@@ -110,17 +127,17 @@ class ViewServiceDialog extends JDialog {
 
         rightList = new JList(rightModel);
         rightList.setModel(rightModel);
-        rightList.setVisibleRowCount(12);
+        rightList.setVisibleRowCount(16);
         rightList.setFixedCellWidth(160);
         rightList.setSelectionBackground(bColor);
         //rightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         rightList.setBackground(nColor);
         rightList.setForeground(fColor);
-        rightList.setBorder(null);
+        rightList.setBorder(line);
 
         rightListScroll = new JScrollPane(rightList);
         rightListScroll.setViewportView(rightList);
-        rightListScroll.setBorder(null);
+        rightListScroll.setBorder(line);
 //		rightListScroll.setViewportBorder(Border );
 
         Container c = getContentPane();
@@ -134,26 +151,38 @@ class ViewServiceDialog extends JDialog {
         spring.putConstraint(SpringLayout.WEST, idLabel, 20, SpringLayout.WEST, c);
         spring.putConstraint(SpringLayout.NORTH, idLabel, 35, SpringLayout.NORTH, c);
         spring.putConstraint(SpringLayout.WEST, idInput, 130, SpringLayout.EAST, idLabel);
-        spring.putConstraint(SpringLayout.NORTH, idInput, 30, SpringLayout.NORTH, c);
+        spring.putConstraint(SpringLayout.NORTH, idInput, 35, SpringLayout.NORTH, c);
         c.add(scLabel);
         c.add(scInput);
         spring.putConstraint(SpringLayout.WEST, scLabel, 20, SpringLayout.WEST, c);
         spring.putConstraint(SpringLayout.NORTH, scLabel, 35, SpringLayout.SOUTH, idLabel);
         spring.putConstraint(SpringLayout.WEST, scInput, 130, SpringLayout.EAST, idLabel);
-        spring.putConstraint(SpringLayout.NORTH, scInput, 30, SpringLayout.SOUTH, idLabel);
+        spring.putConstraint(SpringLayout.NORTH, scInput, 35, SpringLayout.SOUTH, idLabel);
         c.add(dcLabel);
         c.add(dcInput);
         spring.putConstraint(SpringLayout.WEST, dcLabel, 20, SpringLayout.WEST, c);
         spring.putConstraint(SpringLayout.NORTH, dcLabel, 35, SpringLayout.SOUTH, scLabel);
         spring.putConstraint(SpringLayout.WEST, dcInput, 130, SpringLayout.EAST, idLabel);
-        spring.putConstraint(SpringLayout.NORTH, dcInput, 30, SpringLayout.SOUTH, scLabel);
+        spring.putConstraint(SpringLayout.NORTH, dcInput, 35, SpringLayout.SOUTH, scLabel);
+        c.add(createDateLabel);
+        c.add(createDateInput);
+        spring.putConstraint(SpringLayout.WEST, createDateLabel, 20, SpringLayout.WEST, c);
+        spring.putConstraint(SpringLayout.NORTH, createDateLabel, 35, SpringLayout.SOUTH, dcLabel);
+        spring.putConstraint(SpringLayout.WEST, createDateInput, 130, SpringLayout.EAST, idLabel);
+        spring.putConstraint(SpringLayout.NORTH, createDateInput, 35, SpringLayout.SOUTH, dcLabel);
+        c.add(termDateLabel);
+        c.add(termDateInput);
+        spring.putConstraint(SpringLayout.WEST, termDateLabel, 20, SpringLayout.WEST, c);
+        spring.putConstraint(SpringLayout.NORTH, termDateLabel, 35, SpringLayout.SOUTH, createDateLabel);
+        spring.putConstraint(SpringLayout.WEST, termDateInput, 130, SpringLayout.EAST, idLabel);
+        spring.putConstraint(SpringLayout.NORTH, termDateInput, 35, SpringLayout.SOUTH, createDateLabel);
         c.add(addLabel);
         c.add(addScroll);
         addInput.setBorder(textBorder);
         spring.putConstraint(SpringLayout.WEST, addLabel, 20, SpringLayout.WEST, c);
-        spring.putConstraint(SpringLayout.NORTH, addLabel, 35, SpringLayout.SOUTH, dcLabel);
+        spring.putConstraint(SpringLayout.NORTH, addLabel, 35, SpringLayout.SOUTH, termDateLabel);
         spring.putConstraint(SpringLayout.WEST, addScroll, 130, SpringLayout.EAST, idLabel);
-        spring.putConstraint(SpringLayout.NORTH, addScroll, 30, SpringLayout.SOUTH, dcInput);
+        spring.putConstraint(SpringLayout.NORTH, addScroll, 35, SpringLayout.SOUTH, termDateLabel);
 //		c.add(separator);
 //		spring.putConstraint(SpringLayout.WEST, separator, 30, SpringLayout.EAST, idInput);
 //		spring.putConstraint(SpringLayout.NORTH, separator, 15, SpringLayout.NORTH, c);
@@ -167,15 +196,19 @@ class ViewServiceDialog extends JDialog {
 //		spring.putConstraint(SpringLayout.WEST, separator2, 5, SpringLayout.WEST, c);
 //		spring.putConstraint(SpringLayout.NORTH, separator2, 25, SpringLayout.SOUTH, rightListScroll);
         c.add(closeBut);
-        spring.putConstraint(SpringLayout.WEST, closeBut, 400, SpringLayout.WEST, c);
-        spring.putConstraint(SpringLayout.NORTH, closeBut, 30, SpringLayout.SOUTH, rightListScroll);
+        spring.putConstraint(SpringLayout.WEST, closeBut, 350, SpringLayout.WEST, c);
+        spring.putConstraint(SpringLayout.NORTH, closeBut, 30, SpringLayout.SOUTH, addScroll);
 
         ButtonHandler handler = new ButtonHandler();
         closeBut.addActionListener(handler);
-        setSize(700, 420);
+        setSize(700, 520);
         ServicePanel.defaultButtonSet();
     }
 
+    /**
+     * @author LiHao
+     *         This class is used for handler the button listener.
+     */
     public class ButtonHandler implements ActionListener {
 
         @Override

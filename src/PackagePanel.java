@@ -9,9 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -493,22 +490,8 @@ public class PackagePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    FileOutputStream prg_fostream = new FileOutputStream("pkg_data.rycox");
-                    try (ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream)) {
-                        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                            if (RYCOXv2.pkgList.get(i) != null) {
-                                prg_oostream.writeObject(RYCOXv2.pkgList);
-                            }
-                        }
-                        prg_oostream.flush();
-                    }
-                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[PACKAGE]");
-                    RYCOXv2.logList.add(RYCOXv2.log);
-                    RYCOXv2.printLog();
-                    //JOptionPane.showMessageDialog(null, "You have successfully saved the changes of TV Packages !", "Save successfully", JOptionPane.PLAIN_MESSAGE);
-                } catch (IOException | HeadlessException ex) {
-                }
+                RYCOXv2.savePackagingFile();
+                RYCOXv2.savePackageFile();
             }
         });
 
@@ -655,60 +638,77 @@ public class PackagePanel extends JPanel {
         rowno = pkgTable.getSelectedRow();
         String ID = (String) pkgTable.getValueAt(rowno, 0);
 
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-            if (ID.equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                lol2 = i;
-                if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
-                    pkgDeleteButton.setEnabled(true);
-                    editPkgButton.setEnabled(true);
-                    pkgActivateButton.setEnabled(false);
-                    pkgDeactButton.setEnabled(true);
-                    deletePkgMI.setEnabled(true);
-                    editPkgMI.setEnabled(true);
-                    activateMI.setEnabled(false);
-                    deactivateMI.setEnabled(true);
-                    deletePkgMI.setEnabled(true);
-                    viewButton.setEnabled(true);
-                    pkgDeleteButton.setVisible(true);
-                    editPkgButton.setVisible(true);
-                    pkgActivateButton.setVisible(true);
-                    pkgDeactButton.setVisible(true);
-                    editPkgMI.setVisible(true);
-                    activateMI.setVisible(true);
-                    deactivateMI.setVisible(true);
-                    deletePkgMI.setVisible(true);
-                } else if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
-                    pkgDeleteButton.setEnabled(true);
-                    editPkgButton.setEnabled(true);
-                    pkgActivateButton.setEnabled(true);
-                    pkgDeactButton.setEnabled(false);
-                    deletePkgMI.setEnabled(true);
-                    editPkgMI.setEnabled(true);
-                    activateMI.setEnabled(true);
-                    deactivateMI.setEnabled(false);
-                    deletePkgMI.setEnabled(true);
-                    viewButton.setEnabled(true);
-                    pkgDeleteButton.setVisible(true);
-                    editPkgButton.setVisible(true);
-                    pkgActivateButton.setVisible(true);
-                    pkgDeactButton.setVisible(true);
-                    editPkgMI.setVisible(true);
-                    activateMI.setVisible(true);
-                    deactivateMI.setVisible(true);
-                    deletePkgMI.setVisible(true);
-                } else if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("TERMINATED")) {
-                    pkgDeleteButton.setVisible(false);
-                    editPkgButton.setVisible(false);
-                    pkgActivateButton.setVisible(false);
-                    pkgDeactButton.setVisible(false);
-                    deletePkgMI.setEnabled(false);
-                    editPkgMI.setVisible(false);
-                    activateMI.setVisible(false);
-                    deactivateMI.setVisible(false);
-                    deletePkgMI.setVisible(false);
-                    viewButton.setEnabled(true);
+        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+            for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
+                if (ID.equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
+                    lol2 = i;
+                    if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
+                        pkgDeleteButton.setEnabled(true);
+                        editPkgButton.setEnabled(true);
+                        pkgActivateButton.setEnabled(false);
+                        pkgDeactButton.setEnabled(true);
+                        deletePkgMI.setEnabled(true);
+                        editPkgMI.setEnabled(true);
+                        activateMI.setEnabled(false);
+                        deactivateMI.setEnabled(true);
+                        deletePkgMI.setEnabled(true);
+                        viewButton.setEnabled(true);
+                        pkgDeleteButton.setVisible(true);
+                        editPkgButton.setVisible(true);
+                        pkgActivateButton.setVisible(true);
+                        pkgDeactButton.setVisible(true);
+                        editPkgMI.setVisible(true);
+                        activateMI.setVisible(true);
+                        deactivateMI.setVisible(true);
+                        deletePkgMI.setVisible(true);
+                    } else if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
+                        pkgDeleteButton.setEnabled(true);
+                        editPkgButton.setEnabled(true);
+                        pkgActivateButton.setEnabled(true);
+                        pkgDeactButton.setEnabled(false);
+                        deletePkgMI.setEnabled(true);
+                        editPkgMI.setEnabled(true);
+                        activateMI.setEnabled(true);
+                        deactivateMI.setEnabled(false);
+                        deletePkgMI.setEnabled(true);
+                        viewButton.setEnabled(true);
+                        pkgDeleteButton.setVisible(true);
+                        editPkgButton.setVisible(true);
+                        pkgActivateButton.setVisible(true);
+                        pkgDeactButton.setVisible(true);
+                        editPkgMI.setVisible(true);
+                        activateMI.setVisible(true);
+                        deactivateMI.setVisible(true);
+                        deletePkgMI.setVisible(true);
+                    } else if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("TERMINATED")) {
+                        pkgDeleteButton.setVisible(false);
+                        editPkgButton.setVisible(false);
+                        pkgActivateButton.setVisible(false);
+                        pkgDeactButton.setVisible(false);
+                        deletePkgMI.setEnabled(false);
+                        editPkgMI.setVisible(false);
+                        activateMI.setVisible(false);
+                        deactivateMI.setVisible(false);
+                        deletePkgMI.setVisible(false);
+                        viewButton.setEnabled(true);
+                    }
                 }
             }
+        } else {
+            pkgAddButton.setVisible(false);
+            saveButton.setVisible(false);
+            editPkgButton.setVisible(false);
+            viewButton.setVisible(true);
+            viewButton.setEnabled(true);
+            pkgDeleteButton.setVisible(false);
+            pkgActivateButton.setVisible(false);
+            pkgDeactButton.setVisible(false);
+            editPkgMI.setVisible(false);
+            deletePkgMI.setVisible(false);
+            activateMI.setVisible(false);
+            deactivateMI.setVisible(false);
+            viewMI.setVisible(true);
+            viewMI.setEnabled(true);
         }
     }
 

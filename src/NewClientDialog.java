@@ -70,8 +70,6 @@ class NewClientDialog extends JDialog {
         generatedGovID = "G" + Integer.toString(1000000 + countPrv + 1).substring(1, 7);
         generatedPrvID = "P" + Integer.toString(1000000 + countGov + 1).substring(1, 7);
         generatedNGOID = "N" + Integer.toString(1000000 + countNGO + 1).substring(1, 7);
-        System.out.println(countInd + "\t" + countPrv + "\t" + countGov + "\t" + countNGO);
-        System.out.println(generatedIndID + "\t" + generatedPrvID + "\t" + generatedPrvID + "\t" + generatedNGOID);
         BGPanel = new JPanel();
         BGPanel.setBackground(bColor);
         BGPanel.setForeground(fColor);

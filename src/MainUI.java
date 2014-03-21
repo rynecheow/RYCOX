@@ -15,7 +15,7 @@ public class MainUI extends JFrame implements ActionListener {
     private Color mainbgColor = new Color(23, 28, 30);
     private JMenuBar menubar;
     private JMenu fileMenu, editMenu, viewMenu, helpMenu;
-    private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI, listClientMI, manageUserMI, chgpwMI;
+    private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI, reportMI, manageUserMI, chgpwMI;
     private int i;
     private JMenu adminMenu;
 
@@ -44,7 +44,7 @@ public class MainUI extends JFrame implements ActionListener {
         aboutMI = new JMenuItem("About..");
         viewLogMI = new JMenuItem("View Log...");
         logoutMI = new JMenuItem("Log out '" + RYCOXv2.user + "'...");
-        listClientMI = new JMenuItem("List all client...");
+        reportMI = new JMenuItem("View Report...");
         manageUserMI = new JMenuItem("Manage users..");
         chgpwMI = new JMenuItem("Change log in password...");
         fileMenu.add(saveMI);
@@ -53,14 +53,15 @@ public class MainUI extends JFrame implements ActionListener {
         helpMenu.add(aboutMI);
         helpMenu.add(chgpwMI);
         viewMenu.add(viewLogMI);
-        adminMenu.add(listClientMI);
+        adminMenu.add(reportMI);
         adminMenu.add(manageUserMI);
         viewLogMI.addActionListener(this);
+        aboutMI.addActionListener(this);
         logoutMI.addActionListener(this);
         setJMenuBar(menubar);
         saveMI.addActionListener(this);
         exitMI.addActionListener(this);
-        listClientMI.addActionListener(this);
+        reportMI.addActionListener(this);
         manageUserMI.addActionListener(this);
         chgpwMI.addActionListener(this);
         homePanel = new JPanel();
@@ -148,7 +149,6 @@ public class MainUI extends JFrame implements ActionListener {
             ld.setVisible(true);
         } else if (e.getSource() == logoutMI) {
             int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to log out? Any unsaved changes will be discarded.", "Confirm logout", JOptionPane.WARNING_MESSAGE);
-            System.out.println("option");
 
             if (option == JOptionPane.YES_OPTION) {
                 RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
@@ -160,10 +160,12 @@ public class MainUI extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == manageUserMI) {
             new ManageUsers(this).setVisible(true);
-        } else if (e.getSource() == listClientMI) {
-            new ClientReportDialog(this).setVisible(true);
+        } else if (e.getSource() == reportMI) {
+            new GenerateReportDialog(this).setVisible(true);
         } else if (e.getSource() == chgpwMI) {
             new ChangePasswordDialog(this).setVisible(true);
+        } else if (e.getSource() == aboutMI) {
+            new AboutDialog(this).setVisible(true);
         }
     }
 }

@@ -9,10 +9,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * @author LiHao
+ */
 @SuppressWarnings("serial")
 class ServicePanel extends JPanel {
 
     private JTable servTable;
+    // Variables declaration 
     private static JButton servDeleteButton;
     private static JButton editServButton;
     private static JButton viewButton;
@@ -32,6 +36,7 @@ class ServicePanel extends JPanel {
     static String[] temp;
     static DefaultTableModel model;
     private int rowNumber;
+    // End of variables declaration
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public ServicePanel() {
@@ -52,7 +57,7 @@ class ServicePanel extends JPanel {
         recoverButton.setBackground(bColor);
         servActivateButton = new JButton("", new ImageIcon(getClass().getResource("/resources/activatebutton.png")));
         servActivateButton.setBackground(bColor);
-        barButton = new JButton("", new ImageIcon(getClass().getResource("/resources/deactivatebutton.png")));
+        barButton = new JButton("", new ImageIcon(getClass().getResource("/resources/barbutton.png")));
         barButton.setBackground(bColor);
         scrollPane = new JScrollPane();
         servTable = new JTable();
@@ -63,11 +68,17 @@ class ServicePanel extends JPanel {
         setBackground(new Color(23, 28, 30));
         toolbar.setBackground(bColor);
         toolbar.setPreferredSize(new Dimension(1500, 30));
-
+        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+            servDeleteButton.setVisible(true);
+            recoverButton.setVisible(true);
+        } else {
+            servDeleteButton.setVisible(false);
+            recoverButton.setVisible(false);
+        }
         GroupLayout toolbarLayout = new GroupLayout(toolbar);
         toolbar.setLayout(toolbarLayout);
         toolbarLayout.setHorizontalGroup(
-                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup().addContainerGap().addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(editServButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(barButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE).addContainerGap()));
+                toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup().addContainerGap().addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(editServButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(barButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE).addContainerGap()));
         toolbarLayout.setVerticalGroup(
                 toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(toolbarLayout.createSequentialGroup().addContainerGap().addGroup(toolbarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(saveButton).addComponent(editServButton).addComponent(servActivateButton).addComponent(barButton).addComponent(viewButton).addComponent(recoverButton).addComponent(loginInfo).addComponent(servDeleteButton)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
@@ -135,109 +146,117 @@ class ServicePanel extends JPanel {
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE).addContainerGap()));
 
-        servTable.addMouseListener(new MouseAdapter() {
+/////////*-------------------------- MOUSE LISTENER --------------------------*////////
+        servTable.addMouseListener(
+                new MouseAdapter() {
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    int rowNumber = servTable.rowAtPoint(e.getPoint());
-                    // Get the ListSelectionModel of the JTable
-                    temp = new String[5];
-                    for (int j = 0; j < 5; j++) {
-                        temp[j] = (String) servTable.getValueAt(rowNumber, j);
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        if (SwingUtilities.isRightMouseButton(e)) {
+                            int rowNumber = servTable.rowAtPoint(e.getPoint());
+                            // Get the ListSelectionModel of the JTable
+                            temp = new String[5];
+                            for (int j = 0; j < 5; j++) {
+                                temp[j] = (String) servTable.getValueAt(rowNumber, j);
+                            }
+                            if (temp[4].equalsIgnoreCase("ACTIVE")) {
+                                editServButton.setEnabled(true);
+                                viewButton.setEnabled(true);
+                                servDeleteButton.setEnabled(true);
+                                barButton.setEnabled(true);
+                                recoverButton.setEnabled(false);
+                                servActivateButton.setEnabled(false);
+                                viewServMI.setEnabled(true);
+                                editServMI.setEnabled(true);
+                                activeServMI.setEnabled(false);
+                                barredServMI.setEnabled(true);
+                                deleteServMI.setEnabled(true);
+                            } else if (temp[4].equalsIgnoreCase("BARRED")) {
+                                viewButton.setEnabled(true);
+                                servDeleteButton.setEnabled(true);
+                                servActivateButton.setEnabled(true);
+                                recoverButton.setEnabled(false);
+                                editServButton.setEnabled(true);
+                                barButton.setEnabled(false);
+                                viewServMI.setEnabled(true);
+                                editServMI.setEnabled(false);
+                                activeServMI.setEnabled(true);
+                                barredServMI.setEnabled(false);
+                                deleteServMI.setEnabled(true);
+                            } else if (temp[4].equalsIgnoreCase("TERMINATED")) {
+                                recoverButton.setEnabled(true);
+                                editServButton.setEnabled(false);
+                                viewButton.setEnabled(true);
+                                servDeleteButton.setEnabled(false);
+                                servActivateButton.setEnabled(false);
+                                barButton.setEnabled(false);
+                                viewServMI.setEnabled(true);
+                                editServMI.setEnabled(false);
+                                activeServMI.setEnabled(false);
+                                barredServMI.setEnabled(false);
+                                deleteServMI.setEnabled(false);
+                            }
+                            ListSelectionModel model = servTable.getSelectionModel();
+                            model.setSelectionInterval(rowNumber, rowNumber);
+                            showPopup(e);
+                        } else if (SwingUtilities.isLeftMouseButton(e)) {
+                            rowNumber = servTable.rowAtPoint(e.getPoint());
+                            temp = new String[5];
+                            for (int j = 0; j < 5; j++) {
+                                temp[j] = (String) servTable.getValueAt(rowNumber, j);
+                            }
+                            if (temp[4].equalsIgnoreCase("ACTIVE")) {
+                                editServButton.setEnabled(true);
+                                viewButton.setEnabled(true);
+                                servDeleteButton.setEnabled(true);
+                                barButton.setEnabled(true);
+                                recoverButton.setEnabled(false);
+                                servActivateButton.setEnabled(false);
+                                viewServMI.setEnabled(true);
+                                editServMI.setEnabled(true);
+                                activeServMI.setEnabled(false);
+                                barredServMI.setEnabled(true);
+                                deleteServMI.setEnabled(true);
+                            } else if (temp[4].equalsIgnoreCase("BARRED")) {
+                                viewButton.setEnabled(true);
+                                servDeleteButton.setEnabled(true);
+                                servActivateButton.setEnabled(true);
+                                recoverButton.setEnabled(false);
+                                editServButton.setEnabled(false);
+                                barButton.setEnabled(false);
+                                viewServMI.setEnabled(true);
+                                editServMI.setEnabled(false);
+                                activeServMI.setEnabled(true);
+                                barredServMI.setEnabled(false);
+                                deleteServMI.setEnabled(true);
+                            } else if (temp[4].equalsIgnoreCase("TERMINATED")) {
+                                recoverButton.setEnabled(true);
+                                editServButton.setEnabled(false);
+                                viewButton.setEnabled(true);
+                                servDeleteButton.setEnabled(false);
+                                servActivateButton.setEnabled(false);
+                                barButton.setEnabled(false);
+                                viewServMI.setEnabled(true);
+                                editServMI.setEnabled(false);
+                                activeServMI.setEnabled(false);
+                                barredServMI.setEnabled(false);
+                                deleteServMI.setEnabled(false);
+                            }
+                        }
                     }
-                    if (temp[4].equalsIgnoreCase("ACTIVE")) {
-                        editServButton.setEnabled(true);
-                        viewButton.setEnabled(true);
-                        servDeleteButton.setEnabled(true);
-                        barButton.setEnabled(true);
-                        recoverButton.setEnabled(false);
-                        servActivateButton.setEnabled(false);
-                        viewServMI.setEnabled(true);
-                        editServMI.setEnabled(true);
-                        activeServMI.setEnabled(false);
-                        barredServMI.setEnabled(true);
-                        deleteServMI.setEnabled(true);
-                    } else if (temp[4].equalsIgnoreCase("BARRED")) {
-                        viewButton.setEnabled(true);
-                        servDeleteButton.setEnabled(true);
-                        servActivateButton.setEnabled(true);
-                        recoverButton.setEnabled(false);
-                        editServButton.setEnabled(true);
-                        barButton.setEnabled(false);
-                        viewServMI.setEnabled(true);
-                        editServMI.setEnabled(false);
-                        activeServMI.setEnabled(true);
-                        barredServMI.setEnabled(false);
-                        deleteServMI.setEnabled(true);
-                    } else if (temp[4].equalsIgnoreCase("TERMINATED")) {
-                        recoverButton.setEnabled(true);
-                        editServButton.setEnabled(false);
-                        viewButton.setEnabled(true);
-                        servDeleteButton.setEnabled(false);
-                        servActivateButton.setEnabled(false);
-                        barButton.setEnabled(false);
-                        viewServMI.setEnabled(true);
-                        editServMI.setEnabled(false);
-                        activeServMI.setEnabled(false);
-                        barredServMI.setEnabled(false);
-                        deleteServMI.setEnabled(false);
-                    }
-                    ListSelectionModel model = servTable.getSelectionModel();
-                    model.setSelectionInterval(rowNumber, rowNumber);
-                    showPopup(e);
-                } else if (SwingUtilities.isLeftMouseButton(e)) {
-                    rowNumber = servTable.rowAtPoint(e.getPoint());
-                    temp = new String[5];
-                    for (int j = 0; j < 5; j++) {
-                        temp[j] = (String) servTable.getValueAt(rowNumber, j);
-                    }
-                    if (temp[4].equalsIgnoreCase("ACTIVE")) {
-                        editServButton.setEnabled(true);
-                        viewButton.setEnabled(true);
-                        servDeleteButton.setEnabled(true);
-                        barButton.setEnabled(true);
-                        recoverButton.setEnabled(false);
-                        servActivateButton.setEnabled(false);
-                        viewServMI.setEnabled(true);
-                        editServMI.setEnabled(true);
-                        activeServMI.setEnabled(false);
-                        barredServMI.setEnabled(true);
-                        deleteServMI.setEnabled(true);
-                    } else if (temp[4].equalsIgnoreCase("BARRED")) {
-                        viewButton.setEnabled(true);
-                        servDeleteButton.setEnabled(true);
-                        servActivateButton.setEnabled(true);
-                        recoverButton.setEnabled(false);
-                        editServButton.setEnabled(false);
-                        barButton.setEnabled(false);
-                        viewServMI.setEnabled(true);
-                        editServMI.setEnabled(false);
-                        activeServMI.setEnabled(true);
-                        barredServMI.setEnabled(false);
-                        deleteServMI.setEnabled(true);
-                    } else if (temp[4].equalsIgnoreCase("TERMINATED")) {
-                        recoverButton.setEnabled(true);
-                        editServButton.setEnabled(false);
-                        viewButton.setEnabled(true);
-                        servDeleteButton.setEnabled(false);
-                        servActivateButton.setEnabled(false);
-                        barButton.setEnabled(false);
-                        viewServMI.setEnabled(true);
-                        editServMI.setEnabled(false);
-                        activeServMI.setEnabled(false);
-                        barredServMI.setEnabled(false);
-                        deleteServMI.setEnabled(false);
+
+                    /**
+                     * @author LiHao
+                     * This method gets the component of each row and column and pop up Menu Item.
+                     * @param e
+                     */
+                    private void showPopup(MouseEvent e) {
+                        if (e.isPopupTrigger()) {
+                            popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                        }
                     }
                 }
-            }
-
-            private void showPopup(MouseEvent e) {
-                if (e.isPopupTrigger()) {
-                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                }
-            }
-        }); //table right click
+        ); //table right click
 
         editServMI = new JMenuItem("Edit Service...");
         deleteServMI = new JMenuItem("Terminate Service...");
@@ -268,6 +287,11 @@ class ServicePanel extends JPanel {
 
     }//end constructor
 
+    /**
+     * @author LiHao
+     *         This class is used for handler all the button listener and returns dialog for confirmation if necessary.
+     */
+    // start action Listener
     public class DialogHandler implements ActionListener {
 
         @Override
@@ -350,8 +374,13 @@ class ServicePanel extends JPanel {
                 }
             }
         }
-    }
+    }// end ActionListener
 
+    /**
+     * @author LiHao
+     * This method is use for update the table data for each time we edit the data in the list.
+     */
+    // start updateTable()
     public void updateTable() {
         servData = new String[RYCOXv2.servList.size()][5];
         for (int i = 0; i < RYCOXv2.servList.size(); i++) {
@@ -409,14 +438,22 @@ class ServicePanel extends JPanel {
         servTable.getRowSorter().toggleSortOrder(0);
         servTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(servTable);
-    }
+    }//end updateTable()
 
+    /**
+     * @author LiHao
+     * This static method is used for updating the servicePanel table after add a new service.
+     */
     static void addServ() {
         int row = RYCOXv2.servList.size() - 1;
         String[] newServ = new String[]{RYCOXv2.servList.get(row).getSmartCardNo(), RYCOXv2.servList.get(row).getClientID(), RYCOXv2.servList.get(row).getDecodeNo(), RYCOXv2.servList.get(row).getAddress(), RYCOXv2.servList.get(row).getServStatus()};
         ((DefaultTableModel) model).addRow(newServ);
     }
 
+    /**
+     * @author LiHao
+     * This static method is used for reset the button to default type.
+     */
     static void defaultButtonSet() {
         recoverButton.setEnabled(false);
         editServButton.setEnabled(false);

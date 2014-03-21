@@ -5,8 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
+/**
+ * @author LiHao
+ */
 @SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class NewServiceDialog extends JDialog {
+    // Variable declaration
     private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, leftLabel, rightLabel, scExample, dcExample;
     private JTextField idInput, scInput, dcInput;
     private JTextArea addInput;
@@ -28,6 +32,7 @@ class NewServiceDialog extends JDialog {
     private int subsNo;
     private JCheckBox addCB;
     private JWarnLabel scFormatWarn, scEmptyWarn, scSameWarn, dcFormatWarn, dcEmptyWarn, dcSameWarn, addWarn, subsPkgWarn;
+    // end of variable declaration
 
     public NewServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
@@ -55,8 +60,10 @@ class NewServiceDialog extends JDialog {
         addInput = new JTextArea(5, 20);
         okBut = new JButton("OK");
         ccBut = new JButton("Cancel");
-        addBut = new JButton("ADD");
-        rmvBut = new JButton("REMOVE");
+        addBut = new JButton("", new ImageIcon(getClass().getResource("/resources/addtoright.png")));
+        addBut.setBackground(new Color(23, 28, 31));
+        rmvBut = new JButton("", new ImageIcon(getClass().getResource("/resources/removetoleft.png")));
+        rmvBut.setBackground(new Color(23, 28, 31));
         addCB = new JCheckBox("Use default address.");
         addCB.setForeground(fColor);
         scFormatWarn = new JWarnLabel("Please Enter the correct Smart Card Format.");
@@ -77,6 +84,7 @@ class NewServiceDialog extends JDialog {
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
 
+        // get package
         for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
             ((DefaultListModel) leftModel).addElement(RYCOXv2.pkgList.get(i).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
         }
@@ -171,7 +179,7 @@ class NewServiceDialog extends JDialog {
         spring.putConstraint(SpringLayout.WEST, leftListScroll, 25, SpringLayout.EAST, separator);
         spring.putConstraint(SpringLayout.NORTH, leftListScroll, 48, SpringLayout.NORTH, c);
         spring.putConstraint(SpringLayout.WEST, addBut, 40, SpringLayout.EAST, leftListScroll);
-        spring.putConstraint(SpringLayout.NORTH, addBut, 52, SpringLayout.NORTH, c);
+        spring.putConstraint(SpringLayout.NORTH, addBut, 95, SpringLayout.NORTH, c);
         spring.putConstraint(SpringLayout.WEST, rmvBut, 30, SpringLayout.EAST, leftListScroll);
         spring.putConstraint(SpringLayout.NORTH, rmvBut, 10, SpringLayout.SOUTH, addBut);
         spring.putConstraint(SpringLayout.WEST, rightListScroll, 28, SpringLayout.EAST, rmvBut);
@@ -198,6 +206,10 @@ class NewServiceDialog extends JDialog {
         ServicePanel.defaultButtonSet();
     }
 
+    /**
+     * @author LiHao
+     *         This class is used for handler all the button listener and returns dialog for confirmation if necessary.
+     */
     public class ButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -209,9 +221,17 @@ class NewServiceDialog extends JDialog {
                     dispose();
                 }
             } else if (e.getSource() == addBut) {
-                pkgAdd();
+                try {
+                    pkgAdd();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "You can only add a TV Package from the left list.", "Adding error", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else if (e.getSource() == rmvBut) {
-                pkgRemove();
+                try {
+                    pkgRemove();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "You can only remove a TV Package from the right list when right list is filled in with TV Package.", "Remove error", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
             if (addCB.isSelected()) {
                 addInput.setText(ClientPanel.editionData[3]);
@@ -221,6 +241,13 @@ class NewServiceDialog extends JDialog {
         }
     }
 
+    /**
+     * @author LiHao
+     * This method is used for validate the data entered by user is correct
+     * and the smart card number and decoder number is not repeat,
+     * if all the data is correct the new service will be added,
+     * if not will display the warning message.
+     */
     public void submit() {
         String scNo_IDregex = "^[sS][0-9]{6}$";
         String decNo_IDregex = "^[dD][0-9]{6}$";
@@ -308,6 +335,10 @@ class NewServiceDialog extends JDialog {
         }
     }
 
+    /**
+     * @author LiHao
+     * This method is used for updating the new subscription from client.
+     */
     private void updateSubsList() {
         subsNo = 0;
         for (int i = 0; i < RYCOXv2.servList.size(); i++) {
@@ -325,11 +356,20 @@ class NewServiceDialog extends JDialog {
         }
     }
 
+    /**
+     * @author LiHao
+     * This method is used for updating the new service's information from client.
+     */
     public void updateList() {
         RYCOXv2.servList.add(new Service(scInput.getText(), ClientPanel.editionData[0], dcInput.getText(), addInput.getText()));
         ServicePanel.addServ();
     }
 
+    /**
+     * @author LiHao
+     * This method is used for add the selected package from
+     * the not subscribe package list to subscribe package list.
+     */
     public void pkgAdd() {
         int leftIndex = leftList.getSelectedIndex();
         String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));
@@ -361,6 +401,11 @@ class NewServiceDialog extends JDialog {
         rightList.revalidate();
     }
 
+    /**
+     * @author LiHao
+     * This method is used for remove the selected package from
+     * the subscribe package list to not subscribe package list.
+     */
     public void pkgRemove() {
         int rightIndex = rightList.getSelectedIndex();
         String toBeRemoved = ((String) rightList.getModel().getElementAt(rightIndex));
@@ -393,6 +438,10 @@ class NewServiceDialog extends JDialog {
         leftList.revalidate();
     }
 
+    /**
+     * @author LiHao
+     *         This class is used for declare the warning message label.
+     */
     public class JWarnLabel extends JLabel {
         public JWarnLabel(String s) {
             super(s);

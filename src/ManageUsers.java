@@ -2,8 +2,6 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,9 +72,9 @@ public class ManageUsers extends JDialog implements ActionListener {
         };
         userTable.setModel(userModel);
         scrollpane.setViewportView(userTable);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(userModel);
-        userTable.setRowSorter(sorter);
-        userTable.getRowSorter().toggleSortOrder(0);
+//	TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(userModel);
+//	userTable.setRowSorter(sorter);
+//	userTable.getRowSorter().toggleSortOrder(0);
         userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         userTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
@@ -104,14 +102,12 @@ public class ManageUsers extends JDialog implements ActionListener {
                     lsm.setSelectionInterval(rowNumber, rowNumber);
                     selectedUserID = (String) userTable.getValueAt(userTable.getSelectedRow(), 1);
                     row = userTable.getSelectedRow();
-                    System.out.println(selectedUserID);
                 }
                 if (SwingUtilities.isRightMouseButton(e)) {
                     int rowNumber = userTable.rowAtPoint(e.getPoint());
                     ListSelectionModel lsm = userTable.getSelectionModel();
                     lsm.setSelectionInterval(rowNumber, rowNumber);
                     selectedUserID = (String) userTable.getValueAt(userTable.getSelectedRow(), 1);
-                    System.out.println(selectedUserID);
                     row = userTable.getSelectedRow();
                 }
             }
@@ -123,7 +119,6 @@ public class ManageUsers extends JDialog implements ActionListener {
                     ListSelectionModel lsm = userTable.getSelectionModel();
                     lsm.setSelectionInterval(rowNumber, rowNumber);
                     selectedUserID = (String) userTable.getValueAt(userTable.getSelectedRow(), 1);
-                    System.out.println(selectedUserID);
                     row = userTable.getSelectedRow();
                 }
                 if (SwingUtilities.isRightMouseButton(e)) {
@@ -131,7 +126,6 @@ public class ManageUsers extends JDialog implements ActionListener {
                     ListSelectionModel lsm = userTable.getSelectionModel();
                     lsm.setSelectionInterval(rowNumber, rowNumber);
                     selectedUserID = (String) userTable.getValueAt(userTable.getSelectedRow(), 1);
-                    System.out.println(selectedUserID);
                     row = userTable.getSelectedRow();
                 }
             }

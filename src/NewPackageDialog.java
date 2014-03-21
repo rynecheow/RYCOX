@@ -8,17 +8,15 @@ import java.util.LinkedList;
  * @author Jia Jiun
  */
 @SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
-class EditPackageDialog extends JDialog {
-
+class NewPackageDialog extends JDialog {
     //Variable declaration
-    private JLabel label1, label2, label3, label4, label5, label6;
+    private JLabel label2, label3, label4, label5, label6;
     private JLabel error3, error4, error5, error6, error7;
-    private JTextField textfield1, textfield2, textfield3;
-    private JList leftList;
-    private JList rightList;
+    private JTextField textfield1, textfield2;
+    private JList leftList, rightList;
     private JComboBox combobox1;
     private JButton button1, button2, addBut, rmvBut;
-    private Color color, color1, color2;
+    private Color color, color1;
     private LinkedList<String> leftPrgList;
     private LinkedList<String> selPrgList;
     private AbstractListModel leftModel;
@@ -31,10 +29,9 @@ class EditPackageDialog extends JDialog {
     private LinkedList<String> rightElements;
     //End of variable declaration
 
-    public EditPackageDialog(JFrame frame) {
-        super(frame, "Package Management- Edit a TV Package", true);
+    public NewPackageDialog(JFrame frame) {
+        super(frame, "Package Management- Create new TV Package", true);
 
-        label1 = new JLabel("Package Code: ");
         label2 = new JLabel("Package Name: ");
         error3 = new JLabel("Blank input occured! Please reenter it.");
         label3 = new JLabel("Charge Price(RM): ");
@@ -48,50 +45,22 @@ class EditPackageDialog extends JDialog {
 
         textfield1 = new JTextField(15);
         textfield2 = new JTextField(15);
-        textfield3 = new JTextField(15);
-        textfield3.setEditable(false);
         combobox1 = new JComboBox();
         button1 = new JButton("Submit");
         button2 = new JButton("Cancel");
-        addBut = new JButton("Add");
-        rmvBut = new JButton("Remove");
+        addBut = new JButton("", new ImageIcon(getClass().getResource("/resources/addtoright.png")));
+        addBut.setBackground(new Color(23, 28, 31));
+        rmvBut = new JButton("", new ImageIcon(getClass().getResource("/resources/removetoleft.png")));
+        rmvBut.setBackground(new Color(23, 28, 31));
 
         color = new Color(23, 28, 30);
         color1 = new Color(244, 219, 234);
-        color2 = new Color(239, 237, 237);
-        textfield3.setBackground(color2);
 
-
+        leftPrgList = new LinkedList<>();
         selPrgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            for (int j = 0; j < RYCOXv2.pckgingList.size(); j++) {
-                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(RYCOXv2.pckgingList.get(j).getPkgCode())) {
-                    if (RYCOXv2.pckgingList.get(j).getProgCode().equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                        selPrgList.add(RYCOXv2.pckgingList.get(j).getProgCode());
-                        ((DefaultListModel) rightModel).addElement(RYCOXv2.pckgingList.get(j).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
-                    }
-                }
-            }
-        }
-        selPrg = selPrgList.toArray(new String[selPrgList.size()]);
 
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            boolean check = false;
-            for (int j = 0; j < selPrg.length; j++) {
-
-                if (selPrg[j].equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                    check = true;
-                    break;
-                }
-            }
-            if (check == false) {
-                if (!(RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("TERMINATED"))) {
-                    ((DefaultListModel) leftModel).addElement(RYCOXv2.prgList.get(i).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
-                }
-            }
-        }
 
         leftList = new JList(leftModel);
         leftList.setModel(leftModel);
@@ -111,6 +80,15 @@ class EditPackageDialog extends JDialog {
         rightListScroll.setViewportView(rightList);
 
 
+        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+
+            if (!(RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("TERMINATED"))) {
+
+                ((DefaultListModel) leftModel).addElement(RYCOXv2.prgList.get(i).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
+            }
+
+        }
+
         Container container = getContentPane();
         container.setBackground(color);
         SpringLayout spring = new SpringLayout();
@@ -127,18 +105,11 @@ class EditPackageDialog extends JDialog {
         error5.setVisible(false);
         error6.setVisible(false);
         error7.setVisible(false);
-        label1.setForeground(color1);
         label2.setForeground(color1);
         label3.setForeground(color1);
         label4.setForeground(color1);
         label5.setForeground(color1);
         label6.setForeground(color1);
-
-
-        textfield3.setText(PackagePanel.pkgtemp[0]);
-        textfield1.setText(PackagePanel.pkgtemp[1]);
-        textfield2.setText(PackagePanel.pkgtemp[2]);
-        combobox1.setSelectedItem((String) (PackagePanel.pkgtemp[3]));
 
         addBut.addActionListener(new ActionListener() {
 
@@ -174,10 +145,12 @@ class EditPackageDialog extends JDialog {
                     rightList.setListData(rightElArr);
                     rightList.repaint();
                     rightList.revalidate();
+
                 } catch (Exception ex) {
 
                     JOptionPane.showMessageDialog(null, "You can only add a TV Programme from the left list.", "Adding error", JOptionPane.INFORMATION_MESSAGE);
                 }
+
 
             }
         });
@@ -188,7 +161,9 @@ class EditPackageDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     int rightIndex = rightList.getSelectedIndex();
+
                     String toBeRemoved = ((String) rightList.getModel().getElementAt(rightIndex));
+
                     LinkedList<String> rightElements = new LinkedList<>();
                     for (int p = 0; p < rightList.getModel().getSize(); p++) {
                         rightElements.add((String) rightList.getModel().getElementAt(p));
@@ -222,17 +197,17 @@ class EditPackageDialog extends JDialog {
                     JOptionPane.showMessageDialog(null, "You can only remove a TV Programme from the right list when right list is filled in with TV Programme.", "Remove error", JOptionPane.INFORMATION_MESSAGE);
                 }
 
+
             }
         });
-
-
         button1.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false;
-
+                String a = "", b = "", z = "";
+                double d = 0.0;
 
                 if ((textfield1.getText().trim() == null) || (textfield1.getText().trim().equalsIgnoreCase(""))) {
                     error3.setVisible(true);
@@ -240,6 +215,7 @@ class EditPackageDialog extends JDialog {
                 } else {
                     flag1 = true;
                     error3.setVisible(false);
+                    b = textfield1.getText();
                 }
 
                 if ((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))) {
@@ -247,11 +223,12 @@ class EditPackageDialog extends JDialog {
                     error6.setVisible(false);
                     flag2 = false;
                 } else {
+
                     try {
+                        d = Double.valueOf(textfield2.getText().trim()).doubleValue();
                         flag2 = true;
                         error4.setVisible(false);
                         error6.setVisible(false);
-                        double a = Double.valueOf(textfield2.getText().trim()).doubleValue();
                     } catch (NumberFormatException ex) {
                         error4.setVisible(false);
                         error6.setVisible(true);
@@ -266,73 +243,48 @@ class EditPackageDialog extends JDialog {
                 } else {
                     flag3 = true;
                     error5.setVisible(false);
+
+                    z = combobox1.getSelectedItem().toString();
                 }
 
                 try {
                     if (rightElArr.length >= 1) {
-
                         flag4 = true;
                         error7.setVisible(false);
 
                     } else {
+
                         flag4 = false;
                         error7.setVisible(true);
-
-
                     }
                 } catch (NullPointerException npe) {
-                    flag4 = true;
+
+                    flag4 = false;
+                    error7.setVisible(true);
                 }
 
 
                 if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true)) {
+                    int existedID = 0;
                     for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (RYCOXv2.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                            RYCOXv2.pkgList.get(i).setPkgName(textfield1.getText());
-                            break;
-                        }
+                        existedID += 1;
+                    }
+                    int newID = existedID + 1;
+                    String newIDS = Integer.toString(newID);
+                    if (existedID < 10) {
+                        a = "P0" + newIDS;
+                    } else if (existedID >= 10) {
+                        a = "P" + newIDS;
                     }
 
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (RYCOXv2.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                            RYCOXv2.pkgList.get(i).setChargePrice(Double.valueOf(textfield2.getText().trim()).doubleValue());
-                            break;
-                        }
+                    RYCOXv2.pkgList.addLast(new TVPackage(a, b, d, z, "ACTIVE"));
+
+                    for (int i = 0; i < rightElArr.length; i++) {
+                        RYCOXv2.pckgingList.addLast(new Packaging(a, (rightElArr[i]).substring(0, 4)));
                     }
 
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (RYCOXv2.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                            RYCOXv2.pkgList.get(i).setChargeType(combobox1.getSelectedItem().toString());
-                            break;
-                        }
-                    }
-
-                    if (rightElArr != null) {
-                        for (int i = 0; i < RYCOXv2.pckgingList.size(); i++) {
-                            if (RYCOXv2.pckgingList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                                RYCOXv2.pckgingList.remove(i);
-                                i--;
-                            }
-                        }
-
-                        for (int i = 0; i < rightElArr.length; i++) {
-                            RYCOXv2.pckgingList.addLast(new Packaging(PackagePanel.pkgtemp[0], (rightElArr[i]).substring(0, 4)));
-                        }
-                    } else {
-                        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                            for (int j = 0; j < RYCOXv2.pckgingList.size(); j++) {
-                                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(RYCOXv2.pckgingList.get(j).getPkgCode())) {
-                                    if (RYCOXv2.pckgingList.get(j).getProgCode().equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                                        selPrgList.add(RYCOXv2.pckgingList.get(j).getProgCode());
-                                        ((DefaultListModel) rightModel).addElement(RYCOXv2.pckgingList.get(j).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    JOptionPane.showMessageDialog(null, "You have successfully changed the details of TV Package " + PackagePanel.pkgtemp[0] + " !", PackagePanel.pkgtemp[0] + " edited", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Package '" + PackagePanel.pkgtemp[0] + "'.");
+                    JOptionPane.showMessageDialog(null, "You have successfully created a new TV Package " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
+                    LogFile log = new LogFile(RYCOXv2.user, "has created a new TV Package '" + a + "'.");
                     RYCOXv2.logList.add(log);
                     dispose();
                 }
@@ -351,24 +303,14 @@ class EditPackageDialog extends JDialog {
         });
 
         container.setLayout(spring);
-
-        container.add(label1);
-        container.add(textfield3);
-
-        spring.putConstraint(SpringLayout.WEST, label1, 20, SpringLayout.WEST, container);
-        spring.putConstraint(SpringLayout.NORTH, label1, 15, SpringLayout.NORTH, container);
-        spring.putConstraint(SpringLayout.WEST, textfield3, 80, SpringLayout.EAST, label1);
-        spring.putConstraint(SpringLayout.NORTH, textfield3, 15, SpringLayout.NORTH, container);
-
-
         container.add(label2);
         container.add(textfield1);
         container.add(error3);
 
         spring.putConstraint(SpringLayout.WEST, label2, 20, SpringLayout.WEST, container);
-        spring.putConstraint(SpringLayout.NORTH, label2, 40, SpringLayout.SOUTH, label1);
-        spring.putConstraint(SpringLayout.WEST, textfield1, 80, SpringLayout.EAST, label1);
-        spring.putConstraint(SpringLayout.NORTH, textfield1, 30, SpringLayout.SOUTH, textfield3);
+        spring.putConstraint(SpringLayout.NORTH, label2, 15, SpringLayout.NORTH, container);
+        spring.putConstraint(SpringLayout.WEST, textfield1, 80, SpringLayout.EAST, label2);
+        spring.putConstraint(SpringLayout.NORTH, textfield1, 15, SpringLayout.NORTH, container);
         spring.putConstraint(SpringLayout.NORTH, error3, -27, SpringLayout.SOUTH, textfield1);
         spring.putConstraint(SpringLayout.WEST, error3, 260, SpringLayout.EAST, label2);
 
@@ -377,8 +319,8 @@ class EditPackageDialog extends JDialog {
         container.add(error4);
         container.add(error6);
         spring.putConstraint(SpringLayout.WEST, label3, 20, SpringLayout.WEST, container);
-        spring.putConstraint(SpringLayout.NORTH, label3, 45, SpringLayout.SOUTH, label2);
-        spring.putConstraint(SpringLayout.WEST, textfield2, 80, SpringLayout.EAST, label1);
+        spring.putConstraint(SpringLayout.NORTH, label3, 40, SpringLayout.SOUTH, label2);
+        spring.putConstraint(SpringLayout.WEST, textfield2, 80, SpringLayout.EAST, label2);
         spring.putConstraint(SpringLayout.NORTH, textfield2, 30, SpringLayout.SOUTH, textfield1);
         spring.putConstraint(SpringLayout.NORTH, error4, -26, SpringLayout.SOUTH, textfield2);
         spring.putConstraint(SpringLayout.WEST, error4, 251, SpringLayout.EAST, label3);
@@ -390,7 +332,7 @@ class EditPackageDialog extends JDialog {
         container.add(error5);
         spring.putConstraint(SpringLayout.WEST, label4, 20, SpringLayout.WEST, container);
         spring.putConstraint(SpringLayout.NORTH, label4, 40, SpringLayout.SOUTH, label3);
-        spring.putConstraint(SpringLayout.WEST, combobox1, 80, SpringLayout.EAST, label1);
+        spring.putConstraint(SpringLayout.WEST, combobox1, 80, SpringLayout.EAST, label2);
         spring.putConstraint(SpringLayout.NORTH, combobox1, 30, SpringLayout.SOUTH, textfield2);
         spring.putConstraint(SpringLayout.NORTH, error5, -26, SpringLayout.SOUTH, combobox1);
         spring.putConstraint(SpringLayout.WEST, error5, 320, SpringLayout.EAST, label3);
@@ -426,7 +368,7 @@ class EditPackageDialog extends JDialog {
         spring.putConstraint(SpringLayout.NORTH, button2, 362, SpringLayout.SOUTH, combobox1);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(690, 680);
+        setSize(690, 600);
         setLocation(300, 60);
         setVisible(true);
         PackagePanel.defaultButtonSet();

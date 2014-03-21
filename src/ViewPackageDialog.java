@@ -10,8 +10,8 @@ import java.util.LinkedList;
 @SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class ViewPackageDialog extends JDialog {
     //Variable declaration
-    private JLabel label1, label2, label3, label4, label5;
-    private JTextField textfield1, textfield2, textfield3, textfield4;
+    private JLabel label1, label2, label3, label4, label5, label6, label7;
+    private JTextField textfield1, textfield2, textfield3, textfield4, textfield5, textfield6;
     private JList leftList;
     private JList rightList;
     private JButton button2;
@@ -34,20 +34,23 @@ class ViewPackageDialog extends JDialog {
         label3 = new JLabel("Charge Price(RM): ");
         label4 = new JLabel("Charge Type: ");
         label5 = new JLabel("TV Programmes included ");
+        label6 = new JLabel("Start Date: ");
+        label7 = new JLabel("Termination Date: ");
 
 
         textfield1 = new JTextField(15);
         textfield2 = new JTextField(15);
         textfield3 = new JTextField(15);
         textfield4 = new JTextField(15);
+        textfield5 = new JTextField(15);
+        textfield6 = new JTextField(15);
         textfield3.setEditable(false);
         textfield1.setEditable(false);
         textfield2.setEditable(false);
         textfield4.setEditable(false);
-        textfield1.setBackground(color);
-        textfield2.setBackground(color);
-        textfield3.setBackground(color);
-        textfield4.setBackground(color);
+        textfield5.setEditable(false);
+        textfield6.setEditable(false);
+
 
         button2 = new JButton("Ok");
 
@@ -108,16 +111,22 @@ class ViewPackageDialog extends JDialog {
         label3.setForeground(color1);
         label4.setForeground(color1);
         label5.setForeground(color1);
+        label6.setForeground(color1);
+        label7.setForeground(color1);
 
 
         textfield3.setText(PackagePanel.pkgtemp[0]);
         textfield1.setText(PackagePanel.pkgtemp[1]);
         textfield2.setText(PackagePanel.pkgtemp[2]);
         textfield4.setText(PackagePanel.pkgtemp[3]);
+        textfield5.setText(PackagePanel.pkgtemp[4]);
+        textfield6.setText(PackagePanel.pkgtemp[5]);
         textfield1.setBackground(color2);
         textfield2.setBackground(color2);
         textfield3.setBackground(color2);
         textfield4.setBackground(color2);
+        textfield5.setBackground(color2);
+        textfield6.setBackground(color2);
 
 
         button2.addActionListener(new ActionListener() {
@@ -168,20 +177,38 @@ class ViewPackageDialog extends JDialog {
         spring.putConstraint(SpringLayout.WEST, textfield4, 80, SpringLayout.EAST, label1);
         spring.putConstraint(SpringLayout.NORTH, textfield4, 30, SpringLayout.SOUTH, textfield2);
 
+
+        container.add(label6);
+        container.add(textfield5);
+
+        spring.putConstraint(SpringLayout.WEST, label6, 20, SpringLayout.WEST, container);
+        spring.putConstraint(SpringLayout.NORTH, label6, 44, SpringLayout.SOUTH, label4);
+        spring.putConstraint(SpringLayout.WEST, textfield5, 80, SpringLayout.EAST, label1);
+        spring.putConstraint(SpringLayout.NORTH, textfield5, 30, SpringLayout.SOUTH, textfield4);
+
+        container.add(label7);
+        container.add(textfield6);
+
+        spring.putConstraint(SpringLayout.WEST, label7, 20, SpringLayout.WEST, container);
+        spring.putConstraint(SpringLayout.NORTH, label7, 44, SpringLayout.SOUTH, label6);
+        spring.putConstraint(SpringLayout.WEST, textfield6, 80, SpringLayout.EAST, label1);
+        spring.putConstraint(SpringLayout.NORTH, textfield6, 30, SpringLayout.SOUTH, textfield5);
+
+
         container.add(leftListScroll);
         container.add(label5);
-        spring.putConstraint(SpringLayout.NORTH, label5, 30, SpringLayout.SOUTH, label4);
-        spring.putConstraint(SpringLayout.WEST, label5, 80, SpringLayout.EAST, label4);
+        spring.putConstraint(SpringLayout.NORTH, label5, 30, SpringLayout.SOUTH, label7);
+        spring.putConstraint(SpringLayout.WEST, label5, 63, SpringLayout.EAST, label7);
         spring.putConstraint(SpringLayout.WEST, leftListScroll, 20, SpringLayout.WEST, container);
-        spring.putConstraint(SpringLayout.NORTH, leftListScroll, 45, SpringLayout.SOUTH, label4);
+        spring.putConstraint(SpringLayout.NORTH, leftListScroll, 45, SpringLayout.SOUTH, label7);
 
 
         container.add(button2);
-        spring.putConstraint(SpringLayout.WEST, button2, 122, SpringLayout.EAST, label2);
-        spring.putConstraint(SpringLayout.NORTH, button2, 202, SpringLayout.SOUTH, textfield4);
+        spring.putConstraint(SpringLayout.WEST, button2, 118, SpringLayout.EAST, label2);
+        spring.putConstraint(SpringLayout.NORTH, button2, 15, SpringLayout.SOUTH, leftListScroll);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(530, 510);
+        setSize(530, 616);
         setLocation(400, 60);
         setVisible(true);
         PackagePanel.defaultButtonSet();
