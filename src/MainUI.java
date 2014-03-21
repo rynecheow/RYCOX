@@ -196,6 +196,3 @@ public class MainUI extends JFrame implements ActionListener {
  * consequential damages in connection with, or arising out of, the       *
  * furnishing, performance, or use of this program.                       *
  *************************************************************************/
-
-
-//~ Formatted by Jindent --- http://www.jindent.com
