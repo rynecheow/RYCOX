@@ -420,7 +420,7 @@ class ProgrammePanel extends JPanel {
         });
 
 	/*
-	 * -------------------------- BUTTON LISTENER --------------------------
+     * -------------------------- BUTTON LISTENER --------------------------
 	 */
         prgActivateButton.addActionListener(new ActionListener() {
 

@@ -262,7 +262,7 @@ public class PackagePanel extends JPanel {
             viewMI.setVisible(true);
         }
         /*
-		 * -------------------------- MENU ITEM LISTENER --------------------------
+         * -------------------------- MENU ITEM LISTENER --------------------------
 		 */
 
         activateMI.addActionListener(new ActionListener() {
