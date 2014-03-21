@@ -1,0 +1,237 @@
+[01/06/12 14:45]	admin  has logged into the system.
+[01/06/12 14:46]	admin  has logged out.
+[01/06/12 14:46]	admin  has logged into the system.
+[01/06/12 14:46]	admin  has logged out.
+[01/06/12 14:55]	admin  has logged into the system.
+[01/06/12 14:55]	admin  has logged out.
+[01/06/12 16:04]	admin  has logged into the system.
+[01/06/12 16:04]	admin  has barred the service S000004.
+[01/06/12 16:04]	admin  has logged into the system.
+[01/06/12 16:04]	admin  has barred the service S000004.
+[01/06/12 16:04]	admin  has barred the service S000003.
+[01/06/12 16:04]	admin  has logged into the system.
+[01/06/12 16:04]	admin  has barred the service S000004.
+[01/06/12 16:04]	admin  has barred the service S000003.
+[01/06/12 16:05]	admin  has barred the service S000007.
+[01/06/12 16:04]	admin  has logged into the system.
+[01/06/12 16:04]	admin  has barred the service S000004.
+[01/06/12 16:04]	admin  has barred the service S000003.
+[01/06/12 16:05]	admin  has barred the service S000007.
+[01/06/12 16:05]	admin  has activated the service S000003.
+[01/06/12 16:04]	admin  has logged into the system.
+[01/06/12 16:04]	admin  has barred the service S000004.
+[01/06/12 16:04]	admin  has barred the service S000003.
+[01/06/12 16:05]	admin  has barred the service S000007.
+[01/06/12 16:05]	admin  has activated the service S000003.
+[01/06/12 16:05]	admin  has logged out.
+[01/06/12 16:09]	admin  has logged into the system.
+[01/06/12 16:09]	admin  has logged out.
+[01/06/12 16:09]	admin  has logged into the system.
+[01/06/12 16:11]	admin  has logged out.
+[05/06/12 15:52]	admin  has logged into the system.
+[05/06/12 15:54]	admin  has logged out.
+[08/06/12 13:28]	admin  has logged into the system.
+[08/06/12 13:29]	admin  has saved the data.[SERVICE]
+[08/06/12 13:28]	admin  has logged into the system.
+[08/06/12 13:29]	admin  has saved the data.[SERVICE]
+[08/06/12 13:29]	admin  has saved the data.[SERVICE]
+[08/06/12 13:28]	admin  has logged into the system.
+[08/06/12 13:29]	admin  has saved the data.[SERVICE]
+[08/06/12 13:29]	admin  has saved the data.[SERVICE]
+[08/06/12 13:29]	admin  has saved the data.[SUBSCIPTION]
+[08/06/12 13:28]	admin  has logged into the system.
+[08/06/12 13:29]	admin  has saved the data.[SERVICE]
+[08/06/12 13:29]	admin  has saved the data.[SERVICE]
+[08/06/12 13:29]	admin  has saved the data.[SUBSCIPTION]
+[08/06/12 13:30]	admin has terminated a TV Programme 'F021'.
+[08/06/12 13:30]	admin has terminated a TV Programme 'F039'.
+[08/06/12 13:31]	admin  has logged out.
+[08/06/12 13:31]	staff  has logged into the system.
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:31]	staff  has logged into the system.
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:31]	staff  has logged into the system.
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:33]	staff  has saved the data.[SUBSCIPTION]
+[08/06/12 13:31]	staff  has logged into the system.
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:33]	staff  has saved the data.[SUBSCIPTION]
+[08/06/12 13:33]	staff  has terminated the service S000005.
+[08/06/12 13:31]	staff  has logged into the system.
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:33]	staff  has saved the data.[SERVICE]
+[08/06/12 13:33]	staff  has saved the data.[SUBSCIPTION]
+[08/06/12 13:33]	staff  has terminated the service S000005.
+[08/06/12 13:34]	staff  has logged out.
+[08/06/12 21:11]	admin  has logged into the system.
+[08/06/12 21:12]	admin  has logged out.
+[08/06/12 21:32]	admin  has logged into the system.
+[08/06/12 21:33]	admin  has logged out.
+[08/06/12 21:33]	admin  has logged into the system.
+[08/06/12 21:33]	admin  has logged out.
+[08/06/12 21:35]	admin  has logged into the system.
+[08/06/12 21:35]	admin  has logged out.
+[08/06/12 21:34]	admin  has logged into the system.
+[08/06/12 21:36]	admin  has logged out.
+[08/06/12 22:00]	admin  has logged into the system.
+[08/06/12 22:01]	admin  has logged out.
+[08/06/12 22:02]	admin  has logged into the system.
+[08/06/12 22:03]	admin  has logged out.
+[08/06/12 22:05]	admin  has logged into the system.
+[08/06/12 22:05]	admin  has logged out.
+[08/06/12 22:08]	admin  has logged into the system.
+[08/06/12 22:08]	admin  has logged out.
+[08/06/12 22:09]	staff  has logged into the system.
+[08/06/12 22:09]	staff  has logged out.
+[08/06/12 22:11]	admin  has logged into the system.
+[08/06/12 22:11]	admin  has logged out.
+[08/06/12 22:11]	staff  has logged into the system.
+[08/06/12 22:12]	staff  has logged out.
+[08/06/12 22:14]	admin  has logged into the system.
+[08/06/12 22:14]	admin  has logged out.
+[08/06/12 22:14]	staff  has logged into the system.
+[08/06/12 22:14]	staff  has logged out.
+[08/06/12 22:05]	staff  has logged into the system.
+[08/06/12 22:21]	staff  has logged out.
+[08/06/12 22:21]	admin  has logged into the system.
+[08/06/12 22:21]	admin  has logged out.
+[08/06/12 22:21]	staff  has logged into the system.
+[08/06/12 22:24]	staff  has logged out.
+[08/06/12 22:24]	admin  has logged into the system.
+[08/06/12 22:24]	admin  has logged out.
+[08/06/12 22:24]	staff  has logged into the system.
+[08/06/12 22:25]	staff  has logged out.
+[08/06/12 22:26]	admin  has logged into the system.
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:26]	admin  has logged into the system.
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:26]	admin  has logged into the system.
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:26]	admin  has logged into the system.
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:26]	admin  has logged into the system.
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:26]	admin  has logged into the system.
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:26]	admin  has logged into the system.
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has saved the data.[SERVICE]
+[08/06/12 22:27]	admin  has saved the data.[CLIENT]
+[08/06/12 22:27]	admin  has logged out.
+[08/06/12 22:28]	admin  has logged into the system.
+[08/06/12 22:29]	admin  has logged out.
+[08/06/12 22:35]	admin  has logged into the system.
+[08/06/12 22:35]	admin  has logged out.
+[08/06/12 22:36]	admin  has logged into the system.
+[08/06/12 22:36]	admin  has logged out.
+[08/06/12 22:37]	admin  has logged into the system.
+[08/06/12 22:38]	admin  has edited a new client's account of ID 'I000001'.
+[08/06/12 22:38]	admin  has edited a new client's account of ID 'I000001'.
+[08/06/12 22:38]	admin  has logged out.
+[08/06/12 23:03]	admin  has logged into the system.
+[08/06/12 23:03]	admin  has logged out.
+[08/06/12 23:03]	staff  has logged into the system.
+[08/06/12 23:03]	staff  has logged out.
+[08/06/12 23:03]	staff  has logged into the system.
+[08/06/12 23:04]	staff  has logged out.
+[08/06/12 23:08]	admin  has logged into the system.
+[08/06/12 23:08]	admin  has logged out.
+[08/06/12 23:08]	staff  has logged into the system.
+[08/06/12 23:12]	staff  has logged out.
+[08/06/12 23:15]	admin  has logged into the system.
+[08/06/12 23:15]	admin  has logged out.
+[08/06/12 23:15]	staff  has logged into the system.
+[08/06/12 23:16]	staff  has logged out.
+[08/06/12 23:16]	admin  has logged into the system.
+[08/06/12 23:18]	admin  has saved the data.[CLIENT]
+[08/06/12 23:16]	admin  has logged into the system.
+[08/06/12 23:18]	admin  has saved the data.[CLIENT]
+[08/06/12 23:18]	admin  has saved the data.[SERVICE]
+[08/06/12 23:16]	admin  has logged into the system.
+[08/06/12 23:18]	admin  has saved the data.[CLIENT]
+[08/06/12 23:18]	admin  has saved the data.[SERVICE]
+[08/06/12 23:18]	admin  has logged out.
+[09/06/12 06:06]	admin  has logged into the system.
+[09/06/12 06:06]	admin  has logged out.
+[09/06/12 06:40]	admin  has logged into the system.
+[09/06/12 06:40]	admin  has logged out.
+[09/06/12 06:43]	admin  has logged into the system.
+[09/06/12 06:43]	admin  has logged out.
+[09/06/12 07:05]	admin  has logged into the system.
+[09/06/12 07:11]	admin  has logged out.
+[09/06/12 07:28]	admin  has logged into the system.
+[09/06/12 07:28]	admin  has logged out.
+[09/06/12 07:30]	admin  has logged into the system.
+[09/06/12 07:30]	admin  has logged out.
+[09/06/12 07:32]	admin  has logged into the system.
+[09/06/12 07:33]	admin  has logged out.
+[09/06/12 08:59]	admin  has logged into the system.
+[09/06/12 08:59]	admin  has edited a new client's account of ID 'I000001'.
+[09/06/12 08:59]	admin  has edited a new client's account of ID 'I000001'.
+[09/06/12 08:59]	admin  has edited a new client's account of ID 'I000002'.
+[09/06/12 08:59]	admin  has edited a new client's account of ID 'I000002'.
+[09/06/12 08:59]	admin  has logged out.
+[09/06/12 09:24]	admin  has logged into the system.
+[09/06/12 09:25]	admin  has logged out.
+[09/06/12 09:29]	admin  has logged into the system.
+[09/06/12 09:30]	admin  has logged out.
+[09/06/12 09:32]	admin  has logged into the system.
+[09/06/12 09:33]	admin  has logged out.
+[09/06/12 09:35]	admin  has logged into the system.
+[09/06/12 09:35]	admin  has logged out.
+[09/06/12 09:36]	admin  has logged into the system.
+[09/06/12 09:37]	admin  has logged out.
+[09/06/12 09:39]	admin  has logged into the system.
+[09/06/12 09:39]	admin  has logged out.
+[09/06/12 09:47]	admin  has logged into the system.
+[09/06/12 09:49]	admin  has logged out.
+[09/06/12 09:49]	admin  has logged into the system.
+[09/06/12 09:50]	admin  has created a new client's account of ID 'I000003'.
+[09/06/12 09:50]	admin  has logged out.
+[09/06/12 10:02]	admin  has logged into the system.
+[09/06/12 10:02]	admin  has logged out.
+[09/06/12 10:23]	admin  has logged into the system.
+[09/06/12 10:23]	admin  has edited the service S000003.
+[09/06/12 10:23]	admin  has logged out.
+[09/06/12 10:35]	admin  has logged into the system.
+[09/06/12 10:39]	admin  has created a new client's account of ID 'I000003'.
+[09/06/12 10:39]	admin  has logged out.
+[09/06/12 10:56]	admin  has logged into the system.
+[09/06/12 10:56]	admin  has logged out.
+[09/06/12 10:56]	admin  has logged into the system.
+[09/06/12 10:57]	admin  has logged out.
+[09/06/12 10:57]	admin  has logged into the system.
+[09/06/12 10:57]	admin  has logged out.
+[09/06/12 10:57]	admin  has logged into the system.
+[09/06/12 10:57]	admin  has logged out.
+[09/06/12 10:57]	admin  has logged into the system.
+[09/06/12 10:58]	admin  has logged out.
+[09/06/12 10:58]	admin  has logged into the system.
+[09/06/12 10:58]	admin  has logged out.
+[09/06/12 11:09]	admin  has logged into the system.
+[09/06/12 11:09]	admin  has edited a new client's account of ID 'I000001'.
+[09/06/12 11:09]	admin  has edited a new client's account of ID 'I000001'.
+[09/06/12 11:09]	admin  has edited a new client's account of ID 'G000002'.
+[09/06/12 11:09]	admin  has edited a new client's account of ID 'P000001'.
+[09/06/12 11:09]	admin  has logged out.
