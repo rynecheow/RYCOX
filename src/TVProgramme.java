@@ -34,8 +34,8 @@ class TVProgramme implements Serializable {
         this.progTitle = progTitle;
         this.desc = desc;
         this.contentOrigin = contentOrigin;
-        this.creationDate = DateFormat.getInstance().format(new Date());
-        this.terminationDate = "N/A";
+        this.creationDate = creationDate;
+        this.terminationDate = terminationDate;
         this.prgStatus = prgStatus;
         this.viewerStatus = viewerStatus;
         this.type = type;
@@ -84,15 +84,6 @@ class TVProgramme implements Serializable {
 
     public String getNotes() { //to return the programme's notes
         return notes;
-    }
-
-    public void printList() {  //to print out all the information of a TV programme
-        System.out.println(" Programme Code: " + progCode + "\n Programme Title: " + progTitle + "\n Description: " + desc + "\n Content Origin: " + contentOrigin + "\n Creation Date: " + creationDate + "\n Status: " + prgStatus + "\n Viewer Status: " + viewerStatus + "\n Type: " + type + "\n Notes: " + notes + "\n");
-    }
-
-    //mutators
-    public void setProgCode(String progCode) { //to change programme's code
-        this.progCode = progCode;
     }
 
     public void setProgTitle(String progTitle) { //to change programme's title

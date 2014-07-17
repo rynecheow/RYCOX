@@ -1,83 +1,68 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 /**
  * @author Jia Jiun
  */
-@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class NewPackageDialog extends JDialog {
     //Variable declaration
 
-    private JLabel label2, label3, label4, label5, label6;
     private JLabel error3, error4, error5, error6, error7;
     private JTextField textfield1, textfield2;
-    private JList leftList, rightList;
-    private JComboBox combobox1;
-    private JButton button1, button2, addBut, rmvBut;
-    private Color color, color1;
-    private LinkedList<String> leftPrgList;
-    private LinkedList<String> selPrgList;
-    private AbstractListModel leftModel;
-    private AbstractListModel rightModel;
-    private String[] leftPrg;
-    private String[] selPrg;
+    private JList<String> leftList;
+    private JList<String> rightList;
+    private JComboBox<String> combobox1;
     private String[] rightElArr;
-    private JScrollPane leftListScroll;
-    private JScrollPane rightListScroll;
     private LinkedList<String> rightElements;
     //End of variable declaration
 
     public NewPackageDialog(JFrame frame) {
         super(frame, "Package Management- Create new TV Package", true);
         setLocation(300, 150);
-        label2 = new JLabel("Package Name: ");
+        JLabel label2 = new JLabel("Package Name: ");
         error3 = new JLabel("Blank input occured! Please reenter it.");
-        label3 = new JLabel("Charge Price(RM): ");
+        JLabel label3 = new JLabel("Charge Price(RM): ");
         error4 = new JLabel("Blank input occured! Please reenter it.");
         error6 = new JLabel("Wrong input format. Please enter in numeric format!");
-        label4 = new JLabel("Charge Type: ");
+        JLabel label4 = new JLabel("Charge Type: ");
         error5 = new JLabel("Blank input occured! Please reenter it.");
         error7 = new JLabel("You must have at least one programme added to your package.");
-        label5 = new JLabel("Programmes: ");
-        label6 = new JLabel("Programmes inside this Package: ");
+        JLabel label5 = new JLabel("Programmes: ");
+        JLabel label6 = new JLabel("Programmes inside this Package: ");
 
         textfield1 = new JTextField(15);
         textfield2 = new JTextField(15);
-        combobox1 = new JComboBox();
-        button1 = new JButton("Submit");
-        button2 = new JButton("Cancel");
-        addBut = new JButton("", new ImageIcon(getClass().getResource("/resources/addtoright.png")));
+        combobox1 = new JComboBox<>();
+        JButton button1 = new JButton("Submit");
+        JButton button2 = new JButton("Cancel");
+        JButton addBut = new JButton("", new ImageIcon(getClass().getResource("/resources/addtoright.png")));
         addBut.setBackground(new Color(23, 28, 31));
-        rmvBut = new JButton("", new ImageIcon(getClass().getResource("/resources/removetoleft.png")));
+        JButton rmvBut = new JButton("", new ImageIcon(getClass().getResource("/resources/removetoleft.png")));
         rmvBut.setBackground(new Color(23, 28, 31));
 
-        color = new Color(23, 28, 30);
-        color1 = new Color(244, 219, 234);
+        Color color = new Color(23, 28, 30);
+        Color color1 = new Color(244, 219, 234);
 
-        leftPrgList = new LinkedList<>();
-        selPrgList = new LinkedList<>();
-        leftModel = new DefaultListModel();
-        rightModel = new DefaultListModel();
+        AbstractListModel<String> leftModel = new DefaultListModel<>();
+        AbstractListModel<String> rightModel = new DefaultListModel<>();
 
 
-        leftList = new JList(leftModel);
+        leftList = new JList<>(leftModel);
         leftList.setModel(leftModel);
         leftList.setVisibleRowCount(13);
         leftList.setFixedCellWidth(210);
         leftList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        rightList = new JList(rightModel);
+        rightList = new JList<>(rightModel);
         rightList.setModel(rightModel);
         rightList.setVisibleRowCount(13);
         rightList.setFixedCellWidth(210);
         rightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        leftListScroll = new JScrollPane(leftList);
+        JScrollPane leftListScroll = new JScrollPane(leftList);
         leftListScroll.setViewportView(leftList);
-        rightListScroll = new JScrollPane(rightList);
+        JScrollPane rightListScroll = new JScrollPane(rightList);
         rightListScroll.setViewportView(rightList);
 
 
@@ -95,7 +80,7 @@ class NewPackageDialog extends JDialog {
         SpringLayout spring = new SpringLayout();
 
         String[] string1 = {"<-----Please Choose a charge type----->", "Monthly", "Quarterly", "Annually"};
-        combobox1.setModel(new DefaultComboBoxModel(string1));
+        combobox1.setModel(new DefaultComboBoxModel<>(string1));
         error3.setForeground(Color.RED);
         error4.setForeground(Color.RED);
         error5.setForeground(Color.RED);
@@ -112,194 +97,178 @@ class NewPackageDialog extends JDialog {
         label5.setForeground(color1);
         label6.setForeground(color1);
 
-        addBut.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int leftIndex = leftList.getSelectedIndex();
-                    String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));
-                    LinkedList<String> leftElements = new LinkedList<>();
-                    for (int p = 0; p < leftList.getModel().getSize(); p++) {
-                        leftElements.add((String) leftList.getModel().getElementAt(p));
-                    }
-
-                    for (int i = 0; i < leftElements.size(); i++) {
-                        if ((leftElements.get(i)).equals(toBeAdded)) {
-                            leftElements.remove(i);
-                            break;
-                        }
-                    }
-
-                    String[] leftElArr = leftElements.toArray(new String[leftElements.size()]);
-                    leftList.setListData(leftElArr);
-                    leftList.revalidate();
-                    leftList.repaint();
-
-
-                    rightElements = new LinkedList<>();
-                    for (int z = 0; z < rightList.getModel().getSize(); z++) {
-                        rightElements.add((String) rightList.getModel().getElementAt(z));
-                    }
-                    rightElements.add(toBeAdded);
-                    rightElArr = rightElements.toArray(new String[rightElements.size()]);
-                    rightList.setListData(rightElArr);
-                    rightList.repaint();
-                    rightList.revalidate();
-
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You can only add a TV Programme from the left list.", "Adding error", JOptionPane.INFORMATION_MESSAGE);
+        addBut.addActionListener(e -> {
+            try {
+                int leftIndex = leftList.getSelectedIndex();
+                String toBeAdded = (leftList.getModel().getElementAt(leftIndex));
+                LinkedList<String> leftElements = new LinkedList<>();
+                for (int p = 0; p < leftList.getModel().getSize(); p++) {
+                    leftElements.add(leftList.getModel().getElementAt(p));
                 }
 
+                for (int i = 0; i < leftElements.size(); i++) {
+                    if ((leftElements.get(i)).equals(toBeAdded)) {
+                        leftElements.remove(i);
+                        break;
+                    }
+                }
 
+                String[] leftElArr = leftElements.toArray(new String[leftElements.size()]);
+                leftList.setListData(leftElArr);
+                leftList.revalidate();
+                leftList.repaint();
+
+
+                rightElements = new LinkedList<>();
+                for (int z = 0; z < rightList.getModel().getSize(); z++) {
+                    rightElements.add(rightList.getModel().getElementAt(z));
+                }
+                rightElements.add(toBeAdded);
+                rightElArr = rightElements.toArray(new String[rightElements.size()]);
+                rightList.setListData(rightElArr);
+                rightList.repaint();
+                rightList.revalidate();
+
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You can only add a TV Programme from the left list.", "Adding error", JOptionPane.INFORMATION_MESSAGE);
             }
+
+
         });
 
-        rmvBut.addActionListener(new ActionListener() {
+        rmvBut.addActionListener(e -> {
+            try {
+                int rightIndex = rightList.getSelectedIndex();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int rightIndex = rightList.getSelectedIndex();
+                String toBeRemoved = (rightList.getModel().getElementAt(rightIndex));
 
-                    String toBeRemoved = ((String) rightList.getModel().getElementAt(rightIndex));
-
-                    LinkedList<String> rightElements = new LinkedList<>();
-                    for (int p = 0; p < rightList.getModel().getSize(); p++) {
-                        rightElements.add((String) rightList.getModel().getElementAt(p));
-                    }
-
-                    for (int i = 0; i < rightElements.size(); i++) {
-                        if ((rightElements.get(i)).equals(toBeRemoved)) {
-                            rightElements.remove(i);
-                            break;
-                        }
-                    }
-
-                    rightElArr = rightElements.toArray(new String[rightElements.size()]);
-                    rightList.setListData(rightElArr);
-                    rightList.revalidate();
-                    rightList.repaint();
-
-
-                    LinkedList<String> leftElements = new LinkedList<>();
-                    for (int z = 0; z < leftList.getModel().getSize(); z++) {
-                        leftElements.add((String) leftList.getModel().getElementAt(z));
-                    }
-                    leftElements.add(toBeRemoved);
-                    String[] leftElArr = leftElements.toArray(new String[leftElements.size()]);
-                    leftList.setListData(leftElArr);
-                    leftList.repaint();
-                    leftList.revalidate();
-
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You can only remove a TV Programme from the right list when right list is filled in with TV Programme.", "Remove error", JOptionPane.INFORMATION_MESSAGE);
+                LinkedList<String> rightElements1 = new LinkedList<>();
+                for (int p = 0; p < rightList.getModel().getSize(); p++) {
+                    rightElements1.add(rightList.getModel().getElementAt(p));
                 }
 
+                for (int i = 0; i < rightElements1.size(); i++) {
+                    if ((rightElements1.get(i)).equals(toBeRemoved)) {
+                        rightElements1.remove(i);
+                        break;
+                    }
+                }
 
+                rightElArr = rightElements1.toArray(new String[rightElements1.size()]);
+                rightList.setListData(rightElArr);
+                rightList.revalidate();
+                rightList.repaint();
+
+
+                LinkedList<String> leftElements = new LinkedList<>();
+                for (int z = 0; z < leftList.getModel().getSize(); z++) {
+                    leftElements.add(leftList.getModel().getElementAt(z));
+                }
+                leftElements.add(toBeRemoved);
+                String[] leftElArr = leftElements.toArray(new String[leftElements.size()]);
+                leftList.setListData(leftElArr);
+                leftList.repaint();
+                leftList.revalidate();
+
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You can only remove a TV Programme from the right list when right list is filled in with TV Programme.", "Remove error", JOptionPane.INFORMATION_MESSAGE);
             }
+
+
         });
-        button1.addActionListener(new ActionListener() {
+        button1.addActionListener(e -> {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false;
+            String a = "", b = "", z = "";
+            double d = 0.0;
 
-                boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false;
-                String a = "", b = "", z = "";
-                double d = 0.0;
+            if ((textfield1.getText().trim().equalsIgnoreCase(""))) {
+                error3.setVisible(true);
+                flag1 = false;
+            } else {
+                flag1 = true;
+                error3.setVisible(false);
+                b = textfield1.getText();
+            }
 
-                if ((textfield1.getText().trim() == null) || (textfield1.getText().trim().equalsIgnoreCase(""))) {
-                    error3.setVisible(true);
-                    flag1 = false;
-                } else {
-                    flag1 = true;
-                    error3.setVisible(false);
-                    b = textfield1.getText();
-                }
+            if ((textfield2.getText().trim().equalsIgnoreCase(""))) {
+                error4.setVisible(true);
+                error6.setVisible(false);
+                flag2 = false;
+            } else {
 
-                if ((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))) {
-                    error4.setVisible(true);
+                try {
+                    d = Double.valueOf(textfield2.getText().trim());
+                    flag2 = true;
+                    error4.setVisible(false);
                     error6.setVisible(false);
+                } catch (NumberFormatException ex) {
+                    error4.setVisible(false);
+                    error6.setVisible(true);
                     flag2 = false;
-                } else {
-
-                    try {
-                        d = Double.valueOf(textfield2.getText().trim()).doubleValue();
-                        flag2 = true;
-                        error4.setVisible(false);
-                        error6.setVisible(false);
-                    } catch (NumberFormatException ex) {
-                        error4.setVisible(false);
-                        error6.setVisible(true);
-                        flag2 = false;
-                    }
-
                 }
 
-                if ((((String) combobox1.getSelectedItem())).equals("<-----Please Choose a charge type----->")) {
-                    error5.setVisible(true);
-                    flag3 = false;
+            }
+
+            if ((((String) combobox1.getSelectedItem())).equals("<-----Please Choose a charge type----->")) {
+                error5.setVisible(true);
+                flag3 = false;
+            } else {
+                flag3 = true;
+                error5.setVisible(false);
+
+                z = combobox1.getSelectedItem().toString();
+            }
+
+            try {
+                if (rightElArr.length >= 1) {
+                    flag4 = true;
+                    error7.setVisible(false);
+
                 } else {
-                    flag3 = true;
-                    error5.setVisible(false);
-
-                    z = combobox1.getSelectedItem().toString();
-                }
-
-                try {
-                    if (rightElArr.length >= 1) {
-                        flag4 = true;
-                        error7.setVisible(false);
-
-                    } else {
-
-                        flag4 = false;
-                        error7.setVisible(true);
-                    }
-                } catch (NullPointerException npe) {
 
                     flag4 = false;
                     error7.setVisible(true);
                 }
+            } catch (NullPointerException npe) {
+
+                flag4 = false;
+                error7.setVisible(true);
+            }
 
 
-                if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true)) {
-                    int existedID = 0;
-                    for (int i = 0; i < App.pkgList.size(); i++) {
-                        existedID += 1;
-                    }
-                    int newID = existedID + 1;
-                    String newIDS = Integer.toString(newID);
-                    if (existedID < 10) {
-                        a = "P0" + newIDS;
-                    } else if (existedID >= 10) {
-                        a = "P" + newIDS;
-                    }
-
-                    App.pkgList.addLast(new TVPackage(a, b, d, z, "ACTIVE"));
-
-                    for (int i = 0; i < rightElArr.length; i++) {
-                        App.pckgingList.addLast(new Packaging(a, (rightElArr[i]).substring(0, 4)));
-                    }
-
-                    JOptionPane.showMessageDialog(null, "You have successfully created a new TV Package " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(App.user, "has created a new TV Package '" + a + "'.");
-                    App.logList.add(log);
-                    dispose();
+            if ((flag1) && (flag2) && (flag3) && (flag4)) {
+                int existedID = 0;
+                for (TVPackage ignored : App.pkgList) {
+                    existedID += 1;
                 }
+                int newID = existedID + 1;
+                String newIDS = Integer.toString(newID);
+                if (existedID < 10) {
+                    a = "P0" + newIDS;
+                } else if (existedID >= 10) {
+                    a = "P" + newIDS;
+                }
+
+                App.pkgList.addLast(new TVPackage(a, b, d, z, "ACTIVE"));
+
+                for (String aRightElArr : rightElArr) {
+                    App.pckgingList.addLast(new Packaging(a, (aRightElArr).substring(0, 4)));
+                }
+
+                JOptionPane.showMessageDialog(null, "You have successfully created a new TV Package " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
+                LogFile log = new LogFile(App.user, "has created a new TV Package '" + a + "'.");
+                App.logList.add(log);
+                dispose();
             }
         });
 
-        button2.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int closeCf = JOptionPane.showConfirmDialog(null, "Stop Adding? All the changes will not be saved.", "Cancel Adding", JOptionPane.WARNING_MESSAGE);
-                if (closeCf == JOptionPane.YES_OPTION) {
-                    dispose();
-                }
+        button2.addActionListener(e -> {
+            int closeCf = JOptionPane.showConfirmDialog(null, "Stop Adding? All the changes will not be saved.", "Cancel Adding", JOptionPane.YES_NO_OPTION);
+            if (closeCf == JOptionPane.YES_OPTION) {
+                dispose();
             }
         });
 

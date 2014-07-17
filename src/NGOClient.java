@@ -12,7 +12,7 @@ class NGOClient extends ClientAccount {
         System.out.println("Client ID:\t" + getClientID());
         System.out.println("Creation Date:\t" + getCreationDate());
 
-        if (terminationStatus() == true) {
+        if (terminationStatus()) {
             System.out.println("Termination Date:\t" + getTerminationDate());
         }
 
@@ -28,14 +28,13 @@ class NGOClient extends ClientAccount {
         String accStats = "Creation Date:\t" + getCreationDate();
         String creaDate = "Creation Date:\t" + getCreationDate();
         String termDate;
-        if (terminationStatus() == true) {
+        if (terminationStatus()) {
             termDate = "Termination Date:\t" + getTerminationDate() + "\n";
         } else {
             termDate = "";
         }
 
-        String cl = nameInput + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
-        return cl;
+        return nameInput + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
     }
 }
 

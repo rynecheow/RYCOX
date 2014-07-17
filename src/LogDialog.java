@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,14 +8,6 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 class LogDialog extends JDialog {
 
-    // Variables declaration
-    private JButton closeW;
-    private JPanel jPanel1;
-    private JPanel jPanel2;
-    private JScrollPane sp;
-    private JTextComponent ta;
-    private File f;
-    boolean exist_f;
     // End of variables declaration
 
     public LogDialog(JFrame parent) {
@@ -25,11 +15,11 @@ class LogDialog extends JDialog {
         setResizable(false);
         this.setLocation(660, 290);
         setSize(600, 500);
-        jPanel1 = new JPanel();
-        jPanel2 = new JPanel();
-        sp = new JScrollPane();
-        ta = new JTextArea();
-        closeW = new JButton();
+        JPanel jPanel1 = new JPanel();
+        JPanel jPanel2 = new JPanel();
+        JScrollPane sp = new JScrollPane();
+        JTextComponent ta = new JTextArea();
+        JButton closeW = new JButton();
 
         GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -46,7 +36,7 @@ class LogDialog extends JDialog {
         //ta.setEditable(false);
         ((JTextArea) ta).setRows(5);
 
-        f = new File("log.txt");
+        File f = new File("log.txt");
         readin(f.toString(), ta);
         ta.setEditable(false);
         ta.setBackground(Color.WHITE);
@@ -61,13 +51,7 @@ class LogDialog extends JDialog {
         closeW.setText("Close Window");
         jPanel2.add(closeW);
         closeW.setBounds(258, 413, 120, 30);
-        closeW.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        closeW.addActionListener(e -> dispose());
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -85,7 +69,7 @@ class LogDialog extends JDialog {
                 pane.read(fr, null);
             }
         } catch (IOException e) {
-            System.err.println(e);
+            System.err.println(e.getCause().getMessage());
         }
     }
 }

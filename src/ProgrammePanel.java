@@ -1,14 +1,10 @@
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -25,13 +21,10 @@ class ProgrammePanel extends JPanel {
     private static JButton prgDeleteButton;
     private static JButton editPrgButton;
     private JScrollPane scrollPane;
-    private JPanel toolbar;
     private JButton saveButton;
     private static JButton viewButton;
     private static JButton prgActivateButton;
     private static JButton prgDeactButton;
-    private JLabel loginInfo;
-    private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
     private JMenuItem editPrgMI, deletePrgMI, activateMI, viewMI, deactivateMI;
     private String[][] prgData;
@@ -40,14 +33,14 @@ class ProgrammePanel extends JPanel {
     private int rowno;
     static int lol;
     private JTextField searchbox;
-    private JLabel searchLabel;
     private TableRowSorter<TableModel> sorter;
     //End of variable declaration
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public ProgrammePanel() {
-        toolbar = new JPanel();
+        JPanel toolbar = new JPanel();
         prgAddButton = new JButton("", new ImageIcon(getClass().getResource("/resources/newbutton.png")));
+        Color bColor = new Color(23, 28, 30);
         prgAddButton.setBackground(bColor);
         editPrgButton = new JButton("", new ImageIcon(getClass().getResource("/resources/editbutton.png")));
         editPrgButton.setBackground(bColor);
@@ -64,13 +57,13 @@ class ProgrammePanel extends JPanel {
         scrollPane = new JScrollPane();
         prgTable = new JTable();
         prgTable.getTableHeader().setReorderingAllowed(false);
-        loginInfo = new JLabel("You are logged in as " + App.user + ".");
+        JLabel loginInfo = new JLabel("You are logged in as " + App.user + ".");
         loginInfo.setForeground(Color.WHITE);
         loginInfo.setFont(new Font("LucidaSansRegular", Font.PLAIN, 14));
         searchbox = new JTextField(16);
         searchbox.setForeground(Color.BLACK);
         searchbox.setText("");
-        searchLabel = new JLabel();
+        JLabel searchLabel = new JLabel();
         searchLabel.setText("Search:");
         searchLabel.setForeground(Color.WHITE);
 
@@ -144,7 +137,7 @@ class ProgrammePanel extends JPanel {
             }
         };
         prgTable.setModel(prgModel);
-        sorter = new TableRowSorter<TableModel>(prgModel);
+        sorter = new TableRowSorter<>(prgModel);
         prgTable.setRowSorter(sorter);
         prgTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         prgTable.setName("");
@@ -222,7 +215,7 @@ class ProgrammePanel extends JPanel {
 
             /**
              * This method gets the component of each row and column and pop up Menu Item
-             * @param e
+             *
              */
             private void showPopup(MouseEvent e) {
                 if (e.isPopupTrigger()) {
@@ -278,120 +271,255 @@ class ProgrammePanel extends JPanel {
 	/*
      * -------------------------- MENU ITEM LISTENER --------------------------
 	 */
-        activateMI.addActionListener(new ActionListener() {
+        activateMI.addActionListener(e -> {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            try {
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                        if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
 
-                try {
-                    String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < App.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
-                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
-
-                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + App.prgList.get(i).getProgCode() + "'?");
-                                if (opt == JOptionPane.YES_OPTION) {
-                                    App.prgList.get(i).setPrgStatus("ACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme " + App.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
-                                    updateProgrammeTable();
-                                    prgTable.clearSelection();
-                                    prgDeactButton.setEnabled(true);
-                                    deactivateMI.setEnabled(true);
-                                    prgActivateButton.setEnabled(true);
-                                    activateMI.setEnabled(true);
-                                    break;
-                                } else if (opt == JOptionPane.NO_OPTION) {
-                                    break;
-                                }
+                            int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + App.prgList.get(i).getProgCode() + "'?");
+                            if (opt == JOptionPane.YES_OPTION) {
+                                App.prgList.get(i).setPrgStatus("ACTIVE");
+                                JOptionPane.showMessageDialog(null, "Programme " + App.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updateProgrammeTable();
+                                prgTable.clearSelection();
+                                prgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                prgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                                break;
+                            } else if (opt == JOptionPane.NO_OPTION) {
+                                break;
                             }
                         }
                     }
-                } catch (Exception ex) {
+                }
+            } catch (Exception ex) {
 
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        });
+
+
+        deactivateMI.addActionListener(e -> {
+
+
+            try {
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                        if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + App.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.YES_NO_OPTION);
+                            if (choice == JOptionPane.YES_OPTION) {
+                                App.prgList.get(i).setPrgStatus("INACTIVE");
+                                JOptionPane.showMessageDialog(null, "Programme '" + App.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updateProgrammeTable();
+                                prgTable.clearSelection();
+                                prgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                prgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                            } else if (choice == JOptionPane.NO_OPTION) {
+                                break;
+                            }
+                        }
+                    }
                 }
 
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        });
+
+
+        viewMI.addActionListener(e -> {
+            new ViewProgrammeDialog((JFrame) popupMenu.getParent());
+            prgTable.clearSelection();
+        });
+
+        editPrgMI.addActionListener(e -> {
+            EditProgrammeDialog epd = new EditProgrammeDialog((JFrame) popupMenu.getParent());
+            updateProgrammeTable();
+            prgTable.clearSelection();
+        });
+
+
+        deletePrgMI.addActionListener(e -> {
+            boolean flag = false;
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                for (int check = 0; check < App.pckgingList.size(); check++) {
+
+                    if (progtemp[0].equalsIgnoreCase(App.pckgingList.get(check).getProgCode())) {
+                        JOptionPane.showMessageDialog(null, "The programme is included in one or more packages. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
+                        flag = false;
+                        break;
+                    } else {
+                        flag = true;
+                    }
+                }
+
+                if (flag) {
+
+                    for (int counts = 0; counts < App.prgList.size(); counts++) {
+                        if (progtemp[0].equalsIgnoreCase(App.prgList.get(counts).getProgCode())) {
+                            if ((App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
+
+                                App.prgList.get(counts).setPrgStatus("TERMINATED");
+                                String date = DateFormat.getInstance().format(new Date());
+                                App.prgList.get(counts).setTerminationDate(date);
+                                JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
+                                LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
+                                App.logList.add(log);
+                                break;
+
+                            }
+
+
+                        }
+                    }
+                }
+
+            }
+
+            updateProgrammeTable();
+            prgTable.clearSelection();
+        });
+
+	/*
+     * -------------------------- BUTTON LISTENER --------------------------
+	 */
+        prgActivateButton.addActionListener(e -> {
+            try {
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                        if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+
+                            int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + App.prgList.get(i).getProgCode() + "'?");
+                            if (opt == JOptionPane.YES_OPTION) {
+                                App.prgList.get(i).setPrgStatus("ACTIVE");
+                                JOptionPane.showMessageDialog(null, "Programme " + App.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updateProgrammeTable();
+                                prgTable.clearSelection();
+                                prgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                prgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                                defaultButtonSet();
+                                App.log = new LogFile(App.user, " has activated TV Package '" + App.prgList.get(i).getProgCode() + "'.");
+                                App.logList.add(App.log);
+                                break;
+                            } else if (opt == JOptionPane.NO_OPTION) {
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        });
+
+
+        prgDeactButton.addActionListener(e -> {
+            try {
+                String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                        if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + App.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.YES_NO_OPTION);
+                            if (choice == JOptionPane.YES_OPTION) {
+                                App.prgList.get(i).setPrgStatus("INACTIVE");
+                                JOptionPane.showMessageDialog(null, "Programme '" + App.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updateProgrammeTable();
+                                prgTable.clearSelection();
+                                prgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                prgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                                defaultButtonSet();
+                                App.log = new LogFile(App.user, " has deactivated TV Programme '" + App.prgList.get(i).getProgCode() + "'.");
+                                App.logList.add(App.log);
+                            } else if (choice == JOptionPane.NO_OPTION) {
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
 
-        deactivateMI.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        viewButton.addActionListener(e -> {
+            try {
 
-
-                try {
-                    String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < App.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
-                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + App.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
-                                if (choice == JOptionPane.YES_OPTION) {
-                                    App.prgList.get(i).setPrgStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme '" + App.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
-                                    updateProgrammeTable();
-                                    prgTable.clearSelection();
-                                    prgDeactButton.setEnabled(true);
-                                    deactivateMI.setEnabled(true);
-                                    prgActivateButton.setEnabled(true);
-                                    activateMI.setEnabled(true);
-                                } else if (choice == JOptionPane.NO_OPTION) {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-
-            }
-        });
-
-
-        viewMI.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
                 new ViewProgrammeDialog((JFrame) popupMenu.getParent());
                 prgTable.clearSelection();
+                defaultButtonSet();
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        editPrgMI.addActionListener(new ActionListener() {
+        prgAddButton.addActionListener(e -> {
+            NewProgrammeDialog npd = new NewProgrammeDialog((JFrame) popupMenu.getParent());
+            updateProgrammeTable();
+            prgTable.clearSelection();
+        });
 
-            @SuppressWarnings("unused")
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        saveButton.addActionListener(e -> {
+            App.saveProgramFile();
+            App.printLog();
+            JOptionPane.showMessageDialog(null, "You have saved all the changes under programme management successfully.", "Saved successfully", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        editPrgButton.addActionListener(e -> {
+            try {
                 EditProgrammeDialog epd = new EditProgrammeDialog((JFrame) popupMenu.getParent());
                 updateProgrammeTable();
                 prgTable.clearSelection();
+                defaultButtonSet();
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
 
-        deletePrgMI.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean flag = false;
-                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
+        prgDeleteButton.addActionListener(e -> {
+            try {
+                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
+                    boolean flag = false;
                     for (int check = 0; check < App.pckgingList.size(); check++) {
 
                         if (progtemp[0].equalsIgnoreCase(App.pckgingList.get(check).getProgCode())) {
                             JOptionPane.showMessageDialog(null, "The programme is included in one or more packages. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
                             flag = false;
+
                             break;
                         } else {
                             flag = true;
                         }
                     }
 
-                    if (flag == true) {
 
+                    if (flag) {
                         for (int counts = 0; counts < App.prgList.size(); counts++) {
                             if (progtemp[0].equalsIgnoreCase(App.prgList.get(counts).getProgCode())) {
                                 if ((App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
@@ -402,6 +530,7 @@ class ProgrammePanel extends JPanel {
                                     JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
                                     LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
                                     App.logList.add(log);
+
                                     break;
 
                                 }
@@ -411,224 +540,33 @@ class ProgrammePanel extends JPanel {
                         }
                     }
 
+                }
+
+                updateProgrammeTable();
+                prgTable.clearSelection();
+                defaultButtonSet();
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        searchbox.addCaretListener(e -> {
+            try {
+                if (!"".equals(searchbox.getText())) {
+                    sorter.setRowFilter(RowFilter.regexFilter(searchbox.getText()));
+                    sorter.setSortKeys(null);
                 } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("[Ff][0-9]{3}"));
+                    sorter.setSortKeys(null);
                 }
+            } catch (Exception ignored) {
 
-                updateProgrammeTable();
-                prgTable.clearSelection();
-            }
-        });
-
-	/*
-     * -------------------------- BUTTON LISTENER --------------------------
-	 */
-        prgActivateButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < App.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
-                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
-
-                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + App.prgList.get(i).getProgCode() + "'?");
-                                if (opt == JOptionPane.YES_OPTION) {
-                                    App.prgList.get(i).setPrgStatus("ACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme " + App.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
-                                    updateProgrammeTable();
-                                    prgTable.clearSelection();
-                                    prgDeactButton.setEnabled(true);
-                                    deactivateMI.setEnabled(true);
-                                    prgActivateButton.setEnabled(true);
-                                    activateMI.setEnabled(true);
-                                    defaultButtonSet();
-                                    App.log = new LogFile(App.user, " has activated TV Package '" + App.prgList.get(i).getProgCode() + "'.");
-                                    App.logList.add(App.log);
-                                    break;
-                                } else if (opt == JOptionPane.NO_OPTION) {
-
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
 
             }
-        });
 
 
-        prgDeactButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < App.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
-                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + App.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
-                                if (choice == JOptionPane.YES_OPTION) {
-                                    App.prgList.get(i).setPrgStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme '" + App.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
-                                    updateProgrammeTable();
-                                    prgTable.clearSelection();
-                                    prgDeactButton.setEnabled(true);
-                                    deactivateMI.setEnabled(true);
-                                    prgActivateButton.setEnabled(true);
-                                    activateMI.setEnabled(true);
-                                    defaultButtonSet();
-                                    App.log = new LogFile(App.user, " has deactivated TV Programme '" + App.prgList.get(i).getProgCode() + "'.");
-                                    App.logList.add(App.log);
-                                } else if (choice == JOptionPane.NO_OPTION) {
-
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-
-
-        viewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-
-                    new ViewProgrammeDialog((JFrame) popupMenu.getParent());
-                    prgTable.clearSelection();
-                    defaultButtonSet();
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-
-        prgAddButton.addActionListener(new ActionListener() {
-
-            @SuppressWarnings("unused")
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NewProgrammeDialog npd = new NewProgrammeDialog((JFrame) popupMenu.getParent());
-                updateProgrammeTable();
-                prgTable.clearSelection();
-            }
-        });
-
-        saveButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                App.saveProgramFile();
-                App.printLog();
-                JOptionPane.showMessageDialog(null, "You have saved all the changes under programme management successfully.", "Saved successfully", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
-        editPrgButton.addActionListener(new ActionListener() {
-
-            @SuppressWarnings("unused")
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    EditProgrammeDialog epd = new EditProgrammeDialog((JFrame) popupMenu.getParent());
-                    updateProgrammeTable();
-                    prgTable.clearSelection();
-                    defaultButtonSet();
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-
-
-        prgDeleteButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
-                    if (choice == JOptionPane.YES_OPTION) {
-                        boolean flag = false;
-                        for (int check = 0; check < App.pckgingList.size(); check++) {
-
-                            if (progtemp[0].equalsIgnoreCase(App.pckgingList.get(check).getProgCode())) {
-                                JOptionPane.showMessageDialog(null, "The programme is included in one or more packages. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
-                                flag = false;
-
-                                break;
-                            } else {
-                                flag = true;
-                            }
-                        }
-
-
-                        if (flag == true) {
-                            for (int counts = 0; counts < App.prgList.size(); counts++) {
-                                if (progtemp[0].equalsIgnoreCase(App.prgList.get(counts).getProgCode())) {
-                                    if ((App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
-
-                                        App.prgList.get(counts).setPrgStatus("TERMINATED");
-                                        String date = DateFormat.getInstance().format(new Date());
-                                        App.prgList.get(counts).setTerminationDate(date);
-                                        JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
-                                        LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
-                                        App.logList.add(log);
-
-                                        break;
-
-                                    }
-
-
-                                }
-                            }
-                        }
-
-                    } else {
-                    }
-
-                    updateProgrammeTable();
-                    prgTable.clearSelection();
-                    defaultButtonSet();
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-
-        searchbox.addCaretListener(new CaretListener() {
-
-            @Override
-            public void caretUpdate(CaretEvent e) {
-                try {
-                    if (!"".equals(searchbox.getText())) {
-                        sorter.setRowFilter(RowFilter.regexFilter(searchbox.getText()));
-                        sorter.setSortKeys(null);
-                    } else {
-                        sorter.setRowFilter(RowFilter.regexFilter("[Ff][0-9]{3}"));
-                        sorter.setSortKeys(null);
-                    }
-                } catch (Exception ex) {
-
-
-                }
-
-
-                repaint();
-            }
+            repaint();
         });
 
     }//end constructor
@@ -672,14 +610,12 @@ class ProgrammePanel extends JPanel {
                 }
         ) {
 
-            @SuppressWarnings("rawtypes")
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,};
             boolean[] canEdit = new boolean[]{
                     false, false, false, false, false, false
             };
 
-            @SuppressWarnings({"unchecked", "rawtypes"})
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
@@ -689,7 +625,7 @@ class ProgrammePanel extends JPanel {
             }
         };
         prgTable.setModel(prgModel);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(prgModel);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(prgModel);
         prgTable.setRowSorter(sorter);
         prgTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         prgTable.setName("");

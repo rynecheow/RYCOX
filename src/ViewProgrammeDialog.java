@@ -1,48 +1,39 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Jia Jiun
  */
-@SuppressWarnings("serial")
 class ViewProgrammeDialog extends JDialog {
 
-    //Variable declaration
-    private JLabel label1, label2, label3, label4, label5, label6, label7, label8, label9, label10;
-    private JLabel label11, label12, label14, label15, label16, label17, label18, label19, label20;
-    private JLabel label13;
-    private JButton button1;
-    private Color color, color1;
     //End of variable declaration
 
     public ViewProgrammeDialog(JFrame frame) {
         super(frame, "Programme details", true);
         setLocation(300, 150);
-        label1 = new JLabel("Programme Code: ");
-        label2 = new JLabel("Programme Title: ");
-        label3 = new JLabel("Description: ");
-        label4 = new JLabel("Content Origin: ");
-        label5 = new JLabel("Viewer Status: ");
-        label6 = new JLabel("Type: ");
-        label7 = new JLabel("Notes: ");
-        label8 = new JLabel("Status: ");
-        label9 = new JLabel("Termination Date: ");
-        label10 = new JLabel("Creation Date: ");
-        label11 = new JLabel(ProgrammePanel.progtemp[0]);
-        label12 = new JLabel(ProgrammePanel.progtemp[1]);
-        label13 = new JLabel(ProgrammePanel.progtemp[2]);
-        label14 = new JLabel(ProgrammePanel.progtemp[3]);
-        label15 = new JLabel(ProgrammePanel.progtemp[7]);
-        label16 = new JLabel(ProgrammePanel.progtemp[8]);
-        label17 = new JLabel(ProgrammePanel.progtemp[9]);
-        label18 = new JLabel(ProgrammePanel.progtemp[6]);
-        label19 = new JLabel(ProgrammePanel.progtemp[5]);
-        label20 = new JLabel(ProgrammePanel.progtemp[4]);
-        button1 = new JButton("OK");
-        color = new Color(23, 28, 30);
-        color1 = new Color(244, 219, 234);
+        JLabel label1 = new JLabel("Programme Code: ");
+        JLabel label2 = new JLabel("Programme Title: ");
+        JLabel label3 = new JLabel("Description: ");
+        JLabel label4 = new JLabel("Content Origin: ");
+        JLabel label5 = new JLabel("Viewer Status: ");
+        JLabel label6 = new JLabel("Type: ");
+        JLabel label7 = new JLabel("Notes: ");
+        JLabel label8 = new JLabel("Status: ");
+        JLabel label9 = new JLabel("Termination Date: ");
+        JLabel label10 = new JLabel("Creation Date: ");
+        JLabel label11 = new JLabel(ProgrammePanel.progtemp[0]);
+        JLabel label12 = new JLabel(ProgrammePanel.progtemp[1]);
+        JLabel label13 = new JLabel(ProgrammePanel.progtemp[2]);
+        JLabel label14 = new JLabel(ProgrammePanel.progtemp[3]);
+        JLabel label15 = new JLabel(ProgrammePanel.progtemp[7]);
+        JLabel label16 = new JLabel(ProgrammePanel.progtemp[8]);
+        JLabel label17 = new JLabel(ProgrammePanel.progtemp[9]);
+        JLabel label18 = new JLabel(ProgrammePanel.progtemp[6]);
+        JLabel label19 = new JLabel(ProgrammePanel.progtemp[5]);
+        JLabel label20 = new JLabel(ProgrammePanel.progtemp[4]);
+        JButton button1 = new JButton("OK");
+        Color color = new Color(23, 28, 30);
+        Color color1 = new Color(244, 219, 234);
 
         Container container = getContentPane();
         container.setBackground(color);
@@ -75,14 +66,7 @@ class ViewProgrammeDialog extends JDialog {
         label14.setBackground(Color.GRAY);
 
 
-        button1.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                dispose();
-            }
-        });
+        button1.addActionListener(e -> dispose());
 
         container.setLayout(spring);
         container.add(label1);

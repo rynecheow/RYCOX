@@ -2,7 +2,6 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
-@SuppressWarnings("serial")
 class Service implements Serializable {
 
     private String smartCardNo;
@@ -31,14 +30,6 @@ class Service implements Serializable {
         return terminationDate;
     }
 
-    public double getBal() {
-        return currOstBal;
-    }
-
-    public double getPrevBill() {
-        return prevBillAmount;
-    }
-
     public String getSmartCardNo() {
         return smartCardNo;
     }
@@ -62,10 +53,6 @@ class Service implements Serializable {
     public void setSmartCardNo(String smartCardNo) {
 
         this.smartCardNo = smartCardNo;
-    }
-
-    public void setClientID(String s) {
-        this.clientID = s;
     }
 
     public void setDecoderNo(String decoderNo) {
@@ -97,29 +84,9 @@ class Service implements Serializable {
     }
 
     public boolean terminationStatus() {
-        if (this.servStatus.equalsIgnoreCase("TERMINATED")) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.servStatus.equalsIgnoreCase("TERMINATED");
     }
 
-    public void printServ() {
-        System.out.println("Client ID: " + clientID);
-        System.out.println("Smart Card Number: " + smartCardNo);
-        System.out.println("Decoder Number: " + decoderNo);
-        System.out.println("Address: " + address);
-        System.out.println("Status: " + servStatus);
-        System.out.println("Registration Date: " + registrationDate);
-
-        if (terminationStatus() == true) {
-            System.out.println("Termination Date:\t" + getTermDate());
-        }
-
-        System.out.println("Current Outstanding Balance: " + currOstBal);
-        System.out.println("Previous Bill Amount: " + prevBillAmount);
-        System.out.println();
-    }
 }
 
 /**************************************************************************

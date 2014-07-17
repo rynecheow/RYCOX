@@ -8,29 +8,19 @@ import java.util.LinkedList;
 /**
  * @author LiHao
  */
-@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class NewServiceDialog extends JDialog {
     // Variable declaration
 
-    private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, leftLabel, rightLabel, scExample, dcExample;
-    private JTextField idInput, scInput, dcInput;
+    private JLabel scExample;
+    private JLabel dcExample;
+    private JTextField scInput;
+    private JTextField dcInput;
     private JTextArea addInput;
     private JButton okBut, ccBut, addBut, rmvBut;
-    private static JList leftList;
-    private static JList rightList;
-    private JScrollPane addScroll;
-    private static JScrollPane leftListScroll;
-    private static JScrollPane rightListScroll;
-    private JSeparator separator, separator2;
-    private Color fColor = new Color(255, 255, 255);
-    private LinkedList<String> leftPkgList;
-    private LinkedList<String> selPkgList;
-    private AbstractListModel leftModel;
-    private AbstractListModel rightModel;
+    private static JList<String> leftList;
+    private static JList<String> rightList;
     private String[] leftElArr;
     private String[] rightElArr;
-    private String addPkg;
-    private int subsNo;
     private JCheckBox addCB;
     private JWarnLabel scFormatWarn, scEmptyWarn, scSameWarn, dcFormatWarn, dcEmptyWarn, dcSameWarn, addWarn, subsPkgWarn;
     // end of variable declaration
@@ -38,23 +28,24 @@ class NewServiceDialog extends JDialog {
     public NewServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
         setLocation(300, 150);
-        idLabel = new JLabel("Client ID: ");
+        JLabel idLabel = new JLabel("Client ID: ");
+        Color fColor = new Color(255, 255, 255);
         idLabel.setForeground(fColor);
-        scLabel = new JLabel("Smart Card Number: ");
+        JLabel scLabel = new JLabel("Smart Card Number: ");
         scLabel.setForeground(fColor);
-        dcLabel = new JLabel("Decoder Number: ");
+        JLabel dcLabel = new JLabel("Decoder Number: ");
         dcLabel.setForeground(fColor);
-        addLabel = new JLabel("Address: ");
+        JLabel addLabel = new JLabel("Address: ");
         addLabel.setForeground(fColor);
-        leftLabel = new JLabel("Packages Available: ");
+        JLabel leftLabel = new JLabel("Packages Available: ");
         leftLabel.setForeground(fColor);
-        rightLabel = new JLabel("Packages Subscribed: ");
+        JLabel rightLabel = new JLabel("Packages Subscribed: ");
         rightLabel.setForeground(fColor);
         scExample = new JLabel("e.g Sxxxxxx");
         scExample.setForeground(fColor);
         dcExample = new JLabel("e.g Dxxxxxx");
         dcExample.setForeground(fColor);
-        idInput = new JTextField(20);
+        JTextField idInput = new JTextField(20);
         idInput.setText(ClientPanel.editionData[0]);
         idInput.setEnabled(false);
         scInput = new JTextField(20);
@@ -76,15 +67,15 @@ class NewServiceDialog extends JDialog {
         dcSameWarn = new JWarnLabel("Decoder has been used. e.g Dxxxxxx");
         addWarn = new JWarnLabel("Please Enter the Address.");
         subsPkgWarn = new JWarnLabel("Must at least select one package.");
-        addScroll = new JScrollPane();
+        JScrollPane addScroll = new JScrollPane();
         addScroll.setViewportView(addInput);
-        separator = new JSeparator(JSeparator.VERTICAL);
+        JSeparator separator = new JSeparator(JSeparator.VERTICAL);
         separator.setPreferredSize(new Dimension(2, 270));
-        separator2 = new JSeparator(JSeparator.HORIZONTAL);
+        JSeparator separator2 = new JSeparator(JSeparator.HORIZONTAL);
         separator2.setPreferredSize(new Dimension(990, 2));
 
-        leftModel = new DefaultListModel();
-        rightModel = new DefaultListModel();
+        AbstractListModel<String> leftModel = new DefaultListModel<>();
+        AbstractListModel<String> rightModel = new DefaultListModel<>();
 
         // get package
         for (int i = 0; i < App.pkgList.size(); i++) {
@@ -93,19 +84,19 @@ class NewServiceDialog extends JDialog {
             }
         }
 
-        leftList = new JList(leftModel);
+        leftList = new JList<>(leftModel);
         leftList.setModel(leftModel);
         leftList.setVisibleRowCount(12);
         leftList.setFixedCellWidth(160);
         leftList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        rightList = new JList(rightModel);
+        rightList = new JList<>(rightModel);
         rightList.setModel(rightModel);
         rightList.setVisibleRowCount(12);
         rightList.setFixedCellWidth(160);
         rightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        leftListScroll = new JScrollPane(leftList);
+        JScrollPane leftListScroll = new JScrollPane(leftList);
         leftListScroll.setViewportView(leftList);
-        rightListScroll = new JScrollPane(rightList);
+        JScrollPane rightListScroll = new JScrollPane(rightList);
         rightListScroll.setViewportView(rightList);
 
         Container c = getContentPane();
@@ -226,7 +217,7 @@ class NewServiceDialog extends JDialog {
                 App.log = new LogFile(App.user, " has create a new service " + scInput.getText().toUpperCase() + " for Client " + ClientPanel.editionData[0]);
                 App.logList.add(App.log);
             } else if (e.getSource() == ccBut) {
-                int confirm = JOptionPane.showConfirmDialog(null, "Exit without changes?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                int confirm = JOptionPane.showConfirmDialog(null, "Exit without changes?", "Confirm exit", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
                     dispose();
                 }
@@ -245,14 +236,14 @@ class NewServiceDialog extends JDialog {
             }
             if (addCB.isSelected()) {
                 addInput.setText(ClientPanel.editionData[3]);
-            } else if (!addCB.isSelected()) {
+            } else {
                 addInput.setText(null);
             }
         }
     }
 
     /**
-     * @author LiHao This method is used for validate the data entered by user
+     * This method is used for validate the data entered by user
      * is correct and the smart card number and decoder number is not repeat, if
      * all the data is correct the new service will be added, if not will
      * display the warning message.
@@ -340,10 +331,8 @@ class NewServiceDialog extends JDialog {
             subsPkgCheck = false;
             subsPkgWarn.setVisible(true);
         }
-        if (scCheck == true && dcCheck == true && addCheck == true && subsPkgCheck == true) {
+        if (scCheck && dcCheck && addCheck && subsPkgCheck) {
             updateList();
-            for (int i = 0; i < App.servList.size(); i++) {
-            }
             updateSubsList();
             JOptionPane.showMessageDialog(null, "You have successfully create a new service " + scInput.getText().toUpperCase(), "New Service Created", JOptionPane.INFORMATION_MESSAGE);
             dispose();
@@ -351,27 +340,27 @@ class NewServiceDialog extends JDialog {
     }
 
     /**
-     * @author LiHao This method is used for updating the new subscription from
+     * This method is used for updating the new subscription from
      * client.
      */
     private void updateSubsList() {
-        subsNo = 0;
+        int subsNo = 0;
         for (int i = 0; i < App.servList.size(); i++) {
             if (App.servList.get(i).getClientID().equalsIgnoreCase(ClientPanel.editionData[0])) {
                 subsNo++;
             }
         }
-        LinkedList<String> addElements = new LinkedList<String>();
+        LinkedList<String> addElements = new LinkedList<>();
         for (int p = 0; p < rightList.getModel().getSize(); p++) {
-            addElements.add(((String) rightList.getModel().getElementAt(p)).substring(0, 3));
+            addElements.add((rightList.getModel().getElementAt(p)).substring(0, 3));
         }
-        for (int i = 0; i < addElements.size(); i++) {
-            App.subsList.add(new Subscription(scInput.getText().toUpperCase(), subsNo, addElements.get(i)));
+        for (String addElement : addElements) {
+            App.subsList.add(new Subscription(scInput.getText().toUpperCase(), subsNo, addElement));
         }
     }
 
     /**
-     * @author LiHao This method is used for updating the new service's
+     * This method is used for updating the new service's
      * information from client.
      */
     public void updateList() {
@@ -380,15 +369,15 @@ class NewServiceDialog extends JDialog {
     }
 
     /**
-     * @author LiHao This method is used for add the selected package from the
+     * This method is used for add the selected package from the
      * not subscribe package list to subscribe package list.
      */
     public void pkgAdd() {
         int leftIndex = leftList.getSelectedIndex();
-        String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));
-        LinkedList<String> leftElements = new LinkedList<String>();
+        String toBeAdded = (leftList.getModel().getElementAt(leftIndex));
+        LinkedList<String> leftElements = new LinkedList<>();
         for (int p = 0; p < leftList.getModel().getSize(); p++) {
-            leftElements.add((String) leftList.getModel().getElementAt(p));
+            leftElements.add(leftList.getModel().getElementAt(p));
         }
 
         for (int i = 0; i < leftElements.size(); i++) {
@@ -403,9 +392,9 @@ class NewServiceDialog extends JDialog {
         leftList.revalidate();
         leftList.repaint();
 
-        LinkedList<String> rightElements = new LinkedList<String>();
+        LinkedList<String> rightElements = new LinkedList<>();
         for (int z = 0; z < rightList.getModel().getSize(); z++) {
-            rightElements.add((String) rightList.getModel().getElementAt(z));
+            rightElements.add(rightList.getModel().getElementAt(z));
         }
         rightElements.add(toBeAdded);
         rightElArr = rightElements.toArray(new String[rightElements.size()]);
@@ -415,15 +404,15 @@ class NewServiceDialog extends JDialog {
     }
 
     /**
-     * @author LiHao This method is used for remove the selected package from
+     * This method is used for remove the selected package from
      * the subscribe package list to not subscribe package list.
      */
     public void pkgRemove() {
         int rightIndex = rightList.getSelectedIndex();
-        String toBeRemoved = ((String) rightList.getModel().getElementAt(rightIndex));
-        LinkedList<String> rightElements = new LinkedList<String>();
+        String toBeRemoved = (rightList.getModel().getElementAt(rightIndex));
+        LinkedList<String> rightElements = new LinkedList<>();
         for (int p = 0; p < rightList.getModel().getSize(); p++) {
-            rightElements.add((String) rightList.getModel().getElementAt(p));
+            rightElements.add(rightList.getModel().getElementAt(p));
         }
 
         for (int i = 0; i < rightElements.size(); i++) {
@@ -439,9 +428,9 @@ class NewServiceDialog extends JDialog {
         rightList.repaint();
 
 
-        LinkedList<String> leftElements = new LinkedList<String>();
+        LinkedList<String> leftElements = new LinkedList<>();
         for (int z = 0; z < leftList.getModel().getSize(); z++) {
-            leftElements.add((String) leftList.getModel().getElementAt(z));
+            leftElements.add(leftList.getModel().getElementAt(z));
         }
         leftElements.add(toBeRemoved);
         leftElArr = leftElements.toArray(new String[leftElements.size()]);

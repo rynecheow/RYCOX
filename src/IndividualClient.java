@@ -1,4 +1,3 @@
-@SuppressWarnings("serial")
 class IndividualClient extends ClientAccount {
 
     private int age;
@@ -53,14 +52,13 @@ class IndividualClient extends ClientAccount {
         String accStats = "Creation Date:\t" + getCreationDate();
         String creaDate = "Creation Date:\t" + getCreationDate();
         String termDate;
-        if (terminationStatus() == true) {
+        if (terminationStatus()) {
             termDate = "Termination Date:\t" + getTerminationDate() + "\n";
         } else {
             termDate = "";
         }
 
-        String cl = nameInput + "\n" + ageInput + "\n" + Ic + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
-        return cl;
+        return nameInput + "\n" + ageInput + "\n" + Ic + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
     }
 }
 

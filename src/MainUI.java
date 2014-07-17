@@ -11,29 +11,27 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class MainUI extends JFrame implements ActionListener {
-    private Color mainbgColor = new Color(23, 28, 30);
-    private JTabbedPane tabbedPane;
-    private JPanel homePanel, clientPanel, servPanel, pkgPanel, prgPanel;
-    private JMenuBar menubar;
-    private JMenu fileMenu, viewMenu, helpMenu;
+    private JPanel clientPanel;
+    private JPanel servPanel;
+    private JPanel pkgPanel;
+    private JPanel prgPanel;
     private JMenuItem saveMI, exitMI, aboutMI, viewLogMI, logoutMI, reportMI, manageUserMI, chgpwMI;
-    private int i;
-    private JMenu adminMenu;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public MainUI() throws IOException {
         super("RYCOX System - Customer Management Module");
+        Color mainbgColor = new Color(23, 28, 30);
         getContentPane().setBackground(mainbgColor);
         setSize(1600, 900);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        menubar = new JMenuBar();
+        JMenuBar menubar = new JMenuBar();
         add(menubar);
-        fileMenu = new JMenu("File");
-        viewMenu = new JMenu("View");
-        helpMenu = new JMenu("Help");
-        adminMenu = new JMenu("Admin");
+        JMenu fileMenu = new JMenu("File");
+        JMenu viewMenu = new JMenu("View");
+        JMenu helpMenu = new JMenu("Help");
+        JMenu adminMenu = new JMenu("Admin");
         menubar.add(fileMenu);
         menubar.add(viewMenu);
         menubar.add(helpMenu);
@@ -63,7 +61,7 @@ public class MainUI extends JFrame implements ActionListener {
         reportMI.addActionListener(this);
         manageUserMI.addActionListener(this);
         chgpwMI.addActionListener(this);
-        homePanel = new JPanel();
+        JPanel homePanel = new JPanel();
         homePanel.add(
                 new JLabel(new ImageIcon(ImageIO.read(this.getClass().getResourceAsStream("/resources/mainwelcome.png")))));
         homePanel.setBackground(new Color(41, 50, 51));
@@ -76,7 +74,7 @@ public class MainUI extends JFrame implements ActionListener {
             adminMenu.setVisible(false);
         }
 
-        tabbedPane = new JTabbedPane();
+        JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setBackground(mainbgColor);
         tabbedPane.setTabPlacement(SwingConstants.LEFT);
         tabbedPane.addTab("Main Menu", homePanel);
@@ -145,7 +143,7 @@ public class MainUI extends JFrame implements ActionListener {
             App.printLog();
         } else if (e.getSource() == exitMI) {    // end if
             int closeCf = JOptionPane.showConfirmDialog(null, "Exit without saving?", "Confirm exit",
-                    JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.YES_NO_OPTION);
 
             if (closeCf == JOptionPane.YES_OPTION) {
                 System.exit(0);
@@ -160,7 +158,7 @@ public class MainUI extends JFrame implements ActionListener {
         } else if (e.getSource() == logoutMI) {
             int option = JOptionPane.showConfirmDialog(this,
                     "Are you sure you want to log out? Any unsaved changes will be discarded.",
-                    "Confirm logout", JOptionPane.WARNING_MESSAGE);
+                    "Confirm logout", JOptionPane.YES_NO_OPTION);
 
             if (option == JOptionPane.YES_OPTION) {
                 App.log = new LogFile(App.user, " has logged out.");

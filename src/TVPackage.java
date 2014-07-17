@@ -26,8 +26,8 @@ class TVPackage implements Serializable {
     public TVPackage(String pkgCode, String pkgName, String startDate, String terminationDate, double chargePrice, String chargeType, String pkgStatus) { //constructor{
         this.pkgCode = pkgCode;
         this.pkgName = pkgName;
-        this.startDate = DateFormat.getInstance().format(new Date());
-        this.terminationDate = "N/A";
+        this.startDate = startDate;
+        this.terminationDate = terminationDate;
         this.chargePrice = chargePrice;
         this.chargeType = chargeType;
         this.pkgStatus = pkgStatus;
@@ -62,11 +62,6 @@ class TVPackage implements Serializable {
         return pkgStatus;
     }
 
-    //mutators
-    public void setPkgCode(String pkgCode) {//to change package's code
-        this.pkgCode = pkgCode;
-    }
-
     public void setPkgName(String pkgName) { //to change package's name
         this.pkgName = pkgName;
     }
@@ -87,16 +82,6 @@ class TVPackage implements Serializable {
         this.terminationDate = terminationDate;
     }
 
-    public void printPkg() {
-        System.out.println("Package Code: " + pkgCode);
-        System.out.println("Package Name: " + pkgName);
-        System.out.println("Start Date: " + startDate);
-        System.out.println("Termination Date: " + terminationDate);
-        System.out.println("Charge Price: RM" + chargePrice);
-        System.out.println("Charge Type: " + chargeType);
-        System.out.println("Status: " + pkgStatus + "\n");
-        System.out.println();
-    }
 }
 
 /**************************************************************************

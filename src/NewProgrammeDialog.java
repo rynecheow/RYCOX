@@ -1,65 +1,58 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Jia Jiun
  */
-@SuppressWarnings("serial")
 class NewProgrammeDialog extends JDialog {
     //Variable declaration
 
-    private JLabel label2, label3, label4, label5, label6, label7;
     private JLabel error3, error4, error5, error6, error7, error8;
     private JTextField textfield2, textfield3, textfield4;
     private JTextArea textarea1;
-    @SuppressWarnings("rawtypes")
-    private JComboBox combobox1, combobox2;
-    private JButton button1, button2;
-    private Color color, color1;
-    private JScrollPane scrollpane1;
+
+    private JComboBox<String> combobox1;
+    private JComboBox<String> combobox2;
     //End of variable declaration
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public NewProgrammeDialog(JFrame frame) {
         super(frame, "Programme Management- Create new TV Programme", true);
         setLocation(300, 150);
-        label2 = new JLabel("Programme Title: ");
+        JLabel label2 = new JLabel("Programme Title: ");
         error3 = new JLabel("Blank input occured! Please reenter it.");
-        label3 = new JLabel("Description: ");
+        JLabel label3 = new JLabel("Description: ");
         error4 = new JLabel("Blank input occured! Please reenter it.");
-        label4 = new JLabel("Content Origin: ");
+        JLabel label4 = new JLabel("Content Origin: ");
         error5 = new JLabel("Blank input occured! Please reenter it.");
-        label5 = new JLabel("Viewer Status: ");
+        JLabel label5 = new JLabel("Viewer Status: ");
         error6 = new JLabel("Please choose one of the viewer status.");
-        label6 = new JLabel("Type: ");
+        JLabel label6 = new JLabel("Type: ");
         error7 = new JLabel("Please choose one of the programme type.");
-        label7 = new JLabel("Notes: ");
+        JLabel label7 = new JLabel("Notes: ");
         error8 = new JLabel("Blank input occured! Please reenter it.");
 
         textfield2 = new JTextField(15);
         textarea1 = new JTextArea(5, 20);
         textfield3 = new JTextField(15);
-        combobox1 = new JComboBox();
-        combobox2 = new JComboBox();
+        combobox1 = new JComboBox<>();
+        combobox2 = new JComboBox<>();
         textfield4 = new JTextField(15);
-        button1 = new JButton("Submit");
-        button2 = new JButton("Cancel");
-        color = new Color(23, 28, 30);
-        color1 = new Color(244, 219, 234);
+        JButton button1 = new JButton("Submit");
+        JButton button2 = new JButton("Cancel");
+        Color color = new Color(23, 28, 30);
+        Color color1 = new Color(244, 219, 234);
 
         Container container = getContentPane();
         container.setBackground(color);
         SpringLayout spring = new SpringLayout();
         Border textBorder = textfield2.getBorder();
         textarea1.setBorder(textBorder);
-        scrollpane1 = new JScrollPane(textarea1, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane scrollpane1 = new JScrollPane(textarea1, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         String[] string1 = {"<-----Please Choose a viewer status----->", "U", "PG13", "18SG"};
         String[] string2 = {"<----Please Choose a programme type---->", "Movie", "Series", "Comedy", "Concert"};
-        combobox1.setModel(new DefaultComboBoxModel(string1));
-        combobox2.setModel(new DefaultComboBoxModel(string2));
+        combobox1.setModel(new DefaultComboBoxModel<>(string1));
+        combobox2.setModel(new DefaultComboBoxModel<>(string2));
 
         error3.setForeground(Color.RED);
         error4.setForeground(Color.RED);
@@ -79,105 +72,97 @@ class NewProgrammeDialog extends JDialog {
         label5.setForeground(color1);
         label6.setForeground(color1);
         label7.setForeground(color1);
-        button1.addActionListener(new ActionListener() {
+        button1.addActionListener(e -> {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
-                String a = "", b = "", y = "", d = "", z = "", f = "", g = "";
+            boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
+            String a = "", b = "", y = "", d = "", z = "", f = "", g = "";
 
 
-                if ((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))) {
-                    error3.setVisible(true);
-                    flag1 = false;
-                } else {
-                    flag1 = true;
-                    error3.setVisible(false);
-                    b = textfield2.getText().trim();
+            if ((textfield2.getText().trim().equalsIgnoreCase(""))) {
+                error3.setVisible(true);
+                flag1 = false;
+            } else {
+                flag1 = true;
+                error3.setVisible(false);
+                b = textfield2.getText().trim();
+            }
+            if ((textarea1.getText().trim().equalsIgnoreCase(""))) {
+                error4.setVisible(true);
+                flag2 = false;
+            } else {
+                flag2 = true;
+                error4.setVisible(false);
+                y = textarea1.getText();
+            }
+
+            if ((textfield3.getText().trim().equalsIgnoreCase(""))) {
+                error5.setVisible(true);
+                flag3 = false;
+            } else {
+                flag3 = true;
+                error5.setVisible(false);
+                d = textfield3.getText();
+            }
+            if ((((String) combobox1.getSelectedItem())).equals("<-----Please Choose a viewer status----->")) {
+                error6.setVisible(true);
+                flag4 = false;
+            } else {
+                flag4 = true;
+                error6.setVisible(false);
+
+                z = combobox1.getSelectedItem().toString();
+            }
+
+            if ((((String) combobox2.getSelectedItem())).equals("<----Please Choose a programme type---->")) {
+                error7.setVisible(true);
+                flag5 = false;
+            } else {
+                flag5 = true;
+                error7.setVisible(false);
+
+                f = combobox2.getSelectedItem().toString();
+
+
+            }
+
+            if ((textfield4.getText().trim().equalsIgnoreCase(""))) {
+                error8.setVisible(true);
+                flag6 = false;
+            } else {
+                flag6 = true;
+                error8.setVisible(false);
+                g = textfield4.getText();
+            }
+
+            if ((flag1) && (flag2) && (flag3) && (flag4) && (flag5) && (flag6)) {
+                int existedID = 0;
+                for (TVProgramme ignored : App.prgList) {
+                    existedID += 1;
                 }
-                if ((textarea1.getText().trim() == null) || (textarea1.getText().trim().equalsIgnoreCase(""))) {
-                    error4.setVisible(true);
-                    flag2 = false;
-                } else {
-                    flag2 = true;
-                    error4.setVisible(false);
-                    y = textarea1.getText();
+                int newID = existedID + 1;
+                String newIDS = Integer.toString(newID);
+                if (existedID < 10) {
+                    a = "F00" + newIDS;
+                } else if (existedID < 99) {
+                    a = "F0" + newIDS;
+                } else if ((existedID >= 99) && (existedID <= 999)) {
+                    a = "F" + newIDS;
                 }
 
-                if ((textfield3.getText().trim() == null) || (textfield3.getText().trim().equalsIgnoreCase(""))) {
-                    error5.setVisible(true);
-                    flag3 = false;
-                } else {
-                    flag3 = true;
-                    error5.setVisible(false);
-                    d = textfield3.getText();
-                }
-                if ((((String) combobox1.getSelectedItem())).equals("<-----Please Choose a viewer status----->")) {
-                    error6.setVisible(true);
-                    flag4 = false;
-                } else {
-                    flag4 = true;
-                    error6.setVisible(false);
+                App.prgList.addLast(new TVProgramme(a, b, y, d, "ACTIVE", z, f, g));
+                JOptionPane.showMessageDialog(null, "You have successfully created a new TV Programme with programme code " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
+                LogFile log = new LogFile(App.user, "has created a new TV Programme '" + a + "'.");
+                App.logList.add(log);
 
-                    z = combobox1.getSelectedItem().toString();
-                }
-
-                if ((((String) combobox2.getSelectedItem())).equals("<----Please Choose a programme type---->")) {
-                    error7.setVisible(true);
-                    flag5 = false;
-                } else {
-                    flag5 = true;
-                    error7.setVisible(false);
-
-                    f = combobox2.getSelectedItem().toString();
-
-
-                }
-
-                if ((textfield4.getText().trim() == null) || (textfield4.getText().trim().equalsIgnoreCase(""))) {
-                    error8.setVisible(true);
-                    flag6 = false;
-                } else {
-                    flag6 = true;
-                    error8.setVisible(false);
-                    g = textfield4.getText();
-                }
-
-                if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true) && (flag5 == true) && (flag6 == true)) {
-                    int existedID = 0;
-                    for (int i = 0; i < App.prgList.size(); i++) {
-                        existedID += 1;
-                    }
-                    int newID = existedID + 1;
-                    String newIDS = Integer.toString(newID);
-                    if (existedID < 10) {
-                        a = "F00" + newIDS;
-                    } else if (existedID < 99) {
-                        a = "F0" + newIDS;
-                    } else if ((existedID >= 99) && (existedID <= 999)) {
-                        a = "F" + newIDS;
-                    }
-
-                    App.prgList.addLast(new TVProgramme(a, b, y, d, "ACTIVE", z, f, g));
-                    JOptionPane.showMessageDialog(null, "You have successfully created a new TV Programme with programme code " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(App.user, "has created a new TV Programme '" + a + "'.");
-                    App.logList.add(log);
-
-                    dispose();
-                }
+                dispose();
             }
         });
 
-        button2.addActionListener(new ActionListener() {
+        button2.addActionListener(e -> {
+            int closeCf = JOptionPane.showConfirmDialog(null, "Stop Adding? All the changes will not be saved.", "Cancel Adding", JOptionPane.YES_NO_OPTION);
+            if (closeCf == JOptionPane.YES_OPTION) {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int closeCf = JOptionPane.showConfirmDialog(null, "Stop Adding? All the changes will not be saved.", "Cancel Adding", JOptionPane.WARNING_MESSAGE);
-                if (closeCf == JOptionPane.YES_OPTION) {
-
-                    dispose();
-                }
+                dispose();
             }
         });
 

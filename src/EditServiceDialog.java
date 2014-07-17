@@ -374,7 +374,6 @@ class EditServiceDialog extends JDialog {
     }
 
     /**
-     *
      * This method is used for updating the edited of subscription package.
      */
     private void updateSubsList() {
@@ -397,7 +396,6 @@ class EditServiceDialog extends JDialog {
     }
 
     /**
-     *
      * This method is used for updating the edited of service's information.
      */
     public void updateList() {

@@ -1,4 +1,3 @@
-@SuppressWarnings("serial")
 class GovClient extends ClientAccount {
 
     public GovClient(String name, String address, String clientID, String accStatus, String email) {
@@ -12,7 +11,7 @@ class GovClient extends ClientAccount {
         System.out.println("Client ID:\t" + getClientID());
         System.out.println("Creation Date:\t" + getCreationDate());
 
-        if (terminationStatus() == true) {
+        if (terminationStatus()) {
             System.out.println("Termination Date:\t" + getTerminationDate());
         }
 
@@ -28,14 +27,13 @@ class GovClient extends ClientAccount {
         String accStats = "Creation Date:\t" + getCreationDate();
         String creaDate = "Creation Date:\t" + getCreationDate();
         String termDate;
-        if (terminationStatus() == true) {
+        if (terminationStatus()) {
             termDate = "Termination Date:\t" + getTerminationDate() + "\n";
         } else {
             termDate = "";
         }
 
-        String cl = nameI + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
-        return cl;
+        return nameI + "\n" + add + "\n" + Id + "\n" + accStats + "\n" + creaDate + termDate + "\n";
     }
 }
 

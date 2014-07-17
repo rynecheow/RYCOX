@@ -1,7 +1,5 @@
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -10,11 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author LiHao
  */
-@SuppressWarnings("serial")
 class ServicePanel extends JPanel {
 
     private static JTable servTable;
@@ -23,15 +21,10 @@ class ServicePanel extends JPanel {
     private static JButton editServButton;
     private static JButton viewButton;
     private static JScrollPane scrollPane;
-    private JButton redoButton;
-    private JPanel toolbar;
-    private JButton undoButton;
     private JButton saveButton;
     private static JButton recoverButton;
     private static JButton servActivateButton;
     private static JButton barButton;
-    private JLabel loginInfo;
-    private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
     private JMenuItem editServMI, deleteServMI, viewServMI, activeServMI, barredServMI, recoverServMI;
     private static String[][] servData;
@@ -39,22 +32,23 @@ class ServicePanel extends JPanel {
     static DefaultTableModel model;
     private int rowNumber;
     private JTextField searchbox;
-    private JLabel searchLabel;
     private TableRowSorter<TableModel> sorter;
 
     // End of variables declaration
     @SuppressWarnings({"unchecked", "rawtypes"})
     public ServicePanel() {
-        toolbar = new JPanel();
+        AtomicReference<JPanel> toolbar = new AtomicReference<>();
+        toolbar.set(new JPanel());
         editServButton = new JButton("", new ImageIcon(getClass().getResource("/resources/editbutton.png")));
+        Color bColor = new Color(23, 28, 30);
         editServButton.setBackground(bColor);
         saveButton = new JButton("", new ImageIcon(getClass().getResource("/resources/savebutton.png")));
         saveButton.setBackground(bColor);
         viewButton = new JButton("", new ImageIcon(getClass().getResource("/resources/viewbutton.png")));
         viewButton.setBackground(bColor);
-        redoButton = new JButton("", new ImageIcon(getClass().getResource("/resources/redobutton.png")));
+        JButton redoButton = new JButton("", new ImageIcon(getClass().getResource("/resources/redobutton.png")));
         redoButton.setBackground(bColor);
-        undoButton = new JButton("", new ImageIcon(getClass().getResource("/resources/undobutton.png")));
+        JButton undoButton = new JButton("", new ImageIcon(getClass().getResource("/resources/undobutton.png")));
         undoButton.setBackground(bColor);
         servDeleteButton = new JButton("", new ImageIcon(getClass().getResource("/resources/deletebutton.png")));
         servDeleteButton.setBackground(bColor);
@@ -67,7 +61,7 @@ class ServicePanel extends JPanel {
         scrollPane = new JScrollPane();
         servTable = new JTable();
         servTable.getTableHeader().setReorderingAllowed(false);
-        loginInfo = new JLabel("You are logged in as " + App.user + ".");
+        JLabel loginInfo = new JLabel("You are logged in as " + App.user + ".");
         loginInfo.setForeground(Color.WHITE);
         editServMI = new JMenuItem("Edit Service...");
         deleteServMI = new JMenuItem("Terminate Service...");
@@ -78,13 +72,13 @@ class ServicePanel extends JPanel {
         searchbox = new JTextField(16);
         searchbox.setForeground(Color.BLACK);
         searchbox.setText("");
-        searchLabel = new JLabel();
+        JLabel searchLabel = new JLabel();
         searchLabel.setText("Search:");
         searchLabel.setForeground(Color.WHITE);
         defaultButtonSet();
         setBackground(new Color(23, 28, 30));
-        toolbar.setBackground(bColor);
-        toolbar.setPreferredSize(new Dimension(1500, 30));
+        toolbar.get().setBackground(bColor);
+        toolbar.get().setPreferredSize(new Dimension(1500, 30));
         if (App.userList.get(App.currentUser) instanceof Administrators) {
             servDeleteButton.setVisible(true);
             recoverButton.setVisible(false);
@@ -96,8 +90,8 @@ class ServicePanel extends JPanel {
             deleteServMI.setVisible(false);
             recoverServMI.setVisible(false);
         }
-        GroupLayout toolbarLayout = new GroupLayout(toolbar);
-        toolbar.setLayout(toolbarLayout);
+        GroupLayout toolbarLayout = new GroupLayout(toolbar.get());
+        toolbar.get().setLayout(toolbarLayout);
         toolbarLayout.setHorizontalGroup(
                 toolbarLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, toolbarLayout.createSequentialGroup().addContainerGap().addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(editServButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(viewButton, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servDeleteButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(recoverButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(servActivateButton, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(barButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(loginInfo, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE).addContainerGap().addPreferredGap(ComponentPlacement.UNRELATED).addComponent(searchLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(searchbox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addContainerGap()));
         toolbarLayout.setVerticalGroup(
@@ -153,7 +147,7 @@ class ServicePanel extends JPanel {
             }
         };
         servTable.setModel(model);
-        sorter = new TableRowSorter<TableModel>(model);
+        sorter = new TableRowSorter<>(model);
         servTable.setRowSorter(sorter);
         servTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         servTable.getRowSorter().toggleSortOrder(0);
@@ -163,9 +157,9 @@ class ServicePanel extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(toolbar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE).addContainerGap()));
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(toolbar.get(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1480, Short.MAX_VALUE).addContainerGap()));
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(toolbar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE).addContainerGap()));
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(toolbar.get(), GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE).addContainerGap()));
 
         /////////*-------------------------- MOUSE LISTENER --------------------------*////////
         servTable.addMouseListener(
@@ -373,12 +367,6 @@ class ServicePanel extends JPanel {
                         }
                     }
 
-                    /**
-                     *
-                     * and column and pop up Menu Item.
-                     *
-                     * @param e
-                     */
                     private void showPopup(MouseEvent e) {
                         if (e.isPopupTrigger()) {
                             popupMenu.show(e.getComponent(), e.getX(), e.getY());
@@ -409,23 +397,19 @@ class ServicePanel extends JPanel {
         barredServMI.addActionListener(d);
         deleteServMI.addActionListener(d);
         recoverServMI.addActionListener(d);
-        searchbox.addCaretListener(new CaretListener() {
-
-            @Override
-            public void caretUpdate(CaretEvent e) {
-                try {
-                    if (!"".equals(searchbox.getText())) {
-                        sorter.setRowFilter(RowFilter.regexFilter(searchbox.getText()));
-                        sorter.setSortKeys(null);
-                    } else {
-                        sorter.setRowFilter(RowFilter.regexFilter("[Ss][0-9]{6}"));
-                        sorter.setSortKeys(null);
-                    }
-                } catch (Exception ex) {
-
+        searchbox.addCaretListener(e -> {
+            try {
+                if (!"".equals(searchbox.getText())) {
+                    sorter.setRowFilter(RowFilter.regexFilter(searchbox.getText()));
+                    sorter.setSortKeys(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("[Ss][0-9]{6}"));
+                    sorter.setSortKeys(null);
                 }
-                repaint();
+            } catch (Exception ignored) {
+
             }
+            repaint();
         });
     }//end constructor
 
@@ -454,7 +438,7 @@ class ServicePanel extends JPanel {
                 ESD.setVisible(true);
                 updateTable();
             } else if (e.getSource() == servDeleteButton || e.getSource() == deleteServMI) {
-                int terminate = JOptionPane.showConfirmDialog(null, "Terminate " + temp[0] + " ?", "Terminate Service", JOptionPane.WARNING_MESSAGE);
+                int terminate = JOptionPane.showConfirmDialog(null, "Terminate " + temp[0] + " ?", "Terminate Service", JOptionPane.YES_NO_OPTION);
                 if (terminate == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < App.servList.size(); i++) {
                         if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -468,7 +452,7 @@ class ServicePanel extends JPanel {
                     updateTable();
                 }
             } else if (e.getSource() == recoverButton) {
-                int recover = JOptionPane.showConfirmDialog(null, "Recover " + temp[0] + " ?", "Recover Service", JOptionPane.WARNING_MESSAGE);
+                int recover = JOptionPane.showConfirmDialog(null, "Recover " + temp[0] + " ?", "Recover Service", JOptionPane.YES_NO_OPTION);
                 if (recover == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < App.servList.size(); i++) {
                         if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -485,7 +469,7 @@ class ServicePanel extends JPanel {
                 ViewServiceDialog VSD = new ViewServiceDialog((JFrame) popupMenu.getParent());
                 VSD.setVisible(true);
             } else if (e.getSource() == servActivateButton || e.getSource() == activeServMI) {
-                int activate = JOptionPane.showConfirmDialog(null, "Activate " + temp[0] + " ?", "Activate Service", JOptionPane.WARNING_MESSAGE);
+                int activate = JOptionPane.showConfirmDialog(null, "Activate " + temp[0] + " ?", "Activate Service", JOptionPane.YES_NO_OPTION);
                 if (activate == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < App.servList.size(); i++) {
                         if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -500,7 +484,7 @@ class ServicePanel extends JPanel {
                     updateTable();
                 }
             } else if (e.getSource() == barButton || e.getSource() == barredServMI) {
-                int deact = JOptionPane.showConfirmDialog(null, "Barred " + temp[0] + " ?", "Barred Service", JOptionPane.WARNING_MESSAGE);
+                int deact = JOptionPane.showConfirmDialog(null, "Barred " + temp[0] + " ?", "Barred Service", JOptionPane.YES_NO_OPTION);
                 if (deact == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < App.servList.size(); i++) {
                         if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
@@ -518,7 +502,7 @@ class ServicePanel extends JPanel {
     }// end ActionListener
 
     /**
-     * @author LiHao This method is use for update the table data for each time
+     * This method is use for update the table data for each time
      * we edit the data in the list.
      */
     // start updateTable()
@@ -553,7 +537,6 @@ class ServicePanel extends JPanel {
                 }
         ) {
 
-            @SuppressWarnings("rawtypes")
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
@@ -573,7 +556,7 @@ class ServicePanel extends JPanel {
             }
         };
         servTable.setModel(model);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
         servTable.setRowSorter(sorter);
         servTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         servTable.getRowSorter().toggleSortOrder(0);
@@ -582,17 +565,17 @@ class ServicePanel extends JPanel {
     }//end updateTable()
 
     /**
-     * @author LiHao This static method is used for updating the servicePanel
+     * This static method is used for updating the servicePanel
      * table after add a new service.
      */
     static void addServ() {
         int row = App.servList.size() - 1;
         String[] newServ = new String[]{App.servList.get(row).getSmartCardNo(), App.servList.get(row).getClientID(), App.servList.get(row).getDecodeNo(), App.servList.get(row).getAddress(), App.servList.get(row).getServStatus()};
-        ((DefaultTableModel) model).addRow(newServ);
+        model.addRow(newServ);
     }
 
     /**
-     * @author LiHao This static method is used for reset the button to default
+     * This static method is used for reset the button to default
      * type.
      */
     static void defaultButtonSet() {

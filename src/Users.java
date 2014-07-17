@@ -2,7 +2,6 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
-@SuppressWarnings("serial")
 abstract class Users implements Serializable {
 
     protected String userID;

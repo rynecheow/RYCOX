@@ -1,14 +1,10 @@
 import javax.swing.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -26,13 +22,10 @@ public class PackagePanel extends JPanel {
     private static JButton pkgDeleteButton;
     private static JButton editPkgButton;
     private JScrollPane scrollPane;
-    private JPanel toolbar;
     private JButton saveButton;
     private static JButton viewButton;
     private static JButton pkgActivateButton;
     private static JButton pkgDeactButton;
-    private JLabel loginInfo;
-    private Color bColor = new Color(23, 28, 30);
     private JPopupMenu popupMenu;
     private JMenuItem editPkgMI, deletePkgMI, activateMI, viewMI, deactivateMI;
     private String[][] pkgData;
@@ -41,14 +34,14 @@ public class PackagePanel extends JPanel {
     private int rowno;
     static int lol2;
     private JTextField searchbox;
-    private JLabel searchLabel;
     private TableRowSorter<TableModel> sorter;
     //End of variable declaration
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public PackagePanel() {
-        toolbar = new JPanel();
+        JPanel toolbar = new JPanel();
         pkgAddButton = new JButton("", new ImageIcon(getClass().getResource("/resources/newbutton.png")));
+        Color bColor = new Color(23, 28, 30);
         pkgAddButton.setBackground(bColor);
         editPkgButton = new JButton("", new ImageIcon(getClass().getResource("/resources/editbutton.png")));
         editPkgButton.setBackground(bColor);
@@ -65,13 +58,13 @@ public class PackagePanel extends JPanel {
         scrollPane = new JScrollPane();
         pkgTable = new JTable();
         pkgTable.getTableHeader().setReorderingAllowed(false);
-        loginInfo = new JLabel("You are logged in as " + App.user + ".");
+        JLabel loginInfo = new JLabel("You are logged in as " + App.user + ".");
         loginInfo.setForeground(Color.WHITE);
         loginInfo.setFont(new Font("LucidaSansRegular", Font.PLAIN, 14));
         searchbox = new JTextField(16);
         searchbox.setForeground(Color.BLACK);
         searchbox.setText("");
-        searchLabel = new JLabel();
+        JLabel searchLabel = new JLabel();
         searchLabel.setText("Search:");
         searchLabel.setForeground(Color.WHITE);
 
@@ -140,7 +133,7 @@ public class PackagePanel extends JPanel {
             }
         };
         pkgTable.setModel(pkgModel);
-        sorter = new TableRowSorter<TableModel>(pkgModel);
+        sorter = new TableRowSorter<>(pkgModel);
         pkgTable.setRowSorter(sorter);
         pkgTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         pkgTable.setName("");
@@ -211,7 +204,7 @@ public class PackagePanel extends JPanel {
 
             /**
              * This method gets the component of each row and column and pop up Menu Item
-             * @param e
+             *
              */
             private void showPopup(MouseEvent e) {
                 if (e.isPopupTrigger()) {
@@ -265,10 +258,121 @@ public class PackagePanel extends JPanel {
          * -------------------------- MENU ITEM LISTENER --------------------------
 		 */
 
-        activateMI.addActionListener(new ActionListener() {
+        activateMI.addActionListener(e -> {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
+            for (int i = 0; i < App.pkgList.size(); i++) {
+                if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                    if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
+
+                        int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Package '" + App.pkgList.get(i).getPkgCode() + "'?");
+                        if (opt == JOptionPane.YES_OPTION) {
+                            App.pkgList.get(i).setStatus("ACTIVE");
+                            JOptionPane.showMessageDialog(null, "Package " + App.pkgList.get(i).getPkgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                            updatePackageTable();
+                            pkgTable.clearSelection();
+                            pkgDeactButton.setEnabled(true);
+                            deactivateMI.setEnabled(true);
+                            pkgActivateButton.setEnabled(true);
+                            activateMI.setEnabled(true);
+                            break;
+                        } else if (opt == JOptionPane.NO_OPTION) {
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+
+        deactivateMI.addActionListener(e -> {
+            try {
+                String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
+                for (int i = 0; i < App.pkgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                        if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
+                            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + App.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.YES_NO_OPTION);
+                            if (choice == JOptionPane.YES_OPTION) {
+                                App.pkgList.get(i).setStatus("INACTIVE");
+                                JOptionPane.showMessageDialog(null, "Package '" + App.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updatePackageTable();
+                                pkgTable.clearSelection();
+                                pkgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                pkgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                                break;
+                            } else if (choice == JOptionPane.NO_OPTION) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        });
+
+
+        viewMI.addActionListener(e -> {
+            new ViewPackageDialog((JFrame) popupMenu.getParent());
+            pkgTable.clearSelection();
+        });
+
+
+        editPkgMI.addActionListener(e -> {
+            EditPackageDialog epd = new EditPackageDialog((JFrame) popupMenu.getParent());
+            updatePackageTable();
+            pkgTable.clearSelection();
+        });
+
+
+        deletePkgMI.addActionListener(e -> {
+
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Package " + pkgtemp[0] + " ?", "Package Code found!", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                boolean flag = false;
+                for (int check = 0; check < App.subsList.size(); check++) {
+
+                    if (pkgtemp[0].equalsIgnoreCase(App.subsList.get(check).getPkgCode())) {
+                        JOptionPane.showMessageDialog(null, "The package is included in one or more services. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
+                        flag = false;
+                        break;
+                    } else {
+                        flag = true;
+                    }
+                }
+
+
+                if (flag) {
+
+                    for (int counts = 0; counts < App.pkgList.size(); counts++) {
+                        if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(counts).getPkgCode())) {
+                            if ((App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("ACTIVE")) || (App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("INACTIVE"))) {
+
+                                App.pkgList.get(counts).setStatus("TERMINATED");
+                                String date = DateFormat.getInstance().format(new Date());
+                                App.pkgList.get(counts).setTerminationDate(date);
+                                JOptionPane.showMessageDialog(null, "TV Programme " + pkgtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
+                                LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + pkgtemp[0] + "'.");
+                                App.logList.add(log);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            updatePackageTable();
+            pkgTable.clearSelection();
+        });
+
+		/*
+         * -------------------------- BUTTON LISTENER --------------------------
+		 */
+        pkgActivateButton.addActionListener(e -> {
+            try {
 
                 String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
                 for (int i = 0; i < App.pkgList.size(); i++) {
@@ -285,80 +389,103 @@ public class PackagePanel extends JPanel {
                                 deactivateMI.setEnabled(true);
                                 pkgActivateButton.setEnabled(true);
                                 activateMI.setEnabled(true);
+                                defaultButtonSet();
+                                App.log = new LogFile(App.user, " has activated TV Package '" + App.pkgList.get(i).getPkgCode() + "'.");
+                                App.logList.add(App.log);
+
                                 break;
                             } else if (opt == JOptionPane.NO_OPTION) {
+
                                 break;
                             }
                         }
                     }
                 }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
+
         });
 
 
-        deactivateMI.addActionListener(new ActionListener() {
+        pkgDeactButton.addActionListener(e -> {
+            try {
+                String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
+                for (int i = 0; i < App.pkgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                        if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
+                            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + App.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.YES_NO_OPTION);
+                            if (choice == JOptionPane.YES_OPTION) {
+                                App.pkgList.get(i).setStatus("INACTIVE");
+                                JOptionPane.showMessageDialog(null, "Package '" + App.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                updatePackageTable();
+                                pkgTable.clearSelection();
+                                pkgDeactButton.setEnabled(true);
+                                deactivateMI.setEnabled(true);
+                                pkgActivateButton.setEnabled(true);
+                                activateMI.setEnabled(true);
+                                defaultButtonSet();
+                                App.log = new LogFile(App.user, " has deactivated TV Package '" + App.pkgList.get(i).getPkgCode() + "'.");
+                                App.logList.add(App.log);
+                                break;
+                            } else if (choice == JOptionPane.NO_OPTION) {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < App.pkgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
-                            if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + App.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
-                                if (choice == JOptionPane.YES_OPTION) {
-                                    App.pkgList.get(i).setStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Package '" + App.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
-                                    updatePackageTable();
-                                    pkgTable.clearSelection();
-                                    pkgDeactButton.setEnabled(true);
-                                    deactivateMI.setEnabled(true);
-                                    pkgActivateButton.setEnabled(true);
-                                    activateMI.setEnabled(true);
-                                    break;
-                                } else if (choice == JOptionPane.NO_OPTION) {
-                                    break;
-                                }
+                                break;
                             }
                         }
                     }
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
                 }
 
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
+
         });
 
 
-        viewMI.addActionListener(new ActionListener() {
+        viewButton.addActionListener(e -> {
+            try {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
                 new ViewPackageDialog((JFrame) popupMenu.getParent());
                 pkgTable.clearSelection();
+                defaultButtonSet();
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
+        pkgAddButton.addActionListener(e -> {
+            NewPackageDialog npd1 = new NewPackageDialog((JFrame) popupMenu.getParent());
+            updatePackageTable();
+            pkgTable.clearSelection();
+        });
 
-        editPkgMI.addActionListener(new ActionListener() {
+        saveButton.addActionListener(e -> {
+            App.savePackagingFile();
+            App.savePackageFile();
+            App.printLog();
+            JOptionPane.showMessageDialog(null, "You have saved all the changes under package management successfully.", "Saved successfully", JOptionPane.INFORMATION_MESSAGE);
+        });
 
-            @SuppressWarnings("unused")
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        editPkgButton.addActionListener(e -> {
+            try {
                 EditPackageDialog epd = new EditPackageDialog((JFrame) popupMenu.getParent());
                 updatePackageTable();
                 pkgTable.clearSelection();
+                defaultButtonSet();
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
 
-        deletePkgMI.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Package " + pkgtemp[0] + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
+        pkgDeleteButton.addActionListener(e -> {
+            try {
+                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Package " + pkgtemp[0] + " ?", "Package Code found!", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
                     boolean flag = false;
                     for (int check = 0; check < App.subsList.size(); check++) {
@@ -373,242 +500,49 @@ public class PackagePanel extends JPanel {
                     }
 
 
-                    if (flag == true) {
+                    if (flag) {
 
                         for (int counts = 0; counts < App.pkgList.size(); counts++) {
-                            if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(counts).getPkgCode())) {
+                            if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(counts).getPkgCode()))
                                 if ((App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("ACTIVE")) || (App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("INACTIVE"))) {
 
                                     App.pkgList.get(counts).setStatus("TERMINATED");
                                     String date = DateFormat.getInstance().format(new Date());
                                     App.pkgList.get(counts).setTerminationDate(date);
-                                    JOptionPane.showMessageDialog(null, "TV Programme " + pkgtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
-                                    LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + pkgtemp[0] + "'.");
+                                    JOptionPane.showMessageDialog(null, "TV Package " + pkgtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
+                                    LogFile log = new LogFile(App.user, "has terminated a TV Package '" + pkgtemp[0] + "'.");
                                     App.logList.add(log);
                                     break;
+
                                 }
-                            }
                         }
                     }
                 }
+
                 updatePackageTable();
                 pkgTable.clearSelection();
+                defaultButtonSet();
+            } catch (Exception ex) {
+
+                JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-		/*
-		 * -------------------------- BUTTON LISTENER --------------------------
-		 */
-        pkgActivateButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-
-                    String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < App.pkgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
-                            if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
-
-                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Package '" + App.pkgList.get(i).getPkgCode() + "'?");
-                                if (opt == JOptionPane.YES_OPTION) {
-                                    App.pkgList.get(i).setStatus("ACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Package " + App.pkgList.get(i).getPkgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
-                                    updatePackageTable();
-                                    pkgTable.clearSelection();
-                                    pkgDeactButton.setEnabled(true);
-                                    deactivateMI.setEnabled(true);
-                                    pkgActivateButton.setEnabled(true);
-                                    activateMI.setEnabled(true);
-                                    defaultButtonSet();
-                                    App.log = new LogFile(App.user, " has activated TV Package '" + App.pkgList.get(i).getPkgCode() + "'.");
-                                    App.logList.add(App.log);
-
-                                    break;
-                                } else if (opt == JOptionPane.NO_OPTION) {
-
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+        searchbox.addCaretListener(e -> {
+            try {
+                if (!"".equals(searchbox.getText())) {
+                    sorter.setRowFilter(RowFilter.regexFilter(searchbox.getText()));
+                    sorter.setSortKeys(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("[Pp][0-9]{2}"));
+                    sorter.setSortKeys(null);
                 }
+            } catch (Exception ignored) {
+
 
             }
-        });
 
-
-        pkgDeactButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < App.pkgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
-                            if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + App.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
-                                if (choice == JOptionPane.YES_OPTION) {
-                                    App.pkgList.get(i).setStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Package '" + App.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
-                                    updatePackageTable();
-                                    pkgTable.clearSelection();
-                                    pkgDeactButton.setEnabled(true);
-                                    deactivateMI.setEnabled(true);
-                                    pkgActivateButton.setEnabled(true);
-                                    activateMI.setEnabled(true);
-                                    defaultButtonSet();
-                                    App.log = new LogFile(App.user, " has deactivated TV Package '" + App.pkgList.get(i).getPkgCode() + "'.");
-                                    App.logList.add(App.log);
-                                    break;
-                                } else if (choice == JOptionPane.NO_OPTION) {
-
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-
-            }
-        });
-
-
-        viewButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-
-                    new ViewPackageDialog((JFrame) popupMenu.getParent());
-                    pkgTable.clearSelection();
-                    defaultButtonSet();
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-
-        pkgAddButton.addActionListener(new ActionListener() {
-
-            @SuppressWarnings("unused")
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NewPackageDialog npd1 = new NewPackageDialog((JFrame) popupMenu.getParent());
-                updatePackageTable();
-                pkgTable.clearSelection();
-            }
-        });
-
-        saveButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                App.savePackagingFile();
-                App.savePackageFile();
-                App.printLog();
-                JOptionPane.showMessageDialog(null, "You have saved all the changes under package management successfully.", "Saved successfully", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
-        editPkgButton.addActionListener(new ActionListener() {
-
-            @SuppressWarnings("unused")
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    EditPackageDialog epd = new EditPackageDialog((JFrame) popupMenu.getParent());
-                    updatePackageTable();
-                    pkgTable.clearSelection();
-                    defaultButtonSet();
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-
-
-        pkgDeleteButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Package " + pkgtemp[0] + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
-                    if (choice == JOptionPane.YES_OPTION) {
-                        boolean flag = false;
-                        for (int check = 0; check < App.subsList.size(); check++) {
-
-                            if (pkgtemp[0].equalsIgnoreCase(App.subsList.get(check).getPkgCode())) {
-                                JOptionPane.showMessageDialog(null, "The package is included in one or more services. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
-                                flag = false;
-                                break;
-                            } else {
-                                flag = true;
-                            }
-                        }
-
-
-                        if (flag == true) {
-
-                            for (int counts = 0; counts < App.pkgList.size(); counts++) {
-                                if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(counts).getPkgCode())) {
-                                    if ((App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("ACTIVE")) || (App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("INACTIVE"))) {
-
-                                        App.pkgList.get(counts).setStatus("TERMINATED");
-                                        String date = DateFormat.getInstance().format(new Date());
-                                        App.pkgList.get(counts).setTerminationDate(date);
-                                        JOptionPane.showMessageDialog(null, "TV Package " + pkgtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
-                                        LogFile log = new LogFile(App.user, "has terminated a TV Package '" + pkgtemp[0] + "'.");
-                                        App.logList.add(log);
-                                        break;
-
-                                    }
-
-
-                                }
-                            }
-                        }
-                    } else {
-                    }
-
-                    updatePackageTable();
-                    pkgTable.clearSelection();
-                    defaultButtonSet();
-                } catch (Exception ex) {
-
-                    JOptionPane.showMessageDialog(null, "You must select at least one row.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
-
-        searchbox.addCaretListener(new CaretListener() {
-
-            @Override
-            public void caretUpdate(CaretEvent e) {
-                try {
-                    if (!"".equals(searchbox.getText())) {
-                        sorter.setRowFilter(RowFilter.regexFilter(searchbox.getText()));
-                        sorter.setSortKeys(null);
-                    } else {
-                        sorter.setRowFilter(RowFilter.regexFilter("[Pp][0-9]{2}"));
-                        sorter.setSortKeys(null);
-                    }
-                } catch (Exception ex) {
-
-
-                }
-
-                repaint();
-            }
+            repaint();
         });
 
     }//end constructor
@@ -669,7 +603,7 @@ public class PackagePanel extends JPanel {
             }
         };
         pkgTable.setModel(pkgModel);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(pkgModel);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(pkgModel);
         pkgTable.setRowSorter(sorter);
         pkgTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         pkgTable.setName("");

@@ -17,22 +17,20 @@ public class ManageUsers extends JDialog implements ActionListener {
     // Variables declaration - do not modify
     private JButton addNewUserButton;
     private JButton deleteUserButton;
-    private JPanel BGPanel;
-    private JScrollPane scrollpane;
     private static JTable userTable;
     private static String[][] usData;
     private static AbstractTableModel userModel;
-    private Color bColor = new Color(23, 28, 30);
     private String selectedUserID;
     int row;
     // End of variables declaration
 
     public ManageUsers(JFrame frame) {
         super(frame, "RYCOX System - Manage Users", true);
-        BGPanel = new JPanel();
-        scrollpane = new JScrollPane();
+        JPanel BGPanel = new JPanel();
+        JScrollPane scrollpane = new JScrollPane();
         userTable = new JTable();
         deleteUserButton = new JButton("", new ImageIcon(getClass().getResource("/resources/deleteuser.png")));
+        Color bColor = new Color(23, 28, 30);
         deleteUserButton.setBackground(bColor);
         addNewUserButton = new JButton("", new ImageIcon(getClass().getResource("/resources/adduser.png")));
         addNewUserButton.setBackground(bColor);
@@ -143,7 +141,7 @@ public class ManageUsers extends JDialog implements ActionListener {
         usData = new String[count][3];
         int next = 0;
         for (int i = 0; i < App.userList.size(); i++) {
-            if ((App.userList.get(i)).equals(App.userList.get(App.currentUser)) == false) {
+            if (!(App.userList.get(i)).equals(App.userList.get(App.currentUser))) {
                 for (int j = 0; j <= 3; j++) {
                     switch (j) {
                         case 0:
@@ -170,10 +168,10 @@ public class ManageUsers extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == deleteUserButton) {
-            if (selectedUserID != null || !"".equals(selectedUserID)) {
+            if (selectedUserID != null) {
                 for (int i = 0; i < App.userList.size(); i++) {
                     if (App.userList.get(i).getUserID().equals(selectedUserID)) {
-                        int opt = JOptionPane.showConfirmDialog(null, "Are you sure to remove this user? This cannot be undone.", "RYCOX System - Confirm Delete User", JOptionPane.WARNING_MESSAGE);
+                        int opt = JOptionPane.showConfirmDialog(null, "Are you sure to remove this user? This cannot be undone.", "RYCOX System - Confirm Delete User", JOptionPane.YES_NO_OPTION);
                         if (opt == JOptionPane.YES_OPTION) {
                             App.userList.remove(i);
                             loadData();

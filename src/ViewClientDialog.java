@@ -1,83 +1,54 @@
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-@SuppressWarnings("serial")
 class ViewClientDialog extends JDialog {
 
-    // Variables declaration 
-    private JPanel BGPanel;
-    private JSeparator DialogSeparator;
-    private JButton cancelbutton;
-    private JTextArea clAddInput;
-    private JLabel clAddLabel;
-    private JLabel clAgeLabel;
     private JTextField clAppearedName;
-    private JLabel clAppearedNameLabel;
-    private JTextField clEmailInput;
-    private JLabel clCreationDate;
-    private JTextField clCreationDate2;
-    private JLabel clTerminationDate;
-    private JTextField clTerminationDate2;
-    private JLabel clEmailLabel;
     private JTextField clNameInput;
-    private JLabel clNameLabel;
-    private JTextField clICInput;
-    private JLabel clICLabel;
-    private JTextField clIDInput;
-    private JLabel clIDLabel;
-    private JLabel clTypeLabel;
-    private JScrollPane jScrollPane1;
-    private Color bColor = new Color(23, 28, 30);
-    private Color fColor = new Color(255, 255, 255);
-    private Font defont = new Font("LucidaSansRegular", Font.PLAIN, 12);
-    private JLabel clTypetype;
-    private String[] data = ClientPanel.editionData;
     private String paramType;
-    private JTextField clAgeage;
     // End of variables declaration
 
     public ViewClientDialog(JFrame parent) {
         super(parent, "RYCOX System - View client", true);
         setResizable(false);
-//	setLocationRelativeTo(null);
         setLocation(300, 150);
-        BGPanel = new JPanel();
+        JPanel BGPanel = new JPanel();
+        Color bColor = new Color(23, 28, 30);
         BGPanel.setBackground(bColor);
+        Color fColor = new Color(255, 255, 255);
         BGPanel.setForeground(fColor);
-        clCreationDate = new JLabel();
+        JLabel clCreationDate = new JLabel();
         clCreationDate.setForeground(fColor);
-        clCreationDate2 = new JTextField(data[7]);
-        clTerminationDate = new JLabel();
+        String[] data = ClientPanel.editionData;
+        JTextField clCreationDate2 = new JTextField(data[7]);
+        JLabel clTerminationDate = new JLabel();
         clTerminationDate.setForeground(fColor);
-        clTerminationDate2 = new JTextField(data[8]);
-        clTypetype = new JLabel();
-        clTypeLabel = new JLabel();
+        JTextField clTerminationDate2 = new JTextField(data[8]);
+        JLabel clTypetype;
+        JLabel clTypeLabel = new JLabel();
         clTypeLabel.setForeground(fColor);
         clNameInput = new JTextField(data[1]);
-        clIDInput = new JTextField(data[0]);
-        clIDLabel = new JLabel();
+        JTextField clIDInput = new JTextField(data[0]);
+        JLabel clIDLabel = new JLabel();
         clIDLabel.setForeground(fColor);
-        clNameLabel = new JLabel();
+        JLabel clNameLabel = new JLabel();
         clNameLabel.setForeground(fColor);
-        clAgeLabel = new JLabel();
+        JLabel clAgeLabel = new JLabel();
         clAgeLabel.setForeground(fColor);
-        clICLabel = new JLabel();
+        JLabel clICLabel = new JLabel();
         clICLabel.setForeground(fColor);
-        clICInput = new JTextField(data[6]);
-        clAddLabel = new JLabel();
+        JTextField clICInput = new JTextField(data[6]);
+        JLabel clAddLabel = new JLabel();
         clAddLabel.setForeground(fColor);
-        jScrollPane1 = new JScrollPane();
-        clAddInput = new JTextArea(data[3]);
-        cancelbutton = new JButton();
-        DialogSeparator = new JSeparator();
-        clEmailLabel = new JLabel("");
+        JScrollPane jScrollPane1 = new JScrollPane();
+        JTextArea clAddInput = new JTextArea(data[3]);
+        JButton cancelbutton = new JButton();
+        JSeparator dialogSeparator = new JSeparator();
+        JLabel clEmailLabel = new JLabel("");
         clEmailLabel.setForeground(fColor);
-        clEmailInput = new JTextField(data[4]);
-        clAppearedNameLabel = new JLabel();
+        JTextField clEmailInput = new JTextField(data[4]);
+        JLabel clAppearedNameLabel = new JLabel();
         clAppearedNameLabel.setForeground(fColor);
         clAppearedName = new JTextField("");
 
@@ -99,6 +70,7 @@ class ViewClientDialog extends JDialog {
         clTypetype.setBounds(440, 14, 150, 25);
         clTypetype.setForeground(fColor);
         BGPanel.add(clTypetype);
+        Font defont = new Font("LucidaSansRegular", Font.PLAIN, 12);
         clTypetype.setFont(defont);
         clTypeLabel.setFont(defont);
         clTypeLabel.setText("Type of Client:");
@@ -131,15 +103,11 @@ class ViewClientDialog extends JDialog {
         BGPanel.add(clNameLabel);
         clNameLabel.setBounds(10, 75, 50, 25);
 
-        clNameInput.addCaretListener(new CaretListener() {
-
-            @Override
-            public void caretUpdate(CaretEvent e) {
-                if (!"".equals(clNameInput.getText().trim()) && clNameInput.getText().trim() != null) {
-                    clAppearedName.setText(clNameInput.getText().trim());
-                }
-                repaint();
+        clNameInput.addCaretListener(e -> {
+            if (!"".equals(clNameInput.getText().trim())) {
+                clAppearedName.setText(clNameInput.getText().trim());
             }
+            repaint();
         });
 
         clAgeLabel.setFont(defont);
@@ -147,7 +115,7 @@ class ViewClientDialog extends JDialog {
         BGPanel.add(clAgeLabel);
         clAgeLabel.setBounds(10, 175, 58, 25);
 
-        clAgeage = new JTextField(data[5]);
+        JTextField clAgeage = new JTextField(data[5]);
         clAgeage.setFont(defont);
         clAgeage.setEditable(false);
         clAgeage.setBackground(bColor);
@@ -214,17 +182,11 @@ class ViewClientDialog extends JDialog {
         jScrollPane1.setBounds(120, 241, 460, 75);
 
         cancelbutton.setText("Close Window");
-        cancelbutton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                cancelbuttonActionPerformed(evt);
-            }
-        });
+        cancelbutton.addActionListener(this::cancelbuttonActionPerformed);
         BGPanel.add(cancelbutton);
         cancelbutton.setBounds(301, 374, 120, 33);
-        BGPanel.add(DialogSeparator);
-        DialogSeparator.setBounds(0, 358, 590, 10);
+        BGPanel.add(dialogSeparator);
+        dialogSeparator.setBounds(0, 358, 590, 10);
 
         clEmailLabel.setFont(defont);
         clEmailLabel.setText("E-mail Address :");

@@ -1,50 +1,31 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 /**
  * @author Jia Jiun
  */
-@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
-class ViewPackageDialog extends JDialog {
-    //Variable declaration
 
-    private JLabel label1, label2, label3, label4, label5, label6, label7;
-    private JTextField textfield1, textfield2, textfield3, textfield4, textfield5, textfield6;
-    private JList leftList;
-    private JList rightList;
-    private JButton button2;
-    private Color color, color1, color2;
-    private LinkedList<String> leftPrgList;
-    private LinkedList<String> selPrgList;
-    private AbstractListModel leftModel;
-    private AbstractListModel rightModel;
-    private String[] leftPrg;
-    private String[] selPrg;
-    private JScrollPane leftListScroll;
-    private JScrollPane rightListScroll;
-    //End of variable declaration
+class ViewPackageDialog extends JDialog {
 
     public ViewPackageDialog(JFrame frame) {
         super(frame, "Package Management- View a TV Package", true);
         setLocation(300, 150);
-        label1 = new JLabel("Package Code: ");
-        label2 = new JLabel("Package Name: ");
-        label3 = new JLabel("Charge Price(RM): ");
-        label4 = new JLabel("Charge Type: ");
-        label5 = new JLabel("TV Programmes included ");
-        label6 = new JLabel("Start Date: ");
-        label7 = new JLabel("Termination Date: ");
+        JLabel label1 = new JLabel("Package Code: ");
+        JLabel label2 = new JLabel("Package Name: ");
+        JLabel label3 = new JLabel("Charge Price(RM): ");
+        JLabel label4 = new JLabel("Charge Type: ");
+        JLabel label5 = new JLabel("TV Programmes included ");
+        JLabel label6 = new JLabel("Start Date: ");
+        JLabel label7 = new JLabel("Termination Date: ");
 
 
-        textfield1 = new JTextField(15);
-        textfield2 = new JTextField(15);
-        textfield3 = new JTextField(15);
-        textfield4 = new JTextField(15);
-        textfield5 = new JTextField(15);
-        textfield6 = new JTextField(15);
+        JTextField textfield1 = new JTextField(15);
+        JTextField textfield2 = new JTextField(15);
+        JTextField textfield3 = new JTextField(15);
+        JTextField textfield4 = new JTextField(15);
+        JTextField textfield5 = new JTextField(15);
+        JTextField textfield6 = new JTextField(15);
         textfield3.setEditable(false);
         textfield1.setEditable(false);
         textfield2.setEditable(false);
@@ -53,17 +34,17 @@ class ViewPackageDialog extends JDialog {
         textfield6.setEditable(false);
 
 
-        button2 = new JButton("Ok");
+        JButton button2 = new JButton("Ok");
 
 
-        color = new Color(23, 28, 30);
-        color1 = new Color(244, 219, 234);
-        color2 = new Color(241, 236, 236);
+        Color color = new Color(23, 28, 30);
+        Color color1 = new Color(244, 219, 234);
+        Color color2 = new Color(241, 236, 236);
 
 
-        leftPrgList = new LinkedList<>();
-        leftModel = new DefaultListModel();
-        rightModel = new DefaultListModel();
+        LinkedList<String> leftPrgList = new LinkedList<>();
+        AbstractListModel leftModel = new DefaultListModel();
+        AbstractListModel rightModel = new DefaultListModel();
         for (int i = 0; i < App.prgList.size(); i++) {
             for (int j = 0; j < App.pckgingList.size(); j++) {
                 if (PackagePanel.pkgtemp[0].equalsIgnoreCase(App.pckgingList.get(j).getPkgCode())) {
@@ -74,7 +55,7 @@ class ViewPackageDialog extends JDialog {
                 }
             }
         }
-        leftPrg = leftPrgList.toArray(new String[leftPrgList.size()]);
+        String[] leftPrg = leftPrgList.toArray(new String[leftPrgList.size()]);
 
         for (int i = 0; i < App.pkgList.size(); i++) {
             boolean check = false;
@@ -84,22 +65,22 @@ class ViewPackageDialog extends JDialog {
                     break;
                 }
             }
-            if (check == false) {
+            if (!check) {
                 ((DefaultListModel) rightModel).addElement(App.prgList.get(i).getProgCode());
             }
         }
 
-        leftList = new JList(leftModel);
+        JList leftList = new JList(leftModel);
         leftList.setModel(leftModel);
         leftList.setVisibleRowCount(6);
         leftList.setBackground(color2);
         leftList.setFixedCellWidth(450);
         leftList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        rightList = new JList(rightModel);
+        JList rightList = new JList(rightModel);
 
 
-        leftListScroll = new JScrollPane(leftList);
+        JScrollPane leftListScroll = new JScrollPane(leftList);
         leftListScroll.setViewportView(leftList);
 
 
@@ -130,15 +111,7 @@ class ViewPackageDialog extends JDialog {
         textfield6.setBackground(color2);
 
 
-        button2.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                dispose();
-
-            }
-        });
+        button2.addActionListener(e -> dispose());
 
         container.setLayout(spring);
 

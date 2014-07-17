@@ -16,7 +16,6 @@ public class AddNewUserDialog extends JDialog {
     // End of variables declaration
 
     /**
-     *
      * @param dialog Dialog
      */
     public AddNewUserDialog(JDialog dialog) {

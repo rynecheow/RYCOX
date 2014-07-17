@@ -5,84 +5,61 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class ViewServiceDialog extends JDialog {
 
-    // Variable declaration
-    private JLabel idLabel, scLabel, dcLabel, addLabel, statusLabel, rightLabel, termDateLabel, createDateLabel;
-    private JTextField idInput, scInput, dcInput, termDateInput, createDateInput;
-    private JTextArea addInput;
     private JButton closeBut;
-    private static JList rightList;
-    private JScrollPane addScroll;
-    private static JScrollPane rightListScroll;
-    private JSeparator separator, separator2;
-    private Color bColor = new Color(23, 28, 30);
-    private Color nColor = new Color(51, 60, 64);
-    private Color fColor = new Color(255, 255, 255);
-    private LinkedList<String> leftPkgList;
-    private LinkedList<String> selPkgList;
-    private AbstractListModel leftModel;
-    private AbstractListModel rightModel;
-    private String[] leftElArr;
-    private String[] rightElArr;
-    private String[] selPkg;
-    private String addPkg;
-    private int subsNo;
-    private Border line = BorderFactory.createLineBorder(nColor);
     // end of variable declaration
 
     public ViewServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
         setLocation(300, 150);
-        idLabel = new JLabel("Client ID: ");
+        JLabel idLabel = new JLabel("Client ID: ");
+        Color fColor = new Color(255, 255, 255);
         idLabel.setForeground(fColor);
-        scLabel = new JLabel("Smart Card Number: ");
+        JLabel scLabel = new JLabel("Smart Card Number: ");
         scLabel.setForeground(fColor);
-        dcLabel = new JLabel("Decoder Number: ");
+        JLabel dcLabel = new JLabel("Decoder Number: ");
         dcLabel.setForeground(fColor);
-        addLabel = new JLabel("Address: ");
+        JLabel addLabel = new JLabel("Address: ");
         addLabel.setForeground(fColor);
-        rightLabel = new JLabel("Packages Subscribed: ");
+        JLabel rightLabel = new JLabel("Packages Subscribed: ");
         rightLabel.setForeground(fColor);
-        termDateLabel = new JLabel("Termination Date: ");
+        JLabel termDateLabel = new JLabel("Termination Date: ");
         termDateLabel.setForeground(fColor);
-        createDateLabel = new JLabel("Creation Date: ");
+        JLabel createDateLabel = new JLabel("Creation Date: ");
         createDateLabel.setForeground(fColor);
-        idInput = new JTextField(20);
+        JTextField idInput = new JTextField(20);
         idInput.setText(ServicePanel.temp[1]);
         idInput.setEditable(false);
+        Color nColor = new Color(51, 60, 64);
         idInput.setBackground(nColor);
         idInput.setForeground(fColor);
+        Border line = BorderFactory.createLineBorder(nColor);
         idInput.setBorder(line);
-        scInput = new JTextField(20);
+        JTextField scInput = new JTextField(20);
         scInput.setText(ServicePanel.temp[0]);
         scInput.setEditable(false);
         scInput.setBackground(nColor);
         scInput.setForeground(fColor);
         scInput.setBorder(line);
-        dcInput = new JTextField(20);
+        JTextField dcInput = new JTextField(20);
         dcInput.setText(ServicePanel.temp[2]);
         dcInput.setEditable(false);
         dcInput.setBackground(nColor);
         dcInput.setForeground(fColor);
         dcInput.setBorder(line);
-        addInput = new JTextArea(5, 20);
+        JTextArea addInput = new JTextArea(5, 20);
         addInput.setText(ServicePanel.temp[3]);
         addInput.setEditable(false);
         addInput.setBackground(nColor);
         addInput.setForeground(fColor);
         addInput.setBorder(line);
-        termDateInput = new JTextField(20);
-        createDateInput = new JTextField(20);
+        JTextField termDateInput = new JTextField(20);
+        JTextField createDateInput = new JTextField(20);
         closeBut = new JButton("Close");
-        addScroll = new JScrollPane();
+        JScrollPane addScroll = new JScrollPane();
         addScroll.setViewportView(addInput);
         addScroll.setBorder(line);
-//		separator = new JSeparator(JSeparator.VERTICAL);
-//		separator.setPreferredSize(new Dimension(2,270));
-//		separator2 = new JSeparator(JSeparator.HORIZONTAL);
-//		separator2.setPreferredSize(new Dimension(680,2));
         for (int i = 0; i < App.servList.size(); i++) {
             if (ServicePanel.temp[0].equalsIgnoreCase(App.servList.get(i).getSmartCardNo())) {
                 termDateInput.setText(App.servList.get(i).getTermDate());
@@ -98,9 +75,9 @@ class ViewServiceDialog extends JDialog {
             }
         }
 
-        selPkgList = new LinkedList<>();
-        leftModel = new DefaultListModel();
-        rightModel = new DefaultListModel();
+        LinkedList<String> selPkgList = new LinkedList<>();
+        AbstractListModel leftModel = new DefaultListModel();
+        AbstractListModel rightModel = new DefaultListModel();
         for (int i = 0; i < App.pkgList.size(); i++) {
             for (int j = 0; j < App.subsList.size(); j++) {
                 if (ServicePanel.temp[0].equalsIgnoreCase(App.subsList.get(j).getSmartCardNo())) {
@@ -111,7 +88,7 @@ class ViewServiceDialog extends JDialog {
                 }
             }
         }
-        selPkg = selPkgList.toArray(new String[selPkgList.size()]);
+        String[] selPkg = selPkgList.toArray(new String[selPkgList.size()]);
 
         for (int i = 0; i < App.pkgList.size(); i++) {
             boolean check = false;
@@ -121,22 +98,23 @@ class ViewServiceDialog extends JDialog {
                     break;
                 }
             }
-            if (check == false) {
+            if (!check) {
                 ((DefaultListModel) leftModel).addElement(App.pkgList.get(i).getPkgCode() + "\t\t\t" + App.pkgList.get(i).getPkgName());
             }
         }
 
-        rightList = new JList(rightModel);
+        JList rightList = new JList(rightModel);
         rightList.setModel(rightModel);
         rightList.setVisibleRowCount(16);
         rightList.setFixedCellWidth(160);
+        Color bColor = new Color(23, 28, 30);
         rightList.setSelectionBackground(bColor);
         //rightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         rightList.setBackground(nColor);
         rightList.setForeground(fColor);
         rightList.setBorder(line);
 
-        rightListScroll = new JScrollPane(rightList);
+        JScrollPane rightListScroll = new JScrollPane(rightList);
         rightListScroll.setViewportView(rightList);
         rightListScroll.setBorder(line);
 //		rightListScroll.setViewportBorder(Border );
@@ -184,18 +162,12 @@ class ViewServiceDialog extends JDialog {
         spring.putConstraint(SpringLayout.NORTH, addLabel, 35, SpringLayout.SOUTH, termDateLabel);
         spring.putConstraint(SpringLayout.WEST, addScroll, 130, SpringLayout.EAST, idLabel);
         spring.putConstraint(SpringLayout.NORTH, addScroll, 35, SpringLayout.SOUTH, termDateLabel);
-//		c.add(separator);
-//		spring.putConstraint(SpringLayout.WEST, separator, 30, SpringLayout.EAST, idInput);
-//		spring.putConstraint(SpringLayout.NORTH, separator, 15, SpringLayout.NORTH, c);
         c.add(rightLabel);
         spring.putConstraint(SpringLayout.WEST, rightLabel, 30, SpringLayout.EAST, idInput);
         spring.putConstraint(SpringLayout.NORTH, rightLabel, 25, SpringLayout.NORTH, c);
         c.add(rightListScroll);
         spring.putConstraint(SpringLayout.WEST, rightListScroll, 28, SpringLayout.EAST, idInput);
         spring.putConstraint(SpringLayout.NORTH, rightListScroll, 50, SpringLayout.NORTH, c);
-//		c.add(separator2);
-//		spring.putConstraint(SpringLayout.WEST, separator2, 5, SpringLayout.WEST, c);
-//		spring.putConstraint(SpringLayout.NORTH, separator2, 25, SpringLayout.SOUTH, rightListScroll);
         c.add(closeBut);
         spring.putConstraint(SpringLayout.WEST, closeBut, 350, SpringLayout.WEST, c);
         spring.putConstraint(SpringLayout.NORTH, closeBut, 30, SpringLayout.SOUTH, addScroll);
@@ -207,7 +179,7 @@ class ViewServiceDialog extends JDialog {
     }
 
     /**
-     * @author LiHao This class is used for handler the button listener.
+     * This class is used for handler the button listener.
      */
     public class ButtonHandler implements ActionListener {
 

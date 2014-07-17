@@ -11,7 +11,7 @@ class PrvClient extends ClientAccount {
         System.out.println("Client ID:\t" + getClientID());
         System.out.println("Creation Date:\t" + getCreationDate());
 
-        if (terminationStatus() == true) {
+        if (terminationStatus()) {
             System.out.println("Termination Date:\t" + getTerminationDate());
         }
 
@@ -26,7 +26,7 @@ class PrvClient extends ClientAccount {
         String accStats = "Creation Date:\t" + getCreationDate();
         String creaDate = "Creation Date:\t" + getCreationDate();
         String termDate;
-        if (terminationStatus() == true) {
+        if (terminationStatus()) {
             termDate = "Termination Date:\t" + getTerminationDate() + "\n";
         } else {
             termDate = "";
