@@ -4,23 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Arrays;
 
 /**
  * @author RYNE
  */
-@SuppressWarnings("serial")
 public class ChangePasswordDialog extends JDialog implements ActionListener, FocusListener {
 
-    // Variables declaration - do not modify
-    private JPanel BGPanel;
     private JButton clearButton;
     private JButton confirmButton;
-    private JLabel confirmPwLabel;
     private JPasswordField confirmpw;
     private JPasswordField newpw;
-    private JLabel newpwLabel;
     private JPasswordField oldpw;
-    private JLabel oldpwLabel;
     private JLabel warningNotMatchNew;
     private JLabel warningNotMatchOld;
     boolean oldValid = false;
@@ -33,10 +28,10 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
         setResizable(false);
         setSize(300, 400);
         warningNotMatchOld = new JLabel();
-        BGPanel = new JPanel();
-        newpwLabel = new JLabel();
-        oldpwLabel = new JLabel();
-        confirmPwLabel = new JLabel();
+        JPanel BGPanel = new JPanel();
+        JLabel newpwLabel = new JLabel();
+        JLabel oldpwLabel = new JLabel();
+        JLabel confirmPwLabel = new JLabel();
         clearButton = new JButton();
         confirmButton = new JButton();
         newpw = new JPasswordField();
@@ -118,13 +113,13 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
             checkOld();
             checkNew();
             String changedPw = confirmpw.getText();
-            if (newValid == true && oldValid == true) {
-                RYCOXv2.userList.get(RYCOXv2.currentUser).changePassword(changedPw);
+            if (newValid && oldValid) {
+                App.userList.get(App.currentUser).changePassword(changedPw);
                 JOptionPane.showMessageDialog(this, "Your password has been successfully changed.", "Successfully changed password.", JOptionPane.INFORMATION_MESSAGE);
-                RYCOXv2.log = new LogFile(RYCOXv2.user, " has changed password.");
-                RYCOXv2.logList.add(RYCOXv2.log);
-                RYCOXv2.printLog();
-                RYCOXv2.saveUserFile();
+                App.log = new LogFile(App.user, " has changed password.");
+                App.logList.add(App.log);
+                App.printLog();
+                App.saveUserFile();
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Please correct the errors.", "Error in validation.", JOptionPane.WARNING_MESSAGE);
@@ -151,7 +146,7 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
     public void focusLost(FocusEvent e) {
         if (e.getSource() == oldpw) {
             checkOld();
-            if (oldValid == true) {
+            if (oldValid) {
                 warningNotMatchOld.setText("Password matched.    ");
                 warningNotMatchOld.setForeground(Color.GREEN);
             } else {
@@ -160,12 +155,12 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
             }
         } else if (e.getSource() == confirmpw) {
             checkNew();
-            if (newValid == true) {
+            if (newValid) {
                 warningNotMatchNew.setText("Password matched.    ");
                 warningNotMatchNew.setForeground(Color.GREEN);
                 confirmButton.setEnabled(true);
             } else {
-                if (newOldMatch == true) {
+                if (newOldMatch) {
                     warningNotMatchNew.setText("Password cannot be same.");
                     warningNotMatchNew.setForeground(new Color(255, 0, 0));
                 } else {
@@ -177,24 +172,20 @@ public class ChangePasswordDialog extends JDialog implements ActionListener, Foc
         }
     }
 
-    @SuppressWarnings("deprecation")
     void checkOld() {
-        String a = oldpw.getText();
-        String old = RYCOXv2.userList.get(RYCOXv2.currentUser).getPassword();
-        if (a.equals(old)) {
-            oldValid = true;
-        } else {
-            oldValid = false;
-        }
+        char[] a = oldpw.getPassword();
+        String old = App.userList.get(App.currentUser).getPassword();
+        oldValid = Arrays.equals(old.toCharArray(), a);
     }
 
-    @SuppressWarnings("deprecation")
+
     void checkNew() {
-        String newpwd = newpw.getText();
-        String confpw = confirmpw.getText();
-        String oldpwd = oldpw.getText();
-        if (confpw.equals(newpwd)) {
-            if (confpw.equals(oldpwd)) {
+        char[] newpwd = newpw.getPassword();
+        char[] confpw = confirmpw.getPassword();
+        char[] oldpwd = oldpw.getPassword();
+
+        if (Arrays.equals(confpw, newpwd)) {
+            if (Arrays.equals(confpw, oldpwd)) {
                 newValid = false;
                 newOldMatch = true;
             } else {

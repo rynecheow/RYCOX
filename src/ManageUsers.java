@@ -139,26 +139,26 @@ public class ManageUsers extends JDialog implements ActionListener {
      * dimensional array.
      */
     private void loadData() {
-        int count = RYCOXv2.userList.size() - 1;
+        int count = App.userList.size() - 1;
         usData = new String[count][3];
         int next = 0;
-        for (int i = 0; i < RYCOXv2.userList.size(); i++) {
-            if ((RYCOXv2.userList.get(i)).equals(RYCOXv2.userList.get(RYCOXv2.currentUser)) == false) {
+        for (int i = 0; i < App.userList.size(); i++) {
+            if ((App.userList.get(i)).equals(App.userList.get(App.currentUser)) == false) {
                 for (int j = 0; j <= 3; j++) {
                     switch (j) {
                         case 0:
-                            if (RYCOXv2.userList.get(i) instanceof Administrators) {
+                            if (App.userList.get(i) instanceof Administrators) {
                                 usData[next][j] = "Administrator";
                                 break;
-                            } else if (RYCOXv2.userList.get(i) instanceof FrontdeskStaffs) {
+                            } else if (App.userList.get(i) instanceof FrontdeskStaffs) {
                                 usData[next][j] = "Front Desk Staff";
                                 break;
                             }
                         case 1:
-                            usData[next][j] = RYCOXv2.userList.get(i).getUserID();
+                            usData[next][j] = App.userList.get(i).getUserID();
                             break;
                         case 2:
-                            usData[next][j] = RYCOXv2.userList.get(i).getLastLoggedIn();
+                            usData[next][j] = App.userList.get(i).getLastLoggedIn();
                             break;
                     }
                 }
@@ -171,11 +171,11 @@ public class ManageUsers extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == deleteUserButton) {
             if (selectedUserID != null || !"".equals(selectedUserID)) {
-                for (int i = 0; i < RYCOXv2.userList.size(); i++) {
-                    if (RYCOXv2.userList.get(i).getUserID().equals(selectedUserID)) {
+                for (int i = 0; i < App.userList.size(); i++) {
+                    if (App.userList.get(i).getUserID().equals(selectedUserID)) {
                         int opt = JOptionPane.showConfirmDialog(null, "Are you sure to remove this user? This cannot be undone.", "RYCOX System - Confirm Delete User", JOptionPane.WARNING_MESSAGE);
                         if (opt == JOptionPane.YES_OPTION) {
-                            RYCOXv2.userList.remove(i);
+                            App.userList.remove(i);
                             loadData();
                             ((DefaultTableModel) userModel).removeRow(row);
                             JOptionPane.showMessageDialog(null, "User '" + selectedUserID + "' has been deleted successfully.", "Success user removal", JOptionPane.INFORMATION_MESSAGE);
@@ -195,13 +195,13 @@ public class ManageUsers extends JDialog implements ActionListener {
     }
 
     static void updateAdd() {
-        int z = RYCOXv2.userList.size() - 1;
+        int z = App.userList.size() - 1;
         String[] a;
-        if (RYCOXv2.userList.get(z) instanceof Administrators) {
-            a = new String[]{"Administrator", RYCOXv2.userList.get(z).getUserID(), RYCOXv2.userList.get(z).getLastLoggedIn()};
+        if (App.userList.get(z) instanceof Administrators) {
+            a = new String[]{"Administrator", App.userList.get(z).getUserID(), App.userList.get(z).getLastLoggedIn()};
             ((DefaultTableModel) userModel).addRow(a);
-        } else if (RYCOXv2.userList.get(z) instanceof FrontdeskStaffs) {
-            a = new String[]{"Front Desk Staff", RYCOXv2.userList.get(z).getUserID(), RYCOXv2.userList.get(z).getLastLoggedIn()};
+        } else if (App.userList.get(z) instanceof FrontdeskStaffs) {
+            a = new String[]{"Front Desk Staff", App.userList.get(z).getUserID(), App.userList.get(z).getLastLoggedIn()};
             ((DefaultTableModel) userModel).addRow(a);
         }
         userTable.tableChanged(new TableModelEvent(userModel));

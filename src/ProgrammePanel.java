@@ -64,7 +64,7 @@ class ProgrammePanel extends JPanel {
         scrollPane = new JScrollPane();
         prgTable = new JTable();
         prgTable.getTableHeader().setReorderingAllowed(false);
-        loginInfo = new JLabel("You are logged in as " + RYCOXv2.user + ".");
+        loginInfo = new JLabel("You are logged in as " + App.user + ".");
         loginInfo.setForeground(Color.WHITE);
         loginInfo.setFont(new Font("LucidaSansRegular", Font.PLAIN, 14));
         searchbox = new JTextField(16);
@@ -93,28 +93,28 @@ class ProgrammePanel extends JPanel {
         prgTable.setBackground(new Color(227, 226, 226));
         prgTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
 
-        prgData = new String[RYCOXv2.prgList.size()][6];
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+        prgData = new String[App.prgList.size()][6];
+        for (int i = 0; i < App.prgList.size(); i++) {
             for (int j = 0; j <= 6; j++) {
 
                 switch (j) {
                     case 0:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgCode();
+                        prgData[i][j] = App.prgList.get(i).getProgCode();
                         break;
                     case 1:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgTitle();
+                        prgData[i][j] = App.prgList.get(i).getProgTitle();
                         break;
                     case 2:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getContentOrigin();
+                        prgData[i][j] = App.prgList.get(i).getContentOrigin();
                         break;
                     case 3:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getViewerStatus();
+                        prgData[i][j] = App.prgList.get(i).getViewerStatus();
                         break;
                     case 4:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getType();
+                        prgData[i][j] = App.prgList.get(i).getType();
                         break;
                     case 5:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getPrgStatus();
+                        prgData[i][j] = App.prgList.get(i).getPrgStatus();
                         break;
                 }
             }
@@ -172,17 +172,17 @@ class ProgrammePanel extends JPanel {
                     progtemp = new String[10];
                     progtemp[0] = (String) prgTable.getValueAt(rowno, 0);
 
-                    for (int j = 0; j < RYCOXv2.prgList.size(); j++) {
-                        if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(j).getProgCode())) {
-                            progtemp[1] = RYCOXv2.prgList.get(j).getProgTitle();
-                            progtemp[2] = RYCOXv2.prgList.get(j).getDesc();
-                            progtemp[3] = RYCOXv2.prgList.get(j).getContentOrigin();
-                            progtemp[4] = RYCOXv2.prgList.get(j).getCreationDate();
-                            progtemp[5] = RYCOXv2.prgList.get(j).getTerminationDate();
-                            progtemp[6] = RYCOXv2.prgList.get(j).getPrgStatus();
-                            progtemp[7] = RYCOXv2.prgList.get(j).getViewerStatus();
-                            progtemp[8] = RYCOXv2.prgList.get(j).getType();
-                            progtemp[9] = RYCOXv2.prgList.get(j).getNotes();
+                    for (int j = 0; j < App.prgList.size(); j++) {
+                        if (progtemp[0].equalsIgnoreCase(App.prgList.get(j).getProgCode())) {
+                            progtemp[1] = App.prgList.get(j).getProgTitle();
+                            progtemp[2] = App.prgList.get(j).getDesc();
+                            progtemp[3] = App.prgList.get(j).getContentOrigin();
+                            progtemp[4] = App.prgList.get(j).getCreationDate();
+                            progtemp[5] = App.prgList.get(j).getTerminationDate();
+                            progtemp[6] = App.prgList.get(j).getPrgStatus();
+                            progtemp[7] = App.prgList.get(j).getViewerStatus();
+                            progtemp[8] = App.prgList.get(j).getType();
+                            progtemp[9] = App.prgList.get(j).getNotes();
                             lol = j;
                             break;
                         }
@@ -199,17 +199,17 @@ class ProgrammePanel extends JPanel {
 
                     progtemp[0] = (String) prgTable.getValueAt(rowno, 0);
 
-                    for (int j = 0; j < RYCOXv2.prgList.size(); j++) {
-                        if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(j).getProgCode())) {
-                            progtemp[1] = RYCOXv2.prgList.get(j).getProgTitle();
-                            progtemp[2] = RYCOXv2.prgList.get(j).getDesc();
-                            progtemp[3] = RYCOXv2.prgList.get(j).getContentOrigin();
-                            progtemp[4] = RYCOXv2.prgList.get(j).getCreationDate();
-                            progtemp[5] = RYCOXv2.prgList.get(j).getTerminationDate();
-                            progtemp[6] = RYCOXv2.prgList.get(j).getPrgStatus();
-                            progtemp[7] = RYCOXv2.prgList.get(j).getViewerStatus();
-                            progtemp[8] = RYCOXv2.prgList.get(j).getType();
-                            progtemp[9] = RYCOXv2.prgList.get(j).getNotes();
+                    for (int j = 0; j < App.prgList.size(); j++) {
+                        if (progtemp[0].equalsIgnoreCase(App.prgList.get(j).getProgCode())) {
+                            progtemp[1] = App.prgList.get(j).getProgTitle();
+                            progtemp[2] = App.prgList.get(j).getDesc();
+                            progtemp[3] = App.prgList.get(j).getContentOrigin();
+                            progtemp[4] = App.prgList.get(j).getCreationDate();
+                            progtemp[5] = App.prgList.get(j).getTerminationDate();
+                            progtemp[6] = App.prgList.get(j).getPrgStatus();
+                            progtemp[7] = App.prgList.get(j).getViewerStatus();
+                            progtemp[8] = App.prgList.get(j).getType();
+                            progtemp[9] = App.prgList.get(j).getNotes();
 
                             break;
                         }
@@ -245,7 +245,7 @@ class ProgrammePanel extends JPanel {
         popupMenu.add(deactivateMI);
         popupMenu.add(viewMI);
 
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+        if (App.userList.get(App.currentUser) instanceof Administrators) {
             prgAddButton.setVisible(true);
             saveButton.setVisible(true);
             editPrgButton.setVisible(true);
@@ -285,14 +285,14 @@ class ProgrammePanel extends JPanel {
 
                 try {
                     String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                            if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                    for (int i = 0; i < App.prgList.size(); i++) {
+                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
 
-                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "'?");
+                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + App.prgList.get(i).getProgCode() + "'?");
                                 if (opt == JOptionPane.YES_OPTION) {
-                                    RYCOXv2.prgList.get(i).setPrgStatus("ACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme " + RYCOXv2.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                    App.prgList.get(i).setPrgStatus("ACTIVE");
+                                    JOptionPane.showMessageDialog(null, "Programme " + App.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
                                     updateProgrammeTable();
                                     prgTable.clearSelection();
                                     prgDeactButton.setEnabled(true);
@@ -322,13 +322,13 @@ class ProgrammePanel extends JPanel {
 
                 try {
                     String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                            if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + RYCOXv2.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
+                    for (int i = 0; i < App.prgList.size(); i++) {
+                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + App.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
                                 if (choice == JOptionPane.YES_OPTION) {
-                                    RYCOXv2.prgList.get(i).setPrgStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                    App.prgList.get(i).setPrgStatus("INACTIVE");
+                                    JOptionPane.showMessageDialog(null, "Programme '" + App.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
                                     updateProgrammeTable();
                                     prgTable.clearSelection();
                                     prgDeactButton.setEnabled(true);
@@ -379,9 +379,9 @@ class ProgrammePanel extends JPanel {
                 boolean flag = false;
                 int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
                 if (choice == JOptionPane.YES_OPTION) {
-                    for (int check = 0; check < RYCOXv2.pckgingList.size(); check++) {
+                    for (int check = 0; check < App.pckgingList.size(); check++) {
 
-                        if (progtemp[0].equalsIgnoreCase(RYCOXv2.pckgingList.get(check).getProgCode())) {
+                        if (progtemp[0].equalsIgnoreCase(App.pckgingList.get(check).getProgCode())) {
                             JOptionPane.showMessageDialog(null, "The programme is included in one or more packages. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
                             flag = false;
                             break;
@@ -392,16 +392,16 @@ class ProgrammePanel extends JPanel {
 
                     if (flag == true) {
 
-                        for (int counts = 0; counts < RYCOXv2.prgList.size(); counts++) {
-                            if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(counts).getProgCode())) {
-                                if ((RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
+                        for (int counts = 0; counts < App.prgList.size(); counts++) {
+                            if (progtemp[0].equalsIgnoreCase(App.prgList.get(counts).getProgCode())) {
+                                if ((App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
 
-                                    RYCOXv2.prgList.get(counts).setPrgStatus("TERMINATED");
+                                    App.prgList.get(counts).setPrgStatus("TERMINATED");
                                     String date = DateFormat.getInstance().format(new Date());
-                                    RYCOXv2.prgList.get(counts).setTerminationDate(date);
+                                    App.prgList.get(counts).setTerminationDate(date);
                                     JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
-                                    LogFile log = new LogFile(RYCOXv2.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
-                                    RYCOXv2.logList.add(log);
+                                    LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
+                                    App.logList.add(log);
                                     break;
 
                                 }
@@ -428,14 +428,14 @@ class ProgrammePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                            if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                    for (int i = 0; i < App.prgList.size(); i++) {
+                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
 
-                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "'?");
+                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Programme '" + App.prgList.get(i).getProgCode() + "'?");
                                 if (opt == JOptionPane.YES_OPTION) {
-                                    RYCOXv2.prgList.get(i).setPrgStatus("ACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme " + RYCOXv2.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                    App.prgList.get(i).setPrgStatus("ACTIVE");
+                                    JOptionPane.showMessageDialog(null, "Programme " + App.prgList.get(i).getProgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
                                     updateProgrammeTable();
                                     prgTable.clearSelection();
                                     prgDeactButton.setEnabled(true);
@@ -443,8 +443,8 @@ class ProgrammePanel extends JPanel {
                                     prgActivateButton.setEnabled(true);
                                     activateMI.setEnabled(true);
                                     defaultButtonSet();
-                                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has activated TV Package '" + RYCOXv2.prgList.get(i).getProgCode() + "'.");
-                                    RYCOXv2.logList.add(RYCOXv2.log);
+                                    App.log = new LogFile(App.user, " has activated TV Package '" + App.prgList.get(i).getProgCode() + "'.");
+                                    App.logList.add(App.log);
                                     break;
                                 } else if (opt == JOptionPane.NO_OPTION) {
 
@@ -468,13 +468,13 @@ class ProgrammePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String ID = (String) prgTable.getValueAt(prgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                            if (RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + RYCOXv2.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
+                    for (int i = 0; i < App.prgList.size(); i++) {
+                        if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                            if (App.prgList.get(i).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Programme " + App.prgList.get(i).getProgCode() + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
                                 if (choice == JOptionPane.YES_OPTION) {
-                                    RYCOXv2.prgList.get(i).setPrgStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                    App.prgList.get(i).setPrgStatus("INACTIVE");
+                                    JOptionPane.showMessageDialog(null, "Programme '" + App.prgList.get(i).getProgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
                                     updateProgrammeTable();
                                     prgTable.clearSelection();
                                     prgDeactButton.setEnabled(true);
@@ -482,8 +482,8 @@ class ProgrammePanel extends JPanel {
                                     prgActivateButton.setEnabled(true);
                                     activateMI.setEnabled(true);
                                     defaultButtonSet();
-                                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has deactivated TV Programme '" + RYCOXv2.prgList.get(i).getProgCode() + "'.");
-                                    RYCOXv2.logList.add(RYCOXv2.log);
+                                    App.log = new LogFile(App.user, " has deactivated TV Programme '" + App.prgList.get(i).getProgCode() + "'.");
+                                    App.logList.add(App.log);
                                 } else if (choice == JOptionPane.NO_OPTION) {
 
                                     break;
@@ -530,8 +530,8 @@ class ProgrammePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                RYCOXv2.saveProgramFile();
-                RYCOXv2.printLog();
+                App.saveProgramFile();
+                App.printLog();
                 JOptionPane.showMessageDialog(null, "You have saved all the changes under programme management successfully.", "Saved successfully", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -562,9 +562,9 @@ class ProgrammePanel extends JPanel {
                     int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Programme " + progtemp[0] + " ?", "Programme Code found!", JOptionPane.WARNING_MESSAGE);
                     if (choice == JOptionPane.YES_OPTION) {
                         boolean flag = false;
-                        for (int check = 0; check < RYCOXv2.pckgingList.size(); check++) {
+                        for (int check = 0; check < App.pckgingList.size(); check++) {
 
-                            if (progtemp[0].equalsIgnoreCase(RYCOXv2.pckgingList.get(check).getProgCode())) {
+                            if (progtemp[0].equalsIgnoreCase(App.pckgingList.get(check).getProgCode())) {
                                 JOptionPane.showMessageDialog(null, "The programme is included in one or more packages. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
                                 flag = false;
 
@@ -576,16 +576,16 @@ class ProgrammePanel extends JPanel {
 
 
                         if (flag == true) {
-                            for (int counts = 0; counts < RYCOXv2.prgList.size(); counts++) {
-                                if (progtemp[0].equalsIgnoreCase(RYCOXv2.prgList.get(counts).getProgCode())) {
-                                    if ((RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (RYCOXv2.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
+                            for (int counts = 0; counts < App.prgList.size(); counts++) {
+                                if (progtemp[0].equalsIgnoreCase(App.prgList.get(counts).getProgCode())) {
+                                    if ((App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("ACTIVE")) || (App.prgList.get(counts).getPrgStatus().equalsIgnoreCase("INACTIVE"))) {
 
-                                        RYCOXv2.prgList.get(counts).setPrgStatus("TERMINATED");
+                                        App.prgList.get(counts).setPrgStatus("TERMINATED");
                                         String date = DateFormat.getInstance().format(new Date());
-                                        RYCOXv2.prgList.get(counts).setTerminationDate(date);
+                                        App.prgList.get(counts).setTerminationDate(date);
                                         JOptionPane.showMessageDialog(null, "TV Programme " + progtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
-                                        LogFile log = new LogFile(RYCOXv2.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
-                                        RYCOXv2.logList.add(log);
+                                        LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + progtemp[0] + "'.");
+                                        App.logList.add(log);
 
                                         break;
 
@@ -639,27 +639,27 @@ class ProgrammePanel extends JPanel {
      * The value in each row and column will be updated immediately when it is called.
      */
     public void updateProgrammeTable() {
-        prgData = new String[RYCOXv2.prgList.size()][6];
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+        prgData = new String[App.prgList.size()][6];
+        for (int i = 0; i < App.prgList.size(); i++) {
             for (int j = 0; j <= 6; j++) {
                 switch (j) {
                     case 0:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgCode();
+                        prgData[i][j] = App.prgList.get(i).getProgCode();
                         break;
                     case 1:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getProgTitle();
+                        prgData[i][j] = App.prgList.get(i).getProgTitle();
                         break;
                     case 2:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getContentOrigin();
+                        prgData[i][j] = App.prgList.get(i).getContentOrigin();
                         break;
                     case 3:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getViewerStatus();
+                        prgData[i][j] = App.prgList.get(i).getViewerStatus();
                         break;
                     case 4:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getType();
+                        prgData[i][j] = App.prgList.get(i).getType();
                         break;
                     case 5:
-                        prgData[i][j] = RYCOXv2.prgList.get(i).getPrgStatus();
+                        prgData[i][j] = App.prgList.get(i).getPrgStatus();
                         break;
                 }
             }
@@ -704,11 +704,11 @@ class ProgrammePanel extends JPanel {
     private void changeMode() {
         rowno = prgTable.getSelectedRow();
         String ID = (String) prgTable.getValueAt(rowno, 0);
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
-            for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                if (ID.equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+        if (App.userList.get(App.currentUser) instanceof Administrators) {
+            for (int i = 0; i < App.prgList.size(); i++) {
+                if (ID.equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
                     lol = i;
-                    if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
+                    if (App.prgList.get(lol).getPrgStatus().equalsIgnoreCase("ACTIVE")) {
                         prgDeleteButton.setEnabled(true);
                         editPrgButton.setEnabled(true);
                         prgActivateButton.setEnabled(false);
@@ -727,7 +727,7 @@ class ProgrammePanel extends JPanel {
                         activateMI.setVisible(true);
                         deactivateMI.setVisible(true);
                         deletePrgMI.setVisible(true);
-                    } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
+                    } else if (App.prgList.get(lol).getPrgStatus().equalsIgnoreCase("INACTIVE")) {
                         prgDeleteButton.setEnabled(true);
                         editPrgButton.setEnabled(true);
                         prgActivateButton.setEnabled(true);
@@ -746,7 +746,7 @@ class ProgrammePanel extends JPanel {
                         activateMI.setVisible(true);
                         deactivateMI.setVisible(true);
                         deletePrgMI.setVisible(true);
-                    } else if (RYCOXv2.prgList.get(lol).getPrgStatus().equalsIgnoreCase("TERMINATED")) {
+                    } else if (App.prgList.get(lol).getPrgStatus().equalsIgnoreCase("TERMINATED")) {
                         prgDeleteButton.setVisible(false);
                         editPrgButton.setVisible(false);
                         prgActivateButton.setVisible(false);

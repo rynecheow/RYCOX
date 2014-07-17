@@ -81,11 +81,11 @@ class NewPackageDialog extends JDialog {
         rightListScroll.setViewportView(rightList);
 
 
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+        for (int i = 0; i < App.prgList.size(); i++) {
 
-            if (!(RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("TERMINATED"))) {
+            if (!(App.prgList.get(i).getPrgStatus().equalsIgnoreCase("TERMINATED"))) {
 
-                ((DefaultListModel) leftModel).addElement(RYCOXv2.prgList.get(i).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
+                ((DefaultListModel) leftModel).addElement(App.prgList.get(i).getProgCode() + "-" + App.prgList.get(i).getProgTitle());
             }
 
         }
@@ -267,7 +267,7 @@ class NewPackageDialog extends JDialog {
 
                 if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true)) {
                     int existedID = 0;
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
+                    for (int i = 0; i < App.pkgList.size(); i++) {
                         existedID += 1;
                     }
                     int newID = existedID + 1;
@@ -278,15 +278,15 @@ class NewPackageDialog extends JDialog {
                         a = "P" + newIDS;
                     }
 
-                    RYCOXv2.pkgList.addLast(new TVPackage(a, b, d, z, "ACTIVE"));
+                    App.pkgList.addLast(new TVPackage(a, b, d, z, "ACTIVE"));
 
                     for (int i = 0; i < rightElArr.length; i++) {
-                        RYCOXv2.pckgingList.addLast(new Packaging(a, (rightElArr[i]).substring(0, 4)));
+                        App.pckgingList.addLast(new Packaging(a, (rightElArr[i]).substring(0, 4)));
                     }
 
                     JOptionPane.showMessageDialog(null, "You have successfully created a new TV Package " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(RYCOXv2.user, "has created a new TV Package '" + a + "'.");
-                    RYCOXv2.logList.add(log);
+                    LogFile log = new LogFile(App.user, "has created a new TV Package '" + a + "'.");
+                    App.logList.add(log);
                     dispose();
                 }
             }

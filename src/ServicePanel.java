@@ -67,7 +67,7 @@ class ServicePanel extends JPanel {
         scrollPane = new JScrollPane();
         servTable = new JTable();
         servTable.getTableHeader().setReorderingAllowed(false);
-        loginInfo = new JLabel("You are logged in as " + RYCOXv2.user + ".");
+        loginInfo = new JLabel("You are logged in as " + App.user + ".");
         loginInfo.setForeground(Color.WHITE);
         editServMI = new JMenuItem("Edit Service...");
         deleteServMI = new JMenuItem("Terminate Service...");
@@ -85,7 +85,7 @@ class ServicePanel extends JPanel {
         setBackground(new Color(23, 28, 30));
         toolbar.setBackground(bColor);
         toolbar.setPreferredSize(new Dimension(1500, 30));
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+        if (App.userList.get(App.currentUser) instanceof Administrators) {
             servDeleteButton.setVisible(true);
             recoverButton.setVisible(false);
             deleteServMI.setVisible(true);
@@ -106,24 +106,24 @@ class ServicePanel extends JPanel {
         servTable.setBackground(new Color(227, 226, 226));
         servTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12)); // NOI18N
 
-        servData = new String[RYCOXv2.servList.size()][5];
-        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+        servData = new String[App.servList.size()][5];
+        for (int i = 0; i < App.servList.size(); i++) {
             for (int j = 0; j <= 5; j++) {
                 switch (j) {
                     case 0:
-                        servData[i][j] = RYCOXv2.servList.get(i).getSmartCardNo();
+                        servData[i][j] = App.servList.get(i).getSmartCardNo();
                         break;
                     case 1:
-                        servData[i][j] = RYCOXv2.servList.get(i).getClientID();
+                        servData[i][j] = App.servList.get(i).getClientID();
                         break;
                     case 2:
-                        servData[i][j] = RYCOXv2.servList.get(i).getDecodeNo();
+                        servData[i][j] = App.servList.get(i).getDecodeNo();
                         break;
                     case 3:
-                        servData[i][j] = RYCOXv2.servList.get(i).getAddress();
+                        servData[i][j] = App.servList.get(i).getAddress();
                         break;
                     case 4:
-                        servData[i][j] = RYCOXv2.servList.get(i).getServStatus();
+                        servData[i][j] = App.servList.get(i).getServStatus();
                 }
             }
         }
@@ -439,13 +439,13 @@ class ServicePanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == saveButton) {
-                RYCOXv2.saveServiceFile();
-                //		RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[SERVICE]");
-                //		RYCOXv2.logList.add(RYCOXv2.log);
+                App.saveServiceFile();
+                //		App.log = new LogFile(App.user, " has saved the data.[SERVICE]");
+                //		App.logList.add(App.log);
                 //
-                //		RYCOXv2.saveSubscriptionFile();
-                //		RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[SUBSCIPTION]");
-                //		RYCOXv2.logList.add(RYCOXv2.log);
+                //		App.saveSubscriptionFile();
+                //		App.log = new LogFile(App.user, " has saved the data.[SUBSCIPTION]");
+                //		App.logList.add(App.log);
                 //
                 JOptionPane.showMessageDialog(null, "You have saved all the changes under service management successfully.", "Saved successfully", JOptionPane.INFORMATION_MESSAGE);
 
@@ -456,11 +456,11 @@ class ServicePanel extends JPanel {
             } else if (e.getSource() == servDeleteButton || e.getSource() == deleteServMI) {
                 int terminate = JOptionPane.showConfirmDialog(null, "Terminate " + temp[0] + " ?", "Terminate Service", JOptionPane.WARNING_MESSAGE);
                 if (terminate == JOptionPane.YES_OPTION) {
-                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-                        if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
-                            RYCOXv2.servList.get(i).setServStatus("Terminated");
-                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has terminated the service " + temp[0] + ".");
-                            RYCOXv2.logList.add(RYCOXv2.log);
+                    for (int i = 0; i < App.servList.size(); i++) {
+                        if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
+                            App.servList.get(i).setServStatus("Terminated");
+                            App.log = new LogFile(App.user, " has terminated the service " + temp[0] + ".");
+                            App.logList.add(App.log);
                             defaultButtonSet();
                             break;
                         }
@@ -470,11 +470,11 @@ class ServicePanel extends JPanel {
             } else if (e.getSource() == recoverButton) {
                 int recover = JOptionPane.showConfirmDialog(null, "Recover " + temp[0] + " ?", "Recover Service", JOptionPane.WARNING_MESSAGE);
                 if (recover == JOptionPane.YES_OPTION) {
-                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-                        if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
-                            RYCOXv2.servList.get(i).setServStatus("Active");
-                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has recovered the service " + temp[0] + ".");
-                            RYCOXv2.logList.add(RYCOXv2.log);
+                    for (int i = 0; i < App.servList.size(); i++) {
+                        if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
+                            App.servList.get(i).setServStatus("Active");
+                            App.log = new LogFile(App.user, " has recovered the service " + temp[0] + ".");
+                            App.logList.add(App.log);
                             defaultButtonSet();
                             break;
                         }
@@ -487,11 +487,11 @@ class ServicePanel extends JPanel {
             } else if (e.getSource() == servActivateButton || e.getSource() == activeServMI) {
                 int activate = JOptionPane.showConfirmDialog(null, "Activate " + temp[0] + " ?", "Activate Service", JOptionPane.WARNING_MESSAGE);
                 if (activate == JOptionPane.YES_OPTION) {
-                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-                        if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
-                            RYCOXv2.servList.get(i).setServStatus("Active");
-                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has activated the service " + temp[0] + ".");
-                            RYCOXv2.logList.add(RYCOXv2.log);
+                    for (int i = 0; i < App.servList.size(); i++) {
+                        if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
+                            App.servList.get(i).setServStatus("Active");
+                            App.log = new LogFile(App.user, " has activated the service " + temp[0] + ".");
+                            App.logList.add(App.log);
 
                             defaultButtonSet();
                             break;
@@ -502,11 +502,11 @@ class ServicePanel extends JPanel {
             } else if (e.getSource() == barButton || e.getSource() == barredServMI) {
                 int deact = JOptionPane.showConfirmDialog(null, "Barred " + temp[0] + " ?", "Barred Service", JOptionPane.WARNING_MESSAGE);
                 if (deact == JOptionPane.YES_OPTION) {
-                    for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-                        if (RYCOXv2.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
-                            RYCOXv2.servList.get(i).setServStatus("Barred");
-                            RYCOXv2.log = new LogFile(RYCOXv2.user, " has barred the service " + temp[0] + ".");
-                            RYCOXv2.logList.add(RYCOXv2.log);
+                    for (int i = 0; i < App.servList.size(); i++) {
+                        if (App.servList.get(i).getSmartCardNo().equalsIgnoreCase(temp[0])) {
+                            App.servList.get(i).setServStatus("Barred");
+                            App.log = new LogFile(App.user, " has barred the service " + temp[0] + ".");
+                            App.logList.add(App.log);
                             defaultButtonSet();
                             break;
                         }
@@ -523,24 +523,24 @@ class ServicePanel extends JPanel {
      */
     // start updateTable()
     static void updateTable() {
-        servData = new String[RYCOXv2.servList.size()][5];
-        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+        servData = new String[App.servList.size()][5];
+        for (int i = 0; i < App.servList.size(); i++) {
             for (int j = 0; j <= 5; j++) {
                 switch (j) {
                     case 0:
-                        servData[i][j] = RYCOXv2.servList.get(i).getSmartCardNo();
+                        servData[i][j] = App.servList.get(i).getSmartCardNo();
                         break;
                     case 1:
-                        servData[i][j] = RYCOXv2.servList.get(i).getClientID();
+                        servData[i][j] = App.servList.get(i).getClientID();
                         break;
                     case 2:
-                        servData[i][j] = RYCOXv2.servList.get(i).getDecodeNo();
+                        servData[i][j] = App.servList.get(i).getDecodeNo();
                         break;
                     case 3:
-                        servData[i][j] = RYCOXv2.servList.get(i).getAddress();
+                        servData[i][j] = App.servList.get(i).getAddress();
                         break;
                     case 4:
-                        servData[i][j] = RYCOXv2.servList.get(i).getServStatus();
+                        servData[i][j] = App.servList.get(i).getServStatus();
                 }
             }
         }
@@ -586,8 +586,8 @@ class ServicePanel extends JPanel {
      * table after add a new service.
      */
     static void addServ() {
-        int row = RYCOXv2.servList.size() - 1;
-        String[] newServ = new String[]{RYCOXv2.servList.get(row).getSmartCardNo(), RYCOXv2.servList.get(row).getClientID(), RYCOXv2.servList.get(row).getDecodeNo(), RYCOXv2.servList.get(row).getAddress(), RYCOXv2.servList.get(row).getServStatus()};
+        int row = App.servList.size() - 1;
+        String[] newServ = new String[]{App.servList.get(row).getSmartCardNo(), App.servList.get(row).getClientID(), App.servList.get(row).getDecodeNo(), App.servList.get(row).getAddress(), App.servList.get(row).getServStatus()};
         ((DefaultTableModel) model).addRow(newServ);
     }
 

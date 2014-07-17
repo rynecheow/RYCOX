@@ -9,43 +9,35 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class AddNewUserDialog extends JDialog {
 
-    // Variables declaration - do not modify
-    private JPanel BGPanel;
     private JTextField IDInput;
-    private JLabel IDLabel;
-    private JButton cancelButton;
-    private JButton okButton;
-    @SuppressWarnings("rawtypes")
-    private JComboBox userTypeCombo;
-    private JLabel userTypeLabel;
+    private JComboBox<String> userTypeCombo;
     private JLabel warningID;
     final String defaultPassword = "rycox789";
     // End of variables declaration
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     /**
      *
-     * @param dialog
+     * @param dialog Dialog
      */
     public AddNewUserDialog(JDialog dialog) {
         super(dialog, "RYCOX System - Add a new user", true);
-        BGPanel = new JPanel();
-        IDLabel = new JLabel();
+        JPanel BGPanel = new JPanel();
+        JLabel IDLabel = new JLabel();
         IDInput = new JTextField();
-        okButton = new JButton();
-        cancelButton = new JButton();
-        userTypeLabel = new JLabel();
-        userTypeCombo = new JComboBox();
+        JButton okButton = new JButton();
+        JButton cancelButton = new JButton();
+        JLabel userTypeLabel = new JLabel();
+        userTypeCombo = new JComboBox<>();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         BGPanel.setBackground(new Color(23, 28, 30));
-        IDLabel.setFont(new Font("Tahoma", 0, 12)); // NOI18N
+        IDLabel.setFont(new Font("Tahoma", 0, 12));
         IDLabel.setForeground(new Color(255, 255, 255));
         IDLabel.setText("User ID:");
-        IDInput.setFont(new Font("Tahoma", 0, 12)); // NOI18N
-        okButton.setFont(new Font("Tahoma", 0, 14)); // NOI18N
+        IDInput.setFont(new Font("Tahoma", 0, 12));
+        okButton.setFont(new Font("Tahoma", 0, 14));
         okButton.setText("OK");
         warningID = new JLabel("Invalid.");
         warningID.setForeground(new Color(23, 28, 30));
@@ -57,30 +49,30 @@ public class AddNewUserDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 String type = ((String) userTypeCombo.getSelectedItem());
                 String ID = IDInput.getText().trim();
-                if (ID.equals("") || ID == null) {
+                if (ID.equals("")) {
                     warningID.setText("Invalid.");
                     warningID.setForeground(Color.RED);
                 } else {
                     boolean flag = false;
-                    for (int y = 0; y < RYCOXv2.userList.size(); y++) {
-                        if ((RYCOXv2.userList.get(y).getUserID()).equals(ID)) {
+                    for (int y = 0; y < App.userList.size(); y++) {
+                        if ((App.userList.get(y).getUserID()).equals(ID)) {
                             warningID.setText("Existed.");
                             warningID.setForeground(Color.RED);
                             flag = true;
                             break;
                         }
                     }
-                    if (flag == false) {
+                    if (!flag) {
                         warningID.setForeground(new Color(23, 28, 30));
                         switch (type) {
                             case "Administrator":
-                                RYCOXv2.userList.add(new Administrators(ID, defaultPassword));
+                                App.userList.add(new Administrators(ID, defaultPassword));
                                 ManageUsers.updateAdd();
                                 JOptionPane.showMessageDialog(null, "User '" + ID + "' is created successfully with default password " + defaultPassword + ".", "RYCOX System - Successful Adding", JOptionPane.INFORMATION_MESSAGE);
                                 dispose();
                                 break;
                             case "Front Desk Staff":
-                                RYCOXv2.userList.add(new FrontdeskStaffs(ID, defaultPassword));
+                                App.userList.add(new FrontdeskStaffs(ID, defaultPassword));
                                 ManageUsers.updateAdd();
                                 JOptionPane.showMessageDialog(null, "User '" + ID + "' is created successfully with default password " + defaultPassword + ".", "RYCOX System - Successful Adding", JOptionPane.INFORMATION_MESSAGE);
                                 dispose();
@@ -90,25 +82,21 @@ public class AddNewUserDialog extends JDialog {
                 }
             }
         });
-        cancelButton.setFont(new Font("Tahoma", 0, 14)); // NOI18N
+        cancelButton.setFont(new Font("Tahoma", 0, 14));
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int opt = JOptionPane.showConfirmDialog(null, "Are you sure to cancel adding user? Data will not be saved.", "RYCOX System - Confirm cancel", JOptionPane.WARNING_MESSAGE);
-                if (opt == JOptionPane.YES_OPTION) {
-                    dispose();
-                }
+        cancelButton.addActionListener(e -> {
+            int opt = JOptionPane.showConfirmDialog(null, "Are you sure to cancel adding user? Data will not be saved.", "RYCOX System - Confirm cancel", JOptionPane.YES_NO_OPTION);
+            if (opt == JOptionPane.YES_OPTION) {
+                dispose();
             }
         });
 
-        userTypeLabel.setFont(new Font("Tahoma", 0, 12)); // NOI18N
+        userTypeLabel.setFont(new Font("Tahoma", 0, 12));
         userTypeLabel.setForeground(new Color(255, 255, 255));
         userTypeLabel.setText("User type:");
 
-        userTypeCombo.setFont(new Font("Tahoma", 0, 12)); // NOI18N
-        userTypeCombo.setModel(new DefaultComboBoxModel(new String[]{"Administrator", "Front Desk Staff"}));
+        userTypeCombo.setFont(new Font("Tahoma", 0, 12));
+        userTypeCombo.setModel(new DefaultComboBoxModel<>(new String[]{"Administrator", "Front Desk Staff"}));
 
         GroupLayout BGPanelLayout = new GroupLayout(BGPanel);
         BGPanel.setLayout(BGPanelLayout);

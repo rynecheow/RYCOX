@@ -3,40 +3,27 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.util.LinkedList;
 
 /**
  * @author LiHao
  */
-@SuppressWarnings("serial")
+
 class EditServiceDialog extends JDialog {
-    // Variable declaration
-    private JLabel idLabel, scLabel, dcLabel, addLabel, leftLabel, rightLabel, scExample, dcExample;
-    private JTextField idInput, scInput, dcInput;
+    private JLabel scExample;
+    private JLabel dcExample;
+    private JTextField scInput;
+    private JTextField dcInput;
     private JTextArea addInput;
     private JButton okBut, ccBut, addBut, rmvBut;
-    @SuppressWarnings("rawtypes")
-    private static JList leftList;
-    @SuppressWarnings("rawtypes")
-    private static JList rightList;
-    private JScrollPane addScroll;
-    private static JScrollPane leftListScroll;
-    private static JScrollPane rightListScroll;
-    private JSeparator separator, separator2;
-    private Color fColor = new Color(255, 255, 255);
-    @SuppressWarnings("unused")
-    private LinkedList<String> leftPkgList;
-    private LinkedList<String> selPkgList;
-    @SuppressWarnings("rawtypes")
-    private AbstractListModel leftModel;
-    @SuppressWarnings("rawtypes")
-    private AbstractListModel rightModel;
+
+    private static JList<String> leftList;
+
+    private static JList<String> rightList;
+
     private String[] leftElArr;
     private String[] rightElArr;
-    private String[] selPkg;
-    @SuppressWarnings("unused")
-    private String addPkg;
+
     private int subsNo;
     private JWarnLabel scFormatWarn, scEmptyWarn, scSameWarn, dcFormatWarn, dcEmptyWarn, dcSameWarn, addWarn, subsPkgWarn;
     // end of variable decaration
@@ -44,19 +31,20 @@ class EditServiceDialog extends JDialog {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public EditServiceDialog(JFrame parent) {
         super(parent, "Service - Edit Service", true);
-        idLabel = new JLabel("Client ID: ");
+        JLabel idLabel = new JLabel("Client ID: ");
+        Color fColor = new Color(255, 255, 255);
         idLabel.setForeground(fColor);
-        scLabel = new JLabel("Smart Card Number: ");
+        JLabel scLabel = new JLabel("Smart Card Number: ");
         scLabel.setForeground(fColor);
-        dcLabel = new JLabel("Decoder Number: ");
+        JLabel dcLabel = new JLabel("Decoder Number: ");
         dcLabel.setForeground(fColor);
-        addLabel = new JLabel("Address: ");
+        JLabel addLabel = new JLabel("Address: ");
         addLabel.setForeground(fColor);
-        leftLabel = new JLabel("Packages Available: ");
+        JLabel leftLabel = new JLabel("Packages Available: ");
         leftLabel.setForeground(fColor);
-        rightLabel = new JLabel("Packages Subscribed: ");
+        JLabel rightLabel = new JLabel("Packages Subscribed: ");
         rightLabel.setForeground(fColor);
-        idInput = new JTextField(20);
+        JTextField idInput = new JTextField(20);
         idInput.setText(ServicePanel.temp[1]);
         idInput.setEnabled(false);
         scInput = new JTextField(20);
@@ -83,61 +71,61 @@ class EditServiceDialog extends JDialog {
         dcSameWarn = new JWarnLabel("Decoder has been used. e.g Dxxxxxx");
         addWarn = new JWarnLabel("Please Enter the Address.");
         subsPkgWarn = new JWarnLabel("Must at least select one package.");
-        addScroll = new JScrollPane();
+        JScrollPane addScroll = new JScrollPane();
         addScroll.setViewportView(addInput);
-        separator = new JSeparator(JSeparator.VERTICAL);
+        JSeparator separator = new JSeparator(JSeparator.VERTICAL);
         separator.setPreferredSize(new Dimension(2, 270));
-        separator2 = new JSeparator(JSeparator.HORIZONTAL);
+        JSeparator separator2 = new JSeparator(JSeparator.HORIZONTAL);
         separator2.setPreferredSize(new Dimension(990, 2));
 
-        selPkgList = new LinkedList<>();
-        leftModel = new DefaultListModel();
-        rightModel = new DefaultListModel();
+        LinkedList<String> selPkgList = new LinkedList<>();
+        AbstractListModel<String> leftModel = new DefaultListModel<>();
+        AbstractListModel<String> rightModel = new DefaultListModel<>();
 
         // get the package already subscribe by client
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-            for (int j = 0; j < RYCOXv2.subsList.size(); j++) {
-                if (ServicePanel.temp[0].equalsIgnoreCase(RYCOXv2.subsList.get(j).getSmartCardNo())) {
-                    if (RYCOXv2.subsList.get(j).getPkgCode().equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                        selPkgList.add(RYCOXv2.subsList.get(j).getPkgCode());
-                        ((DefaultListModel) rightModel).addElement(RYCOXv2.subsList.get(j).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
+        for (int i = 0; i < App.pkgList.size(); i++) {
+            for (int j = 0; j < App.subsList.size(); j++) {
+                if (ServicePanel.temp[0].equalsIgnoreCase(App.subsList.get(j).getSmartCardNo())) {
+                    if (App.subsList.get(j).getPkgCode().equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                        selPkgList.add(App.subsList.get(j).getPkgCode());
+                        ((DefaultListModel) rightModel).addElement(App.subsList.get(j).getPkgCode() + "\t\t\t" + App.pkgList.get(i).getPkgName());
                     }
                 }
             }
         }
-        selPkg = selPkgList.toArray(new String[selPkgList.size()]);
+        String[] selPkg = selPkgList.toArray(new String[selPkgList.size()]);
 
         // get the package that client is not subscribe
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
+        for (int i = 0; i < App.pkgList.size(); i++) {
             boolean check = false;
             for (int j = 0; j < selPkgList.size(); j++) {
-                if (selPkg[j].equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
+                if (selPkg[j].equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
                     check = true;
                     break;
                 }
             }
-            if (check == false) {
-                if (!(RYCOXv2.pkgList.get(i).getPkgStatus().equalsIgnoreCase("TERMINATED"))) {
-                    ((DefaultListModel) leftModel).addElement(RYCOXv2.pkgList.get(i).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
+            if (!check) {
+                if (!(App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("TERMINATED"))) {
+                    ((DefaultListModel) leftModel).addElement(App.pkgList.get(i).getPkgCode() + "\t\t\t" + App.pkgList.get(i).getPkgName());
                 }
             }
         }
 
-        leftList = new JList(leftModel);
+        leftList = new JList<>(leftModel);
         leftList.setModel(leftModel);
         leftList.setVisibleRowCount(12);
         leftList.setFixedCellWidth(160);
         leftList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        rightList = new JList(rightModel);
+        rightList = new JList<>(rightModel);
         rightList.setModel(rightModel);
         rightList.setVisibleRowCount(12);
         rightList.setFixedCellWidth(160);
         rightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        leftListScroll = new JScrollPane(leftList);
+        JScrollPane leftListScroll = new JScrollPane(leftList);
         leftListScroll.setViewportView(leftList);
-        rightListScroll = new JScrollPane(rightList);
+        JScrollPane rightListScroll = new JScrollPane(rightList);
         rightListScroll.setViewportView(rightList);
 
 
@@ -251,10 +239,10 @@ class EditServiceDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == okBut) {
                 submit();
-                RYCOXv2.log = new LogFile(RYCOXv2.user, " has edited the service " + scInput.getText().toUpperCase() + ".");
-                RYCOXv2.logList.add(RYCOXv2.log);
+                App.log = new LogFile(App.user, " has edited the service " + scInput.getText().toUpperCase() + ".");
+                App.logList.add(App.log);
             } else if (e.getSource() == ccBut) {
-                int confirm = JOptionPane.showConfirmDialog(null, "Exit without changes?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                int confirm = JOptionPane.showConfirmDialog(null, "Exit without changes?", "Confirm exit", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
                     dispose();
                 }
@@ -275,21 +263,6 @@ class EditServiceDialog extends JDialog {
     }
 
     /**
-     * @author LiHao
-     *         This class is used for handler all the mouse listener.
-     */
-    public class mouseHandler extends MouseAdapter {
-        public void mouseReleased(ActionEvent e) {
-            if (e.getSource() == leftListScroll) {
-                addBut.setEnabled(false);
-            } else if (e.getSource() == rightListScroll) {
-                rmvBut.setEnabled(false);
-            }
-        }
-    }
-
-    /**
-     * @author LiHao
      * This method is used for validate the data entered by user is correct
      * and the smart card number and decoder number is not repeat,
      * if all the data is correct the edited will be update,
@@ -322,8 +295,8 @@ class EditServiceDialog extends JDialog {
                 scSameWarn.setVisible(false);
                 scCheck = true;
             } else if (!scInput.getText().equalsIgnoreCase(ServicePanel.temp[0])) {
-                for (int j = 0; j < RYCOXv2.servList.size(); j++) {
-                    if (scInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getSmartCardNo())) {
+                for (int j = 0; j < App.servList.size(); j++) {
+                    if (scInput.getText().equalsIgnoreCase(App.servList.get(j).getSmartCardNo())) {
                         scSameWarn.setVisible(true);
                         scExample.setVisible(false);
                         scFormatWarn.setVisible(false);
@@ -358,8 +331,8 @@ class EditServiceDialog extends JDialog {
                 dcSameWarn.setVisible(false);
                 dcCheck = true;
             } else if (!dcInput.getText().equalsIgnoreCase(ServicePanel.temp[2])) {
-                for (int j = 0; j < RYCOXv2.servList.size(); j++) {
-                    if (dcInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getDecodeNo())) {
+                for (int j = 0; j < App.servList.size(); j++) {
+                    if (dcInput.getText().equalsIgnoreCase(App.servList.get(j).getDecodeNo())) {
                         dcExample.setVisible(false);
                         dcEmptyWarn.setVisible(false);
                         dcFormatWarn.setVisible(false);
@@ -392,7 +365,7 @@ class EditServiceDialog extends JDialog {
         } catch (NullPointerException npe) {
             subsPkgCheck = true;
         }
-        if (scCheck == true && dcCheck == true && addCheck == true && subsPkgCheck == true) {
+        if (scCheck && dcCheck && addCheck && subsPkgCheck) {
             updateList();
             updateSubsList();
             JOptionPane.showMessageDialog(null, "You have edited the service " + scInput.getText(), "Service Edited", JOptionPane.INFORMATION_MESSAGE);
@@ -401,42 +374,42 @@ class EditServiceDialog extends JDialog {
     }
 
     /**
-     * @author LiHao
+     *
      * This method is used for updating the edited of subscription package.
      */
     private void updateSubsList() {
         int i;
-        for (i = 0; i < RYCOXv2.subsList.size(); i++) {
-            if ((RYCOXv2.subsList.get(i).getSmartCardNo()).equalsIgnoreCase(ServicePanel.temp[0])) {
-                subsNo = RYCOXv2.subsList.get(i).getSubsNo();
-                RYCOXv2.subsList.remove(i);
+        for (i = 0; i < App.subsList.size(); i++) {
+            if ((App.subsList.get(i).getSmartCardNo()).equalsIgnoreCase(ServicePanel.temp[0])) {
+                subsNo = App.subsList.get(i).getSubsNo();
+                App.subsList.remove(i);
                 i--;
             }
         }
 
         LinkedList<String> addElements = new LinkedList<>();
         for (int p = 0; p < rightList.getModel().getSize(); p++) {
-            addElements.add(((String) rightList.getModel().getElementAt(p)).substring(0, 3));
+            addElements.add((rightList.getModel().getElementAt(p)).substring(0, 3));
         }
         for (i = 0; i < addElements.size(); i++) {
-            RYCOXv2.subsList.add(new Subscription(ServicePanel.temp[0], subsNo, addElements.get(i)));
+            App.subsList.add(new Subscription(ServicePanel.temp[0], subsNo, addElements.get(i)));
         }
     }
 
     /**
-     * @author LiHao
+     *
      * This method is used for updating the edited of service's information.
      */
     public void updateList() {
         int k;
-        for (k = 0; k < RYCOXv2.servList.size(); k++) {
-            if (RYCOXv2.servList.get(k).getSmartCardNo().equalsIgnoreCase(ServicePanel.temp[0])) {
+        for (k = 0; k < App.servList.size(); k++) {
+            if (App.servList.get(k).getSmartCardNo().equalsIgnoreCase(ServicePanel.temp[0])) {
                 break;
             }
         }
-        RYCOXv2.servList.get(k).setSmartCardNo(scInput.getText().toUpperCase());
-        RYCOXv2.servList.get(k).setDecoderNo(dcInput.getText().toUpperCase());
-        RYCOXv2.servList.get(k).setAddress(addInput.getText());
+        App.servList.get(k).setSmartCardNo(scInput.getText().toUpperCase());
+        App.servList.get(k).setDecoderNo(dcInput.getText().toUpperCase());
+        App.servList.get(k).setAddress(addInput.getText());
     }
 
     @SuppressWarnings("unchecked")
@@ -447,10 +420,10 @@ class EditServiceDialog extends JDialog {
      */
     public void pkgAdd() {
         int leftIndex = leftList.getSelectedIndex();
-        String toBeAdded = ((String) leftList.getModel().getElementAt(leftIndex));
+        String toBeAdded = (leftList.getModel().getElementAt(leftIndex));
         LinkedList<String> leftElements = new LinkedList<>();
         for (int p = 0; p < leftList.getModel().getSize(); p++) {
-            leftElements.add((String) leftList.getModel().getElementAt(p));
+            leftElements.add(leftList.getModel().getElementAt(p));
         }
 
         for (int i = 0; i < leftElements.size(); i++) {
@@ -467,7 +440,7 @@ class EditServiceDialog extends JDialog {
 
         LinkedList<String> rightElements = new LinkedList<>();
         for (int z = 0; z < rightList.getModel().getSize(); z++) {
-            rightElements.add((String) rightList.getModel().getElementAt(z));
+            rightElements.add(rightList.getModel().getElementAt(z));
         }
         rightElements.add(toBeAdded);
         rightElArr = rightElements.toArray(new String[rightElements.size()]);
@@ -477,17 +450,16 @@ class EditServiceDialog extends JDialog {
     }
 
     /**
-     * @author LiHao
+     * LiHao
      * This method is used for remove the selected package from
      * the subscribe package list to not subscribe package list.
      */
-    @SuppressWarnings("unchecked")
     public void pkgRemove() {
         int rightIndex = rightList.getSelectedIndex();
-        String toBeRemoved = ((String) rightList.getModel().getElementAt(rightIndex));
+        String toBeRemoved = (rightList.getModel().getElementAt(rightIndex));
         LinkedList<String> rightElements = new LinkedList<>();
         for (int p = 0; p < rightList.getModel().getSize(); p++) {
-            rightElements.add((String) rightList.getModel().getElementAt(p));
+            rightElements.add(rightList.getModel().getElementAt(p));
         }
 
         for (int i = 0; i < rightElements.size(); i++) {
@@ -505,7 +477,7 @@ class EditServiceDialog extends JDialog {
 
         LinkedList<String> leftElements = new LinkedList<>();
         for (int z = 0; z < leftList.getModel().getSize(); z++) {
-            leftElements.add((String) leftList.getModel().getElementAt(z));
+            leftElements.add(leftList.getModel().getElementAt(z));
         }
         leftElements.add(toBeRemoved);
         leftElArr = leftElements.toArray(new String[leftElements.size()]);

@@ -8,9 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
-class RYCOXv2 extends JFrame {
+class App extends JFrame {
 
-    public RYCOXv2() {
+    public App() {
         super("RYCOX System - UniTV Customer Care and Billing Management");
         setVisible(true);
         userlogin();
@@ -20,7 +20,7 @@ class RYCOXv2 extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent winEvt) {
-                int closeCf = JOptionPane.showConfirmDialog(null, "Exit RYCOX CMM?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
+                int closeCf = JOptionPane.showConfirmDialog(null, "Exit RYCOX CMM?", "Confirm exit", JOptionPane.YES_NO_OPTION);
                 if (closeCf == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
@@ -40,14 +40,6 @@ class RYCOXv2 extends JFrame {
     static int i, u;
     static int currentUser;
     static String user;//index for current user
-    Container mainFrame = getContentPane();
-    /*
-     * USER LOGIN FRAME
-     */
-    private JPanel ulpanelleft, ulpanelright;
-    private JPanel unpanel, pwpanel;
-    private JLabel ulwelcomeMsg, pw_msg, un_msg;
-    private JLabel ullogo, uldisp;
     private JTextField un_input;
     private JPasswordField pw_input;
     private JButton ulsubmit, ulclear;
@@ -69,28 +61,28 @@ class RYCOXv2 extends JFrame {
         setTitle("RYCOX System - Customer Management Module Log in");
         setSize(600, 500);
         getContentPane().setBackground(bgcolor);
-        ulpanelleft = new JPanel();
+        JPanel ulpanelleft = new JPanel();
         ulpanelleft.setLayout(null);
         ulpanelleft.setBackground(Color.WHITE);
-        ullogo = new JLabel();
+        JLabel ullogo = new JLabel();
         ullogo.setIcon(new ImageIcon(getClass().getResource("/resources/rycox.png")));
         ulpanelleft.add(ullogo).setBounds(0, 0, 200, 500);
 
         ulpanelleft.setBounds(0, 0, 200, 500);
-        ulpanelright = new JPanel();
+        JPanel ulpanelright = new JPanel();
         ulpanelright.setBounds(200, 0, 400, 500);
 
-        unpanel = new JPanel();
+        JPanel unpanel = new JPanel();
         unpanel.setBackground(bgcolor);
-        pwpanel = new JPanel();
+        JPanel pwpanel = new JPanel();
         pwpanel.setBackground(bgcolor);
-        ulwelcomeMsg = new JLabel("Please log in to continue.");
+        JLabel ulwelcomeMsg = new JLabel("Please log in to continue.");
         ulwelcomeMsg.setFont(defont);
         ulwelcomeMsg.setForeground(Color.WHITE);
-        pw_msg = new JLabel("Password: ");
+        JLabel pw_msg = new JLabel("Password: ");
         pw_msg.setFont(defont);
         pw_msg.setForeground(Color.WHITE);
-        un_msg = new JLabel("Username: ");
+        JLabel un_msg = new JLabel("Username: ");
         un_msg.setFont(defont);
         un_msg.setForeground(Color.WHITE);
         un_input = new JTextField(15);
@@ -111,7 +103,7 @@ class RYCOXv2 extends JFrame {
         ulpanelright.setLayout(null);
         ulpanelright.setBackground(bgcolor);
         ulpanelright.add(ulwelcomeMsg);
-        uldisp = new JLabel();
+        JLabel uldisp = new JLabel();
         uldisp.setIcon(new ImageIcon(getClass().getResource("/resources/CMM-LOGIN.png")));
         ulpanelright.add(uldisp).setBounds(50, 50, 300, 100);
         ulwelcomeMsg.setBounds(50, 150, 300, 50);
@@ -142,11 +134,10 @@ class RYCOXv2 extends JFrame {
      * -------------------------------------------------------------------
      */
     public static void main(String[] rycox) {
-        new RYCOXv2();
+        new App();
         initialise();
     }
 
-    @SuppressWarnings("unchecked")
     static void initialise() {
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -155,7 +146,7 @@ class RYCOXv2 extends JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ignored) {
         }
 
         userList = new LinkedList<>();
@@ -170,7 +161,7 @@ class RYCOXv2 extends JFrame {
 
         File client_file = new File("cl_data.rycox");
         boolean exist_cl_data = client_file.exists();
-        if (exist_cl_data == false) {    //if client's file do not exist
+        if (!exist_cl_data) {    //if client's file do not exist
             //cl_data.rycox file
             try {
                 FileOutputStream client_fostream = new FileOutputStream("cl_data.rycox");
@@ -189,7 +180,7 @@ class RYCOXv2 extends JFrame {
                     client_oostream.flush();
                 }
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             //serv_data.rycox files
@@ -212,7 +203,7 @@ class RYCOXv2 extends JFrame {
                     serv_oostream.flush();
                 }
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             //subsc_data.rycox
@@ -246,7 +237,7 @@ class RYCOXv2 extends JFrame {
                     subsc_oostream.flush();
                 }
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             //pkg_data.rycox files
@@ -270,7 +261,7 @@ class RYCOXv2 extends JFrame {
                     }
                     pkg_oostream.flush();
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             //pckging_data.rycox files
@@ -309,7 +300,7 @@ class RYCOXv2 extends JFrame {
                     }
                     pckging_oostream.flush();
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             //prg_data.rycox files
@@ -341,7 +332,7 @@ class RYCOXv2 extends JFrame {
                     }
                     prg_oostream.flush();
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             //user_data.rycox files
@@ -357,7 +348,7 @@ class RYCOXv2 extends JFrame {
                     }
                     user_oostream.flush();
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
         } else {        //reading files
@@ -372,7 +363,7 @@ class RYCOXv2 extends JFrame {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException ignored) {
             }
 
             //reading serv_data.rycox
@@ -386,7 +377,7 @@ class RYCOXv2 extends JFrame {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException ignored) {
             }
 
             //reading subsc_data.rycox
@@ -400,7 +391,7 @@ class RYCOXv2 extends JFrame {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException ignored) {
             }
 
             //reading pkg_data.rycox
@@ -414,7 +405,7 @@ class RYCOXv2 extends JFrame {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException ignored) {
             }
 
             //reading pckging_data.rycox
@@ -428,7 +419,7 @@ class RYCOXv2 extends JFrame {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException ignored) {
             }
 
             //reading prg_data.rycox
@@ -442,7 +433,7 @@ class RYCOXv2 extends JFrame {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException ignored) {
             }
 
             //reading user_data.rycox
@@ -456,7 +447,7 @@ class RYCOXv2 extends JFrame {
                         }
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException ignored) {
             }
         }
     }
@@ -475,7 +466,7 @@ class RYCOXv2 extends JFrame {
                     //handle user login logic
                     loginCheck();
                 } catch (IOException ex) {
-                    Logger.getLogger(RYCOXv2.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if (e.getSource() == ulclear) {
                 int option = JOptionPane.showConfirmDialog(null, "Exit RYCOX CMM?", "Confirm exit", JOptionPane.YES_NO_OPTION);
@@ -491,7 +482,7 @@ class RYCOXv2 extends JFrame {
                 try {
                     loginCheck();
                 } catch (IOException ex) {
-                    Logger.getLogger(RYCOXv2.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -501,14 +492,14 @@ class RYCOXv2 extends JFrame {
         try {
             try (PrintWriter pw_log2 = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)))) {
                 for (int lg = 0; lg < logList.size(); lg++) {
-                    if (RYCOXv2.logList.get(lg) != null) {
+                    if (App.logList.get(lg) != null) {
                         pw_log2.print(logList.get(lg).getDate() + "\t");
                         pw_log2.print((logList.get(lg)).getUser() + " ");
                         pw_log2.println((logList.get(lg)).getAction());
                     }
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -522,13 +513,13 @@ class RYCOXv2 extends JFrame {
         @SuppressWarnings("deprecation")
         String password = pw_input.getText().trim();
 
-        if ((username == null) || (username.equals(""))) {
+        if ((username.equals(""))) {
             JOptionPane.showMessageDialog(null, "Please enter username!");
-        } else if ((password == null) || (password.trim().equals(""))) {
+        } else if ((password.trim().equals(""))) {
             JOptionPane.showMessageDialog(null, "Please enter password!");
         } else {
             for (ux = 0; ux < userList.size(); ux++) {
-                if ((username.equalsIgnoreCase(userList.get(ux).getUserID())) == false) {
+                if (!(username.equalsIgnoreCase(userList.get(ux).getUserID()))) {
                     if (ux == (userList.size() - 1)) {
                         usernameVal = false;
                         JOptionPane.showMessageDialog(null, "User not found!");
@@ -541,13 +532,11 @@ class RYCOXv2 extends JFrame {
 
             if (usernameVal) {
                 for (int v = 0; v < userList.size(); v++) {
-                    if ((password.equals(userList.get(ux).getPassword())) == false) {
+                    if (!(password.equals(userList.get(ux).getPassword()))) {
                         if (v == (userList.size() - 1)) {
-                            pwVal = false;
                             JOptionPane.showMessageDialog(null, "Password does not matched!");
                         }
                     } else {
-                        pwVal = true;
                         JOptionPane.showMessageDialog(null, "Welcome back, " + userList.get(ux).getUserID() + "!");
                         currentUser = ux;
                         user = userList.get(currentUser).getUserID();
@@ -560,14 +549,14 @@ class RYCOXv2 extends JFrame {
                         try {
                             FileOutputStream user_fostream = new FileOutputStream("user_data.rycox");
                             try (ObjectOutputStream user_oostream = new ObjectOutputStream(user_fostream)) {
-                                for (v = 0; v < RYCOXv2.userList.size(); v++) {
-                                    if (RYCOXv2.userList.get(v) != null) {
-                                        user_oostream.writeObject(RYCOXv2.userList);
+                                for (v = 0; v < App.userList.size(); v++) {
+                                    if (App.userList.get(v) != null) {
+                                        user_oostream.writeObject(App.userList);
                                     }
                                 }
                                 user_oostream.flush();
                             }
-                        } catch (Exception ex) {
+                        } catch (Exception ignored) {
                         }
 
                         dispose();
@@ -583,19 +572,19 @@ class RYCOXv2 extends JFrame {
         try {
             FileOutputStream client_fostream = new FileOutputStream("cl_data.rycox");
             try (ObjectOutputStream client_oostream = new ObjectOutputStream(client_fostream)) {
-                for (i = 0; i < RYCOXv2.clientList.size(); i++) {
-                    if (RYCOXv2.clientList.get(i) != null) {
-                        client_oostream.writeObject(RYCOXv2.clientList);
+                for (i = 0; i < App.clientList.size(); i++) {
+                    if (App.clientList.get(i) != null) {
+                        client_oostream.writeObject(App.clientList);
                     }
                 }
 
                 client_oostream.flush();
             }
-            RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[CLIENT]");
-            RYCOXv2.logList.add(RYCOXv2.log);
-            RYCOXv2.printLog();
+            App.log = new LogFile(App.user, " has saved the data.[CLIENT]");
+            App.logList.add(App.log);
+            App.printLog();
 
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -603,17 +592,17 @@ class RYCOXv2 extends JFrame {
         try {
             FileOutputStream FOS = new FileOutputStream("serv_data.rycox");
             try (ObjectOutputStream OOS = new ObjectOutputStream(FOS)) {
-                for (i = 0; i < RYCOXv2.servList.size(); i++) {
-                    if (RYCOXv2.servList.get(i) != null) {
-                        OOS.writeObject(RYCOXv2.servList);
+                for (i = 0; i < App.servList.size(); i++) {
+                    if (App.servList.get(i) != null) {
+                        OOS.writeObject(App.servList);
                     }
                 }
                 OOS.flush();
             }
-            RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[SERVICE]");
-            RYCOXv2.logList.add(RYCOXv2.log);
-            RYCOXv2.printLog();
-        } catch (Exception ex) {
+            App.log = new LogFile(App.user, " has saved the data.[SERVICE]");
+            App.logList.add(App.log);
+            App.printLog();
+        } catch (Exception ignored) {
         }
     }
 
@@ -621,14 +610,14 @@ class RYCOXv2 extends JFrame {
         try {
             FileOutputStream subsc_fostream = new FileOutputStream("subsc_data.rycox");
             try (ObjectOutputStream subsc_oostream = new ObjectOutputStream(subsc_fostream)) {
-                for (i = 0; i < RYCOXv2.subsList.size(); i++) {
-                    if (RYCOXv2.subsList.get(i) != null) {
-                        subsc_oostream.writeObject(RYCOXv2.subsList);
+                for (i = 0; i < App.subsList.size(); i++) {
+                    if (App.subsList.get(i) != null) {
+                        subsc_oostream.writeObject(App.subsList);
                     }
                 }
                 subsc_oostream.flush();
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -636,14 +625,14 @@ class RYCOXv2 extends JFrame {
         try {
             FileOutputStream pkg_fostream = new FileOutputStream("pkg_data.rycox");
             try (ObjectOutputStream pkg_oostream = new ObjectOutputStream(pkg_fostream)) {
-                for (i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                    if (RYCOXv2.pkgList.get(i) != null) {
-                        pkg_oostream.writeObject(RYCOXv2.pkgList);
+                for (i = 0; i < App.pkgList.size(); i++) {
+                    if (App.pkgList.get(i) != null) {
+                        pkg_oostream.writeObject(App.pkgList);
                     }
                 }
                 pkg_oostream.flush();
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -651,14 +640,14 @@ class RYCOXv2 extends JFrame {
         try {
             FileOutputStream pckging_fostream = new FileOutputStream("pckging_data.rycox");
             try (ObjectOutputStream pckging_oostream = new ObjectOutputStream(pckging_fostream)) {
-                for (i = 0; i < RYCOXv2.pckgingList.size(); i++) {
-                    if (RYCOXv2.pckgingList.get(i) != null) {
-                        pckging_oostream.writeObject(RYCOXv2.pckgingList);
+                for (i = 0; i < App.pckgingList.size(); i++) {
+                    if (App.pckgingList.get(i) != null) {
+                        pckging_oostream.writeObject(App.pckgingList);
                     }
                 }
                 pckging_oostream.flush();
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -666,14 +655,14 @@ class RYCOXv2 extends JFrame {
         try {
             FileOutputStream prg_fostream = new FileOutputStream("prg_data.rycox");
             try (ObjectOutputStream prg_oostream = new ObjectOutputStream(prg_fostream)) {
-                for (i = 0; i < RYCOXv2.prgList.size(); i++) {
-                    if (RYCOXv2.prgList.get(i) != null) {
-                        prg_oostream.writeObject(RYCOXv2.prgList);
+                for (i = 0; i < App.prgList.size(); i++) {
+                    if (App.prgList.get(i) != null) {
+                        prg_oostream.writeObject(App.prgList);
                     }
                 }
                 prg_oostream.flush();
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -681,14 +670,14 @@ class RYCOXv2 extends JFrame {
         try {
             FileOutputStream user_fostream = new FileOutputStream("user_data.rycox");
             try (ObjectOutputStream user_oostream = new ObjectOutputStream(user_fostream)) {
-                for (i = 0; i < RYCOXv2.userList.size(); i++) {
-                    if (RYCOXv2.userList.get(i) != null) {
-                        user_oostream.writeObject(RYCOXv2.userList);
+                for (i = 0; i < App.userList.size(); i++) {
+                    if (App.userList.get(i) != null) {
+                        user_oostream.writeObject(App.userList);
                     }
                 }
                 user_oostream.flush();
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 }

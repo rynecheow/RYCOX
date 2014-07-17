@@ -180,20 +180,20 @@ public class GenerateReportDialog extends JDialog implements ActionListener {
     }
 
     private void clientReporting() {
-        for (int a = 0; a < RYCOXv2.clientList.size(); a++) {
-            if (RYCOXv2.clientList.get(a) instanceof IndividualClient) {
+        for (int a = 0; a < App.clientList.size(); a++) {
+            if (App.clientList.get(a) instanceof IndividualClient) {
                 indNo++;
-            } else if (RYCOXv2.clientList.get(a) instanceof GovClient) {
+            } else if (App.clientList.get(a) instanceof GovClient) {
                 govNo++;
-            } else if (RYCOXv2.clientList.get(a) instanceof PrvClient) {
+            } else if (App.clientList.get(a) instanceof PrvClient) {
                 prvNo++;
-            } else if (RYCOXv2.clientList.get(a) instanceof NGOClient) {
+            } else if (App.clientList.get(a) instanceof NGOClient) {
                 ngoNo++;
             }
         }
 
-        for (int a = 0; a < RYCOXv2.clientList.size(); a++) {
-            String status = RYCOXv2.clientList.get(a).getAccountStatus();
+        for (int a = 0; a < App.clientList.size(); a++) {
+            String status = App.clientList.get(a).getAccountStatus();
             switch (status) {
                 case "ACTIVE":
                     actNo++;
@@ -207,7 +207,7 @@ public class GenerateReportDialog extends JDialog implements ActionListener {
             }
         }
 
-        clientReportString = ("Number of client registered to the system:\t" + RYCOXv2.clientList.size() + "\n\n"
+        clientReportString = ("Number of client registered to the system:\t" + App.clientList.size() + "\n\n"
                 + "Number of active clients:\t" + actNo + "\n"
                 + "Number of inactive clients:\t" + inactNo + "\n"
                 + "Number of terminated clients:\t" + termNo + "\n\n"
@@ -218,8 +218,8 @@ public class GenerateReportDialog extends JDialog implements ActionListener {
     }
 
     private void serviceReporting() {
-        for (int a = 0; a < RYCOXv2.servList.size(); a++) {
-            String status = RYCOXv2.servList.get(a).getServStatus();
+        for (int a = 0; a < App.servList.size(); a++) {
+            String status = App.servList.get(a).getServStatus();
             switch (status) {
                 case "ACTIVE":
                     servActNo++;
@@ -233,15 +233,15 @@ public class GenerateReportDialog extends JDialog implements ActionListener {
             }
         }
 
-        serviceReportString = ("Number of services registered to the system:\t" + RYCOXv2.servList.size() + "\n\n"
+        serviceReportString = ("Number of services registered to the system:\t" + App.servList.size() + "\n\n"
                 + "Number of active services:\t\t" + servActNo + "\n"
                 + "Number of barred services:\t\t" + servInactNo + "\n"
                 + "Number of terminated services:\t\t" + servTermNo + "\n\n");
     }
 
     private void packageReporting() {
-        for (int a = 0; a < RYCOXv2.pkgList.size(); a++) {
-            String status = RYCOXv2.pkgList.get(a).getPkgStatus();
+        for (int a = 0; a < App.pkgList.size(); a++) {
+            String status = App.pkgList.get(a).getPkgStatus();
             switch (status) {
                 case "ACTIVE":
                     pkgActNo++;
@@ -254,16 +254,16 @@ public class GenerateReportDialog extends JDialog implements ActionListener {
                     break;
             }
         }
-        packageReportString = ("Number of packages registered to the system:\t" + RYCOXv2.pkgList.size() + "\n\n"
+        packageReportString = ("Number of packages registered to the system:\t" + App.pkgList.size() + "\n\n"
                 + "Number of active packages:\t\t" + pkgActNo + "\n"
                 + "Number of barred packages:\t\t" + pkgInactNo + "\n"
                 + "Number of terminated packages:\t" + pkgTermNo + "\n\n");
     }
 
     private void programmeReporting() {
-        for (int a = 0; a < RYCOXv2.prgList.size(); a++) {
-            String status = RYCOXv2.prgList.get(a).getPrgStatus();
-            String type = RYCOXv2.prgList.get(a).getType();
+        for (int a = 0; a < App.prgList.size(); a++) {
+            String status = App.prgList.get(a).getPrgStatus();
+            String type = App.prgList.get(a).getType();
             switch (status) {
                 case "ACTIVE":
                     prgActNo++;
@@ -292,7 +292,7 @@ public class GenerateReportDialog extends JDialog implements ActionListener {
             }
         }
 
-        programmeReportString = ("Number of TV programmes registered to the system:\t" + RYCOXv2.prgList.size() + "\n\n"
+        programmeReportString = ("Number of TV programmes registered to the system:\t" + App.prgList.size() + "\n\n"
                 + "Number of active TV programmes:\t\t" + prgActNo + "\n"
                 + "Number of barred TV programmes:\t\t" + prgInactNo + "\n"
                 + "Number of terminated TV programmes:\t\t" + prgTermNo + "\n\n"

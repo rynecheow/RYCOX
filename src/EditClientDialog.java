@@ -1,94 +1,74 @@
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-@SuppressWarnings("serial")
 class EditClientDialog extends JDialog {
 
-    // Variables declaration 
-    private JPanel BGPanel;
-    private JSeparator DialogSeparator;
-    private JButton cancelbutton;
     private JTextArea clAddInput;
-    private JLabel clAddLabel;
-    @SuppressWarnings("rawtypes")
-    private JComboBox clAgeCombo;
-    private JLabel clAgeLabel;
+    private JComboBox<String> clAgeCombo;
     private JTextField clAppearedName;
-    private JLabel clAppearedNameLabel;
     private JTextField clEmailInput;
-    private JLabel clEmailLabel;
     private JTextField clNameInput;
-    private JLabel clNameLabel;
     private JTextField clICInput;
-    private JLabel clICLabel;
-    private JTextField clIDInput;
-    private JLabel clIDLabel;
-    //	private JTextField clLNameInput;
-    //	private JLabel clLNameLabel;
-    private JLabel clTypeLabel;
-    private JScrollPane jScrollPane1;
-    private JButton submitbutton;
-    private Color bColor = new Color(23, 28, 30);
-    private Color fColor = new Color(255, 255, 255);
-    private WarningLabel warningMsgID, warningMsgName, warningMsgAge, warningMsgAddr, warningMsgEmail, warningMsgIC, warningMsgFormat, warningMsgEMEx, warningEmailInvFormat;
-    private Font defont = new Font("LucidaSansRegular", Font.PLAIN, 12);
-    private JLabel clTypetype;
+    private WarningLabel warningMsgName;
+    private WarningLabel warningMsgAge;
+    private WarningLabel warningMsgAddr;
+    private WarningLabel warningMsgEmail;
+    private WarningLabel warningMsgIC;
+    private WarningLabel warningMsgEMEx;
+    private WarningLabel warningEmailInvFormat;
     private String[] data = ClientPanel.editionData;
     private String paramType;
     // End of variables declaration
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public EditClientDialog(JFrame parent) {
         super(parent, "RYCOX System - Edit client", true);
         setResizable(false);
-//	setLocationRelativeTo(null);
         setLocation(300, 150);
-        BGPanel = new JPanel();
+        JPanel BGPanel = new JPanel();
+        Color bColor = new Color(23, 28, 30);
         BGPanel.setBackground(bColor);
+        Color fColor = new Color(255, 255, 255);
         BGPanel.setForeground(fColor);
-        clTypetype = new JLabel();
-        clTypeLabel = new JLabel();
+        JLabel clTypetype;
+        JLabel clTypeLabel = new JLabel();
         clTypeLabel.setForeground(fColor);
         clNameInput = new JTextField(data[1]);
-        clIDInput = new JTextField(data[0]);
-        clIDLabel = new JLabel();
+        JTextField clIDInput = new JTextField(data[0]);
+        JLabel clIDLabel = new JLabel();
         clIDLabel.setForeground(fColor);
-        clNameLabel = new JLabel();
+        JLabel clNameLabel = new JLabel();
         clNameLabel.setForeground(fColor);
-        clAgeLabel = new JLabel();
+        JLabel clAgeLabel = new JLabel();
         clAgeLabel.setForeground(fColor);
-        clAgeCombo = new JComboBox();
-        clICLabel = new JLabel();
+        clAgeCombo = new JComboBox<>();
+        JLabel clICLabel = new JLabel();
         clICLabel.setForeground(fColor);
         clICInput = new JTextField(data[6]);
-        clAddLabel = new JLabel();
+        JLabel clAddLabel = new JLabel();
         clAddLabel.setForeground(fColor);
-        jScrollPane1 = new JScrollPane();
+        JScrollPane jScrollPane1 = new JScrollPane();
         clAddInput = new JTextArea(data[3]);
-        submitbutton = new JButton();
-        cancelbutton = new JButton();
-        DialogSeparator = new JSeparator();
-        clEmailLabel = new JLabel("");
+        JButton submitbutton = new JButton();
+        JButton cancelbutton = new JButton();
+        JSeparator dialogSeparator = new JSeparator();
+        JLabel clEmailLabel = new JLabel("");
         clEmailLabel.setForeground(fColor);
         clEmailInput = new JTextField(data[4]);
-        clAppearedNameLabel = new JLabel();
+        JLabel clAppearedNameLabel = new JLabel();
         clAppearedNameLabel.setForeground(fColor);
         clAppearedName = new JTextField("");
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         BGPanel.setLayout(null);
 
-        warningMsgID = new WarningLabel("ID cannot be empty.");
+        WarningLabel warningMsgID = new WarningLabel("ID cannot be empty.");
         warningMsgName = new WarningLabel("First/Last name cannot be empty.");
         warningMsgAge = new WarningLabel("Select a valid age.");
         warningMsgAddr = new WarningLabel("Address cannot be empty.");
         warningMsgEmail = new WarningLabel("E-mail cannot be empty.");
         warningMsgIC = new WarningLabel("IC cannot be empty.");
-        warningMsgFormat = new WarningLabel("Wrong ID format.");
+        WarningLabel warningMsgFormat = new WarningLabel("Wrong ID format.");
         warningEmailInvFormat = new WarningLabel("Invalid e-mail format.");
         warningMsgEMEx = new WarningLabel("E-mail address in use.");
 
@@ -119,6 +99,7 @@ class EditClientDialog extends JDialog {
         clTypetype.setBounds(440, 14, 150, 25);
         clTypetype.setForeground(fColor);
         BGPanel.add(clTypetype);
+        Font defont = new Font("LucidaSansRegular", Font.PLAIN, 12);
         clTypetype.setFont(defont);
         clTypeLabel.setFont(defont);
         clTypeLabel.setText("Type of Client:");
@@ -153,15 +134,11 @@ class EditClientDialog extends JDialog {
         warningMsgName.setBounds(360, 43, 200, 25);
         BGPanel.add(warningMsgName);
 
-        clNameInput.addCaretListener(new CaretListener() {
-
-            @Override
-            public void caretUpdate(CaretEvent e) {
-                if (!"".equals(clNameInput.getText().trim()) && clNameInput.getText().trim() != null) {
-                    clAppearedName.setText(clNameInput.getText().trim());
-                }
-                repaint();
+        clNameInput.addCaretListener(e -> {
+            if (!"".equals(clNameInput.getText().trim())) {
+                clAppearedName.setText(clNameInput.getText().trim());
             }
+            repaint();
         });
 
         clAgeLabel.setFont(defont);
@@ -171,9 +148,9 @@ class EditClientDialog extends JDialog {
 
 
         clAgeCombo.setFont(defont);
-        clAgeCombo.setModel(new DefaultComboBoxModel(new String[]{"--", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80"}));
+        clAgeCombo.setModel(new DefaultComboBoxModel<>(new String[]{"--", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80"}));
         BGPanel.add(clAgeCombo);
-        clAgeCombo.setSelectedItem((String) data[5]);
+        clAgeCombo.setSelectedItem(data[5]);
         clAgeCombo.setBounds(86, 175, 50, 25);
         warningMsgAge.setBounds(150, 175, 150, 25);
         BGPanel.add(warningMsgAge);
@@ -203,28 +180,16 @@ class EditClientDialog extends JDialog {
         warningMsgAddr.setBounds(120, 330, 150, 25);
         BGPanel.add(warningMsgAddr);
         submitbutton.setText("OK");
-        submitbutton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                submitbuttonActionPerformed(evt);
-            }
-        });
+        submitbutton.addActionListener(this::submitbuttonActionPerformed);
         BGPanel.add(submitbutton);
         submitbutton.setBounds(221, 374, 62, 33);
 
         cancelbutton.setText("Cancel");
-        cancelbutton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                cancelbuttonActionPerformed(evt);
-            }
-        });
+        cancelbutton.addActionListener(this::cancelbuttonActionPerformed);
         BGPanel.add(cancelbutton);
         cancelbutton.setBounds(301, 374, 70, 33);
-        BGPanel.add(DialogSeparator);
-        DialogSeparator.setBounds(0, 358, 590, 10);
+        BGPanel.add(dialogSeparator);
+        dialogSeparator.setBounds(0, 358, 590, 10);
 
         clEmailLabel.setFont(defont);
         clEmailLabel.setText("E-mail Address :");
@@ -277,73 +242,70 @@ class EditClientDialog extends JDialog {
         switch (paramType) {
             case "Individual": {
                 String[] temp = {clNameInput.getText().trim(), clICInput.getText().trim(), clAddInput.getText().trim(), ((String) clAgeCombo.getSelectedItem()), clEmailInput.getText().trim()};
-                for (int i = 0; i < temp.length; i++) {
-                    switch (i) {
-                        case 0:
-                            if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
-                                checkEmptyN = true;
-                                warningMsgName.setVisible(true);
-                            } else {
-                                warningMsgName.setVisible(false);
-                            }
-                        case 1:
-                            if (temp[1].length() == 0 || temp[1] == null) {
-                                checkEmptyIC = true;
-                                warningMsgIC.setVisible(true);
+                switch (temp.length) {
+                    case 0:
+                        if (temp[0].length() == 0 || temp[0] == null || temp[1].length() == 0 || temp[1] == null) {
+                            checkEmptyN = true;
+                            warningMsgName.setVisible(true);
+                        } else {
+                            warningMsgName.setVisible(false);
+                        }
+                    case 1:
+                        if (temp[1].length() == 0 || temp[1] == null) {
+                            checkEmptyIC = true;
+                            warningMsgIC.setVisible(true);
 
-                            } else {
-                                warningMsgIC.setVisible(false);
-                            }
-                        case 2:
-                            if (temp[2].length() == 0 || temp[2] == null) {
-                                checkEmptyADD = true;
-                                warningMsgAddr.setVisible(true);
-                            } else {
-                                warningMsgAddr.setVisible(false);
-                            }
-                        case 3:
-                            if (temp[3].equals("--")) {
-                                checkEmptyAGE = true;
-                                warningMsgAge.setVisible(true);
+                        } else {
+                            warningMsgIC.setVisible(false);
+                        }
+                    case 2:
+                        if (temp[2].length() == 0 || temp[2] == null) {
+                            checkEmptyADD = true;
+                            warningMsgAddr.setVisible(true);
+                        } else {
+                            warningMsgAddr.setVisible(false);
+                        }
+                    case 3:
+                        if (temp[3].equals("--")) {
+                            checkEmptyAGE = true;
+                            warningMsgAge.setVisible(true);
 
-                            } else {
-                                warningMsgAge.setVisible(false);
-                            }
-                        case 4:
-                            if (temp[4].length() == 0 || temp[4] == null) {
-                                checkEmptyEM = true;
-                                warningMsgEmail.setVisible(true);
+                        } else {
+                            warningMsgAge.setVisible(false);
+                        }
+                    case 4:
+                        if (temp[4].length() == 0 || temp[4] == null) {
+                            checkEmptyEM = true;
+                            warningMsgEmail.setVisible(true);
+                            warningEmailInvFormat.setVisible(false);
+                            warningMsgEMEx.setVisible(false);
+                        } else {
+                            warningMsgEmail.setVisible(false);
+                            if (temp[4].matches("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})")) {
                                 warningEmailInvFormat.setVisible(false);
-                                warningMsgEMEx.setVisible(false);
-                            } else {
-                                warningMsgEmail.setVisible(false);
-                                if (temp[4].matches("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})")) {
-                                    warningEmailInvFormat.setVisible(false);
-                                    valEmail = true;
-                                    for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                        if (temp[4].equalsIgnoreCase(RYCOXv2.clientList.get(p).getEmail())) {
-                                            if (!clEmailInput.getText().equalsIgnoreCase(temp[4])) {
-                                                warningMsgEMEx.setVisible(true);
-                                                existed = true;
-                                                break;
-                                            } else {
-                                                warningMsgEMEx.setVisible(false);
-                                                existed = false;
-                                            }
+                                valEmail = true;
+                                for (int p = 0; p < App.clientList.size(); p++) {
+                                    if (temp[4].equalsIgnoreCase(App.clientList.get(p).getEmail())) {
+                                        if (!clEmailInput.getText().equalsIgnoreCase(temp[4])) {
+                                            warningMsgEMEx.setVisible(true);
+                                            existed = true;
+                                            break;
                                         } else {
                                             warningMsgEMEx.setVisible(false);
                                             existed = false;
                                         }
+                                    } else {
+                                        warningMsgEMEx.setVisible(false);
+                                        existed = false;
                                     }
-                                } else {
-                                    valEmail = false;
-                                    warningEmailInvFormat.setVisible(true);
                                 }
+                            } else {
+                                valEmail = false;
+                                warningEmailInvFormat.setVisible(true);
                             }
-                    }
-                    break;
+                        }
                 }
-                if (checkEmptyN == false && checkEmptyIC == false && valEmail == true && existed == false && checkEmptyADD == false && checkEmptyAGE == false && checkEmptyEM == false) {
+                if (!checkEmptyN && !checkEmptyIC && valEmail && !existed && !checkEmptyADD && !checkEmptyAGE && !checkEmptyEM) {
                     clientEdition();
                     dispose();
                 }
@@ -352,57 +314,54 @@ class EditClientDialog extends JDialog {
             case "Private Organisation":
             case "NGO": {
                 String[] temp = {clNameInput.getText().trim(), clAddInput.getText().trim(), clEmailInput.getText().trim()};
-                for (int i = 0; i < temp.length; i++) {
-                    switch (i) {
-                        case 0:
-                            if (temp[0].length() == 0 || temp[0] == null) {
-                                checkEmptyN = true;
-                                warningMsgName.setVisible(true);
-                            } else {
-                                warningMsgName.setVisible(false);
-                            }
-                        case 1:
-                            if (temp[1].length() == 0 || temp[1] == null) {
-                                checkEmptyADD = true;
-                                warningMsgAddr.setVisible(true);
-                            } else {
-                                warningMsgAddr.setVisible(false);
-                            }
-                        case 2:
-                            if (temp[2].length() == 0 || temp[2] == null) {
-                                checkEmptyEM = true;
-                                warningMsgEmail.setVisible(true);
+                switch (temp.length) {
+                    case 0:
+                        if (temp[0].length() == 0 || temp[0] == null) {
+                            checkEmptyN = true;
+                            warningMsgName.setVisible(true);
+                        } else {
+                            warningMsgName.setVisible(false);
+                        }
+                    case 1:
+                        if (temp[1].length() == 0 || temp[1] == null) {
+                            checkEmptyADD = true;
+                            warningMsgAddr.setVisible(true);
+                        } else {
+                            warningMsgAddr.setVisible(false);
+                        }
+                    case 2:
+                        if (temp[2].length() == 0 || temp[2] == null) {
+                            checkEmptyEM = true;
+                            warningMsgEmail.setVisible(true);
+                            warningEmailInvFormat.setVisible(false);
+                            warningMsgEMEx.setVisible(false);
+                        } else {
+                            warningMsgEmail.setVisible(false);
+                            if (temp[2].matches("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})")) {
                                 warningEmailInvFormat.setVisible(false);
-                                warningMsgEMEx.setVisible(false);
-                            } else {
-                                warningMsgEmail.setVisible(false);
-                                if (temp[2].matches("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})")) {
-                                    warningEmailInvFormat.setVisible(false);
-                                    valEmail = true;
-                                    for (int q = 0; q < RYCOXv2.clientList.size(); q++) {
-                                        if (temp[2].equalsIgnoreCase(RYCOXv2.clientList.get(q).getEmail())) {
-                                            if (!clEmailInput.getText().equalsIgnoreCase(temp[2])) {
-                                                warningMsgEMEx.setVisible(true);
-                                                existed = true;
-                                                break;
-                                            } else {
-                                                warningMsgEMEx.setVisible(false);
-                                                existed = false;
-                                            }
+                                valEmail = true;
+                                for (int q = 0; q < App.clientList.size(); q++) {
+                                    if (temp[2].equalsIgnoreCase(App.clientList.get(q).getEmail())) {
+                                        if (!clEmailInput.getText().equalsIgnoreCase(temp[2])) {
+                                            warningMsgEMEx.setVisible(true);
+                                            existed = true;
+                                            break;
                                         } else {
                                             warningMsgEMEx.setVisible(false);
                                             existed = false;
                                         }
+                                    } else {
+                                        warningMsgEMEx.setVisible(false);
+                                        existed = false;
                                     }
-                                } else {
-                                    valEmail = false;
-                                    warningEmailInvFormat.setVisible(true);
                                 }
+                            } else {
+                                valEmail = false;
+                                warningEmailInvFormat.setVisible(true);
                             }
-                    }
-                    break;
+                        }
                 }
-                if (checkEmptyN == false && valEmail == true && existed == false && checkEmptyADD == false && checkEmptyEM == false) {
+                if (!checkEmptyN && valEmail && !existed && !checkEmptyADD && !checkEmptyEM) {
                     clientEdition();
                     dispose();
                 }
@@ -423,27 +382,27 @@ class EditClientDialog extends JDialog {
         String accStatus = "ACTIVE";
         String email = clEmailInput.getText().trim();
         //model
-        for (int i = 0; i < RYCOXv2.clientList.size(); i++) {
-            if (clID.equalsIgnoreCase(RYCOXv2.clientList.get(i).getClientID())) {
-                if (RYCOXv2.clientList.get(i) instanceof IndividualClient) {
+        for (int i = 0; i < App.clientList.size(); i++) {
+            if (clID.equalsIgnoreCase(App.clientList.get(i).getClientID())) {
+                if (App.clientList.get(i) instanceof IndividualClient) {
                     int age = Integer.parseInt(ageStr);
                     String ic = clICInput.getText().trim();
-                    RYCOXv2.clientList.get(i).setName(name);
-                    RYCOXv2.clientList.get(i).setBillingAddress(address);
-                    RYCOXv2.clientList.get(i).setEmail(email.toLowerCase());
-                    RYCOXv2.clientList.get(i).setAccountStatus(accStatus.toUpperCase());
-                    ((IndividualClient) RYCOXv2.clientList.get(i)).setAge(age);
-                    ((IndividualClient) RYCOXv2.clientList.get(i)).setIC(ic);
-                } else if (RYCOXv2.clientList.get(i) instanceof GovClient || RYCOXv2.clientList.get(i) instanceof PrvClient || RYCOXv2.clientList.get(i) instanceof NGOClient) {
-                    RYCOXv2.clientList.get(i).setName(name);
-                    RYCOXv2.clientList.get(i).setBillingAddress(address);
-                    RYCOXv2.clientList.get(i).setEmail(email.toLowerCase());
-                    RYCOXv2.clientList.get(i).setAccountStatus(accStatus.toUpperCase());
+                    App.clientList.get(i).setName(name);
+                    App.clientList.get(i).setBillingAddress(address);
+                    App.clientList.get(i).setEmail(email.toLowerCase());
+                    App.clientList.get(i).setAccountStatus(accStatus.toUpperCase());
+                    ((IndividualClient) App.clientList.get(i)).setAge(age);
+                    ((IndividualClient) App.clientList.get(i)).setIC(ic);
+                } else if (App.clientList.get(i) instanceof GovClient || App.clientList.get(i) instanceof PrvClient || App.clientList.get(i) instanceof NGOClient) {
+                    App.clientList.get(i).setName(name);
+                    App.clientList.get(i).setBillingAddress(address);
+                    App.clientList.get(i).setEmail(email.toLowerCase());
+                    App.clientList.get(i).setAccountStatus(accStatus.toUpperCase());
                 }
             }
         }
-        RYCOXv2.log = new LogFile(RYCOXv2.user, " has edited a new client's account of ID '" + clID + "'.");
-        RYCOXv2.logList.add(RYCOXv2.log);
+        App.log = new LogFile(App.user, " has edited a new client's account of ID '" + clID + "'.");
+        App.logList.add(App.log);
         ClientPanel.updateEditTable();
     }
 

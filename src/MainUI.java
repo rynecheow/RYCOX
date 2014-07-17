@@ -42,7 +42,7 @@ public class MainUI extends JFrame implements ActionListener {
         exitMI = new JMenuItem("Exit...");
         aboutMI = new JMenuItem("About..");
         viewLogMI = new JMenuItem("View Log...");
-        logoutMI = new JMenuItem("Log out '" + RYCOXv2.user + "'...");
+        logoutMI = new JMenuItem("Log out '" + App.user + "'...");
         reportMI = new JMenuItem("View Report...");
         manageUserMI = new JMenuItem("Manage users..");
         chgpwMI = new JMenuItem("Change log in password...");
@@ -72,7 +72,7 @@ public class MainUI extends JFrame implements ActionListener {
         prgTab();
         pkgTab();
 
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof FrontdeskStaffs) {
+        if (App.userList.get(App.currentUser) instanceof FrontdeskStaffs) {
             adminMenu.setVisible(false);
         }
 
@@ -105,9 +105,9 @@ public class MainUI extends JFrame implements ActionListener {
                         JOptionPane.YES_NO_OPTION);
 
                 if (closeCf == JOptionPane.YES_OPTION) {
-                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
-                    RYCOXv2.logList.add(RYCOXv2.log);
-                    RYCOXv2.printLog();
+                    App.log = new LogFile(App.user, " has logged out.");
+                    App.logList.add(App.log);
+                    App.printLog();
                     System.exit(0);
                 }
             }
@@ -133,25 +133,25 @@ public class MainUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == saveMI) {
-            RYCOXv2.saveClientFile();
-            RYCOXv2.saveServiceFile();
-            RYCOXv2.saveSubscriptionFile();
-            RYCOXv2.savePackageFile();
-            RYCOXv2.savePackagingFile();
-            RYCOXv2.saveProgramFile();
-            RYCOXv2.saveUserFile();
-            RYCOXv2.log = new LogFile(RYCOXv2.user, " has saved the data.[CLIENT]");
-            RYCOXv2.logList.add(RYCOXv2.log);
-            RYCOXv2.printLog();
+            App.saveClientFile();
+            App.saveServiceFile();
+            App.saveSubscriptionFile();
+            App.savePackageFile();
+            App.savePackagingFile();
+            App.saveProgramFile();
+            App.saveUserFile();
+            App.log = new LogFile(App.user, " has saved the data.[CLIENT]");
+            App.logList.add(App.log);
+            App.printLog();
         } else if (e.getSource() == exitMI) {    // end if
             int closeCf = JOptionPane.showConfirmDialog(null, "Exit without saving?", "Confirm exit",
                     JOptionPane.WARNING_MESSAGE);
 
             if (closeCf == JOptionPane.YES_OPTION) {
                 System.exit(0);
-                RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
-                RYCOXv2.logList.add(RYCOXv2.log);
-                RYCOXv2.printLog();
+                App.log = new LogFile(App.user, " has logged out.");
+                App.logList.add(App.log);
+                App.printLog();
             }
         } else if (e.getSource() == viewLogMI) {
             LogDialog ld = new LogDialog(this);
@@ -163,12 +163,12 @@ public class MainUI extends JFrame implements ActionListener {
                     "Confirm logout", JOptionPane.WARNING_MESSAGE);
 
             if (option == JOptionPane.YES_OPTION) {
-                RYCOXv2.log = new LogFile(RYCOXv2.user, " has logged out.");
-                RYCOXv2.logList.add(RYCOXv2.log);
-                RYCOXv2.printLog();
+                App.log = new LogFile(App.user, " has logged out.");
+                App.logList.add(App.log);
+                App.printLog();
                 dispose();
-                new RYCOXv2();
-                RYCOXv2.initialise();
+                new App();
+                App.initialise();
             }
         } else if (e.getSource() == manageUserMI) {
             new ManageUsers(this).setVisible(true);

@@ -65,7 +65,7 @@ public class PackagePanel extends JPanel {
         scrollPane = new JScrollPane();
         pkgTable = new JTable();
         pkgTable.getTableHeader().setReorderingAllowed(false);
-        loginInfo = new JLabel("You are logged in as " + RYCOXv2.user + ".");
+        loginInfo = new JLabel("You are logged in as " + App.user + ".");
         loginInfo.setForeground(Color.WHITE);
         loginInfo.setFont(new Font("LucidaSansRegular", Font.PLAIN, 14));
         searchbox = new JTextField(16);
@@ -91,25 +91,25 @@ public class PackagePanel extends JPanel {
         pkgTable.setBackground(new Color(227, 226, 226));
         pkgTable.setFont(new Font("LucidaSansRegular", Font.PLAIN, 12));
 
-        pkgData = new String[RYCOXv2.pkgList.size()][5];
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
+        pkgData = new String[App.pkgList.size()][5];
+        for (int i = 0; i < App.pkgList.size(); i++) {
             for (int j = 0; j <= 5; j++) {
 
                 switch (j) {
                     case 0:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getPkgCode();
+                        pkgData[i][j] = App.pkgList.get(i).getPkgCode();
                         break;
                     case 1:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getPkgName();
+                        pkgData[i][j] = App.pkgList.get(i).getPkgName();
                         break;
                     case 2:
-                        pkgData[i][j] = Double.toString(RYCOXv2.pkgList.get(i).getChargePrice());
+                        pkgData[i][j] = Double.toString(App.pkgList.get(i).getChargePrice());
                         break;
                     case 3:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getChargeType();
+                        pkgData[i][j] = App.pkgList.get(i).getChargeType();
                         break;
                     case 4:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getPkgStatus();
+                        pkgData[i][j] = App.pkgList.get(i).getPkgStatus();
                         break;
 
                 }
@@ -168,14 +168,14 @@ public class PackagePanel extends JPanel {
                     pkgtemp = new String[7];
                     pkgtemp[0] = (String) pkgTable.getValueAt(rowno, 0);
 
-                    for (int j = 0; j < RYCOXv2.pkgList.size(); j++) {
-                        if (pkgtemp[0].equalsIgnoreCase(RYCOXv2.pkgList.get(j).getPkgCode())) {
-                            pkgtemp[1] = RYCOXv2.pkgList.get(j).getPkgName();
-                            pkgtemp[2] = Double.toString(RYCOXv2.pkgList.get(j).getChargePrice());
-                            pkgtemp[3] = RYCOXv2.pkgList.get(j).getChargeType();
-                            pkgtemp[4] = RYCOXv2.pkgList.get(j).getStartDate();
-                            pkgtemp[5] = RYCOXv2.pkgList.get(j).getTerminationDate();
-                            pkgtemp[6] = RYCOXv2.pkgList.get(j).getPkgStatus();
+                    for (int j = 0; j < App.pkgList.size(); j++) {
+                        if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(j).getPkgCode())) {
+                            pkgtemp[1] = App.pkgList.get(j).getPkgName();
+                            pkgtemp[2] = Double.toString(App.pkgList.get(j).getChargePrice());
+                            pkgtemp[3] = App.pkgList.get(j).getChargeType();
+                            pkgtemp[4] = App.pkgList.get(j).getStartDate();
+                            pkgtemp[5] = App.pkgList.get(j).getTerminationDate();
+                            pkgtemp[6] = App.pkgList.get(j).getPkgStatus();
                             lol2 = j;
 
                             break;
@@ -191,14 +191,14 @@ public class PackagePanel extends JPanel {
                     pkgtemp = new String[7];
                     pkgtemp[0] = (String) pkgTable.getValueAt(rowno, 0);
 
-                    for (int j = 0; j < RYCOXv2.pkgList.size(); j++) {
-                        if (pkgtemp[0].equalsIgnoreCase(RYCOXv2.pkgList.get(j).getPkgCode())) {
-                            pkgtemp[1] = RYCOXv2.pkgList.get(j).getPkgName();
-                            pkgtemp[2] = Double.toString(RYCOXv2.pkgList.get(j).getChargePrice());
-                            pkgtemp[3] = RYCOXv2.pkgList.get(j).getChargeType();
-                            pkgtemp[4] = RYCOXv2.pkgList.get(j).getStartDate();
-                            pkgtemp[5] = RYCOXv2.pkgList.get(j).getTerminationDate();
-                            pkgtemp[6] = RYCOXv2.pkgList.get(j).getPkgStatus();
+                    for (int j = 0; j < App.pkgList.size(); j++) {
+                        if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(j).getPkgCode())) {
+                            pkgtemp[1] = App.pkgList.get(j).getPkgName();
+                            pkgtemp[2] = Double.toString(App.pkgList.get(j).getChargePrice());
+                            pkgtemp[3] = App.pkgList.get(j).getChargeType();
+                            pkgtemp[4] = App.pkgList.get(j).getStartDate();
+                            pkgtemp[5] = App.pkgList.get(j).getTerminationDate();
+                            pkgtemp[6] = App.pkgList.get(j).getPkgStatus();
 
 
                             break;
@@ -234,7 +234,7 @@ public class PackagePanel extends JPanel {
         popupMenu.add(deactivateMI);
         popupMenu.add(viewMI);
 
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
+        if (App.userList.get(App.currentUser) instanceof Administrators) {
             pkgAddButton.setVisible(true);
             saveButton.setVisible(true);
             editPkgButton.setVisible(true);
@@ -271,14 +271,14 @@ public class PackagePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
-                for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                    if (ID.equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                        if (RYCOXv2.pkgList.get(i).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
+                for (int i = 0; i < App.pkgList.size(); i++) {
+                    if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                        if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
 
-                            int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Package '" + RYCOXv2.pkgList.get(i).getPkgCode() + "'?");
+                            int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Package '" + App.pkgList.get(i).getPkgCode() + "'?");
                             if (opt == JOptionPane.YES_OPTION) {
-                                RYCOXv2.pkgList.get(i).setStatus("ACTIVE");
-                                JOptionPane.showMessageDialog(null, "Package " + RYCOXv2.pkgList.get(i).getPkgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                App.pkgList.get(i).setStatus("ACTIVE");
+                                JOptionPane.showMessageDialog(null, "Package " + App.pkgList.get(i).getPkgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
                                 updatePackageTable();
                                 pkgTable.clearSelection();
                                 pkgDeactButton.setEnabled(true);
@@ -302,13 +302,13 @@ public class PackagePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                            if (RYCOXv2.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + RYCOXv2.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
+                    for (int i = 0; i < App.pkgList.size(); i++) {
+                        if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                            if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
+                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + App.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
                                 if (choice == JOptionPane.YES_OPTION) {
-                                    RYCOXv2.pkgList.get(i).setStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Package '" + RYCOXv2.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                    App.pkgList.get(i).setStatus("INACTIVE");
+                                    JOptionPane.showMessageDialog(null, "Package '" + App.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
                                     updatePackageTable();
                                     pkgTable.clearSelection();
                                     pkgDeactButton.setEnabled(true);
@@ -361,9 +361,9 @@ public class PackagePanel extends JPanel {
                 int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Package " + pkgtemp[0] + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
                 if (choice == JOptionPane.YES_OPTION) {
                     boolean flag = false;
-                    for (int check = 0; check < RYCOXv2.subsList.size(); check++) {
+                    for (int check = 0; check < App.subsList.size(); check++) {
 
-                        if (pkgtemp[0].equalsIgnoreCase(RYCOXv2.subsList.get(check).getPkgCode())) {
+                        if (pkgtemp[0].equalsIgnoreCase(App.subsList.get(check).getPkgCode())) {
                             JOptionPane.showMessageDialog(null, "The package is included in one or more services. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
                             flag = false;
                             break;
@@ -375,16 +375,16 @@ public class PackagePanel extends JPanel {
 
                     if (flag == true) {
 
-                        for (int counts = 0; counts < RYCOXv2.pkgList.size(); counts++) {
-                            if (pkgtemp[0].equalsIgnoreCase(RYCOXv2.pkgList.get(counts).getPkgCode())) {
-                                if ((RYCOXv2.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("ACTIVE")) || (RYCOXv2.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("INACTIVE"))) {
+                        for (int counts = 0; counts < App.pkgList.size(); counts++) {
+                            if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(counts).getPkgCode())) {
+                                if ((App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("ACTIVE")) || (App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("INACTIVE"))) {
 
-                                    RYCOXv2.pkgList.get(counts).setStatus("TERMINATED");
+                                    App.pkgList.get(counts).setStatus("TERMINATED");
                                     String date = DateFormat.getInstance().format(new Date());
-                                    RYCOXv2.pkgList.get(counts).setTerminationDate(date);
+                                    App.pkgList.get(counts).setTerminationDate(date);
                                     JOptionPane.showMessageDialog(null, "TV Programme " + pkgtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
-                                    LogFile log = new LogFile(RYCOXv2.user, "has terminated a TV Programme '" + pkgtemp[0] + "'.");
-                                    RYCOXv2.logList.add(log);
+                                    LogFile log = new LogFile(App.user, "has terminated a TV Programme '" + pkgtemp[0] + "'.");
+                                    App.logList.add(log);
                                     break;
                                 }
                             }
@@ -406,14 +406,14 @@ public class PackagePanel extends JPanel {
                 try {
 
                     String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                            if (RYCOXv2.pkgList.get(i).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
+                    for (int i = 0; i < App.pkgList.size(); i++) {
+                        if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                            if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
 
-                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Package '" + RYCOXv2.pkgList.get(i).getPkgCode() + "'?");
+                                int opt = JOptionPane.showConfirmDialog(null, "Reactivate TV Package '" + App.pkgList.get(i).getPkgCode() + "'?");
                                 if (opt == JOptionPane.YES_OPTION) {
-                                    RYCOXv2.pkgList.get(i).setStatus("ACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Package " + RYCOXv2.pkgList.get(i).getPkgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                    App.pkgList.get(i).setStatus("ACTIVE");
+                                    JOptionPane.showMessageDialog(null, "Package " + App.pkgList.get(i).getPkgCode() + " is now activated.", "RYCOX System - Activation Successful", JOptionPane.INFORMATION_MESSAGE);
                                     updatePackageTable();
                                     pkgTable.clearSelection();
                                     pkgDeactButton.setEnabled(true);
@@ -421,8 +421,8 @@ public class PackagePanel extends JPanel {
                                     pkgActivateButton.setEnabled(true);
                                     activateMI.setEnabled(true);
                                     defaultButtonSet();
-                                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has activated TV Package '" + RYCOXv2.pkgList.get(i).getPkgCode() + "'.");
-                                    RYCOXv2.logList.add(RYCOXv2.log);
+                                    App.log = new LogFile(App.user, " has activated TV Package '" + App.pkgList.get(i).getPkgCode() + "'.");
+                                    App.logList.add(App.log);
 
                                     break;
                                 } else if (opt == JOptionPane.NO_OPTION) {
@@ -447,13 +447,13 @@ public class PackagePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String ID = (String) pkgTable.getValueAt(pkgTable.getSelectedRow(), 0);
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (ID.equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                            if (RYCOXv2.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
-                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + RYCOXv2.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
+                    for (int i = 0; i < App.pkgList.size(); i++) {
+                        if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                            if (App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
+                                int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to deactivate TV Package " + App.pkgList.get(i).getPkgCode() + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
                                 if (choice == JOptionPane.YES_OPTION) {
-                                    RYCOXv2.pkgList.get(i).setStatus("INACTIVE");
-                                    JOptionPane.showMessageDialog(null, "Package '" + RYCOXv2.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
+                                    App.pkgList.get(i).setStatus("INACTIVE");
+                                    JOptionPane.showMessageDialog(null, "Package '" + App.pkgList.get(i).getPkgCode() + "' is now deactivated.", "RYCOX System - Deactivation Successful", JOptionPane.INFORMATION_MESSAGE);
                                     updatePackageTable();
                                     pkgTable.clearSelection();
                                     pkgDeactButton.setEnabled(true);
@@ -461,8 +461,8 @@ public class PackagePanel extends JPanel {
                                     pkgActivateButton.setEnabled(true);
                                     activateMI.setEnabled(true);
                                     defaultButtonSet();
-                                    RYCOXv2.log = new LogFile(RYCOXv2.user, " has deactivated TV Package '" + RYCOXv2.pkgList.get(i).getPkgCode() + "'.");
-                                    RYCOXv2.logList.add(RYCOXv2.log);
+                                    App.log = new LogFile(App.user, " has deactivated TV Package '" + App.pkgList.get(i).getPkgCode() + "'.");
+                                    App.logList.add(App.log);
                                     break;
                                 } else if (choice == JOptionPane.NO_OPTION) {
 
@@ -512,9 +512,9 @@ public class PackagePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                RYCOXv2.savePackagingFile();
-                RYCOXv2.savePackageFile();
-                RYCOXv2.printLog();
+                App.savePackagingFile();
+                App.savePackageFile();
+                App.printLog();
                 JOptionPane.showMessageDialog(null, "You have saved all the changes under package management successfully.", "Saved successfully", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -545,9 +545,9 @@ public class PackagePanel extends JPanel {
                     int choice = JOptionPane.showConfirmDialog(null, "Are you sure you would like to terminate TV Package " + pkgtemp[0] + " ?", "Package Code found!", JOptionPane.WARNING_MESSAGE);
                     if (choice == JOptionPane.YES_OPTION) {
                         boolean flag = false;
-                        for (int check = 0; check < RYCOXv2.subsList.size(); check++) {
+                        for (int check = 0; check < App.subsList.size(); check++) {
 
-                            if (pkgtemp[0].equalsIgnoreCase(RYCOXv2.subsList.get(check).getPkgCode())) {
+                            if (pkgtemp[0].equalsIgnoreCase(App.subsList.get(check).getPkgCode())) {
                                 JOptionPane.showMessageDialog(null, "The package is included in one or more services. It cannot be terminated!", "Termination unsuccessful!", JOptionPane.PLAIN_MESSAGE);
                                 flag = false;
                                 break;
@@ -559,16 +559,16 @@ public class PackagePanel extends JPanel {
 
                         if (flag == true) {
 
-                            for (int counts = 0; counts < RYCOXv2.pkgList.size(); counts++) {
-                                if (pkgtemp[0].equalsIgnoreCase(RYCOXv2.pkgList.get(counts).getPkgCode())) {
-                                    if ((RYCOXv2.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("ACTIVE")) || (RYCOXv2.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("INACTIVE"))) {
+                            for (int counts = 0; counts < App.pkgList.size(); counts++) {
+                                if (pkgtemp[0].equalsIgnoreCase(App.pkgList.get(counts).getPkgCode())) {
+                                    if ((App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("ACTIVE")) || (App.pkgList.get(counts).getPkgStatus().equalsIgnoreCase("INACTIVE"))) {
 
-                                        RYCOXv2.pkgList.get(counts).setStatus("TERMINATED");
+                                        App.pkgList.get(counts).setStatus("TERMINATED");
                                         String date = DateFormat.getInstance().format(new Date());
-                                        RYCOXv2.pkgList.get(counts).setTerminationDate(date);
+                                        App.pkgList.get(counts).setTerminationDate(date);
                                         JOptionPane.showMessageDialog(null, "TV Package " + pkgtemp[0] + " is terminated successfully", "Termination successful!", JOptionPane.PLAIN_MESSAGE);
-                                        LogFile log = new LogFile(RYCOXv2.user, "has terminated a TV Package '" + pkgtemp[0] + "'.");
-                                        RYCOXv2.logList.add(log);
+                                        LogFile log = new LogFile(App.user, "has terminated a TV Package '" + pkgtemp[0] + "'.");
+                                        App.logList.add(log);
                                         break;
 
                                     }
@@ -618,25 +618,25 @@ public class PackagePanel extends JPanel {
      * The value in each row and column will be updated immediately when it is called.
      */
     public void updatePackageTable() {
-        pkgData = new String[RYCOXv2.pkgList.size()][5];
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
+        pkgData = new String[App.pkgList.size()][5];
+        for (int i = 0; i < App.pkgList.size(); i++) {
             for (int j = 0; j <= 5; j++) {
 
                 switch (j) {
                     case 0:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getPkgCode();
+                        pkgData[i][j] = App.pkgList.get(i).getPkgCode();
                         break;
                     case 1:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getPkgName();
+                        pkgData[i][j] = App.pkgList.get(i).getPkgName();
                         break;
                     case 2:
-                        pkgData[i][j] = Double.toString(RYCOXv2.pkgList.get(i).getChargePrice());
+                        pkgData[i][j] = Double.toString(App.pkgList.get(i).getChargePrice());
                         break;
                     case 3:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getChargeType();
+                        pkgData[i][j] = App.pkgList.get(i).getChargeType();
                         break;
                     case 4:
-                        pkgData[i][j] = RYCOXv2.pkgList.get(i).getPkgStatus();
+                        pkgData[i][j] = App.pkgList.get(i).getPkgStatus();
                         break;
 
                 }
@@ -685,11 +685,11 @@ public class PackagePanel extends JPanel {
         rowno = pkgTable.getSelectedRow();
         String ID = (String) pkgTable.getValueAt(rowno, 0);
 
-        if (RYCOXv2.userList.get(RYCOXv2.currentUser) instanceof Administrators) {
-            for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                if (ID.equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
+        if (App.userList.get(App.currentUser) instanceof Administrators) {
+            for (int i = 0; i < App.pkgList.size(); i++) {
+                if (ID.equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
                     lol2 = i;
-                    if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
+                    if (App.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("ACTIVE")) {
                         pkgDeleteButton.setEnabled(true);
                         editPkgButton.setEnabled(true);
                         pkgActivateButton.setEnabled(false);
@@ -708,7 +708,7 @@ public class PackagePanel extends JPanel {
                         activateMI.setVisible(true);
                         deactivateMI.setVisible(true);
                         deletePkgMI.setVisible(true);
-                    } else if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
+                    } else if (App.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("INACTIVE")) {
                         pkgDeleteButton.setEnabled(true);
                         editPkgButton.setEnabled(true);
                         pkgActivateButton.setEnabled(true);
@@ -727,7 +727,7 @@ public class PackagePanel extends JPanel {
                         activateMI.setVisible(true);
                         deactivateMI.setVisible(true);
                         deletePkgMI.setVisible(true);
-                    } else if (RYCOXv2.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("TERMINATED")) {
+                    } else if (App.pkgList.get(lol2).getPkgStatus().equalsIgnoreCase("TERMINATED")) {
                         pkgDeleteButton.setVisible(false);
                         editPkgButton.setVisible(false);
                         pkgActivateButton.setVisible(false);

@@ -7,7 +7,6 @@ import java.util.LinkedList;
 /**
  * @author Jia Jiun
  */
-@SuppressWarnings({"serial", "rawtypes", "unused", "unchecked"})
 class EditPackageDialog extends JDialog {
 
     //Variable declaration
@@ -67,30 +66,30 @@ class EditPackageDialog extends JDialog {
         selPrgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            for (int j = 0; j < RYCOXv2.pckgingList.size(); j++) {
-                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(RYCOXv2.pckgingList.get(j).getPkgCode())) {
-                    if (RYCOXv2.pckgingList.get(j).getProgCode().equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                        selPrgList.add(RYCOXv2.pckgingList.get(j).getProgCode());
-                        ((DefaultListModel) rightModel).addElement(RYCOXv2.pckgingList.get(j).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
+        for (int i = 0; i < App.prgList.size(); i++) {
+            for (int j = 0; j < App.pckgingList.size(); j++) {
+                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(App.pckgingList.get(j).getPkgCode())) {
+                    if (App.pckgingList.get(j).getProgCode().equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                        selPrgList.add(App.pckgingList.get(j).getProgCode());
+                        ((DefaultListModel) rightModel).addElement(App.pckgingList.get(j).getProgCode() + "-" + App.prgList.get(i).getProgTitle());
                     }
                 }
             }
         }
         selPrg = selPrgList.toArray(new String[selPrgList.size()]);
 
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+        for (int i = 0; i < App.prgList.size(); i++) {
             boolean check = false;
             for (int j = 0; j < selPrg.length; j++) {
 
-                if (selPrg[j].equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+                if (selPrg[j].equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
                     check = true;
                     break;
                 }
             }
             if (check == false) {
-                if (!(RYCOXv2.prgList.get(i).getPrgStatus().equalsIgnoreCase("TERMINATED"))) {
-                    ((DefaultListModel) leftModel).addElement(RYCOXv2.prgList.get(i).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
+                if (!(App.prgList.get(i).getPrgStatus().equalsIgnoreCase("TERMINATED"))) {
+                    ((DefaultListModel) leftModel).addElement(App.prgList.get(i).getProgCode() + "-" + App.prgList.get(i).getProgTitle());
                 }
             }
         }
@@ -288,45 +287,45 @@ class EditPackageDialog extends JDialog {
 
 
                 if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true)) {
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (RYCOXv2.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                            RYCOXv2.pkgList.get(i).setPkgName(textfield1.getText());
+                    for (int i = 0; i < App.pkgList.size(); i++) {
+                        if (App.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
+                            App.pkgList.get(i).setPkgName(textfield1.getText());
                             break;
                         }
                     }
 
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (RYCOXv2.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                            RYCOXv2.pkgList.get(i).setChargePrice(Double.valueOf(textfield2.getText().trim()).doubleValue());
+                    for (int i = 0; i < App.pkgList.size(); i++) {
+                        if (App.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
+                            App.pkgList.get(i).setChargePrice(Double.valueOf(textfield2.getText().trim()).doubleValue());
                             break;
                         }
                     }
 
-                    for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-                        if (RYCOXv2.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                            RYCOXv2.pkgList.get(i).setChargeType(combobox1.getSelectedItem().toString());
+                    for (int i = 0; i < App.pkgList.size(); i++) {
+                        if (App.pkgList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
+                            App.pkgList.get(i).setChargeType(combobox1.getSelectedItem().toString());
                             break;
                         }
                     }
 
                     if (rightElArr != null) {
-                        for (int i = 0; i < RYCOXv2.pckgingList.size(); i++) {
-                            if (RYCOXv2.pckgingList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
-                                RYCOXv2.pckgingList.remove(i);
+                        for (int i = 0; i < App.pckgingList.size(); i++) {
+                            if (App.pckgingList.get(i).getPkgCode().equalsIgnoreCase(PackagePanel.pkgtemp[0])) {
+                                App.pckgingList.remove(i);
                                 i--;
                             }
                         }
 
                         for (int i = 0; i < rightElArr.length; i++) {
-                            RYCOXv2.pckgingList.addLast(new Packaging(PackagePanel.pkgtemp[0], (rightElArr[i]).substring(0, 4)));
+                            App.pckgingList.addLast(new Packaging(PackagePanel.pkgtemp[0], (rightElArr[i]).substring(0, 4)));
                         }
                     } else {
-                        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                            for (int j = 0; j < RYCOXv2.pckgingList.size(); j++) {
-                                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(RYCOXv2.pckgingList.get(j).getPkgCode())) {
-                                    if (RYCOXv2.pckgingList.get(j).getProgCode().equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                                        selPrgList.add(RYCOXv2.pckgingList.get(j).getProgCode());
-                                        ((DefaultListModel) rightModel).addElement(RYCOXv2.pckgingList.get(j).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
+                        for (int i = 0; i < App.prgList.size(); i++) {
+                            for (int j = 0; j < App.pckgingList.size(); j++) {
+                                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(App.pckgingList.get(j).getPkgCode())) {
+                                    if (App.pckgingList.get(j).getProgCode().equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                                        selPrgList.add(App.pckgingList.get(j).getProgCode());
+                                        ((DefaultListModel) rightModel).addElement(App.pckgingList.get(j).getProgCode() + "-" + App.prgList.get(i).getProgTitle());
                                     }
                                 }
                             }
@@ -334,8 +333,8 @@ class EditPackageDialog extends JDialog {
                     }
 
                     JOptionPane.showMessageDialog(null, "You have successfully changed the details of TV Package " + PackagePanel.pkgtemp[0] + " !", PackagePanel.pkgtemp[0] + " edited", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Package '" + PackagePanel.pkgtemp[0] + "'.");
-                    RYCOXv2.logList.add(log);
+                    LogFile log = new LogFile(App.user, "has edited a TV Package '" + PackagePanel.pkgtemp[0] + "'.");
+                    App.logList.add(log);
                     dispose();
                 }
             }

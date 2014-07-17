@@ -7,47 +7,44 @@ import java.awt.event.ActionListener;
 /**
  * @author Jia Jiun
  */
-@SuppressWarnings("serial")
 class EditProgrammeDialog extends JDialog {
 
-    private JLabel label1, label2, label3, label4, label5, label6, label7;
     private JLabel error1, error2, error3, error4, error5, error6;
-    private JTextField textfield1, textfield2, textfield3, textfield4;
+    private JTextField textfield2;
+    private JTextField textfield3;
+    private JTextField textfield4;
     private JTextArea textarea1;
-    @SuppressWarnings("rawtypes")
-    private JComboBox combobox1, combobox2;
-    private JButton button1, button2;
-    private Color color, color1, color2;
-    private JScrollPane scrollpane1;
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    private JComboBox<String> combobox1;
+    private JComboBox<String> combobox2;
+
     public EditProgrammeDialog(JFrame frame) {
         super(frame, "Programme Management- Edit an existing TV Programme", true);
-        label1 = new JLabel("Programme Code: ");
-        label2 = new JLabel("Programme Title: ");
+        JLabel label1 = new JLabel("Programme Code: ");
+        JLabel label2 = new JLabel("Programme Title: ");
         error1 = new JLabel("Blank input occured! Please reenter it.");
-        label3 = new JLabel("Description: ");
+        JLabel label3 = new JLabel("Description: ");
         error2 = new JLabel("Blank input occured! Please reenter it.");
-        label4 = new JLabel("Content Origin: ");
+        JLabel label4 = new JLabel("Content Origin: ");
         error3 = new JLabel("Blank input occured! Please reenter it.");
-        label5 = new JLabel("Viewer Status: ");
+        JLabel label5 = new JLabel("Viewer Status: ");
         error4 = new JLabel("Please choose one of the viewer status.");
-        label6 = new JLabel("Type: ");
+        JLabel label6 = new JLabel("Type: ");
         error5 = new JLabel("Please choose one of the programme type.");
-        label7 = new JLabel("Notes: ");
+        JLabel label7 = new JLabel("Notes: ");
         error6 = new JLabel("Blank input occured! Please reenter it.");
-        textfield1 = new JTextField(15);
+        JTextField textfield1 = new JTextField(15);
         textfield2 = new JTextField(15);
         textarea1 = new JTextArea(5, 20);
         textfield3 = new JTextField(15);
-        combobox1 = new JComboBox();
-        combobox2 = new JComboBox();
+        combobox1 = new JComboBox<>();
+        combobox2 = new JComboBox<>();
         textfield4 = new JTextField(15);
-        button1 = new JButton("Submit");
-        button2 = new JButton("Cancel");
-        color = new Color(23, 28, 30);
-        color1 = new Color(244, 219, 234);
-        color2 = new Color(239, 237, 237);
+        JButton button1 = new JButton("Submit");
+        JButton button2 = new JButton("Cancel");
+        Color color = new Color(23, 28, 30);
+        Color color1 = new Color(244, 219, 234);
+        Color color2 = new Color(239, 237, 237);
 
         Container container = getContentPane();
         container.setBackground(color);
@@ -57,11 +54,11 @@ class EditProgrammeDialog extends JDialog {
         SpringLayout spring = new SpringLayout();
         Border textBorder = textfield1.getBorder();
         textarea1.setBorder(textBorder);
-        scrollpane1 = new JScrollPane(textarea1, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane scrollpane1 = new JScrollPane(textarea1, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         String[] string1 = {"<-----Please Choose a viewer status----->", "U", "PG13", "18SG"};
         String[] string2 = {"<----Please Choose a programme type---->", "Movie", "Series", "Comedy", "Concert"};
-        combobox1.setModel(new DefaultComboBoxModel(string1));
-        combobox2.setModel(new DefaultComboBoxModel(string2));
+        combobox1.setModel(new DefaultComboBoxModel<>(string1));
+        combobox2.setModel(new DefaultComboBoxModel<>(string2));
         error1.setForeground(Color.RED);
         error2.setForeground(Color.RED);
         error3.setForeground(Color.RED);
@@ -87,135 +84,126 @@ class EditProgrammeDialog extends JDialog {
         textfield2.setText(ProgrammePanel.progtemp[1]);
         textarea1.setText(ProgrammePanel.progtemp[2]);
         textfield3.setText(ProgrammePanel.progtemp[3]);
-        combobox1.setSelectedItem((String) (ProgrammePanel.progtemp[7]));
-        combobox2.setSelectedItem((String) (ProgrammePanel.progtemp[8]));
+        combobox1.setSelectedItem(ProgrammePanel.progtemp[7]);
+        combobox2.setSelectedItem(ProgrammePanel.progtemp[8]);
         textfield4.setText(ProgrammePanel.progtemp[9]);
 
 
-        button1.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
-                if ((textfield2.getText().trim() == null) || (textfield2.getText().trim().equalsIgnoreCase(""))) {
-                    error1.setVisible(true);
-                    flag1 = false;
-                } else {
-                    flag1 = true;
-                    error1.setVisible(false);
+        button1.addActionListener(e -> {
+            boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false, flag5 = false, flag6 = false;
+            if ((textfield2.getText().trim().equalsIgnoreCase(""))) {
+                error1.setVisible(true);
+                flag1 = false;
+            } else {
+                flag1 = true;
+                error1.setVisible(false);
 
 
-                }
+            }
 
-                if ((textarea1.getText().trim() == null) || (textarea1.getText().trim().equalsIgnoreCase(""))) {
-                    error2.setVisible(true);
-                    flag2 = false;
-                } else {
-                    flag2 = true;
-                    error2.setVisible(false);
+            if ((textarea1.getText().trim().equalsIgnoreCase(""))) {
+                error2.setVisible(true);
+                flag2 = false;
+            } else {
+                flag2 = true;
+                error2.setVisible(false);
 
-                }
+            }
 
-                if ((textfield3.getText().trim() == null) || (textfield3.getText().trim().equalsIgnoreCase(""))) {
-                    error3.setVisible(true);
-                    flag3 = false;
-                } else {
-                    flag3 = true;
-                    error3.setVisible(false);
+            if ((textfield3.getText().trim().equalsIgnoreCase(""))) {
+                error3.setVisible(true);
+                flag3 = false;
+            } else {
+                flag3 = true;
+                error3.setVisible(false);
 
-                }
+            }
 
-                if ((combobox1.getSelectedItem()).equals("<-----Please Choose a viewer status----->")) {
-                    error4.setVisible(true);
-                    flag4 = false;
-                } else {
-                    flag4 = true;
-                    error4.setVisible(false);
-
-
-                }
-
-                if ((combobox2.getSelectedItem()).equals("<----Please Choose a programme type---->")) {
-                    error5.setVisible(true);
-                    flag5 = false;
-                } else {
-                    flag5 = true;
-                    error5.setVisible(false);
-
-                }
-
-                if ((textfield4.getText().trim() == null) || (textfield4.getText().trim().equalsIgnoreCase(""))) {
-                    error6.setVisible(true);
-                    flag6 = false;
-                } else {
-                    flag6 = true;
-                    error6.setVisible(false);
+            if ((combobox1.getSelectedItem()).equals("<-----Please Choose a viewer status----->")) {
+                error4.setVisible(true);
+                flag4 = false;
+            } else {
+                flag4 = true;
+                error4.setVisible(false);
 
 
-                }
-                if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true) && (flag5 == true) && (flag6 == true)) {
+            }
 
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setProgTitle(textfield2.getText());
-                            break;
-                        }
+            if ((combobox2.getSelectedItem()).equals("<----Please Choose a programme type---->")) {
+                error5.setVisible(true);
+                flag5 = false;
+            } else {
+                flag5 = true;
+                error5.setVisible(false);
+
+            }
+
+            if ((textfield4.getText().trim().equalsIgnoreCase(""))) {
+                error6.setVisible(true);
+                flag6 = false;
+            } else {
+                flag6 = true;
+                error6.setVisible(false);
+
+
+            }
+            if ((flag1) && (flag2) && (flag3) && (flag4) && (flag5) && (flag6)) {
+
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (App.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                        App.prgList.get(i).setProgTitle(textfield2.getText());
+                        break;
                     }
-
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setDesc(textarea1.getText());
-                            break;
-                        }
-                    }
-
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setContentOrigin(textfield3.getText());
-                            break;
-                        }
-                    }
-
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setViewerStatus(combobox1.getSelectedItem().toString());
-                            break;
-                        }
-                    }
-
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setType(combobox2.getSelectedItem().toString());
-                            break;
-                        }
-                    }
-
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-                        if (RYCOXv2.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
-                            RYCOXv2.prgList.get(i).setNotes(textfield4.getText());
-                            break;
-                        }
-                    }
-
-                    JOptionPane.showMessageDialog(null, "You have successfully changed the details of a TV Programme which is " + ProgrammePanel.progtemp[0] + " !", ProgrammePanel.progtemp[0] + " edited", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(RYCOXv2.user, "has edited a TV Programme '" + ProgrammePanel.progtemp[0] + "'.");
-                    RYCOXv2.logList.add(log);
-
-                    dispose();
                 }
+
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (App.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                        App.prgList.get(i).setDesc(textarea1.getText());
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (App.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                        App.prgList.get(i).setContentOrigin(textfield3.getText());
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (App.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                        App.prgList.get(i).setViewerStatus(combobox1.getSelectedItem().toString());
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (App.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                        App.prgList.get(i).setType(combobox2.getSelectedItem().toString());
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < App.prgList.size(); i++) {
+                    if (App.prgList.get(i).getProgCode().equalsIgnoreCase(ProgrammePanel.progtemp[0])) {
+                        App.prgList.get(i).setNotes(textfield4.getText());
+                        break;
+                    }
+                }
+
+                JOptionPane.showMessageDialog(null, "You have successfully changed the details of a TV Programme which is " + ProgrammePanel.progtemp[0] + " !", ProgrammePanel.progtemp[0] + " edited", JOptionPane.PLAIN_MESSAGE);
+                LogFile log = new LogFile(App.user, "has edited a TV Programme '" + ProgrammePanel.progtemp[0] + "'.");
+                App.logList.add(log);
+
+                dispose();
             }
         });
 
-        button2.addActionListener(new ActionListener() {
+        button2.addActionListener(e -> {
+            int closeCf = JOptionPane.showConfirmDialog(null, "Stop editing? All the changes will not be saved.", "Cancel Editing", JOptionPane.WARNING_MESSAGE);
+            if (closeCf == JOptionPane.YES_OPTION) {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int closeCf = JOptionPane.showConfirmDialog(null, "Stop editing? All the changes will not be saved.", "Cancel Editing", JOptionPane.WARNING_MESSAGE);
-                if (closeCf == JOptionPane.YES_OPTION) {
-
-                    dispose();
-                } else {
-                }
+                dispose();
             }
         });
 

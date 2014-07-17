@@ -146,7 +146,7 @@ class NewProgrammeDialog extends JDialog {
 
                 if ((flag1 == true) && (flag2 == true) && (flag3 == true) && (flag4 == true) && (flag5 == true) && (flag6 == true)) {
                     int existedID = 0;
-                    for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
+                    for (int i = 0; i < App.prgList.size(); i++) {
                         existedID += 1;
                     }
                     int newID = existedID + 1;
@@ -159,10 +159,10 @@ class NewProgrammeDialog extends JDialog {
                         a = "F" + newIDS;
                     }
 
-                    RYCOXv2.prgList.addLast(new TVProgramme(a, b, y, d, "ACTIVE", z, f, g));
+                    App.prgList.addLast(new TVProgramme(a, b, y, d, "ACTIVE", z, f, g));
                     JOptionPane.showMessageDialog(null, "You have successfully created a new TV Programme with programme code " + a + " !", a + " added", JOptionPane.PLAIN_MESSAGE);
-                    LogFile log = new LogFile(RYCOXv2.user, "has created a new TV Programme '" + a + "'.");
-                    RYCOXv2.logList.add(log);
+                    LogFile log = new LogFile(App.user, "has created a new TV Programme '" + a + "'.");
+                    App.logList.add(log);
 
                     dispose();
                 }

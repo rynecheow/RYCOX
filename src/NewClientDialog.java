@@ -56,14 +56,14 @@ class NewClientDialog extends JDialog {
         setResizable(false);
 //	setLocationRelativeTo(null);
         setLocation(300, 150);
-        for (int x = 0; x < RYCOXv2.clientList.size(); x++) {
-            if (RYCOXv2.clientList.get(x) instanceof IndividualClient) {
+        for (int x = 0; x < App.clientList.size(); x++) {
+            if (App.clientList.get(x) instanceof IndividualClient) {
                 countInd += 1;
-            } else if (RYCOXv2.clientList.get(x) instanceof PrvClient) {
+            } else if (App.clientList.get(x) instanceof PrvClient) {
                 countPrv += 1;
-            } else if (RYCOXv2.clientList.get(x) instanceof GovClient) {
+            } else if (App.clientList.get(x) instanceof GovClient) {
                 countGov += 1;
-            } else if (RYCOXv2.clientList.get(x) instanceof NGOClient) {
+            } else if (App.clientList.get(x) instanceof NGOClient) {
                 countNGO += 1;
             }
         }
@@ -379,8 +379,8 @@ class NewClientDialog extends JDialog {
                                     checkWrongFormat = false;
                                     warningMsgFormat.setVisible(false);
                                     warningMsgIDEx.setVisible(false);
-                                    for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                        if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                    for (int p = 0; p < App.clientList.size(); p++) {
+                                        if (temp[2].equals(App.clientList.get(p).getClientID())) {
                                             warningMsgIDEx.setVisible(true);
                                             existed = true;
                                             break;
@@ -429,8 +429,8 @@ class NewClientDialog extends JDialog {
                                 if (temp[6].matches("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})")) {
                                     warningEmailInvFormat.setVisible(false);
                                     valEmail = true;
-                                    for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                        if (temp[6].equalsIgnoreCase(RYCOXv2.clientList.get(p).getEmail())) {
+                                    for (int p = 0; p < App.clientList.size(); p++) {
+                                        if (temp[6].equalsIgnoreCase(App.clientList.get(p).getEmail())) {
                                             warningMsgEMEx.setVisible(true);
                                             existed = true;
                                             break;
@@ -485,8 +485,8 @@ class NewClientDialog extends JDialog {
                                     checkWrongFormat = false;
                                     warningMsgFormat.setVisible(false);
                                     warningMsgIDEx.setVisible(false);
-                                    for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                        if (temp[2].equals(RYCOXv2.clientList.get(p).getClientID())) {
+                                    for (int p = 0; p < App.clientList.size(); p++) {
+                                        if (temp[2].equals(App.clientList.get(p).getClientID())) {
                                             warningMsgIDEx.setVisible(true);
                                             existed = true;
                                             break;
@@ -519,8 +519,8 @@ class NewClientDialog extends JDialog {
                                 if (temp[4].matches("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})")) {
                                     warningEmailInvFormat.setVisible(false);
                                     valEmail = true;
-                                    for (int p = 0; p < RYCOXv2.clientList.size(); p++) {
-                                        if (temp[4].equalsIgnoreCase(RYCOXv2.clientList.get(p).getEmail())) {
+                                    for (int p = 0; p < App.clientList.size(); p++) {
+                                        if (temp[4].equalsIgnoreCase(App.clientList.get(p).getEmail())) {
                                             warningMsgEMEx.setVisible(true);
                                             existed = true;
                                             break;
@@ -580,17 +580,17 @@ class NewClientDialog extends JDialog {
         if (type2.equalsIgnoreCase("Ind")) {
             int age = Integer.parseInt(ageStr);
             String ic = clICInput.getText().trim();
-            RYCOXv2.clientList.add(new IndividualClient(name, age, ic, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
+            App.clientList.add(new IndividualClient(name, age, ic, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
         } else if (type2.equalsIgnoreCase("Gov")) {
-            RYCOXv2.clientList.add(new GovClient(name, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
+            App.clientList.add(new GovClient(name, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
         } else if (type2.equalsIgnoreCase("prv")) {
-            RYCOXv2.clientList.add(new GovClient(name, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
+            App.clientList.add(new GovClient(name, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
         } else if (type2.equalsIgnoreCase("ngo")) {
-            RYCOXv2.clientList.add(new GovClient(name, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
+            App.clientList.add(new GovClient(name, address, clID, accStatus.toUpperCase(), email.toLowerCase()));
         }
 
-        RYCOXv2.log = new LogFile(RYCOXv2.user, " has created a new client's account of ID '" + clID + "'.");
-        RYCOXv2.logList.add(RYCOXv2.log);
+        App.log = new LogFile(App.user, " has created a new client's account of ID '" + clID + "'.");
+        App.logList.add(App.log);
         //viewer
         ClientPanel.updateAddTable();
         JOptionPane.showMessageDialog(BGPanel, "Successfully added client '" + clID + "'!", "RYCOX System", JOptionPane.INFORMATION_MESSAGE);

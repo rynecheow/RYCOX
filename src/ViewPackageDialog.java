@@ -64,28 +64,28 @@ class ViewPackageDialog extends JDialog {
         leftPrgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
-        for (int i = 0; i < RYCOXv2.prgList.size(); i++) {
-            for (int j = 0; j < RYCOXv2.pckgingList.size(); j++) {
-                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(RYCOXv2.pckgingList.get(j).getPkgCode())) {
-                    if (RYCOXv2.pckgingList.get(j).getProgCode().equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
-                        leftPrgList.add(RYCOXv2.pckgingList.get(j).getPkgCode());
-                        ((DefaultListModel) leftModel).addElement(RYCOXv2.pckgingList.get(j).getProgCode() + "-" + RYCOXv2.prgList.get(i).getProgTitle());
+        for (int i = 0; i < App.prgList.size(); i++) {
+            for (int j = 0; j < App.pckgingList.size(); j++) {
+                if (PackagePanel.pkgtemp[0].equalsIgnoreCase(App.pckgingList.get(j).getPkgCode())) {
+                    if (App.pckgingList.get(j).getProgCode().equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
+                        leftPrgList.add(App.pckgingList.get(j).getPkgCode());
+                        ((DefaultListModel) leftModel).addElement(App.pckgingList.get(j).getProgCode() + "-" + App.prgList.get(i).getProgTitle());
                     }
                 }
             }
         }
         leftPrg = leftPrgList.toArray(new String[leftPrgList.size()]);
 
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
+        for (int i = 0; i < App.pkgList.size(); i++) {
             boolean check = false;
             for (int j = 0; j < leftPrgList.size(); j++) {
-                if (leftPrg[j].equalsIgnoreCase(RYCOXv2.prgList.get(i).getProgCode())) {
+                if (leftPrg[j].equalsIgnoreCase(App.prgList.get(i).getProgCode())) {
                     check = true;
                     break;
                 }
             }
             if (check == false) {
-                ((DefaultListModel) rightModel).addElement(RYCOXv2.prgList.get(i).getProgCode());
+                ((DefaultListModel) rightModel).addElement(App.prgList.get(i).getProgCode());
             }
         }
 

@@ -83,14 +83,14 @@ class ViewServiceDialog extends JDialog {
 //		separator.setPreferredSize(new Dimension(2,270));
 //		separator2 = new JSeparator(JSeparator.HORIZONTAL);
 //		separator2.setPreferredSize(new Dimension(680,2));
-        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-            if (ServicePanel.temp[0].equalsIgnoreCase(RYCOXv2.servList.get(i).getSmartCardNo())) {
-                termDateInput.setText(RYCOXv2.servList.get(i).getTermDate());
+        for (int i = 0; i < App.servList.size(); i++) {
+            if (ServicePanel.temp[0].equalsIgnoreCase(App.servList.get(i).getSmartCardNo())) {
+                termDateInput.setText(App.servList.get(i).getTermDate());
                 termDateInput.setEditable(false);
                 termDateInput.setForeground(fColor);
                 termDateInput.setBackground(nColor);
                 termDateInput.setBorder(line);
-                createDateInput.setText(RYCOXv2.servList.get(i).getRegDate());
+                createDateInput.setText(App.servList.get(i).getRegDate());
                 createDateInput.setEditable(false);
                 createDateInput.setForeground(fColor);
                 createDateInput.setBackground(nColor);
@@ -101,28 +101,28 @@ class ViewServiceDialog extends JDialog {
         selPkgList = new LinkedList<>();
         leftModel = new DefaultListModel();
         rightModel = new DefaultListModel();
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-            for (int j = 0; j < RYCOXv2.subsList.size(); j++) {
-                if (ServicePanel.temp[0].equalsIgnoreCase(RYCOXv2.subsList.get(j).getSmartCardNo())) {
-                    if (RYCOXv2.subsList.get(j).getPkgCode().equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
-                        selPkgList.add(RYCOXv2.subsList.get(j).getPkgCode());
-                        ((DefaultListModel) rightModel).addElement(RYCOXv2.subsList.get(j).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
+        for (int i = 0; i < App.pkgList.size(); i++) {
+            for (int j = 0; j < App.subsList.size(); j++) {
+                if (ServicePanel.temp[0].equalsIgnoreCase(App.subsList.get(j).getSmartCardNo())) {
+                    if (App.subsList.get(j).getPkgCode().equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
+                        selPkgList.add(App.subsList.get(j).getPkgCode());
+                        ((DefaultListModel) rightModel).addElement(App.subsList.get(j).getPkgCode() + "\t\t\t" + App.pkgList.get(i).getPkgName());
                     }
                 }
             }
         }
         selPkg = selPkgList.toArray(new String[selPkgList.size()]);
 
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
+        for (int i = 0; i < App.pkgList.size(); i++) {
             boolean check = false;
             for (int j = 0; j < selPkgList.size(); j++) {
-                if (selPkg[j].equalsIgnoreCase(RYCOXv2.pkgList.get(i).getPkgCode())) {
+                if (selPkg[j].equalsIgnoreCase(App.pkgList.get(i).getPkgCode())) {
                     check = true;
                     break;
                 }
             }
             if (check == false) {
-                ((DefaultListModel) leftModel).addElement(RYCOXv2.pkgList.get(i).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
+                ((DefaultListModel) leftModel).addElement(App.pkgList.get(i).getPkgCode() + "\t\t\t" + App.pkgList.get(i).getPkgName());
             }
         }
 

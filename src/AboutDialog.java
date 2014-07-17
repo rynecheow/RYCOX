@@ -10,25 +10,18 @@ public class AboutDialog extends JDialog implements ActionListener {
 
     // Variables declaration - do not modify
     private JButton closeButton;
-    private JLabel logo;
-    private JPanel bgPanel;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JSeparator jSeparator1;
-    private JTextArea ta1;
-    private JTextArea ta2;
     // End of variables declaration
 
     public AboutDialog(JFrame parent) {
         super(parent, "RYCOX System - About", true);
-        jScrollPane1 = new JScrollPane();
-        ta1 = new JTextArea();
-        bgPanel = new JPanel();
-        logo = new JLabel();
-        jSeparator1 = new JSeparator();
+        JScrollPane jScrollPane1 = new JScrollPane();
+        JTextArea ta1 = new JTextArea();
+        JPanel bgPanel = new JPanel();
+        JLabel logo = new JLabel();
+        JSeparator jSeparator1 = new JSeparator();
         closeButton = new JButton();
-        jScrollPane2 = new JScrollPane();
-        ta2 = new JTextArea();
+        JScrollPane jScrollPane2 = new JScrollPane();
+        JTextArea ta2 = new JTextArea();
 
         ta1.setColumns(20);
         ta1.setRows(5);

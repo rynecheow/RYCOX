@@ -87,9 +87,9 @@ class NewServiceDialog extends JDialog {
         rightModel = new DefaultListModel();
 
         // get package
-        for (int i = 0; i < RYCOXv2.pkgList.size(); i++) {
-            if (!(RYCOXv2.pkgList.get(i).getPkgStatus().equalsIgnoreCase("TERMINATED"))) {
-                ((DefaultListModel) leftModel).addElement(RYCOXv2.pkgList.get(i).getPkgCode() + "\t\t\t" + RYCOXv2.pkgList.get(i).getPkgName());
+        for (int i = 0; i < App.pkgList.size(); i++) {
+            if (!(App.pkgList.get(i).getPkgStatus().equalsIgnoreCase("TERMINATED"))) {
+                ((DefaultListModel) leftModel).addElement(App.pkgList.get(i).getPkgCode() + "\t\t\t" + App.pkgList.get(i).getPkgName());
             }
         }
 
@@ -223,8 +223,8 @@ class NewServiceDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == okBut) {
                 submit();
-                RYCOXv2.log = new LogFile(RYCOXv2.user, " has create a new service " + scInput.getText().toUpperCase() + " for Client " + ClientPanel.editionData[0]);
-                RYCOXv2.logList.add(RYCOXv2.log);
+                App.log = new LogFile(App.user, " has create a new service " + scInput.getText().toUpperCase() + " for Client " + ClientPanel.editionData[0]);
+                App.logList.add(App.log);
             } else if (e.getSource() == ccBut) {
                 int confirm = JOptionPane.showConfirmDialog(null, "Exit without changes?", "Confirm exit", JOptionPane.WARNING_MESSAGE);
                 if (confirm == JOptionPane.YES_OPTION) {
@@ -277,8 +277,8 @@ class NewServiceDialog extends JDialog {
             scEmptyWarn.setVisible(false);
             scSameWarn.setVisible(false);
         } else if (scInput.getText().matches(scNo_IDregex)) {
-            for (int j = 0; j < RYCOXv2.servList.size(); j++) {
-                if (scInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getSmartCardNo())) {
+            for (int j = 0; j < App.servList.size(); j++) {
+                if (scInput.getText().equalsIgnoreCase(App.servList.get(j).getSmartCardNo())) {
                     scSameWarn.setVisible(true);
                     scExample.setVisible(false);
                     scFormatWarn.setVisible(false);
@@ -305,8 +305,8 @@ class NewServiceDialog extends JDialog {
             dcSameWarn.setVisible(false);
             dcExample.setVisible(false);
         } else if (dcInput.getText().matches(decNo_IDregex)) {
-            for (int j = 0; j < RYCOXv2.servList.size(); j++) {
-                if (dcInput.getText().equalsIgnoreCase(RYCOXv2.servList.get(j).getDecodeNo())) {
+            for (int j = 0; j < App.servList.size(); j++) {
+                if (dcInput.getText().equalsIgnoreCase(App.servList.get(j).getDecodeNo())) {
                     dcExample.setVisible(false);
                     dcEmptyWarn.setVisible(false);
                     dcFormatWarn.setVisible(false);
@@ -342,7 +342,7 @@ class NewServiceDialog extends JDialog {
         }
         if (scCheck == true && dcCheck == true && addCheck == true && subsPkgCheck == true) {
             updateList();
-            for (int i = 0; i < RYCOXv2.servList.size(); i++) {
+            for (int i = 0; i < App.servList.size(); i++) {
             }
             updateSubsList();
             JOptionPane.showMessageDialog(null, "You have successfully create a new service " + scInput.getText().toUpperCase(), "New Service Created", JOptionPane.INFORMATION_MESSAGE);
@@ -356,8 +356,8 @@ class NewServiceDialog extends JDialog {
      */
     private void updateSubsList() {
         subsNo = 0;
-        for (int i = 0; i < RYCOXv2.servList.size(); i++) {
-            if (RYCOXv2.servList.get(i).getClientID().equalsIgnoreCase(ClientPanel.editionData[0])) {
+        for (int i = 0; i < App.servList.size(); i++) {
+            if (App.servList.get(i).getClientID().equalsIgnoreCase(ClientPanel.editionData[0])) {
                 subsNo++;
             }
         }
@@ -366,7 +366,7 @@ class NewServiceDialog extends JDialog {
             addElements.add(((String) rightList.getModel().getElementAt(p)).substring(0, 3));
         }
         for (int i = 0; i < addElements.size(); i++) {
-            RYCOXv2.subsList.add(new Subscription(scInput.getText().toUpperCase(), subsNo, addElements.get(i)));
+            App.subsList.add(new Subscription(scInput.getText().toUpperCase(), subsNo, addElements.get(i)));
         }
     }
 
@@ -375,7 +375,7 @@ class NewServiceDialog extends JDialog {
      * information from client.
      */
     public void updateList() {
-        RYCOXv2.servList.add(new Service(scInput.getText().toUpperCase(), ClientPanel.editionData[0], dcInput.getText().toUpperCase(), addInput.getText()));
+        App.servList.add(new Service(scInput.getText().toUpperCase(), ClientPanel.editionData[0], dcInput.getText().toUpperCase(), addInput.getText()));
         ServicePanel.addServ();
     }
 
